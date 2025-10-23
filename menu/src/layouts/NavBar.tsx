@@ -1,22 +1,37 @@
 interface NavBarProps {
-  newfood: boolean;
+  state: boolean;
   text: string;
 }
 
-export default function NavBar({ newfood, text }: NavBarProps) {
+let stilo = { fontSize: "12px", fontWeight: 600, color: "rgb(0,0,0)" };
+
+export default function NavBar({ state, text }: NavBarProps) {
   return (
     <nav className="h-[54px] p-2 flex justify-between items-center w-full border-b border-gray-100 shadow-xs">
-      {newfood ? ( 
-        <> 
-            <span className="ml-3" style={{ fontSize: "1.2rem", fontWeight: "bold" }}>{text}</span>
-            <div className="flex items-center justify-end h-full">
-                <a style={{ fontSize: "12px", fontWeight: 600, color: "rgb(0,0,0)" }} className="min-w-20 w-[10vh] min-h-10 h-5 mr-2 rounded-lg" href="/">
-                CANCELAR
-                </a>
-                <a style={{fontSize: "12px",fontWeight: 600,color: "rgb(0,0,0)",backgroundColor: "rgb(51,255,0)",}}className="min-w-20 w-[10vh] min-h-8 h-3 mr-4 rounded-lg"href="/">
-                ACEPTAR
-                </a>
-            </div>
+      {state ? (
+        <>
+          <span
+            className="ml-3"
+            style={{ fontSize: "1.2rem", fontWeight: "bold" }}
+          >
+            {text}
+          </span>
+          <div className="flex items-center justify-end h-full">
+            <a
+              style={stilo}
+              className="min-w-20 w-[10vh] min-h-10 h-5 mr-2 rounded-lg"
+              href="/"
+            >
+              CANCELAR
+            </a>
+            <a
+              style={stilo}
+              className="min-w-20 w-[10vh] min-h-8 h-3 mr-4 rounded-lg"
+              href="/"
+            >
+              ACEPTAR
+            </a>
+          </div>
         </>
       ) : (
         <>
@@ -46,7 +61,7 @@ export default function NavBar({ newfood, text }: NavBarProps) {
               backgroundColor: "rgb(51,255,0)",
             }}
             className="min-w-20 w-[10vh] min-h-8 h-3 mr-4 rounded-lg"
-            href="/newFood"
+            href="/newfood"
           >
             NUEVO
           </a>
