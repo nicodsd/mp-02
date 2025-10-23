@@ -1,0 +1,43 @@
+
+[
+    {
+        "id": 1,
+        "name": "Pizza Margherita",
+        "description": "Clásica pizza italiana con tomate, mozzarella y albahaca.",
+        "price": 10000,
+        "image": "/images/foods/pizzas/R.jpeg",
+        "allergens" : "gluten, dairy"
+    },
+    {
+        "id": 2,
+        "name": "Hamburguesa",
+        "description": "Jugosa hamburguesa de res con queso, lechuga y tomate.",
+        "price": 7000,
+        "image": "/images/foods/burguers/OIP.webp",
+        "allergens" : "gluten, dairy, egg"
+    },
+    {
+        "id": 3,
+        "name": "Ensalada César",
+        "description": "Ensalada fresca con pollo, crutones y aderezo César.",
+        "price": 6000,
+        "image": "/images/foods/picadas/5e997e650c7b6.jpeg",
+        "allergens" : "dairy, fish, egg"
+    },
+    {
+        "id": 4,
+        "name": "Sushi Roll",
+        "description": "Rollos de sushi rellenos de salmón y aguacate.",
+        "price": 9500,
+        "image": "/images/foods/picadas/R.jpeg",
+        "allergens" : "fish, soy, sesame"
+    },
+    {
+        "id": 5,
+        "name": "Tacos al Pastor",
+        "description": "Tacos mexicanos de cerdo marinado con piña y cebolla.",
+        "price": 5000,
+        "image": "/images/foods/tacos/OIP.webp",
+        "allergens" : "gluten"
+    }
+]
