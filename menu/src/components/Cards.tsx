@@ -26,12 +26,12 @@ const list: Food[] = (foodsData as unknown as Food[]) || [];
           />
           <div className="flex flex-col justify-between pl-3 w-full">
             <div className="menu-card__content text-left w-full">
-              <h2 className="menu-card__title">{food.name}</h2>
-              <p className="menu-card__description">{food.description}</p>
+              <h2 className="menu-card__title text-base/5">{food.name}</h2>
+              <p className="menu-card__description mt-2">{food.description}</p>
             </div>
             <div className="menu-card__price-container flex items-center gap-1.5 justify-end">
               <span className="menu-card__description">c/u</span>
-              <span className="menu-card__price" >
+              <span className="menu-card__price">
                 ${food.price}
               </span>
             </div>

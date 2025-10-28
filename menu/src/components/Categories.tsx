@@ -3,9 +3,9 @@ import categories from '../data/categories';
 
 const Categories: FC = () => {
     return (
-        <section className="mt-3 text-[2vh] font-weight-500">
+        <section className="mt-9 text-[17px] font-weight-500">
             <div 
-                className="flex gap-10 py-5 pl-5 overflow-y-scroll"
+                className="flex gap-10 py-2 pl-5 overflow-y-scroll"
                 style={{ 
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
