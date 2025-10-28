@@ -1,4 +1,3 @@
-import React from "react";
 import foodsData from "../data/foods/foods-1.json";
 import Image from "next/image";
 

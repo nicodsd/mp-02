@@ -1,15 +1,12 @@
+// /c:/Users/Nicolas/REPOS git/mp-02/menu/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Asap } from "next/font/google";
 import Footer from "@/src/layouts/Footer";
 
-const geistSans = Geist({
+const asap = Asap({
+  style: "normal",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -22,13 +19,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
-      <body
-        className={
-          "" + `${geistSans.variable} ${geistMono.variable} antialiased`
-        }
-      >
-        <main> {children} </main>
+    <html lang="es" className={asap.className}>
+      <body className="antialiased">
+        <main>{children}</main>
         <Footer />
       </body>
     </html>
