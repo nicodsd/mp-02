@@ -1,5 +1,4 @@
 "use client";
-
 // Indicador para la barra de navegación
 const postFoodNav = true;
 
@@ -34,8 +33,7 @@ export default function NewFood() {
     Allergens: allergens || "Ninguno",
   };
 
-  //console.log("Data:", data);
-
+  
   const imageCapture = (event: any) => {
     setImage(URL.createObjectURL(event?.target.files[0]));
     console.log("Image captured");
@@ -44,15 +42,16 @@ export default function NewFood() {
     setImage("");
     console.log("Image deleted");
   };
-
+  
   // Ejemplo de función para manejar el submit
   const postFood = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado");
     // Aquí iría la lógica para guardar el plato
   };
-
+  
   //AREA CONSOLE LOGS
+ // console.log("Data:", data);
   //console.log("Text:", input);
   //console.log("RENDER");
 
