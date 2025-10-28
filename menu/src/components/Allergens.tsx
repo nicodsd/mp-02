@@ -1,25 +1,45 @@
-import allergens from "@/src/data/allergens";
-const selected: string[] = [];
+"use client";
+import React from "react";
+import allergens from "@/src/data/allergens"; // importamos lista
 
-export default function Allergens() {
+interface AllergensFormProps {
+  dataAllergens: string[];
+  setData: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+interface AllergensData {
+  allergens: string[];
+}
+
+export default function AllergensForm(props: AllergensFormProps) {
+  const { dataAllergens, setData } = props;
+
+  const handleCheckboxChange = (value: string): void => {
+    setData(
+      (prev) =>
+        prev.includes(value)
+          ? prev.filter((item) => item !== value) // si ya estaba, lo quita
+          : [...prev, value] // si no estaba, lo agrega
+    );
+  };
+
+  const data: AllergensData = {
+    allergens: dataAllergens,
+  };
+
   return (
-    <>
-      <div className="flex flex-wrap gap-2">
-        {allergens.map((a) => (
-          <label className="cursor-pointer">
-            <input
-              type="checkbox"
-              name="allergens"
-              value={a}
-              checked={selected.includes(a)}
-              className="peer hidden"
-            />
-            <span className="px-4 py-2 rounded-full border border-gray-300 text-sm bg-gray-100 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600">
-              {a}
-            </span>
-          </label>
-        ))}
-      </div>
-    </>
+    <div>
+      {allergens.map((item: string) => (
+        <label key={item} className="block">
+          <input
+            type="checkbox"
+            value={item}
+            checked={dataAllergens.includes(item)}
+            onClick={() => handleCheckboxChange(item)}
+          />
+          {item}
+        </label>
+      ))}
+    </div>
   );
 }

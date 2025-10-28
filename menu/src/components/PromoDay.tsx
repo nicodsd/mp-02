@@ -22,7 +22,7 @@ export default function PromoDay() {
                     overflow: "hidden",
                     maxWidth: "100%",
                     maxHeight: "40vh",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                    boxShadow: "0 6px 10px rgba(0,0,0,0.20)",
                 }}
             >
                 <img
@@ -43,12 +43,12 @@ export default function PromoDay() {
                         color: "#ffffff",
                     }}
                 >
-                    <div style={{ flex: 1, textAlign: "left" }}>
-                        <h2
+                    <div style={{ flex: 1, textAlign: "left", }}>
+                        <h2 
+                            className="text-base/6 mb-1.5"
                             style={{
                                 fontWeight: 800,
                                 fontSize: "25px",
-                                margin: 0,
                             }}
                         >
                             {title}
@@ -63,7 +63,7 @@ export default function PromoDay() {
                             flexDirection: "column",
                             justifyContent: "flex-end",
                             alignItems: "flex-end",
-                            width: "50%",
+                            width: "34%",
                         }}
                     >
                         <p
