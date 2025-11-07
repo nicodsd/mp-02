@@ -1,4 +1,4 @@
-import promoday from "../data/promoday";
+import promoday from "../data/promoday.js";
 
 const { imageUrl, title, description, price, bgColor } = promoday;
 

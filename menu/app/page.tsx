@@ -1,3 +1,4 @@
+"use client";
 import NavBar from "@/src/layouts/NavBar";
 import Categories from "@/src/components/Categories";
 import MenuCard from "@/src/components/Cards";
@@ -5,7 +6,7 @@ import PromoDay from "@/src/components/PromoDay";
 const homeState = false;
 const nombre = "Menu App";
 
-export default function Home() {
+export default function Page() {
   return (
     <div className="w-full asap">
       <NavBar state={homeState} text={nombre} />
