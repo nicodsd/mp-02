@@ -1,33 +1,18 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
-import axios from "axios";
+import { FC, useEffect, useState } from "react";
 
 // Tipos
 type Category = {
   _id: string | number;
-  image: string;
   name: string;
-  description: string;
-  price: number | string;
 };
 
 // Componente
-const Categories: FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get("http://localhost:4000/categories");
-        setCategories(res.data.categories);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
+export function Categories({
+  initialCategories,
+}: {
+  initialCategories: Category[];
+}) {
   return (
     <section className="mt-9 text-[17px] font-medium">
       <div
@@ -37,7 +22,7 @@ const Categories: FC = () => {
           msOverflowStyle: "none",
         }}
       >
-        {categories.map((category) => (
+        {initialCategories?.map((category) => (
           <a
             key={category?._id}
             href="/#"
@@ -49,6 +34,6 @@ const Categories: FC = () => {
       </div>
     </section>
   );
-};
+}
 
 export default Categories;

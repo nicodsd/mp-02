@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  //Configuracion de usecache
+  experimental: {
+    useCache: true,
+  },
+
   // 🔧 Desactiva Turbopack
   turbopack: {
     resolveExtensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],

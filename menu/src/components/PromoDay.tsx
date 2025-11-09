@@ -3,10 +3,21 @@ import promoday from "../data/promoday.js";
 const { imageUrl, title, description, price, bgColor } = promoday;
 
 export default function PromoDay() {
+  
+  function formatearPrecio(precio: number | string) {
+    const value = typeof precio === "string" ? Number(precio) : precio;
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0,
+    }).format(value);
+  }
+
   return (
-    <section>
+    <section className="flex flex-col items-center">
       <h2
         style={{
+          width: "95%",
           margin: "0.2rem 0 0 0",
           fontSize: "2.6rem",
           fontWeight: 900,
@@ -20,8 +31,8 @@ export default function PromoDay() {
           background: bgColor || "#f5f5f5",
           borderRadius: "1rem",
           overflow: "hidden",
-          maxWidth: "100%",
-          maxHeight: "44vh",
+          maxWidth: "95%",
+          maxHeight: "50vh",
           boxShadow: "0 6px 10px rgba(0,0,0,0.20)",
         }}
       >
@@ -76,7 +87,7 @@ export default function PromoDay() {
                 margin: 0,
               }}
             >
-              Antes ${price}
+              Antes {formatearPrecio(price)}
             </p>
             <p
               style={{
@@ -86,7 +97,7 @@ export default function PromoDay() {
                 margin: 0,
               }}
             >
-              ${price}
+              {formatearPrecio(price)}
             </p>
           </div>
         </div>
