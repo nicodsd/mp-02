@@ -9,7 +9,7 @@ type Card = {
   description: string;
   price: number | string;
 };
-export default function Cards({ initialFoods }: { initialFoods: Card[] }) {
+export default function Cards({ foods }: { foods: Card[] }) {
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {
@@ -21,9 +21,9 @@ export default function Cards({ initialFoods }: { initialFoods: Card[] }) {
 
   return (
     <>
-      {initialFoods?.length > 0 ? (
+      {Array.isArray(foods) ? (
         <div>
-          {initialFoods?.map((food) => (
+          {foods?.map((food) => (
             <div
               key={food._id}
               className="menu-card rounded-[7px] overflow-hidden my-0.5 shadow-md flex w-full bg-white p-3.5"
