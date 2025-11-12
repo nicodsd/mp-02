@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import NavBar from "@/src/layouts/NavBar";
 import Categories from "@/src/components/Categories";
@@ -14,6 +14,23 @@ export default function Inicio({
   initialCategories: any[];
   initialFoods: any[];
 }) {
+    
+  let [arrayFoods, setarrayFoods] = useState<any[]>(initialFoods);
+  let result;
+
+  function setCats(category: string) {
+    arrayFoods = initialFoods;
+    if (category.length > 1) {
+      result = initialFoods.filter((food) => food.category === category);
+      setarrayFoods(result);
+      return arrayFoods;
+    }
+    if (category === "0") {
+      setarrayFoods(initialFoods);
+      return arrayFoods;
+    }
+  }
+
   return (
     <>
       <div className="w-full asap h-auto">
@@ -23,8 +40,11 @@ export default function Inicio({
             <PromoDay />
           </section>
           <section className="flex h-full flex-col gap-0.5">
-            <Categories categories={initialCategories} />
-            <MenuCard foods={initialFoods} />
+            <Categories
+              categories={initialCategories}
+              selectCategory={setCats}
+            />
+            <MenuCard foods={arrayFoods} categories={initialCategories} />
           </section>
         </div>
       </div>

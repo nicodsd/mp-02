@@ -9,7 +9,11 @@ type Card = {
   description: string;
   price: number | string;
 };
-export default function Cards({ foods }: { foods: Card[] }) {
+export default function Cards({ foods, categories }: { foods: Card[], categories: any[] }) {
+
+  //console.log("MENU CARD F1:",foods)
+  //console.log("MENU CARD C2:", categories)
+
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {

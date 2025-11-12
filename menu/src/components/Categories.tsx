@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 // Tipos
 type Category = {
@@ -8,20 +8,19 @@ type Category = {
 };
 
 // Componente
-export function Categories({ categories }: { categories: Category[] }) {
-  //const [cat, setCat] = useState<string>("");
-  const [cates, setCates] = useState<any[]>([]);
+export function Categories({
+  categories,
+  selectCategory,
+}: {
+  categories: Category[];
+  selectCategory: (name: string) => void;
+}) {
+  const [activeCategory, setActiveCategory] = useState<string>("0"); // "0" representa "Todo"
 
-  function setCats(category: string) {
-    if (!cates.includes(category)) {
-      setCates([...cates, category]);
-    } else {
-      const filteredCategories = cates.filter((e) => e !== category);
-      setCates(filteredCategories);
-    }
-  }
-
-  console.log(cates);
+  const handleClick = (name: string) => {
+    setActiveCategory(name);
+    selectCategory(name);
+  };
 
   return (
     <section className="mt-9 text-[17px] font-medium">
@@ -32,22 +31,37 @@ export function Categories({ categories }: { categories: Category[] }) {
           msOverflowStyle: "none",
         }}
       >
-        {Array.isArray(categories) ? (
-          <>
-            {categories?.map((category) => (
-              <a
-                key={category?._id}
-                href="/#"
-                onClick={() => setCats(category?.name)}
-                className="py-0.5 no-underline text-[#222] border-b-[3px] border-transparent font-bold hover:border-red-600 focus:border-red-600"
-              >
-                {category?.name}
-              </a>
-            ))}
-          </>
-        ) : (
-          <p>No hay datos disponibles.</p>
-        )}
+        <a
+          key="All"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            handleClick("0");
+          }}
+          className={`py-0.5 no-underline text-[#222] border-b-[3px] font-bold ${
+            activeCategory === "0" ? "border-red-600" : "border-transparent"
+          }`}
+        >
+          Todo
+        </a>
+
+        {categories?.map((category) => (
+          <a
+            key={category._id}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick(category.name);
+            }}
+            className={`py-0.5 no-underline text-[#222] border-b-[3px] font-bold ${
+              activeCategory === category.name
+                ? "border-red-600"
+                : "border-transparent"
+            }`}
+          >
+            {category.name}
+          </a>
+        ))}
       </div>
     </section>
   );
