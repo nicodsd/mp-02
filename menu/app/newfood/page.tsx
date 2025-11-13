@@ -14,16 +14,25 @@ const nombre = "Nuevo Plato";
 
 export default function NewFood() {
   // Estados para manejar los datos de entrada
-  const [img, setImage] = useState<string>("");
+  const [img, setImage] = useState<string>(imgPlaceholder);
+  const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [allergens, setAllergens] = useState<string[]>([]);
 
-  if (!img) {
-    setImage(imgPlaceholder);
-  }
+  console.log(img);
 
+  const imageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (!selectedFile) return;
+
+    const imageUrl = URL.createObjectURL(selectedFile);
+    setImage(imageUrl);
+    setFile(selectedFile);
+
+    console.log("Imagen capturada:", selectedFile.name);
+  };
   // Datos del formulario
   const data = {
     Image: img,
@@ -33,25 +42,24 @@ export default function NewFood() {
     Allergens: allergens || "Ninguno",
   };
 
-  
-  const imageCapture = (event: any) => {
-    setImage(URL.createObjectURL(event?.target.files[0]));
-    console.log("Image captured");
-  };
   const delteImage = () => {
-    setImage("");
-    console.log("Image deleted");
+    if (img !== imgPlaceholder) {
+      URL.revokeObjectURL(img); // libera la URL temporal
+    }
+    setImage(imgPlaceholder);
+    setFile(null);
+    console.log("Imagen eliminada");
   };
-  
+
   // Ejemplo de función para manejar el submit
   const postFood = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado");
     // Aquí iría la lógica para guardar el plato
   };
-  
+
   //AREA CONSOLE LOGS
- // console.log("Data:", data);
+  // console.log("Data:", data);
   //console.log("Text:", input);
   //console.log("RENDER");
 
@@ -97,13 +105,12 @@ export default function NewFood() {
               )}
             </div>
 
-            <Image
-              loading="eager"
+            <img
               src={img}
               width={250}
               height={250}
-              alt={"Vista previa"}
-              className=" w-min-10rem h-min-10rem object-contain rounded-md border border-gray-200"
+              alt="Vista previa"
+              className="object-contain rounded-md border border-gray-200"
             />
           </div>
         </div>
