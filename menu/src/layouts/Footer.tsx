@@ -2,7 +2,7 @@ import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-gray-200 py-10 px-6">
+    <footer className="border-t border-gray-300 py-10 px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
         {/* Columna 1: Info */}
         <div>
@@ -51,7 +51,7 @@ export default function Footer() {
         </div>
 
         {/* Columna 3: Opinión */}
-        <div className="flex flex-col items-center md:items-start md:border-0 border-t-2 border-gray-200 pt-6">
+        <div className="flex flex-col items-center md:items-start md:border-0 border-t-2 border-gray-300 pt-6">
           <a
             href="https://search.google.com/local/writereview?placeid=TU_PLACE_ID"
             target="_blank"

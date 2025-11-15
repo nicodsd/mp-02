@@ -7,7 +7,7 @@ import MenuItems from "../../src/components/dashboard/MenuItems";
 import Templates from "../../src/components/dashboard/Templates";
 import NavBar from "@/src/layouts/NavBar";
 
-const homeState = false;
+const homeState = 2;
 const nombre = "Panel de usuario";
 
 type Food = {
@@ -49,7 +49,7 @@ export default function DashboardPage() {
               key={tab}
               className={({ selected }) =>
                 `w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg 
-                ${selected ? "bg-white shadow" : "text-blue-100 hover:bg-white/[0.12]"}`
+                ${selected ? "bg-white shadow" : "text-blue-100 hover:bg-white/12"}`
               }
             >
               {tab}

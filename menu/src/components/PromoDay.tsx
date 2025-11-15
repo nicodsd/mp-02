@@ -1,4 +1,5 @@
 import promoday from "../data/promoday.js";
+import 'animate.css';
 
 const { imageUrl, title, description, price, bgColor } = promoday;
 
@@ -17,7 +18,7 @@ export default function PromoDay() {
     <section className="flex flex-col items-center">
       <h2
         style={{
-          width: "95%",
+          width: "100%",
           margin: "0.2rem 0 0 0",
           fontSize: "2.6rem",
           fontWeight: 900,
@@ -26,14 +27,14 @@ export default function PromoDay() {
       >
         PROMO DEL DÍA
       </h2>
-      <div
+      <div className="animate__animated animate__bounceIn"
         style={{
           background: bgColor || "#f5f5f5",
           borderRadius: "1rem",
           overflow: "hidden",
-          maxWidth: "95%",
+          maxWidth: "100%",
           maxHeight: "50vh",
-          boxShadow: "0 6px 10px rgba(0,0,0,0.20)",
+          boxShadow: "0 6px 10px rgba(0,0,0,0.25)",
         }}
       >
         <img
