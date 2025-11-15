@@ -53,7 +53,7 @@ const nextConfig: NextConfig = {
             value: `
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
-              img-src 'self' data: https:;
+              img-src 'self' data: blob: https:;
               frame-src https://js.stripe.com;
             `.replace(/\s{2,}/g, ' ').trim(),
           },

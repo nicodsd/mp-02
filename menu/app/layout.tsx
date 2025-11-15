@@ -22,7 +22,6 @@ export default function RootLayout({
     <html lang="es" className={asap.className}>
       <body className="antialiased">
         <main>{children}</main>
-        <Footer />
       </body>
     </html>
   );

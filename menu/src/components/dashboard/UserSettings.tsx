@@ -8,9 +8,6 @@ import Image from "next/image";
 const UserSettings: React.FC = () => {
   const [name, setName] = useState("");
   const [image, setImage] = useState<string>("");
-  if (!image) {
-    setImage(imgPlaceholder);
-  }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -46,7 +43,7 @@ const UserSettings: React.FC = () => {
           variant="contained"
           startIcon={<CloudUpload />}
         >
-          Seleccionar imagen
+          Subir Logo
           <input
             type="file"
             accept="image/*"
