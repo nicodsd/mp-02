@@ -13,7 +13,7 @@ export default function Loading({ error }: LoadingProps) {
   }
 
   return (
-    <div className="space-y-2 animate-pulse">
+    <div className="space-y-2">
       {[...Array(4)].map((_, i) => (
         <div
           key={i}

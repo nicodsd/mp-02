@@ -1,18 +1,17 @@
-"use client";
+//----------------DATA FETCHING---------------------------------
+import { getCategories } from "@/src/lib/getCategories";
 
 //----------------IMPORTS----------------------------------------
-import NavBar from "@/src/layouts/NavBar";
 import FormFoods from "@/src/components/newfood_comps/FormFoods";
 
-//----------------CONSTANTES-------------------------------------
-const postFoodNav = 1;
-const nombre = "Nuevo Plato";
+export default async function NewFood() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
+  const rawCategories = await getCategories(apiUrl);
+  const categories = rawCategories.map((cat: any) => cat.name); // solo nombres
 
-export default function NewFood() {
   return (
-    <div className="w-full asap bg-[#eeeeee]">
-      <NavBar state={postFoodNav} text={nombre} />
-      <FormFoods />
+    <div className="w-full min-h-screen asap bg-[#eeeeee]">
+      <FormFoods initialCategories={categories} />
     </div>
   );
 }
