@@ -1,17 +1,4 @@
-type LoadingProps = {
-  error?: string | null;
-};
-
-export default function Loading({ error }: LoadingProps) {
-  console.log("ERROR PAGE LOAD:", error)
-  if (error) {
-    return (
-      <div className="p-20 text-center h-[35vh] text-lg flex justify-center items-center bg-red-100 border border-red-400 text-red-700 rounded-xl">
-        {error}
-      </div>
-    );
-  }
-
+export default function Loading() {
   return (
     <div className="space-y-2">
       {[...Array(4)].map((_, i) => (
