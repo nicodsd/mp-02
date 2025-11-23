@@ -23,13 +23,11 @@ export default function FormFoods({
   const [img, setImage] = useState<string>(imgPlaceholder);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>(initialCategories);
+  const [categories, setCategories] = useState<string[]>(initialCategories || []);
   const [price, setPrice] = useState<string>("");
   const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [off, setOff] = useState<boolean>(false);
-
-  console.log("Initial Categories:", initialCategories);
 
   useEffect(() => {
     return () => {
@@ -62,12 +60,6 @@ export default function FormFoods({
       setImage(imageUrl);
       setOff(true);
       setError("");
-
-      /*       console.log(
-        "Imagen comprimida:",
-        compressedFile.name,
-        compressedFile.size
-      ); */
     } catch (err) {
       console.error("Error al comprimir la imagen:", err);
       setError("No se pudo comprimir la imagen.");
@@ -130,10 +122,10 @@ export default function FormFoods({
               <Image
                 loading="eager"
                 src={img}
-                width={260}
-                height={260}
+                width={300}
+                height={300}
                 alt="Vista previa"
-                className="object-cover rounded-md max-h-[260px] max-w-[260px]"
+                className="object-cover rounded-md max-h-[260px] max-w-[260px] md:max-w-[500vh] md:max-h-[500vh] "
               />
               {img && img !== imgPlaceholder && (
                 <button
@@ -144,9 +136,6 @@ export default function FormFoods({
                   <DeleteOutline /> Borrar
                 </button>
               )}
-          {/* <h2 className="block text-[19px] font-medium text-gray-700 mb-1">
-            Elegir imagen
-          </h2> */}
             </div>
           </div>
           <div className="flex justify-between items-center">
@@ -268,8 +257,7 @@ export default function FormFoods({
           <legend className="text-[19px] font-semibold text-gray-500 mb-2">
             Alergenos
           </legend>
-          <Allergens dataAllergens={allergens} 
-          setData={setAllergens} />
+          <Allergens dataAllergens={allergens} setData={setAllergens} />
         </fieldset>
 
         {/* Botón */}

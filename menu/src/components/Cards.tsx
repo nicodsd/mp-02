@@ -30,14 +30,15 @@ export default function Cards({ foods, categories }: { foods: Card[], categories
           {foods?.map((food) => (
             <div
               key={food._id}
-              className="menu-card rounded-[7px] overflow-hidden my-0.5 shadow-md flex w-full bg-[#fffcf2] p-3.5"
+              className="menu-card rounded-[7px] overflow-hidden my-1 shadow-md flex w-full bg-[#fffcf2] p-3"
             >
               <Image
+                loading="eager"
                 src={food.photo}
                 alt={food.name}
-                className="menu-card__image rounded-[7px]"
-                width={500}
-                height={500}
+                className=" max-w-20 max-h-25 object-cover rounded-[7px]"
+                width={150}
+                height={90}
               />
               <div className="flex flex-col justify-between pl-2 w-full">
                 <div className="menu-card__content text-left w-full">

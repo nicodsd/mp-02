@@ -61,8 +61,6 @@ export function MenuItems({ dataFoods }: { dataFoods: MenuItem[] }) {
     category: "",
   });
 
-  console.log("imagen", imgPlaceholder);
-
   // Manejo de cambios en los campos del formulario
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
