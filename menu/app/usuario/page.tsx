@@ -6,10 +6,8 @@ import UserSettings from "../../src/components/dashboard/UserSettings";
 import MenuItems from "../../src/components/dashboard/MenuItems";
 import Templates from "../../src/components/dashboard/Templates";
 import NavBar from "@/src/layouts/NavBar";
-
 const homeState = 2;
 const nombre = "Panel de usuario";
-
 type Food = {
   _id: string | number;
   photo: string;
@@ -21,32 +19,13 @@ type Food = {
 
 export default function DashboardPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
-  //console.log("API URL:", apiUrl);
   const [foods, setFoods] = useState<Food[]>([]);
   const [categories, setCategories] = useState<Food[]>([]);
-  //console.log("Foods state:", foods);
-
-  /*   export async function getServerSideProps(context) {
-  const { req } = context;
-  const token = req.cookies.token;
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  // continuar con fetch de datos
-} */
-
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const resFoods = await axios.get(`${apiUrl}/foods`);
-        const resCategories = await axios.get(`${apiUrl}/categories`);
+        const resFoods = await axios.get(`${apiUrl}api/foods`);
+        const resCategories = await axios.get(`${apiUrl}api/categories`);
         setFoods(resFoods.data.foods);
         setCategories(resCategories.data.categories);
       } catch (error) {
@@ -55,10 +34,8 @@ export default function DashboardPage() {
     };
     fetchFoods();
   }, []);
-
   const tabClass =
     "rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2";
-
   return (
     <>
       <div className="bg-[#eeeeee] min-h-screen">
@@ -71,18 +48,16 @@ export default function DashboardPage() {
                   key={tab}
                   className={({ selected }) =>
                     `w-full py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg 
-                ${
-                  selected
-                    ? "bg-white shadow"
-                    : "text-blue-100 hover:bg-white/12"
-                }`
+                ${selected
+                      ? "bg-white shadow"
+                      : "text-blue-100 hover:bg-white/12"
+                    }`
                   }
                 >
                   {tab}
                 </Tab>
               ))}
             </TabList>
-
             <TabPanels className="mt-2">
               <TabPanel className={tabClass}>
                 <UserSettings />

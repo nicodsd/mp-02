@@ -5,7 +5,7 @@ export default function LoadingCategories() {
                 <div
                     key={i}
                     className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"
-                >sdasdasdas</div>
+                ></div>
             ))};
         </div>
     );

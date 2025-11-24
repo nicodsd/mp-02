@@ -1,10 +1,8 @@
 import promoday from "../data/promoday.js";
 import 'animate.css';
-
+import Image from "next/image";
 const { imageUrl, title, description, price, bgColor } = promoday;
-
 export default function PromoDay() {
-  
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {
@@ -13,36 +11,27 @@ export default function PromoDay() {
       minimumFractionDigits: 0,
     }).format(value);
   }
-
   return (
     <section className="flex flex-col items-center">
-      <h2
-        style={{
-          width: "100%",
-          margin: "0.2rem 0 0 0",
-          fontSize: "2.6rem",
-          fontWeight: 900,
-          textAlign: "start",
-        }}
-      >
-        PROMO DEL DÍA
-      </h2>
       <div className="animate__animated animate__bounceIn"
         style={{
           background: bgColor || "#f5f5f5",
           borderRadius: "1rem",
           overflow: "hidden",
           maxWidth: "100%",
-          maxHeight: "50vh",
+          maxHeight: "40vh",
           boxShadow: "0 6px 10px rgba(0,0,0,0.25)",
         }}
       >
-        <img
+        <Image
+          loading="eager"
           src={imageUrl}
           alt={title}
+          width={500}
+          height={500}
           style={{
             width: "100%",
-            height: "180px",
+            height: "150px",
             objectFit: "cover",
           }}
         />
@@ -51,7 +40,7 @@ export default function PromoDay() {
             display: "flex",
             flexDirection: "row",
             alignItems: "flex-end",
-            padding: "1rem",
+            padding: "0.8rem",
             color: "#ffffff",
           }}
         >
@@ -60,7 +49,7 @@ export default function PromoDay() {
               className="text-base/5.5 mb-1.5"
               style={{
                 fontWeight: 800,
-                fontSize: "22px",
+                fontSize: "21px",
               }}
             >
               {title}
