@@ -2,26 +2,23 @@
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
-
 interface CategoriesFormProps {
   categoriesList: string[];
   onChange?: (selected: string[]) => void;
 }
-
 export default function CategoriesForm({
   categoriesList,
   onChange,
 }: CategoriesFormProps) {
+  const URL = process.env.NEXT_PUBLIC_API_URL;
   const [selected, setSelected] = useState<string[]>([]);
   const [customCategories, setCustomCategories] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [arrayNewCategory, setArrayNewCategory] = useState<string[]>([]);
-
   if (!categoriesList) {
     categoriesList = [];
   }
   const allCategories = [...categoriesList, ...customCategories];
-
   const handleCheckboxChange = (value: string): void => {
     const updated = selected.includes(value)
       ? selected.filter((item) => item !== value)
@@ -29,7 +26,6 @@ export default function CategoriesForm({
     setSelected(updated);
     if (onChange) onChange(updated);
   };
-
   const handleAddCategory = () => {
     if (!newCategory.trim()) return;
     const updatedArrayNewCategory = [...arrayNewCategory, newCategory];
@@ -37,31 +33,17 @@ export default function CategoriesForm({
     setArrayNewCategory(updatedArrayNewCategory);
     setNewCategory("");
   };
-
   const handlePutCategory = (category: string) => {
-    const deleteCategory = axios.put(
-      `${process.env.NEXT_PUBLIC_API_URL}/categories/delete`,
-      { category }
-    );
-    const updatedCustomCategories = customCategories.filter(
-      (cat) => cat !== category
-    );
+    axios.put(`${URL}/api/categories/${category}`);
+    const updatedCustomCategories = customCategories.filter((cat) => cat !== category);
     setCustomCategories(updatedCustomCategories);
-    setSelected((prevSelected) =>
-      prevSelected.filter((cat) => cat !== category)
-    );
-  };
-
+    setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
+  }
   const deleteNewCategory = (category: string) => {
-    const updatedArrayNewCategory = arrayNewCategory.filter(
-      (cat) => cat !== category
-    );
+    const updatedArrayNewCategory = arrayNewCategory.filter((cat) => cat !== category);
     setArrayNewCategory(updatedArrayNewCategory);
-    setSelected((prevSelected) =>
-      prevSelected.filter((cat) => cat !== category)
-    );
+    setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
   };
-
   return (
     <div className="space-y-4">
       {/* Lista de categorías */}

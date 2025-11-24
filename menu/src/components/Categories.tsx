@@ -1,13 +1,9 @@
 "use client";
-import { FC, useState } from "react";
-
-// Tipos
+import { useState } from "react";
 type Category = {
   _id: string | number;
   name: string;
 };
-
-// Componente
 export function Categories({
   categories,
   selectCategory,
@@ -15,17 +11,15 @@ export function Categories({
   categories: Category[];
   selectCategory: (name: string) => void;
 }) {
-  const [activeCategory, setActiveCategory] = useState<string>("0"); // "0" representa "Todo"
-
+  const [activeCategory, setActiveCategory] = useState<string>("0");
   const handleClick = (name: string) => {
     setActiveCategory(name);
     selectCategory(name);
   };
-
   return (
-    <section className="mt-9 text-[17px] font-medium">
+    <section className="mt-6 text-[17px] font-medium">
       <div
-        className="flex gap-10 py-2 pl-5 overflow-y-scroll"
+        className="flex gap-7 py-1 pl-4 overflow-y-scroll"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -38,13 +32,11 @@ export function Categories({
             e.preventDefault();
             handleClick("0");
           }}
-          className={`py-0.5 no-underline text-[#222] border-b-[3px] font-bold ${
-            activeCategory === "0" ? "border-red-600" : "border-transparent"
-          }`}
+          className={`py-0.3 no-underline text-[#222] border-b-[3px] font-bold ${activeCategory === "0" ? "border-red-600" : "border-transparent"
+            }`}
         >
           Todo
         </a>
-
         {categories?.map((category) => (
           <a
             key={category._id}
@@ -53,11 +45,10 @@ export function Categories({
               e.preventDefault();
               handleClick(category.name);
             }}
-            className={`py-0.5 no-underline text-[#222] border-b-[3px] font-bold ${
-              activeCategory === category.name
-                ? "border-red-600"
-                : "border-transparent"
-            }`}
+            className={`py-0.3 no-underline text-[#222] border-b-[3px] font-bold ${activeCategory === category.name
+              ? "border-red-600"
+              : "border-transparent"
+              }`}
           >
             {category.name}
           </a>
@@ -66,5 +57,4 @@ export function Categories({
     </section>
   );
 }
-
 export default Categories;

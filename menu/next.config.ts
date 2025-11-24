@@ -1,16 +1,13 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
   //Configuracion de usecache
   experimental: {
     useCache: true,
   },
-
   // 🔧 Desactiva Turbopack
   turbopack: {
     resolveExtensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
-
   // 🌐 Configuración personalizada que ya tenías
   allowedDevOrigins: [
     'local-origin.dev',
@@ -22,7 +19,11 @@ const nextConfig: NextConfig = {
     maxInactiveAge: 2 * 1000,
     pagesBufferLength: 2,
   },
-
+  images: {
+    remotePatterns: [
+      new URL('https://floraprodutosnaturais.com.br/wp-content/uploads/2023/05/cheeseburguer-grelhado-com-tomate-cebola-e-fritas-gerado-por-ia-scaled.jpg'),
+    ],
+  },
   async headers() {
     return [
       {
@@ -53,7 +54,7 @@ const nextConfig: NextConfig = {
             value: `
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
-              img-src 'self' data: blob: https:;
+              img-src 'self' data: blob: https://floraprodutosnaturais.com.br;
               frame-src https://js.stripe.com;
             `.replace(/\s{2,}/g, ' ').trim(),
           },
@@ -62,5 +63,4 @@ const nextConfig: NextConfig = {
     ];
   },
 };
-
 export default nextConfig;

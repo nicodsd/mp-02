@@ -10,13 +10,17 @@ const nombre = "Menu App";
 export default function Inicio({
   initialCategories,
   initialFoods,
+  token,
 }: {
   initialCategories: any[];
   initialFoods: any[];
+  token: string;
 }) {
-    
+
   let [arrayFoods, setarrayFoods] = useState<any[]>(initialFoods);
   let result;
+  token = token;
+  console.log(token);
 
   function setCats(category: string) {
     arrayFoods = initialFoods;

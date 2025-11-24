@@ -1,49 +1,46 @@
 'use client'
 import React, { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 const RegisterPage: React.FC = () => {
+    const URL = process.env.NEXT_PUBLIC_API_URL;
+    const router = useRouter();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [image, setImage] = useState<File | null>(null); // New state for image file
+    const [image, setImage] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setSuccess(null);
-
         const formData = new FormData();
         formData.append('email', email);
         formData.append('password', password);
-        if (image) {
-            formData.append('image', image); // Append the image file
-        }
-
+        formData.append('role', String(0));
+        formData.append('is_online', String(true));
+        formData.append('is_active', String(false));
+        formData.append('image', image || '');
         try {
-            const response = await fetch('http://localhost:4000/api/auth/signup', {
+            const response = await fetch(`${URL}api/auth/signup`, {
                 method: 'POST',
-                // Do NOT set 'Content-Type' header when sending FormData,
-                // the browser will set it automatically with the correct boundary.
                 body: formData,
+                credentials: 'include',
             });
-
-            const data = await response.json();
-
+            const dataDB = await response.json();
             if (response.ok) {
-                setSuccess(data.message || 'Registro exitoso!');
+                setSuccess(dataDB.message || 'Registro exitoso!');
                 setEmail('');
                 setPassword('');
-                setImage(null); // Clear image state on success
+                setImage(null);
+                router.push('/');
             } else {
-                setError(data.message || 'Fallo el registro.');
+                setError(dataDB.message || 'Fallo el registro.');
             }
         } catch (err) {
             setError('Error de red o el servidor no está disponible.');
             console.error('Error de registro:', err);
         }
     };
-
     return (
         <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
             <h2>Registro</h2>
@@ -71,11 +68,11 @@ const RegisterPage: React.FC = () => {
                     />
                 </div>
                 <div style={{ marginBottom: '15px' }}>
-                    <label htmlFor="image" style={{ display: 'block', marginBottom: '5px' }}>Imagen de perfil (opcional):</label>
+                    <label htmlFor="image" style={{ display: 'block', marginBottom: '5px' }}>Imagen de perfil:</label>
                     <input
                         type="file"
                         id="image"
-                        accept="image/*" // Restrict to image files
+                        accept="image/*"
                         onChange={(e) => setImage(e.target.files?.[0] || null)}
                         style={{ width: '100%', padding: '8px', boxSizing: 'border-box', borderRadius: '4px', border: '1px solid #ddd' }}
                     />
@@ -101,5 +98,4 @@ const RegisterPage: React.FC = () => {
         </div>
     );
 };
-
 export default RegisterPage;

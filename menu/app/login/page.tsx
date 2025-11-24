@@ -1,36 +1,31 @@
 "use client"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-
 export default function LoginPage() {
+  const URL = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch(`${URL}api/auth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-
       if (response.ok) {
-        router.push("/dashboard"); // Redirect after successful login
+        router.push("/");
       } else {
         alert("Login failed");
       }
@@ -38,7 +33,6 @@ export default function LoginPage() {
       console.error("Login error:", error);
     }
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form
