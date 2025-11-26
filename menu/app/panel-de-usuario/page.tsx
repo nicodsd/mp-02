@@ -1,10 +1,10 @@
 "use client";
+//import Templates from "../../src/components/dashboard/Templates";
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { Tab, TabPanel, TabPanels, TabGroup, TabList } from "@headlessui/react";
-import axios from "axios";
-import UserSettings from "../../src/components/dashboard/UserSettings";
-import MenuItems from "../../src/components/dashboard/MenuItems";
-import Templates from "../../src/components/dashboard/Templates";
+import UserSettings from "@/src/components/dashboard/UserSettings";
+import MenuItems from "@/src/components/dashboard/MenuItems";
 import NavBar from "@/src/layouts/NavBar";
 const homeState = 2;
 const nombre = "Panel de usuario";
@@ -16,18 +16,14 @@ type Food = {
   price: number | string;
   category: string;
 };
-
 export default function DashboardPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [foods, setFoods] = useState<Food[]>([]);
-  const [categories, setCategories] = useState<Food[]>([]);
   useEffect(() => {
     const fetchFoods = async () => {
       try {
         const resFoods = await axios.get(`${apiUrl}api/foods`);
-        const resCategories = await axios.get(`${apiUrl}api/categories`);
         setFoods(resFoods.data.foods);
-        setCategories(resCategories.data.categories);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -43,7 +39,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <TabGroup>
             <TabList className="flex space-x-1 rounded-xl bg-blue-900/20 p-1">
-              {["User Settings", "Menu Items", "Templates"].map((tab) => (
+              {["User Settings", "Menu Items"].map((tab) => (
                 <Tab
                   key={tab}
                   className={({ selected }) =>
@@ -63,10 +59,7 @@ export default function DashboardPage() {
                 <UserSettings />
               </TabPanel>
               <TabPanel className={tabClass}>
-                <MenuItems dataFoods={foods} initialCategories={categories} />
-              </TabPanel>
-              <TabPanel className={tabClass}>
-                <Templates />
+                <MenuItems dataFoods={foods} />
               </TabPanel>
             </TabPanels>
           </TabGroup>

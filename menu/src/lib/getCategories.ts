@@ -1,10 +1,11 @@
-'use cache'
-import axios from "axios";
+'use server';
 export async function getCategories(apiUrl: string) {
-    try {
-        const res = await axios.get(apiUrl + "api/categories");
-        return res?.data?.categories;
-    } catch (error: unknown) {
-        return console.log("ERROR CATCH", error);
+    const res = await fetch(`${apiUrl}api/categories`, {
+        next: { tags: ['categories'], revalidate: 120 }
+    });
+    if (!res.ok) {
+        throw new Error(`Error HTTP: ${res.status}`);
     }
+    const data = await res?.json();
+    return data?.categories ?? [];
 }
