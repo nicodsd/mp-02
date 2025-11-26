@@ -1,21 +1,11 @@
-'use cache'
-import axios from "axios";
-
+'use server';
 export async function getFoods(apiUrl: string) {
-    try {
-        const res = await axios.get(apiUrl + "api/foods");
-        // console.log(res.data.foods)
-        return res.data.foods; // ajusta según tu API
-    } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response) {
-            console.log("ERROR 1", error.response);
-            return error.response
-        }
-        if (error instanceof Error) {
-            console.log("ERROR 2", error.message);
-            return error.message
-        }
-        console.log("ERROR 3", error);
-        return error
+    const res = await fetch(`${apiUrl}api/foods`, {
+        next: { tags: ['foods'], revalidate: 120 }
+    });
+    if (!res.ok) {
+        throw new Error(`Error HTTP: ${res.status}`);
     }
-} 
+    const data = await res.json();
+    return data?.foods ?? [];
+}

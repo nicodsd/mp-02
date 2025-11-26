@@ -1,5 +1,4 @@
 "use client";
-//----------------IMPORTS----------------------------------------
 import Allergens from "@/src/components/newfood_comps/Allergens";
 import NavBar from "@/src/layouts/NavBar";
 import Categories from "@/src/components/newfood_comps/Categories";
@@ -8,18 +7,15 @@ import { Button } from "@mui/material";
 import { CloudUpload, DeleteOutline, PhotoCamera } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
-
-//----------------CONSTANTES-------------------------------------
+import LoadingCategories from "@/src/skeleton/loadingCategories";
 const postFoodNav = 1;
 const nombre = "Nuevo Plato";
 const imgPlaceholder = "/images/image_placeholder.png";
-
 export default function FormFoods({
   initialCategories,
 }: {
   initialCategories: any[];
 }) {
-  // Estados para manejar los datos de entrada
   const [img, setImage] = useState<string>(imgPlaceholder);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -28,7 +24,6 @@ export default function FormFoods({
   const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [off, setOff] = useState<boolean>(false);
-
   useEffect(() => {
     return () => {
       if (img !== imgPlaceholder) {
@@ -36,7 +31,6 @@ export default function FormFoods({
       }
     };
   }, [img]);
-
   const imageCapture = async (selectedFile: File) => {
     if (!selectedFile) return;
 
@@ -46,17 +40,14 @@ export default function FormFoods({
       setError("Formato no permitido. Usa JPG, PNG o WEBP.");
       return;
     }
-
     try {
       const options = {
-        maxSizeMB: 1, // tamaño máximo deseado
+        maxSizeMB: 1, // tamaño máximo
         maxWidthOrHeight: 1024, // redimensiona si es necesario
         useWebWorker: true,
       };
-
       const compressedFile = await imageCompression(selectedFile, options);
       const imageUrl = URL.createObjectURL(compressedFile);
-
       setImage(imageUrl);
       setOff(true);
       setError("");
@@ -65,8 +56,6 @@ export default function FormFoods({
       setError("No se pudo comprimir la imagen.");
     }
   };
-
-  // Datos del formulario
   const data = {
     Image: img,
     Name: name,
@@ -83,13 +72,9 @@ export default function FormFoods({
     setImage(imgPlaceholder);
     console.log("Imagen eliminada");
   };
-
-  // Ejemplo de función para manejar el submit
   const postFood = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado");
-
-    // Aquí iría la lógica para guardar el plato
     /*     const formData = new FormData();
     formData.append("image", file); // file es el comprimido
     
@@ -98,12 +83,10 @@ export default function FormFoods({
       body: formData,
     }); */
   };
-
   //AREA CONSOLE LOGS
   // console.log("Data:", data);
   //console.log("Text:", input);
   //console.log("RENDER");
-
   return (
     <>
       <NavBar state={postFoodNav} text={nombre} />
@@ -243,13 +226,19 @@ export default function FormFoods({
 
         {/* Categorías */}
         <fieldset>
-          <legend className="text-[19px] font-semibold text-gray-500 mb-3">
-            Categorias
-          </legend>
-          <Categories
-            categoriesList={initialCategories}
-            onChange={setCategories}
-          />
+          {
+            initialCategories.length < 0 ? (
+              <legend className="text-[19px] font-semibold text-gray-500">
+                Categorias
+                <Categories
+                  categoriesList={initialCategories}
+                  onChange={setCategories}
+                />
+              </legend>
+            ) : (
+              <LoadingCategories />
+            )
+          }
         </fieldset>
 
         {/* Alergenos */}
