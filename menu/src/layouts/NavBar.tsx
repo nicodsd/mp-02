@@ -1,30 +1,47 @@
-import { Add } from "@mui/icons-material";
-
+/* import { Add } from "@mui/icons-material"; */
+import { JSX } from "react";
 interface NavBarProps {
   state: number;
   text: string;
+  cookie: string;
 }
-
-export default function NavBar({ state, text }: NavBarProps) {
+export default function NavBar({ state, text, cookie }: NavBarProps) {
   const navVariants: Record<number, JSX.Element> = {
     0: (
       <>
         <div className="flex items-center gap-2">
-          <a href="/usuario">
-            <img
-              src="/images/logo/OIP.webp"
-              alt="Logo"
-              className="rounded-full h-10 w-10 bg-black"
-            />
-          </a>
+          {
+            cookie ? <a href="/panel-de-usuario">
+              <img
+                src="/images/logo/OIP.webp"
+                alt="Logo"
+                className="rounded-full h-10 w-10 bg-black"
+              />
+            </a> : <a href="/">
+              <img
+                src="/images/logo/OIP.webp"
+                alt="Logo"
+                className="rounded-full h-10 w-10 bg-black"
+              />
+            </a>
+          }
           <span className="text-[22px] font-bold text-gray-800">{text}</span>
         </div>
-        <a
-          href="/newfood"
-          className="px-4 py-1.5 text-md font-bold text-white bg-lime-500 rounded-md hover:bg-lime-600 transition"
-        >
-          Agregar plato <Add />
-        </a>
+        {
+          cookie != "No encontrada" ?
+            <a
+              href="/newfood"
+              className="px-4 py-1.5 text-md font-bold text-white bg-lime-500 rounded-md hover:bg-lime-600 transition"
+            >
+              Agregar plato {/* <Add /> */}
+            </a> :
+            <a
+              href="/registro-de-usuario"
+              className="px-4 py-1.5 text-md font-bold text-white rounded-md bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500 hover:from-red-600 hover:via-yellow-600 hover:to-blue-600 transition"
+            >
+              Prueba ahora!
+            </a>
+        }
       </>
     ),
     1: (

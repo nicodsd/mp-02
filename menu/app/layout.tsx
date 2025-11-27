@@ -2,19 +2,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Asap } from "next/font/google";
-import Footer from "@/src/layouts/Footer";
-
 const asap = Asap({
   style: "normal",
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
 export const metadata: Metadata = {
   title: "Menu | App",
   description: "Aplicación de menú con diferentes platillos",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {

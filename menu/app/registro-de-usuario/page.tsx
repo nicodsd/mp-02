@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { setAuthCookie } from '@/app/actions';
 const RegisterPage: React.FC = () => {
     const URL = process.env.NEXT_PUBLIC_API_URL;
     const router = useRouter();
@@ -28,6 +29,8 @@ const RegisterPage: React.FC = () => {
             });
             const dataDB = await response.json();
             if (response.ok) {
+                const { tokenCookie } = await dataDB;
+                await setAuthCookie(tokenCookie);
                 setSuccess(dataDB.message || 'Registro exitoso!');
                 setEmail('');
                 setPassword('');
@@ -93,6 +96,7 @@ const RegisterPage: React.FC = () => {
                     Registrarse
                 </button>
             </form>
+            <a className="text-blue-500 hover:underline" href="/iniciar-sesion">¿Ya tienes una cuenta?</a>
             {error && <p style={{ color: 'red', marginTop: '15px' }}>{error}</p>}
             {success && <p style={{ color: 'green', marginTop: '15px' }}>{success}</p>}
         </div>
