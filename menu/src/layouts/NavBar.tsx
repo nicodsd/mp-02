@@ -4,33 +4,36 @@ interface NavBarProps {
   state: number;
   text: string;
   cookie: string;
+  photo: string;
 }
-export default function NavBar({ state, text, cookie }: NavBarProps) {
+export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
+  const name = text || "Menu App.";
+  const logo = photo ? photo : "/images/logo/OIP.webp";
   const navVariants: Record<number, JSX.Element> = {
     0: (
       <>
         <div className="flex items-center gap-2">
           {
-            cookie ? <a href="/panel-de-usuario">
+            cookie != "No encontrada" ? <a href="/panel-de-usuario">
               <img
-                src="/images/logo/OIP.webp"
+                src={logo}
                 alt="Logo"
                 className="rounded-full h-10 w-10 bg-black"
               />
             </a> : <a href="/">
               <img
-                src="/images/logo/OIP.webp"
+                src={logo}
                 alt="Logo"
                 className="rounded-full h-10 w-10 bg-black"
               />
             </a>
           }
-          <span className="text-[22px] font-bold text-gray-800">{text}</span>
+          <span className="text-[22px] font-bold text-gray-800">{name}</span>
         </div>
         {
           cookie != "No encontrada" ?
             <a
-              href="/newfood"
+              href="/nuevo-plato"
               className="px-4 py-1.5 text-md font-bold text-white bg-lime-500 rounded-md hover:bg-lime-600 transition"
             >
               Agregar plato {/* <Add /> */}
@@ -46,19 +49,13 @@ export default function NavBar({ state, text, cookie }: NavBarProps) {
     ),
     1: (
       <>
-        <span className="text-[22px] font-bold text-gray-800">{text}</span>
+        <span className="text-[22px] font-bold text-gray-800">{name}</span>
         <div className="flex items-center gap-3">
           <a
             href="/"
             className="px-2 py-1.5 text-md font-bold text-red-700 rounded-md hover:bg-gray-200 transition"
           >
             Cancelar
-          </a>
-          <a
-            href="/"
-            className="px-4 py-1.5 text-md font-semibold text-white bg-green-500 rounded-md hover:bg-green-600 transition"
-          >
-            Aceptar
           </a>
         </div>
       </>
@@ -68,12 +65,12 @@ export default function NavBar({ state, text, cookie }: NavBarProps) {
         <div className="flex items-center gap-2">
           <a href="/">
             <img
-              src="/images/logo/OIP.webp"
+              src={logo}
               alt="Logo"
               className="rounded-full h-10 w-10 bg-black"
             />
           </a>
-          <span className="text-[22px] font-bold text-gray-800 ">{text}</span>
+          <span className="text-[22px] font-bold text-gray-800 ">{name}</span>
         </div>
       </>
     ),

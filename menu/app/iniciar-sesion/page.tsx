@@ -1,6 +1,8 @@
 "use client"
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { setAuthCookie } from '@/app/actions';
+import { setUserCookie } from '@/app/actions';
 export default function LoginPage() {
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
@@ -23,8 +25,14 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
+      const data = await response.json();
       if (response.ok) {
+        console.log(data);
+        const { token, user } = data;
+        setAuthCookie(token);
+        setUserCookie(user);
         router.push("/");
       } else {
         alert("Login failed");
