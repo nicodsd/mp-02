@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       new URL('https://floraprodutosnaturais.com.br/wp-content/uploads/2023/05/cheeseburguer-grelhado-com-tomate-cebola-e-fritas-gerado-por-ia-scaled.jpg'),
+      new URL('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
     ],
   },
   async headers() {
@@ -54,7 +60,7 @@ const nextConfig: NextConfig = {
             value: `
               style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
               font-src 'self' https://fonts.gstatic.com;
-              img-src 'self' data: blob: https://floraprodutosnaturais.com.br;
+              img-src 'self' data: blob: https://floraprodutosnaturais.com.br https://cdn.pixabay.com https://res.cloudinary.com;
               frame-src https://js.stripe.com;
             `.replace(/\s{2,}/g, ' ').trim(),
           },

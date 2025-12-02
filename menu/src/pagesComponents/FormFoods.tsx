@@ -1,6 +1,5 @@
 "use client";
 import Allergens from "@/src/components/newfood_comps/Allergens";
-import NavBar from "@/src/layouts/NavBar";
 import Categories from "@/src/components/newfood_comps/Categories";
 import Image from "next/image";
 import { Button } from "@mui/material";
@@ -8,8 +7,6 @@ import { CloudUpload, DeleteOutline, PhotoCamera } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
 import LoadingCategories from "@/src/skeleton/loadingCategories";
-const postFoodNav = 1;
-const nombre = "Nuevo Plato";
 const imgPlaceholder = "/images/image_placeholder.png";
 export default function FormFoods({
   initialCategories,
@@ -89,7 +86,7 @@ export default function FormFoods({
   //console.log("RENDER");
   return (
     <>
-      <NavBar state={postFoodNav} text={nombre} />
+      {/*  <NavBar state={postFoodNav} text={nombre} /> */}
       <form
         encType="multipart/form-data"
         method="post"

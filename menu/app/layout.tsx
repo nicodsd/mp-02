@@ -2,6 +2,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Asap } from "next/font/google";
+import NavBar from "@/src/layouts/NavBar";
+import { cookies } from 'next/headers';
 const asap = Asap({
   style: "normal",
   variable: "--font-geist-sans",
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
   title: "Menu | App",
   description: "Aplicación de menú con diferentes platillos",
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
