@@ -4,7 +4,7 @@ import { CloudUpload, Close } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import imageCompression from "browser-image-compression";
-const URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const UserSettings = ({ user, token }: { user: any; token: string }) => {
   const vista = user.photo;
   const [name, setName] = useState(user.name);
@@ -15,6 +15,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     setName(e.target.value);
   };
   const imageCapture = async (selectedFile: File) => {
+    console.log(selectedFile);
     if (!selectedFile) return;
     const validTypes = ["image/jpeg", "image/png", "image/webp"];
     if (!validTypes.includes(selectedFile.type)) {
@@ -38,7 +39,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     }
   };
   const delteImage = () => {
-    fetch(`${URL}/users/${user._id}`, {
+    fetch(`${API_URL}/users/${user._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -53,11 +54,23 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     console.log("Imagen eliminada");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Name:", name);
-    console.log("Image:", img);
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('photo', img);
+    console.log(formData);
+    const response = await fetch(`${API_URL}api/users/${user._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+    console.log(response);
   };
   return (
     <form onSubmit={handleSubmit}>

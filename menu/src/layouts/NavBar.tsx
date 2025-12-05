@@ -1,4 +1,5 @@
 /* import { Add } from "@mui/icons-material"; */
+import { ArrowBack } from "@mui/icons-material";
 import { JSX } from "react";
 interface NavBarProps {
   state: number;
@@ -14,7 +15,7 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
       <>
         <div className="flex items-center gap-2">
           {
-            cookie != "No encontrada" ? <a href="/panel-de-usuario">
+            cookie != "{}" ? <a href="/panel-de-usuario">
               <img
                 src={logo}
                 alt="Logo"
@@ -31,7 +32,7 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
           <span className="text-[22px] font-bold text-gray-800">{name}</span>
         </div>
         {
-          cookie != "No encontrada" ?
+          cookie != "{}" ?
             <a
               href="/nuevo-plato"
               className="px-4 py-1.5 text-md font-bold text-white bg-lime-500 rounded-md hover:bg-lime-600 transition"
@@ -53,9 +54,9 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
         <div className="flex items-center gap-3">
           <a
             href="/"
-            className="px-2 py-1.5 text-md font-bold text-red-700 rounded-md hover:bg-gray-200 transition"
+            className="px-2 py-1.5 text-md font-bold text-black rounded-md hover:bg-gray-200 transition"
           >
-            Cancelar
+            <ArrowBack /> Volver
           </a>
         </div>
       </>

@@ -1,5 +1,5 @@
 "use client";
-import { FormHTMLAttributes, useState } from "react";
+import React, { FormHTMLAttributes, useState, useEffect } from "react";
 import Categories from "@/src/components/Categories";
 import MenuCard from "@/src/components/Cards";
 import PromoDay from "@/src/components/PromoDay";
@@ -26,6 +26,11 @@ export default function Inicio({
       return arrayFoods;
     }
   }
+  useEffect(() => {
+    if (buttonRefresh) {
+      buttonRefresh();
+    }
+  }, [buttonRefresh]);
   return (
     <>
       <div className="w-full asap h-auto">
@@ -33,12 +38,6 @@ export default function Inicio({
           <section className="flex flex-col">
             <PromoDay />
           </section>
-          {/* Botón para refrescar */}
-          {buttonRefresh && initialCategories.length == 0 && initialFoods.length == 0 && (
-            <form action={buttonRefresh}>
-              <button type="submit">🔄 Refrescar categorías</button>
-            </form>
-          )}
           <section className="flex h-full flex-col gap-0.5">
             <Categories
               categories={initialCategories}
