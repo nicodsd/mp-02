@@ -2,8 +2,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Asap } from "next/font/google";
-import NavBar from "@/src/layouts/NavBar";
-import { cookies } from 'next/headers';
 const asap = Asap({
   style: "normal",
   variable: "--font-geist-sans",
