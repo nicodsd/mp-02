@@ -52,7 +52,7 @@ export default function PanelUser({
                 }
             })
             .catch((error) => {
-                console.error("Error al cerrar sesión:", error);
+                console.error("Error al cerrar sesión", error);
             });
     };
     return (
