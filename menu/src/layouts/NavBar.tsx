@@ -1,5 +1,4 @@
 /* import { Add } from "@mui/icons-material"; */
-import { ArrowBack } from "@mui/icons-material";
 import { JSX } from "react";
 interface NavBarProps {
   state: number;
@@ -8,7 +7,7 @@ interface NavBarProps {
   photo: string;
 }
 export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
-  const name = text || "Menu App.";
+  const name = text || "QMenú";
   const logo = photo ? photo : "/images/logo/OIP.webp";
   const navVariants: Record<number, JSX.Element> = {
     0: (
@@ -54,9 +53,9 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
         <div className="flex items-center gap-3">
           <a
             href="/"
-            className="px-2 py-1.5 text-md font-bold text-black rounded-md hover:bg-gray-200 transition"
+            className="px-4 py-1.5 text-md font-bold text-black rounded-full bg-gray-200 hover:bg-gray-300 transition"
           >
-            <ArrowBack /> Volver
+            Volver
           </a>
         </div>
       </>

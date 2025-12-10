@@ -1,16 +1,14 @@
 "use client";
-import React, { FormHTMLAttributes, useState, useEffect } from "react";
+import React, { useState } from "react";
 import Categories from "@/src/components/Categories";
 import MenuCard from "@/src/components/Cards";
 import PromoDay from "@/src/components/PromoDay";
 export default function Inicio({
   initialCategories,
   initialFoods,
-  buttonRefresh
 }: {
   initialCategories: any[];
   initialFoods: any[];
-  buttonRefresh: FormHTMLAttributes<HTMLFormElement>['action'];
 }) {
   let [arrayFoods, setarrayFoods] = useState<any[]>(initialFoods);
   let result;
@@ -26,11 +24,6 @@ export default function Inicio({
       return arrayFoods;
     }
   }
-  useEffect(() => {
-    if (buttonRefresh) {
-      buttonRefresh();
-    }
-  }, [buttonRefresh]);
   return (
     <>
       <div className="w-full asap h-auto">
