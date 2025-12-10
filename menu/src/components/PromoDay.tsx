@@ -1,4 +1,4 @@
-import promoday from "../data/promoday.js";
+import promoday from "@/src/data/promoday.js";
 import 'animate.css';
 import Image from "next/image";
 const { imageUrl, title, description, price, bgColor } = promoday;
@@ -12,7 +12,9 @@ export default function PromoDay() {
     }).format(value);
   }
   return (
-    <section className="flex flex-col items-center">
+    <section style={{
+      backgroundColor: "transparent"
+    }} className="flex flex-col items-center">
       <div className="animate__animated animate__bounceIn"
         style={{
           background: bgColor || "#f5f5f5",

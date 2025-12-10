@@ -25,7 +25,7 @@ const RegisterPage: React.FC = () => {
         formData.append('role', String(0));
         formData.append('is_online', String(true));
         formData.append('is_active', String(false));
-        formData.append('image', image || '');
+        formData.append('photo', image || '');
         try {
             const response = await fetch(`${URL}api/auth/signup`, {
                 method: 'POST',
@@ -181,7 +181,7 @@ const RegisterPage: React.FC = () => {
                             <p className="text-gray-700 font-bold text-xs sm:text-sm">
                                 ¿Ya tienes una cuenta?
                                 <br />
-                                <a href="#" className="text-blue-600 text-sm hover:text-blue-700 hover:underline">
+                                <a href="/iniciar-sesion" className="text-blue-600 text-sm hover:text-blue-700 hover:underline">
                                     Iniciar sesión
                                 </a>
                             </p>

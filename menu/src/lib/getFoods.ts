@@ -1,11 +1,11 @@
 'use server';
 export async function getFoods(apiUrl: string) {
-    const res = await fetch(`${apiUrl}api/foods`, {
-        next: { tags: ['foods'], revalidate: 2 }
-    });
-    if (!res.ok) {
-        throw new Error(`Error HTTP: ${res.status}`);
+    try {
+        const res = await fetch(`${apiUrl}api/foods`);
+        const data = await res.json();
+        return data?.foods ?? [];
+    } catch (error) {
+        console.log(error);
+        return [];
     }
-    const data = await res.json();
-    return data?.foods ?? [];
 }

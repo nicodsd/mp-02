@@ -8,7 +8,7 @@ const asap = Asap({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "Menu | App",
+  title: "QMenú",
   description: "Aplicación de menú con diferentes platillos",
 };
 export default async function RootLayout({
