@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { CloudUpload, DeleteOutline, PhotoCamera } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import imageCompression from "browser-image-compression";
-import LoadingCategories from "@/src/skeleton/loadingCategories";
+import LoadingCategories from "@/src/skeleton/LoadingCategories";
 const imgPlaceholder = "/images/image_placeholder.png";
 export default function FormFoods({
   initialCategories,

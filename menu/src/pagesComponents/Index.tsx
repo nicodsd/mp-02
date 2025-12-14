@@ -1,26 +1,22 @@
 "use client";
 import React, { useState } from "react";
+import foods from "@/src/data/foods/foods-1.json";
+import categoriesData from "@/src/data/categories.json";
 import Categories from "@/src/components/Categories";
 import MenuCard from "@/src/components/Cards";
 import PromoDay from "@/src/components/PromoDay";
-export default function Inicio({
-  initialCategories,
-  initialFoods,
-}: {
-  initialCategories: any[];
-  initialFoods: any[];
-}) {
-  let [arrayFoods, setarrayFoods] = useState<any[]>(initialFoods);
+export default function Inicio() {
+  let [arrayFoods, setarrayFoods] = useState<any[]>([]);
   let result;
   function setCats(category: string) {
-    arrayFoods = initialFoods;
+    arrayFoods = foods;
     if (category.length > 1) {
-      result = initialFoods.filter((food) => food.category === category);
+      result = foods.filter((food) => food.category === category);
       setarrayFoods(result);
       return arrayFoods;
     }
     if (category === "0") {
-      setarrayFoods(initialFoods);
+      setarrayFoods(foods);
       return arrayFoods;
     }
   }
@@ -33,7 +29,7 @@ export default function Inicio({
           </section>
           <section className="flex h-full flex-col gap-0.5">
             <Categories
-              categories={initialCategories}
+              categories={categoriesData}
               selectCategory={setCats}
             />
             <MenuCard foods={arrayFoods} />

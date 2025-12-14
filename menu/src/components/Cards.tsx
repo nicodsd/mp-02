@@ -1,5 +1,5 @@
 "use client";
-import Loading from "@/src/skeleton/loading";
+import Loading from "@/src/skeleton/Loading";
 import Image from "next/image";
 type Card = {
   _id: string | number;
