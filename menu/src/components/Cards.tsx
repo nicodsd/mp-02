@@ -2,7 +2,7 @@
 import Loading from "@/src/skeleton/Loading";
 import Image from "next/image";
 type Card = {
-  _id: string | number;
+  id: string | number;
   photo: string;
   name: string;
   description: string;
@@ -23,28 +23,28 @@ export default function Cards({ foods }: { foods: Card[] }) {
         <div>
           {foods?.map((food) => (
             <div
-              key={food._id}
-              className="menu-card rounded-[7px] overflow-hidden my-[4px] shadow-md flex w-full bg-[#fffcf2] p-2.5"
+              key={food.id}
+              className="menu-card rounded-[7px] border border-gray-400 overflow-hidden my-[4px] shadow-md flex w-full h-28 p-2.5"
             >
               <Image
                 quality={75}
                 loading="lazy"
                 src={food.photo}
                 alt={food.name}
-                className="max-w-15 max-h-23 object-cover rounded-[7px]"
+                className="max-w-18 md:max-w-25 max-h-23 md:max-h-36 object-cover rounded-[7px]"
                 width={130}
                 height={80}
               />
               <div className="flex flex-col justify-between pl-2 w-full">
                 <div className="menu-card__content text-left w-full">
-                  <h2 className="menu-card__title text-base/5 h-4">{food.name}</h2>
-                  <p className="menu-card__description mt-2 text-[#555] text-sm text-base/5.5">
+                  <h2 className="font-semibold text-gray-900 text-23 md:text-[1vw] h-4 md:h-fit">{food.name}</h2>
+                  <p className=" mt-2 text-[#555] text-sm">
                     {food.description}
                   </p>
                 </div>
                 <div className="flex items-center gap-1 justify-end h-5">
-                  <span className="menu-card__description text-[#555]">c/u</span>
-                  <span className="menu-card__price">
+                  <span className="menu-card__description text-[#969696] md:text-lg">c/u</span>
+                  <span className="font-bold text-gray-700 oldstyle-nums text-xl md:text-2xl">
                     {formatearPrecio(food.price)}
                   </span>
                 </div>

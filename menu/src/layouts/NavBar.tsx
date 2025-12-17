@@ -7,8 +7,8 @@ interface NavBarProps {
   photo: string;
 }
 export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
-  const name = text || "QMenú";
-  const logo = photo ? photo : "/images/logo/OIP.webp";
+  const name = text || "";
+  const logo = photo ? photo : "/images/logo/LOGO2.svg";
   const navVariants: Record<number, JSX.Element> = {
     0: (
       <>
@@ -18,13 +18,13 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
               <img
                 src={logo}
                 alt="Logo"
-                className="rounded-full h-10 w-10 bg-black"
+                className="rounded-full h-10 w-10"
               />
             </a> : <a href="/">
               <img
                 src={logo}
                 alt="Logo"
-                className="rounded-full h-10 w-10 bg-black"
+                className="rounded-full h-20 w-20"
               />
             </a>
           }
@@ -77,7 +77,7 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
   };
 
   return (
-    <nav className="h-[55px] px-4 flex justify-between items-center w-full shadow-sm ">
+    <nav className="h-[55px] px-4 flex bg-[#FFFCFA] justify-between items-center w-full shadow-sm ">
       {navVariants[state] ?? navVariants[0]}
     </nav>
   );

@@ -17,9 +17,9 @@ export function Categories({
     selectCategory(name);
   };
   return (
-    <section className="mt-6 text-[17px] font-medium">
+    <section className="w-[80%] text-[17px] font-medium">
       <div
-        className="flex gap-7 py-1 pl-4 overflow-y-scroll"
+        className="flex gap-7 py-1 pl-3 overflow-y-scroll"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",

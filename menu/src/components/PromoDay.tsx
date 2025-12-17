@@ -12,12 +12,9 @@ export default function PromoDay() {
     }).format(value);
   }
   return (
-    <section style={{
-      backgroundColor: "transparent"
-    }} className="flex flex-col items-center">
-      <div className="animate__animated animate__bounceIn"
+    <section className="flex flex-col items-center md:items-start w-full">
+      <div className="animate__animated animate__bounceIn md:px-[17vw] md:py-2 bg-radial-[at_50%_75%] md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-red-700 via-red-600 to-yellow-600 to-100% md:w-full md:flex md:flex-row"
         style={{
-          background: bgColor || "#f5f5f5",
           borderRadius: "1rem",
           overflow: "hidden",
           maxWidth: "100%",
@@ -32,62 +29,41 @@ export default function PromoDay() {
           width={500}
           height={500}
           style={{
-            width: "100%",
-            height: "150px",
             objectFit: "cover",
           }}
+          className="md:w-1/4 h-[150px] md:h-80 md:rounded-xl md:shadow-2xl md:shadow-yellow-200"
         />
         <div
+          className="flex flex-row text-white p-3.5 md:w-full md:p-10"
           style={{
             display: "flex",
             flexDirection: "row",
-            alignItems: "flex-end",
-            padding: "0.8rem",
-            color: "#ffffff",
           }}
         >
-          <div style={{ flex: 1, textAlign: "left" }}>
+          <div
+            className="md:flex md:flex-col md:justify-around"
+            style={{ flex: 1, textAlign: "left" }}>
             <h2
-              className="text-base/5.5 mb-1.5"
-              style={{
-                fontWeight: 800,
-                fontSize: "21px",
-              }}
+              className="leading-5.5 md:leading-tight text-[21px] md:text-[3vw] font-black mb-1.5 md:w-full"
             >
               {title}
             </h2>
             <p
-              style={{ fontSize: "13px", fontWeight: 300, marginTop: "0.2rem" }}
+              className="text-[13px] font-normal md:text-[1vw] mt-0.5"
             >
               {description}
             </p>
           </div>
           <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
-              width: "34%",
-            }}
+            className="flex flex-col justify-end items-end w-[34%] md:w-[20%]"
           >
             <p
-              style={{
-                fontWeight: 600,
-                fontSize: "14px",
-                color: "#ff4e4e",
-                margin: 0,
-              }}
+              className="font-semibold text-[14px] text-[#ffd000] mb-1 md:text-[1vw]"
             >
               Antes {formatearPrecio(price)}
             </p>
             <p
-              style={{
-                color: "#ffffff",
-                fontSize: "30px",
-                fontWeight: 800,
-                margin: 0,
-              }}
+              className="text-[30px] font-bold text-white md:text-[2vw]"
             >
               {formatearPrecio(price)}
             </p>
