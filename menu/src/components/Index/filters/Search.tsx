@@ -19,9 +19,9 @@ const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Buscar...', ar
                 placeholder={placeholder}
                 value={query}
                 onChange={handleSearch}
-                className="pl-10 pr-2 py-3 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                className="pl-10 pr-2 py-3 border border-gray-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
             />
-            <FaSearch className="absolute left-3 text-gray-500" />
+            <FaSearch className="absolute left-3 text-red-500" />
         </div>
     );
 };

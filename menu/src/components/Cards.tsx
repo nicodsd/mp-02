@@ -37,8 +37,8 @@ export default function Cards({ foods }: { foods: Card[] }) {
               />
               <div className="flex flex-col justify-between pl-2 w-full">
                 <div className="menu-card__content text-left w-full">
-                  <h2 className="font-semibold text-gray-900 text-23 md:text-[1vw] h-4 md:h-fit">{food.name}</h2>
-                  <p className=" mt-2 text-[#555] text-sm">
+                  <h2 className="font-semibold text-gray-700 text-[18px] md:text-[1vw] h-4 md:h-fit">{food.name}</h2>
+                  <p className="mt-2 text-[#555] text-sm">
                     {food.description}
                   </p>
                 </div>
