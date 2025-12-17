@@ -1,27 +1,5 @@
 @import "tailwindcss";
 
 html {
-  background-color: #f7f0e1;
-}
-
-.menu-card__image {
-  background-color: #000000;
-  width: 135px;
-  height: 144px;
-  object-fit: auto;
-}
-
-.menu-card__title {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.menu-card__description {
-  color: #555;
-}
-
-.menu-card__price {
-  font-weight: bold;
-  color: #000000;
-  font-size: 1.2rem;
+  background-color: #FFFCFA;
 }

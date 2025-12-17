@@ -13,5 +13,4 @@ const allergens = [
   "Mostaza",
   "Apio",
 ];
-
 export default allergens;

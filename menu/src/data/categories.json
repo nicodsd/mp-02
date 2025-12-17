@@ -1,29 +1,34 @@
-[{
-    "_id": 1,
-    "name": "Todo"
-},
+[
 {
-    "_id": 2,
+    "_id": 1,
     "name": "Pizzas"
 },
 {
-    "_id": 3,
+    "_id": 2,
     "name": "Hamburguesas"
 },
 {
-    "_id": 4,
+    "_id": 3,
     "name": "Picadas"
 },
 {
-    "_id": 5,
+    "_id": 4,
     "name": "Sushi"
 },
 {
-    "_id": 6,
+    "_id": 5,
     "name": "Tacos"
 },
 {
-    "_id": 7,
+    "_id": 6,
     "name": "Bebidas"
+},
+{
+    "_id": 7,
+    "name": "Postres"
+},
+{
+    "_id": 8,
+    "name": "Ensaladas"
 }
 ]

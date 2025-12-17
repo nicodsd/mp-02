@@ -1,0 +1,83 @@
+[
+    {
+        "id": 1,
+        "name": "Pizza Margherita",
+        "description": "Clásica pizza italiana con tomate, mozzarella y albahaca.",
+        "price": 10000,
+        "category": "Pizzas",
+        "photo": "/images/foods/pizzas/R.jpeg",
+        "allergens" : "gluten, dairy"
+    },
+    {
+        "id": 2,
+        "name": "Hamburguesa",
+        "description": "Jugosa hamburguesa de res con queso, lechuga y tomate.",
+        "price": 7000,
+        "category": "Hamburguesas",
+        "photo": "/images/foods/burguers/OIP.webp",
+        "allergens" : "gluten, dairy, egg"
+    },
+    {
+        "id": 3,
+        "name": "Pizza de Pepperoni",
+        "description": "Pizza italiana con queso, pepperoni y albahaca.",
+        "price": 12000,
+        "category": "Pizzas",
+        "photo": "/images/foods/pizzas/pizza.jpeg",
+        "allergens" : "gluten, dairy"
+    },
+    {
+        "id": 4,
+        "name": "Ensalada César",
+        "description": "Ensalada fresca con pollo, crutones y aderezo César.",
+        "price": 6000,
+        "category": "Picadas",
+        "photo": "/images/foods/picadas/5e997e650c7b6.jpeg",
+        "allergens" : "dairy, fish, egg"
+    },
+    {
+        "id": 5,
+        "name": "Sushi Roll",
+        "description": "Rollos de sushi rellenos de salmón y aguacate.",
+        "price": 9500,
+        "category": "Sushi",
+        "photo": "/images/foods/picadas/R.jpeg",
+        "allergens" : "fish, soy, sesame"
+    },
+    {
+        "id": 6,
+        "name": "Tacos al Pastor",
+        "description": "Tacos mexicanos de cerdo marinado con piña y cebolla.",
+        "price": 5000,
+        "category": "Tacos",
+        "photo": "/images/foods/tacos/OIP.webp",
+        "allergens" : "gluten"
+    },
+    {
+        "id": 7,
+        "name": "Ensalada de Pollo",
+        "description": "Ensalada de pollo con queso, lechuga y tomate.",
+        "price": 6000,
+        "category": "Picadas",
+        "photo": "/images/foods/picadas/1571779987281.jpeg",
+        "allergens" : "dairy, fish, egg"
+    },
+    {
+        "id": 8,
+        "name": "Jugo de Naranja",
+        "description": "Jugo de naranja fresco con hierbas y hierbas.",
+        "price": 2000,
+        "category": "Bebidas",
+        "photo": "/images/foods/bebidas/batidos/OIP.webp",
+        "allergens" : "dairy"
+    },
+    {
+        "id": 9,
+        "name": "Jugo de Limón",
+        "description": "Jugo de limón fresco con hierbas y hierbas.",
+        "price": 2000,
+        "category": "Bebidas",
+        "photo": "/images/foods/bebidas/batidos/jugo-de-limon-con-menta.jpg",
+        "allergens" : "dairy"
+    }
+]

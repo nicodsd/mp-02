@@ -46,7 +46,7 @@ const RegisterPage: React.FC = () => {
             } else {
                 setError(dataDB.message || 'Fallo el registro.');
                 setTimeout(() => setError(null), 4000);
-                console.error('Error de registro:', dataDB);
+                console.error('Error de registro:', dataDB.message);
             }
         } catch (err) {
             setError('Error de red o el servidor no está disponible.');
@@ -56,24 +56,23 @@ const RegisterPage: React.FC = () => {
     };
     return (
         <div className="bg-[#FFFCFA] min-h-screen px-3">
-            <a href="/" className="absolute top-10 z-10 text-black text-center text-sm px-5 py-3"><ArrowBackIosIcon />Menú</a>
+            <a href="/" className="absolute top-3 z-10 text-black text-center text-sm px-3 py-3"><ArrowBackIosIcon />Menú</a>
             <div className="relative w-full flex flex-col items-center justify-around min-h-screen py-18">
 
-                {error && <p className="absolute top-10 bg-red-500 rounded-lg z-10 text-white text-center text-sm px-5 py-3">{error}</p>}
-                {success && <p className="absolute top-10 bg-green-500 rounded-lg z-10 text-white text-center text-sm px-5 py-3">{success}</p>}
+                {error && <p className="absolute top-40 bg-red-500 rounded-lg z-20 text-white text-center text-sm px-5 py-3">{error}</p>}
+                {success && <p className="absolute top-40 bg-green-500 rounded-lg z-20 text-white text-center text-sm px-5 py-3">{success}</p>}
 
                 {/* Header Text */}
-                <div className="text-start w-full p-4 z-10">
-                    <h1 className="text-4xl sm:text-4xl lg:text-5xl font-black text-gray-800">
-                        <span className=" leading-0"> Creá</span><br />
-                        <span className=" leading-0 "> tu menú</span><br />
-                        <span className="text-5xl leading-0 "> gratis!</span>
-                    </h1>
+                <div className="text-start w-full h-37 z-10 relative">
+                    <div className="text-4xl left-5 lg:text-5xl absolute font-black text-gray-800 leading-7">
+                        <p> Creá <br /> tu menú </p>
+                        <p className="text-red-500 text-[75px] mt-2.5"> gratis!</p>
+                    </div>
                 </div>
 
                 {/* Decorative Tablecloth Element (Top) */}
                 <div
-                    className="absolute top-[220px] w-[75%] sm:w-[90%] h-24 sm:h-32 lg:h-40 rounded-t-full z-0 transform translate-y-2"
+                    className="absolute top-47 w-[75%] sm:w-[90%] h-24 sm:h-32 lg:h-40 rounded-t-full z-0 transform translate-y-2"
                     style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ff4040' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 0h20v20H0V0zm20 20h20v20H20V20z' /%3E%3C/g%3E%3C/svg%3E")`,
                         backgroundSize: '30px 30px',
