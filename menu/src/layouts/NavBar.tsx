@@ -19,7 +19,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
               <img
                 src={logo}
                 alt="Logo"
-                className="rounded-full h-20 w-20"
+                className="rounded-full h-10 w-10"
               />
             </Link> :
               <img
@@ -52,7 +52,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="px-4 py-1.5 text-md font-bold text-black rounded-full bg-gray-200 hover:bg-gray-300 transition"
+            className="px-4 py-1.5 text-md font-bold text-gray-500 rounded-full bg-gray-200 hover:bg-gray-300 transition"
           >
             Cancelar
           </Link>
@@ -76,7 +76,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
   };
 
   return (
-    <nav className="h-[55px] px-5 md:px-10 flex bg-[#FFFCFA] justify-between items-center w-full shadow-sm ">
+    <nav className="h-[55px] px-5 md:px-10 flex justify-between items-center w-full shadow-sm">
       {navVariants[state] ?? navVariants[0]}
     </nav>
   );

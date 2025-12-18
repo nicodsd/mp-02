@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-export function middleware(req: any) {
+export function proxy(req: any) {
     const token = req.cookies.get("token")?.value;
     const user = req.cookies.get("user")?.value;
     // Rutas protegidas

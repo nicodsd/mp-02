@@ -3,11 +3,11 @@ import Allergens from "@/src/components/newfood_comps/Allergens";
 import Categories from "@/src/components/newfood_comps/Categories";
 import Image from "next/image";
 import { Button } from "@mui/material";
-import { CloudUpload, DeleteOutline, PhotoCamera } from "@mui/icons-material";
+import { PhotoCamera, CloudUpload, DeleteOutline } from '@mui/icons-material';
 import { useState, useEffect } from "react";
-import imageCompression from "browser-image-compression";
-import LoadingCategories from "@/src/skeleton/LoadingCategories";
+
 const imgPlaceholder = "/images/image_placeholder.png";
+
 export default function FormFoods({
   initialCategories,
   user,
@@ -15,270 +15,190 @@ export default function FormFoods({
   initialCategories: any;
   user: any;
 }) {
-  console.log(user);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
-  const [img, setImage] = useState<string>(imgPlaceholder);
+  const [preview, setPreview] = useState<string>(imgPlaceholder); // URL para mostrar en <Image />
+  const [file, setFile] = useState<File | null>(null); // archivo real
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [categories, setCategories] = useState<any[]>(initialCategories || []);
   const [price, setPrice] = useState<string>("");
   const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
-  const [off, setOff] = useState<boolean>(false);
+
+  // liberar URL temporal al desmontar
   useEffect(() => {
     return () => {
-      if (img !== imgPlaceholder) {
-        URL.revokeObjectURL(img);
+      if (preview !== imgPlaceholder) {
+        URL.revokeObjectURL(preview);
       }
     };
-  }, [img]);
-  const imageCapture = async (selectedFile: File) => {
+  }, [preview]);
+
+  const imageCapture = (selectedFile: File) => {
     if (!selectedFile) return;
-
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-
-    if (!validTypes.includes(selectedFile.type)) {
-      setError("Formato no permitido. Usa JPG, PNG o WEBP.");
-      return;
-    }
-    try {
-      const options = {
-        maxSizeMB: 1, // tamaño máximo
-        maxWidthOrHeight: 1024, // redimensiona si es necesario
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(selectedFile, options);
-      const imageUrl = URL.createObjectURL(compressedFile);
-      setImage(imageUrl);
-      setOff(true);
-      setError("");
-    } catch (err) {
-      console.error("Error al comprimir la imagen:", err);
-      setError("No se pudo comprimir la imagen.");
-    }
+    setFile(selectedFile);
+    const imageUrl = URL.createObjectURL(selectedFile);
+    setPreview(imageUrl);
+    setError("");
   };
-  const data = {
-    Image: img,
-    Name: name,
-    Description: description,
-    Price: price,
-    Allergens: allergens || "Ninguno",
-    Categories: categories || [],
-  };
-  const delteImage = () => {
-    if (img !== imgPlaceholder) {
-      URL.revokeObjectURL(img); // libera la URL temporal
+
+  const deleteImage = () => {
+    if (preview !== imgPlaceholder) {
+      URL.revokeObjectURL(preview);
     }
-    setOff(false);
-    setImage(imgPlaceholder);
+    setFile(null);
+    setPreview(imgPlaceholder);
     console.log("Imagen eliminada");
   };
-  const postFood = (e: React.FormEvent) => {
+
+  const postFood = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado");
+
     const formData = new FormData();
-    formData.append("image", img);
+    if (file) formData.append("photo", file);
     formData.append("name", name);
     formData.append("description", description);
     formData.append("price", price);
-    formData.append("category", categories);
-    formData.append("user", user);
-    //formData.append("allergens", allergens);
+    formData.append("category", JSON.stringify(categories));
+    formData.append("user_id", user.id);
+    formData.append("allergens", JSON.stringify(allergens));
 
-    fetch(apiUrl + `api/foods/postfood?user=${user}`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+    try {
+      const res = await fetch(apiUrl + `api/foods/postfood`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
       });
+
+      if (!res.ok) throw new Error("Network response was not ok");
+      const data = await res.json();
+      console.log("Success:", data);
+    } catch (error) {
+      console.error("Error:", error);
+      setError("No se pudo crear el plato.");
+    }
   };
-  //AREA CONSOLE LOGS
-  // console.log("Data:", data);
-  //console.log("Text:", input);
-  //console.log("RENDER");
+
   return (
-    <>
-      {/*  <NavBar state={postFoodNav} text={nombre} /> */}
-      <form
-        encType="multipart/form-data"
-        method="post"
-        action="/"
-        onSubmit={postFood}
-        className="max-w-xl mx-auto p-4 rounded-lg space-y-6"
-      >
-        {/* Imagen */}
-        <div className="flex flex-col justify-between">
-          <div className="flex justify-center w-full">
-            <div className="relative h-fit my-5">
-              {error && <p style={{ color: "red" }}>{error}</p>}
+    <form
+      encType="multipart/form-data"
+      onSubmit={postFood}
+      className="max-w-md mx-auto min-h-screen flex flex-col bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
+    >
+      <div className="px-5 space-y-8 flex flex-col justify-center flex-1 py-10">
+
+        {/* Sección de Imagen */}
+        <div className="flex flex-col items-center gap-4 relative">
+          <div className="w-48 h-48 rounded-3xl flex items-center justify-center shadow-inner border border-gray-400 relative overflow-hidden group">
+            {preview ? (
               <Image
-                loading="eager"
-                src={img}
-                width={300}
-                height={300}
+                src={preview}
+                fill
                 alt="Vista previa"
-                className="object-cover rounded-md max-h-[260px] max-w-[260px] md:max-w-[500vh] md:max-h-[500vh] "
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              {img && img !== imgPlaceholder && (
-                <button
-                  type="button"
-                  onClick={delteImage}
-                  className="absolute top-0 right-0 w-fit h-9 text-[10px] px-4 text-white bg-[#ff0000] border-gray-300 rounded cursor-pointer focus:outline-none"
-                >
-                  <DeleteOutline /> Borrar
-                </button>
+            ) : (
+              <PhotoCamera className="text-6xl text-gray-400 dark:text-gray-500" />
+            )}
+
+            {file && (
+              <button
+                type="button"
+                onClick={deleteImage}
+                className="absolute top-2 right-2 z-10 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+              >
+                <DeleteOutline fontSize="small" />
+              </button>
+            )}
+          </div>
+
+          <div className="flex flex-row gap-3 w-full justify-center">
+            <label className="flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:opacity-90 transition-opacity shadow-sm cursor-pointer">
+              <PhotoCamera sx={{ fontSize: 16 }} />
+              Subir Imagen
+              <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) imageCapture(f); }} />
+            </label>
+
+            <label className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
+              <CloudUpload sx={{ fontSize: 16 }} />
+              Galería
+              <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) imageCapture(f); }} />
+            </label>
+          </div>
+          {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
+        </div>
+
+        {/* Inputs de Texto */}
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1">
+            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="name">Nombre</label>
+            <input
+              id="name"
+              className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+              placeholder="Ej: Milanesa con papas"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="description">Descripción</label>
+            <textarea
+              id="description"
+              className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
+              placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="price">Precio</label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+              <input
+                id="price"
+                className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+                placeholder="10.000"
+                type="number"
+                min="0"
+                max="9999999"
+                step="0.01"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Categorías */}
+          <div className="flex flex-col gap-1">
+            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">Categorías</label>
+            <div className="p-1 rounded-2xl">
+              {initialCategories?.length > 0 ? (
+                <Categories categoriesList={initialCategories} onChange={setCategories} />
+              ) : (
+                <p className="text-sm text-gray-400 italic p-2">Cargando categorías...</p>
               )}
             </div>
           </div>
-          <div className="flex justify-between items-center">
-            <Button
-              sx={{
-                bgcolor: "black",
-                borderRadius: "5px",
-                paddingX: "14px",
-                paddingY: "6px",
-                fontSize: "10px",
-              }}
-              disabled={off}
-              component="label"
-              variant="contained"
-              startIcon={<PhotoCamera />}
-            >
-              Subir Imagen
-              <input
-                type="file"
-                accept="image/*"
-                capture="environment"
-                hidden
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (file) imageCapture(file);
-                }}
-              />
-            </Button>
-            <Button
-              sx={{
-                bgcolor: "blue",
-                borderRadius: "5px",
-                paddingX: "14px",
-                paddingY: "6px",
-                fontSize: "10px",
-              }}
-              disabled={off}
-              component="label"
-              variant="contained"
-              startIcon={<CloudUpload />}
-            >
-              Seleccionar de la galería
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(event) => {
-                  const file = event.target.files?.[0];
-                  if (file) imageCapture(file);
-                }}
-              />
-            </Button>
-          </div>
         </div>
+      </div>
 
-        {/* Nombre */}
-        <div>
-          <label className="block text-[19px] font-semibold text-gray-500 mb-1">
-            Nombre
-          </label>
-          <input
-            placeholder="Ej: Milanesa con papas"
-            type="text"
-            name="name"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        {/* Descripción */}
-        <div>
-          <label className="block text-[19px] font-semibold text-gray-500 mb-1">
-            Descripción
-          </label>
-          <textarea
-            placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
-            name="description"
-            required
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          ></textarea>
-        </div>
-
-        {/* Precio */}
-        <div>
-          <label className="block text-[19px] font-semibold text-gray-500 mb-1">
-            Precio
-          </label>
-          <input
-            type="number"
-            name="price"
-            step="0.01"
-            min="0"
-            placeholder="$10.000"
-            required
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-400"
-          />
-        </div>
-
-        {/* Categorías */}
-        <fieldset>
-          {
-            categories.length > 0 ? (
-              <legend className="text-[19px] font-semibold text-gray-500">
-                Categorias
-                <Categories
-                  categoriesList={categories}
-                  onChange={setCategories}
-                />
-              </legend>
-            ) : (
-              "<LoadingCategories />"
-            )
-          }
-        </fieldset>
-
-        {/*  {/* Alergenos 
-        <fieldset>
-          <legend className="text-[19px] font-semibold text-gray-500 mb-2">
-            Alergenos
-          </legend>
-          <Allergens dataAllergens={allergens} setData={setAllergens} />
-        </fieldset> */}
-
-        {/* Botón */}
-        <div>
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Agregar Plato
-          </button>
-        </div>
-      </form>
-    </>
+      {/* Botón Flotante de Acción */}
+      <div className="w-full px-5 pb-15 pt-5 border-t border-gray-300">
+        <button
+          type="submit"
+          className="w-full bg-[#8400ff] hover:bg-green-800 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl shadow-lg shadow-primary/30 transform active:scale-[0.98] transition-all"
+        >
+          Agregar Plato
+        </button>
+      </div>
+    </form>
   );
 }

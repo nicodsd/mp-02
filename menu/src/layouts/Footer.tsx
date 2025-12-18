@@ -17,17 +17,17 @@ export default function Footer() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-orange-500 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-orange-600 transition"
+              className="bg-orange-200 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-orange-300 transition"
             >
-              <FaInstagram size={20} />
+              <FaInstagram className="text-orange-800" size={20} />
             </a>
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-orange-500 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-orange-600 transition"
+              className="bg-orange-200 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-orange-300 transition"
             >
-              <FaFacebookF size={20} />
+              <FaFacebookF className="text-orange-800" size={20} />
             </a>
             <span className="text-gray-600 block">Síguenos</span>
           </div>
@@ -36,9 +36,9 @@ export default function Footer() {
               href="https://wa.me/5490000000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-green-500 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-green-600 transition"
+              className="bg-green-200 h-[50px] w-[50px] flex justify-center items-center text-white rounded-full hover:bg-green-300 transition"
             >
-              <FaWhatsapp size={20} />
+              <FaWhatsapp className="text-green-800" size={20} />
             </a>
             <span className="text-gray-600 block">WhatsApp</span>
           </div>

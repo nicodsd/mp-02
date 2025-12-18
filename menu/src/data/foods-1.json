@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "_id": 1,
         "name": "Pizza Margherita",
         "description": "Clásica pizza italiana con tomate, mozzarella y albahaca.",
         "price": 10000,
@@ -9,7 +9,7 @@
         "allergens" : "gluten, dairy"
     },
     {
-        "id": 2,
+        "_id": 2,
         "name": "Hamburguesa",
         "description": "Jugosa hamburguesa de res con queso, lechuga y tomate.",
         "price": 7000,
@@ -18,7 +18,7 @@
         "allergens" : "gluten, dairy, egg"
     },
     {
-        "id": 3,
+        "_id": 3,
         "name": "Pizza de Pepperoni",
         "description": "Pizza italiana con queso, pepperoni y albahaca.",
         "price": 12000,
@@ -27,7 +27,7 @@
         "allergens" : "gluten, dairy"
     },
     {
-        "id": 4,
+        "_id": 4,
         "name": "Ensalada César",
         "description": "Ensalada fresca con pollo, crutones y aderezo César.",
         "price": 6000,
@@ -36,7 +36,7 @@
         "allergens" : "dairy, fish, egg"
     },
     {
-        "id": 5,
+        "_id": 5,
         "name": "Sushi Roll",
         "description": "Rollos de sushi rellenos de salmón y aguacate.",
         "price": 9500,
@@ -45,7 +45,7 @@
         "allergens" : "fish, soy, sesame"
     },
     {
-        "id": 6,
+        "_id": 6,
         "name": "Tacos al Pastor",
         "description": "Tacos mexicanos de cerdo marinado con piña y cebolla.",
         "price": 5000,
@@ -54,7 +54,7 @@
         "allergens" : "gluten"
     },
     {
-        "id": 7,
+        "_id": 7,
         "name": "Ensalada de Pollo",
         "description": "Ensalada de pollo con queso, lechuga y tomate.",
         "price": 6000,
@@ -63,7 +63,7 @@
         "allergens" : "dairy, fish, egg"
     },
     {
-        "id": 8,
+        "_id": 8,
         "name": "Jugo de Naranja",
         "description": "Jugo de naranja fresco con hierbas y hierbas.",
         "price": 2000,
@@ -72,7 +72,7 @@
         "allergens" : "dairy"
     },
     {
-        "id": 9,
+        "_id": 9,
         "name": "Jugo de Limón",
         "description": "Jugo de limón fresco con hierbas y hierbas.",
         "price": 2000,

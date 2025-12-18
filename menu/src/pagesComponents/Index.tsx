@@ -9,7 +9,7 @@ import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
 type Food = {
-  id: string | number;
+  _id: string | number;
   photo: string;
   name: string;
   description: string;
