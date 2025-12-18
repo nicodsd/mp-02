@@ -18,7 +18,7 @@ export default async function NewFood() {
   // const cookieStore = await cookies();
 
   return (
-    <div className="w-full min-h-screen asap bg-[#eeeeee]">
+    <div className="w-full min-h-screen asap">
       <NavBar state={state} text="Nuevo plato" cookie={token!} photo="" user={user!} />
       <FormFoods initialCategories={categories} user={user!} />
     </div>

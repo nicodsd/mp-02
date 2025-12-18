@@ -1,6 +1,7 @@
 'use server';
 import { cookies } from "next/headers";
 import { revalidateTag } from 'next/cache';
+import { redirect } from "next/navigation";
 
 export async function refreshPage() {
     revalidateTag('categories', 'max');
@@ -32,6 +33,7 @@ export async function setUserCookie(user: object) {
 
 export async function logout() {
     const cookieStore = await cookies();
-    cookieStore.delete('token');
-    cookieStore.delete('user');
+    cookieStore.delete("token");
+    cookieStore.delete("user");
+    redirect("/"); // redirige al home
 }

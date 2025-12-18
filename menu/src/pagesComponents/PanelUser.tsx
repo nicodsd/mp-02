@@ -4,7 +4,6 @@ import { Tab, TabPanel, TabPanels, TabGroup, TabList } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
-import { logout } from "@/app/actions";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 const ManageAccountsIcon = dynamic(
     () => import("@mui/icons-material/ManageAccounts"),
@@ -37,15 +36,11 @@ export default function PanelUser({
     const handleLogout = () => {
         fetch(`${apiUrl}api/auth/signout`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
             credentials: "include",
         })
-            .then(async (response) => {
+            .then((response) => {
                 if (response.ok) {
                     console.log("Logout exitoso");
-                    await logout();
                     router.push("/");
                 } else {
                     console.error("Error al cerrar sesión");

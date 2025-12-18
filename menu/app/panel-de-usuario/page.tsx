@@ -12,7 +12,7 @@ export default async function DashboardPage() {
   const foods = await getFoods(apiUrl);
   return (
     <>
-      <NavBar state={state} text={user.name!} cookie={token!} photo={user.photo!} />
+      <NavBar state={state} text={user.name!} cookie={token!} photo={user.photo!} user={user!} />
       <PanelUser user={user!} foods={foods!} token={token!} />
     </>
   );
