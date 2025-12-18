@@ -4,13 +4,13 @@ import FormFoods from "@/src/pagesComponents/FormFoods";
 import NavBar from "@/src/layouts/NavBar";
 import { cookies } from 'next/headers';
 let user;
-const cookieStore = await cookies();
-const userCookie = cookieStore.get("user")?.value;
-const token = cookieStore.get('token')?.value;
-if (userCookie) {
-  user = JSON.parse(userCookie);
-}
 export default async function NewFood() {
+  const cookieStore = await cookies();
+  const userCookie = cookieStore.get("user")?.value;
+  const token = cookieStore.get('token')?.value;
+  if (userCookie) {
+    user = JSON.parse(userCookie);
+  }
   const state = 1;
   const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   //const rawCategories = await getCategories(apiUrl);
