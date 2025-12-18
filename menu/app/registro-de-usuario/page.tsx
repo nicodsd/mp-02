@@ -8,7 +8,6 @@ import pizza from "@/public/images/icons-index/pizza-b.svg"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const RegisterPage: React.FC = () => {
     const URL = process.env.NEXT_PUBLIC_API_URL;
-    console.log(icon);
     const router = useRouter();
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -58,23 +57,23 @@ const RegisterPage: React.FC = () => {
         }
     };
     return (
-        <div className="bg-[#ff1c1c] min-h-screen px-3 md:px-[25vw]">
-            <a href="/" className="absolute top-7 left- md:relative z-10 text-[#fffafa] text-center text-sm px-3 py-3"><ArrowBackIosIcon />Inicio</a>
-            <div className="relative w-full flex flex-col items-center justify-around min-h-screen py-15">
+        <div className="bg-[#ff1c1c] min-h-screen px-3 pt-6 flex flex-col items-start md:px-[20vw] lg:px-[25vw]">
+            <a href="/" className="text-[#fffafa] text-center text-sm px-3"><ArrowBackIosIcon />Inicio</a>
+            <div className="relative w-full flex flex-col items-center pt-6 justify-start">
 
                 {error && <p className="absolute top-40 bg-red-500 rounded-lg z-20 text-white text-center text-sm px-5 py-3">{error}</p>}
                 {success && <p className="absolute top-40 bg-green-500 rounded-lg z-20 text-white text-center text-sm px-5 py-3">{success}</p>}
 
                 {/* Header Text */}
                 <div className="text-start w-full h-37 z-10 relative">
-                    <div className="text-4xl md:leading-8 md:left-[3vw] absolute z-30 top-3 md:top-0 left-5 font-black text-[#fffafa] leading-9">
+                    <div className="text-4xl md:leading-8 md:left-[3vw] absolute z-30 left-5 font-black text-[#fffafa] leading-9">
                         <h2>Registrate,<br />y crea tu menú</h2>
-                        <h2 className="text-[#ffc813] text-[75px] mt-2.5 md:mt-2.7">gratis!</h2>
+                        <h2 className="text-[#ffca1c] text-[75px] lg:text-[90px] mt-2.5 md:mt-2.7 lg:mt-3.5">gratis!</h2>
                     </div>
-                    <img className='absolute top-8 md:-top-15 md:right-20 -rotate-10 drop-shadow-[0px_12px_0px_#ffc813] right-1 h-35 w-35 md:h-40 md:w-40 lg:h-52 lg:w-52' src={pizza.src} alt="icon" />
+                    <img className='absolute top-3 md:-top-6 lg:-top-12 md:right-[2vw] lg:right-[4vw] -rotate-10 drop-shadow-[0px_12px_0px_#ffca1c] right-[3vw] h-[30vw] w-[30vw] md:h-40 md:w-40 lg:h-52 lg:w-52' src={icon.src} alt="icon" />
                 </div>
                 {/* Card Container */}
-                <div className="w-full bg-[#FFFCFA] rounded-[2.5rem] shadow-lg border border-black p-6 sm:p-8 lg:p-10 z-10 my-5">
+                <div className="w-full bg-[#FFFCFA] rounded-[2.5rem] border border-gray-800 p-6 sm:p-8 lg:p-10 z-10 mt-6 md:mt-4">
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         {/* Name Field */}
                         <div className="flex flex-col gap-1">
@@ -88,7 +87,7 @@ const RegisterPage: React.FC = () => {
                                 onChange={(e) => setName(e.target.value)}
                                 required
                                 placeholder="Bar Sinson"
-                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-800 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent shadow-sm transition-all"
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-800 text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition-all"
                             />
                         </div>
 
@@ -104,7 +103,7 @@ const RegisterPage: React.FC = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 placeholder="bar.sinson@gmail.com"
-                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-700 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent shadow-sm transition-all"
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-800 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition-all"
                             />
                         </div>
 
@@ -120,7 +119,7 @@ const RegisterPage: React.FC = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 placeholder="********"
-                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-700 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent shadow-sm transition-all"
+                                className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-gray-800 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition-all"
                             />
                         </div>
                         {/* File Input (Custom UI) */}
@@ -162,7 +161,7 @@ const RegisterPage: React.FC = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="w-full mt-2 bg-[#e60000] hover:bg-[#a20303] cursor-pointer text-white text-lg font-bold py-3 sm:py-3 rounded-lg shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all"
+                            className="w-full mt-2 bg-[#ce0000] hover:bg-[#a20303] cursor-pointer text-white text-lg font-bold py-3 sm:py-3 rounded-lg shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all"
                         >
                             Enviar
                         </button>

@@ -2,17 +2,22 @@
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
+interface Category {
+  _id: string;
+  name: string;
+}
 interface CategoriesFormProps {
-  categoriesList: string[];
+  categoriesList: Category[];
   onChange?: (selected: string[]) => void;
 }
 export default function CategoriesForm({
   categoriesList,
   onChange,
 }: CategoriesFormProps) {
+  console.log(categoriesList)
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const [selected, setSelected] = useState<string[]>([]);
-  const [customCategories, setCustomCategories] = useState<string[]>([]);
+  const [customCategories, setCustomCategories] = useState<Category[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [arrayNewCategory, setArrayNewCategory] = useState<string[]>([]);
   if (!categoriesList) {
@@ -28,14 +33,14 @@ export default function CategoriesForm({
   };
   const handleAddCategory = () => {
     if (!newCategory.trim()) return;
-    const updatedArrayNewCategory = [...arrayNewCategory, newCategory];
-    setSelected([...selected, newCategory]);
-    setArrayNewCategory(updatedArrayNewCategory);
+    const newCat = { _id: crypto.randomUUID(), name: newCategory };
+    setSelected([...selected, newCat.name]);
+    setCustomCategories([...customCategories, newCat]);
     setNewCategory("");
   };
   const handlePutCategory = (category: string) => {
     axios.put(`${URL}/api/categories/${category}`);
-    const updatedCustomCategories = customCategories.filter((cat) => cat !== category);
+    const updatedCustomCategories = customCategories.filter((cat) => cat.name !== category);
     setCustomCategories(updatedCustomCategories);
     setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
   }
@@ -50,31 +55,34 @@ export default function CategoriesForm({
       <div className="flex flex-wrap gap-y-1 gap-x-px">
         {allCategories.map((item) => (
           <label
-            key={item}
+            key={typeof item === "string" ? item : item._id}
             className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-              ${selected.includes(item)
+      ${selected.includes(typeof item === "string" ? item : item.name)
                 ? "bg-indigo-600 text-white border-indigo-600"
                 : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
               }`}
           >
             <input
               type="checkbox"
-              value={item}
-              checked={selected.includes(item)}
-              onChange={() => handleCheckboxChange(item)}
+              value={typeof item === "string" ? item : item.name}
+              checked={selected.includes(typeof item === "string" ? item : item.name)}
+              onChange={() =>
+                handleCheckboxChange(typeof item === "string" ? item : item.name)
+              }
               className="hidden"
             />
-            {item}
+            {typeof item === "string" ? item : item.name}
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handlePutCategory(item);
+                handlePutCategory(typeof item === "string" ? item : item.name);
               }}
             >
               <Close sx={{ marginLeft: "6px" }} />
             </button>
           </label>
         ))}
+
       </div>
       <div className="flex flex-col gap-y-3 bg-gray-100 min-h-[170px] justify-between rounded-xl px-5 py-5">
         <h3 className="font-semibold text-gray-500 ">Agrega nuevas categorías</h3>
