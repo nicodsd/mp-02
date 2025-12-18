@@ -6,36 +6,33 @@ import { setUserCookie } from '@/app/actions';
 export default function LoginPage() {
   const URL = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === 'email') {
+      setEmail(e.target.value);
+    } else if (e.target.name === 'password') {
+      setPassword(e.target.value);
+    }
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
     try {
       const response = await fetch(`${URL}api/auth/signin`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        body: formData,
         credentials: "include",
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-        const { token, user } = data;
-        setAuthCookie(token);
-        setUserCookie(user);
+        let user = data.user;
+        const { token } = data;
+        await setAuthCookie(token);
+        await setUserCookie(user);
         router.push("/");
-      } else {
-        alert("Login failed");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -56,7 +53,7 @@ export default function LoginPage() {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
+            value={email}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required
@@ -70,7 +67,7 @@ export default function LoginPage() {
             type="password"
             id="password"
             name="password"
-            value={formData.password}
+            value={password}
             onChange={handleChange}
             className="w-full p-2 border rounded"
             required

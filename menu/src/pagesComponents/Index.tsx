@@ -48,7 +48,7 @@ export default function Inicio() {
         <section className="flex flex-col">
           <PromoDay />
         </section>
-        <section className="flex h-full flex-col gap-0.5 md:px-10 md:pb-8 md:pt-3 md:shadow md:mx-[25vw] md:rounded-b-2xl">
+        <section className="flex h-full flex-col gap-0.5 md:px- md:pb-8 md:pt-3 md:shadow md:mx-[25vh] md:rounded-b-2xl">
           <FoodsOptions />
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
           <div className="flex justify-between items-center mt-4">

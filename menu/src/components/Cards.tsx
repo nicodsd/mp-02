@@ -24,7 +24,7 @@ export default function Cards({ foods }: { foods: Card[] }) {
           {foods?.map((food) => (
             <div
               key={food.id}
-              className="menu-card rounded-[7px] border border-gray-400 overflow-hidden my-[4px] shadow-md flex w-full h-28 p-2.5"
+              className="menu-card rounded-[7px] border border-gray-400 overflow-hidden my-[4px] flex w-full h-28 p-2.5"
             >
               <Image
                 quality={75}

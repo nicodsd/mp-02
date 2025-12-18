@@ -1,12 +1,13 @@
-/* import { Add } from "@mui/icons-material"; */
 import { JSX } from "react";
+import Link from "next/link";
 interface NavBarProps {
   state: number;
   text: string;
   cookie: string;
   photo: string;
+  user: any;
 }
-export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
+export default function NavBar({ state, text, cookie, photo, user }: NavBarProps) {
   const name = text || "";
   const logo = photo ? photo : "/images/logo/LOGO2.svg";
   const navVariants: Record<number, JSX.Element> = {
@@ -14,36 +15,34 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
       <>
         <div className="flex items-center gap-2">
           {
-            cookie != "{}" ? <a href="/panel-de-usuario">
-              <img
-                src={logo}
-                alt="Logo"
-                className="rounded-full h-10 w-10"
-              />
-            </a> : <a href="/">
+            cookie && user ? <Link href="/panel-de-usuario">
               <img
                 src={logo}
                 alt="Logo"
                 className="rounded-full h-20 w-20"
               />
-            </a>
+            </Link> :
+              <img
+                src={logo}
+                alt="Logo"
+                className="rounded-full h-20 w-20"
+              />
           }
           <span className="text-[22px] font-bold text-gray-800">{name}</span>
         </div>
         {
-          cookie != "{}" ?
-            <a
-              href="/nuevo-plato"
+          cookie && user ?
+            <Link href="/nuevo-plato"
               className="px-4 py-1.5 text-md font-bold text-white bg-lime-500 rounded-md hover:bg-lime-600 transition"
             >
-              Agregar plato {/* <Add /> */}
-            </a> :
-            <a
+              Agregar plato
+            </Link> :
+            <Link
               href="/registro-de-usuario"
-              className="px-4 py-1.5 text-md font-bold text-white rounded-md bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500 hover:from-red-600 hover:via-yellow-600 hover:to-blue-600 transition"
+              className="px-4 py-1.5 text-md font-bold newfood border border-yellow-200 text-white rounded-md transition"
             >
               Prueba ahora!
-            </a>
+            </Link>
         }
       </>
     ),
@@ -51,25 +50,25 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
       <>
         <span className="text-[22px] font-bold text-gray-800">{name}</span>
         <div className="flex items-center gap-3">
-          <a
+          <Link
             href="/"
             className="px-4 py-1.5 text-md font-bold text-black rounded-full bg-gray-200 hover:bg-gray-300 transition"
           >
-            Volver
-          </a>
+            Cancelar
+          </Link>
         </div>
       </>
     ),
     2: (
       <>
         <div className="flex items-center gap-2">
-          <a href="/">
+          <Link href="/">
             <img
               src={logo}
               alt="Logo"
               className="rounded-full h-10 w-10 bg-black"
             />
-          </a>
+          </Link>
           <span className="text-[22px] font-bold text-gray-800 ">{name}</span>
         </div>
       </>
@@ -77,7 +76,7 @@ export default function NavBar({ state, text, cookie, photo }: NavBarProps) {
   };
 
   return (
-    <nav className="h-[55px] px-4 flex bg-[#FFFCFA] justify-between items-center w-full shadow-sm ">
+    <nav className="h-[55px] px-5 md:px-10 flex bg-[#FFFCFA] justify-between items-center w-full shadow-sm ">
       {navVariants[state] ?? navVariants[0]}
     </nav>
   );

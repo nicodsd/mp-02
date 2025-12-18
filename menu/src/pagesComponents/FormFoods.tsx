@@ -10,13 +10,17 @@ import LoadingCategories from "@/src/skeleton/LoadingCategories";
 const imgPlaceholder = "/images/image_placeholder.png";
 export default function FormFoods({
   initialCategories,
+  user,
 }: {
-  initialCategories: any[];
+  initialCategories: any;
+  user: any;
 }) {
+  console.log(user);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [img, setImage] = useState<string>(imgPlaceholder);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>(initialCategories || []);
+  const [categories, setCategories] = useState<any[]>(initialCategories || []);
   const [price, setPrice] = useState<string>("");
   const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
@@ -72,13 +76,32 @@ export default function FormFoods({
   const postFood = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Formulario enviado");
-    /*     const formData = new FormData();
-    formData.append("image", file); // file es el comprimido
-    
-    await fetch("/api/upload", {
+    const formData = new FormData();
+    formData.append("image", img);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", categories);
+    formData.append("user", user);
+    //formData.append("allergens", allergens);
+
+    fetch(apiUrl + `api/foods/postfood?user=${user}`, {
       method: "POST",
       body: formData,
-    }); */
+      credentials: "include",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
   //AREA CONSOLE LOGS
   // console.log("Data:", data);
@@ -224,27 +247,27 @@ export default function FormFoods({
         {/* Categorías */}
         <fieldset>
           {
-            initialCategories.length < 0 ? (
+            categories.length > 0 ? (
               <legend className="text-[19px] font-semibold text-gray-500">
                 Categorias
                 <Categories
-                  categoriesList={initialCategories}
+                  categoriesList={categories}
                   onChange={setCategories}
                 />
               </legend>
             ) : (
-              <LoadingCategories />
+              "<LoadingCategories />"
             )
           }
         </fieldset>
 
-        {/* Alergenos */}
+        {/*  {/* Alergenos 
         <fieldset>
           <legend className="text-[19px] font-semibold text-gray-500 mb-2">
             Alergenos
           </legend>
           <Allergens dataAllergens={allergens} setData={setAllergens} />
-        </fieldset>
+        </fieldset> */}
 
         {/* Botón */}
         <div>
