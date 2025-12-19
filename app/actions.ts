@@ -20,7 +20,6 @@ export async function setAuthCookie(token: string) {
 }
 
 export async function setUserCookie(user: object) {
-    console.log(user);
     (await cookies()).set({
         name: "user",
         value: JSON.stringify(user),
