@@ -1,7 +1,8 @@
-// /c:/Users/Nicolas/REPOS git/mp-02/menu/app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import { Asap } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+
 const asap = Asap({
   style: "normal",
   variable: "--font-geist-sans",
@@ -18,6 +19,7 @@ export default async function RootLayout({
     <html lang="es" className={asap.className}>
       <body className="antialiased">
         <main>{children}</main>
+        <Analytics />
       </body>
     </html>
   );
