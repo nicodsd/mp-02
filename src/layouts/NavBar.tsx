@@ -19,7 +19,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
               <img
                 src={logo}
                 alt="Logo"
-                className="rounded-full h-10 w-10"
+                className="rounded-full h-10 w-10 text-black"
               />
             </Link> :
               <img

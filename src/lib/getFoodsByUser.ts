@@ -11,7 +11,6 @@ export async function getFoodsByUser(apiUrl: string, userId: string) {
             return data.foods = [];
         }
     } catch (error) {
-        console.log(error);
         return [];
     }
 }
