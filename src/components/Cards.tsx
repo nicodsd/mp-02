@@ -9,7 +9,6 @@ type Card = {
   price: number | string;
 };
 export default function Cards({ foods }: { foods: Card[] }) {
-  console.log(foods);
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {

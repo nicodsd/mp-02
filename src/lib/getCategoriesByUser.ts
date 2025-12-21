@@ -11,7 +11,6 @@ export async function getCategoriesByUser(apiUrl: string, userId: string) {
             return data.categories = [];
         }
     } catch (error) {
-        console.log(error);
         return [];
     }
 }

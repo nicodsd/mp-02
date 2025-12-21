@@ -6,6 +6,8 @@ import MenuCard from "@/src/components/Cards";
 import PromoDay from "@/src/components/PromoDay";
 import FoodsOptions from "../components/Index/filters/FoodsOptions";
 import SortPriceButton from "../components/Index/filters/SortPrice";
+import Image from "next/image";
+import plus from "@/public/images/icons-index/PLUS.svg"
 type Food = {
     _id: string | number;
     photo: string;
@@ -53,12 +55,12 @@ export default function UserIndex({
                     <section className="flex flex-col">
                         <PromoDay />
                     </section>
-                    <section className="flex h-full flex-col gap-0.5 md:px- md:pb-8 md:pt-3 md:shadow md:mx-[25vh] md:rounded-b-2xl">
-                        <FoodsOptions />
-                        <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+                    <section className="flex h-full flex-col gap-0.5 md:px-8 md:pb-8 md:pt-3 md:mx-[2vh] lg:mx-[15vh] md:rounded-b-2xl">
                         {
                             initialCategories?.length > 0 || arrayFoods?.length > 0 ? ( //sin 1 no hay otra
                                 <>
+                                    <FoodsOptions />
+                                    <Search arrayFoods={arrayFoods} setSearch={setSearch} />
                                     <div className="flex justify-between items-center mt-4">
                                         <Categories categories={initialCategories} selectCategory={setCats} />
                                         <SortPriceButton onSortChange={setSortOrder} />
@@ -66,7 +68,15 @@ export default function UserIndex({
                                     <MenuCard foods={arrayFoods} />
                                 </>
                             ) : (
-                                <p>No hay platos</p>
+                                <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
+                                    <h3 className="text-xl font-bold">Sube tus platos</h3>
+                                    <a href="/nuevo-plato"
+                                        className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
+                                    >
+                                        <Image src={plus} alt="icono de agregar" className="text-green-700" width={70} height={70} />
+                                        Agregar
+                                    </a>
+                                </div>
                             )
                         }
                     </section>
@@ -75,15 +85,3 @@ export default function UserIndex({
         </>
     );
 }
-
-/*  <div className="flex flex-col items-center gap-5 text-gray-800">
-                                    <h3 className="text-xl font-bold">Sube tus platos</h3>
-                                    <a href="/nuevo-plato"
-                                        className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-22 w-22" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
-                                        </svg>
-                                        Agregar
-                                    </a>
-                                </div> */

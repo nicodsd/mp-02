@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import Link from "next/link";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 interface NavBarProps {
   state: number;
   text: string;
@@ -19,7 +20,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
               <img
                 src={logo}
                 alt="Logo"
-                className="rounded-full h-10 w-10"
+                className="rounded-full h-10 w-10 text-black"
               />
             </Link> :
               <img
@@ -61,16 +62,9 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
     ),
     2: (
       <>
-        <div className="flex items-center gap-2">
-          <Link href="/">
-            <img
-              src={logo}
-              alt="Logo"
-              className="rounded-full h-10 w-10 bg-black"
-            />
-          </Link>
-          <span className="text-[22px] font-bold text-gray-800 ">{name}</span>
-        </div>
+        <Link href="/" className="text-gray-700 text-center text-sm px-3">
+          <ArrowBackIosIcon /> Inicio
+        </Link>
       </>
     ),
   };
