@@ -1,100 +1,57 @@
 "use client";
-import dynamic from "next/dynamic";
 import { Tab, TabPanel, TabPanels, TabGroup, TabList } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
-const ManageAccountsIcon = dynamic(
-    () => import("@mui/icons-material/ManageAccounts"),
-    { ssr: false }
-);
-const MenuIcon = dynamic(() => import("@mui/icons-material/Menu"), {
-    ssr: false,
-});
-const tabClass =
-    "rounded-xl bg-white p-3 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2";
-type Food = {
-    _id: string | number;
-    photo: string;
-    name: string;
-    description: string;
-    price: number | string;
-    category: string;
-};
-export default function PanelUser({
-    user,
-    token,
-    foods,
-}: {
-    user: any;
-    token: string;
-    foods: Food[];
-}) {
+export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[] }) {
     const router = useRouter();
-
     const handleLogout = () => {
-        fetch(`${apiUrl}api/auth/signout`, {
-            method: "POST",
-            credentials: "include",
-        })
-            .then((response) => {
-                if (response.ok) {
-                    console.log("Logout exitoso");
-                    router.push("/");
-                } else {
-                    console.error("Error al cerrar sesión");
-                }
-            })
-            .catch((error) => {
-                console.error("Error al cerrar sesión", error);
-            });
+        fetch(`${apiUrl}api/auth/signout`, { method: "POST", credentials: "include" })
+            .then((res) => res.ok && router.push("/"))
+            .catch((err) => console.error("Error", err));
     };
     return (
-        <div className="min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <TabGroup>
-                    <TabList className="flex space-x-1 rounded-xl bg-blue-900/20">
-                        <Tab
-                            className={({ selected }) =>
-                                `w-full flex items-center justify-center gap-2 py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg ${selected
-                                    ? "bg-white shadow"
-                                    : "text-blue-100 hover:bg-white/12"
-                                }`
-                            }
-                        >
-                            <ManageAccountsIcon />
-                            Usuario
-                        </Tab>
+        <div className="min-h-[calc(100vh-56px)] font-sans text-gray-900 px-[3vw] py-[2vh]">
+            <div className="relative flex flex-col px-[3.4vw] md:px-[2vw]">
 
-                        <Tab
-                            className={({ selected }) =>
-                                `w-full flex items-center justify-center gap-2 py-2.5 text-sm leading-5 font-medium text-blue-700 rounded-lg ${selected
-                                    ? "bg-white shadow"
-                                    : "text-blue-100 hover:bg-white/12"
-                                }`
-                            }
-                        >
-                            <MenuIcon />
-                            Menu
-                        </Tab>
-                    </TabList>
-                    <TabPanels className="mt-2">
-                        <TabPanel className={tabClass}>
-                            <UserSettings user={user} token={token} />
-                        </TabPanel>
-                        <TabPanel className={tabClass}>
-                            <MenuItems dataFoods={foods} />
-                        </TabPanel>
-                    </TabPanels>
-                </TabGroup>
+                {/* Header Fijo */}
+                <header className="md:py-2 flex justify-between items-center z-10">
+                    <h2 className="text-xl font-bold tracking-tight">Panel de Usuario</h2>
+                </header>
+                <div className="flex md:flex-row flex-col items-center w-full">
+                    <TabGroup className="md:flex md:gap-x-2 w-full">
+                        {/* Navegación de Pestañas Estilo Pastilla */}
+                        <div className="mt-1 h-fit bg-white md:px-4 md:py-5 rounded-2xl">
+                            <TabList className="flex border-b border-gray-300 pb-5 md:flex-col space-x-1 md:space-x-0 md:space-y-2 w-full md:h-fit">
+                                <Tab className={({ selected }) =>
+                                    `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                ${selected ? "bg-white text-gray-900 border outline outline-[#2bee79]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                }>Usuario</Tab>
+                                <Tab className={({ selected }) =>
+                                    `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                ${selected ? "bg-white text-gray-900 border outline outline-[#2bee79]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                }>Menú</Tab>
+                            </TabList>
+                            <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-8 bg-red-50 cursor-pointer w-full hidden md:block rounded-xl transition">
+                                <span className="font-bold">Cerrar Sesión</span>
+                            </button>
+                        </div>
+
+                        <TabPanels className="flex w-full mt-4 md:mt-0 bg-white rounded-2xl p-6 shadow-sm">
+                            <TabPanel>
+                                <UserSettings user={user} token={token} />
+                            </TabPanel>
+                            <TabPanel>
+                                <MenuItems dataFoods={foods} />
+                            </TabPanel>
+                        </TabPanels>
+                    </TabGroup>
+                    <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-10 bg-red-50 cursor-pointer w-60 block md:hidden rounded-xl transition">
+                        <span className="font-bold">Cerrar Sesión</span>
+                    </button>
+                </div>
             </div>
-            <button
-                onClick={handleLogout}
-                className="px-4 py-1.5 text-lg font-bold cursor-pointer text-red-500 hover:text-red-600 transition"
-            >
-                Cerrar sesión
-            </button>
         </div>
     );
 }

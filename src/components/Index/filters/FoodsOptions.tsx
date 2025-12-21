@@ -11,13 +11,13 @@ const FoodGroupOptions: React.FC = () => {
         { name: 'Bebidas', img: images.bebidas, icon: icons.copa }
     ];
     return (
-        <div className="flex w-full justify-center px-1 py-2 my-4 rounded-xl md:px-40 bg-gray-100">
-            <div className="flex flex-wrap justify-center">
+        <div className="flex w-full justify-center px-1 py-2 my-4 rounded-xl md:px-40 bg-gray-100 md:bg-transparent">
+            <div className="flex flex-wrap justify-center gap-1">
                 {options.map((option, index) => (
                     <div
                         onClick={() => console.log(option.name)}
                         key={index}
-                        className="flex border px-5 mr-1 mt-1 mb-1 ml-1 border-gray-400 flex-col w-[22%] h-25 cursor-pointer items-center justify-center bg-white rounded-2xl shadow-md hover:bg-gray-100 transition-colors duration-200"
+                        className="flex border px-5 mt-1 mb-1 border-gray-400 flex-col w-[22%] h-25 cursor-pointer items-center justify-center bg-white rounded-2xl shadow-md hover:bg-gray-100 transition-colors duration-200"
                     >
                         <Image
                             className="w-7 h-7"

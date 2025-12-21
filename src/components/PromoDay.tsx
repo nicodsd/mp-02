@@ -13,12 +13,12 @@ export default function PromoDay() {
   }
   return (
     <section className="flex flex-col items-center md:items-start w-full">
-      <div className="animate__animated animate__bounceIn md:px-[17vw] md:py-2 bg-radial-[at_50%_75%] md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-red-700 via-red-600 to-yellow-600 to-100% md:w-full md:flex md:flex-row"
+      <div className="animate__animated animate__bounceIn md:px-[6vw] md:py-2 bg-radial-[at_50%_75%] md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-red-700 via-red-600 to-yellow-600 to-100% md:w-full md:flex md:flex-row"
         style={{
           borderRadius: "1rem",
           overflow: "hidden",
           maxWidth: "100%",
-          maxHeight: "40vh",
+          maxHeight: "100%",
           boxShadow: "0 6px 10px rgba(0,0,0,0.25)",
         }}
       >
@@ -31,10 +31,10 @@ export default function PromoDay() {
           style={{
             objectFit: "cover",
           }}
-          className="md:w-1/4 h-[150px] md:h-80 md:rounded-xl md:shadow-2xl md:shadow-yellow-200"
+          className="md:w-1/4 h-[20vh] md:h-[25vh] lg:h-[30vh] md:rounded-xl md:shadow-2xl md:shadow-yellow-400"
         />
         <div
-          className="flex flex-row text-white p-3.5 md:w-full md:p-10"
+          className="flex flex-row md:bg-white/15 border-2 border-yellow-300/40 md:ml-2 rounded-xl text-white p-3.5 md:w-full md:p-10"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -58,7 +58,7 @@ export default function PromoDay() {
             className="flex flex-col justify-end items-end w-[34%] md:w-[20%]"
           >
             <p
-              className="font-semibold text-[14px] text-[#ffd000] mb-1 md:text-[1vw]"
+              className="font-semibold text-[14px] text-[#ffd000] line-through md:text-[1vw]"
             >
               Antes {formatearPrecio(price)}
             </p>

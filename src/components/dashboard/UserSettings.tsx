@@ -1,136 +1,69 @@
 "use client";
 import React, { useState } from "react";
-import { CloudUpload, Close } from "@mui/icons-material";
-import { Button } from "@mui/material";
 import Image from "next/image";
-import imageCompression from "browser-image-compression";
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
-const UserSettings = ({ user, token }: { user: any; token: string }) => {
-  const vista = user.photo;
-  const [name, setName] = useState(user.name);
-  const [img, setImage] = useState<string>(user.photo);
-  const [error, setError] = useState<string>("");
-  const [off, setOff] = useState<boolean>(false);
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  };
-  const imageCapture = async (selectedFile: File) => {
-    console.log(selectedFile);
-    if (!selectedFile) return;
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-    if (!validTypes.includes(selectedFile.type)) {
-      setError("Formato no permitido. Usa JPG, PNG o WEBP.");
-      return;
-    }
-    try {
-      const options = {
-        maxSizeMB: 1, // tamaño máximo deseado
-        maxWidthOrHeight: 1024, // redimensiona si es necesario
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(selectedFile, options);
-      const imageUrl = URL.createObjectURL(compressedFile);
-      setImage(imageUrl);
-      setOff(true);
-      setError("");
-    } catch (err) {
-      console.error("Error al comprimir la imagen:", err);
-      setError("No se pudo comprimir la imagen.");
-    }
-  };
-  const delteImage = () => {
-    fetch(`${API_URL}/users/${user._id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    if (img !== vista) {
-      URL.revokeObjectURL(img); // libera la URL temporal
-    }
-    setOff(false);
-    setImage(vista);
-    console.log("Imagen eliminada");
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    console.log("Name:", name);
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('photo', img);
-    console.log(formData);
-    const response = await fetch(`${API_URL}api/users/${user._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-    console.log(response);
-  };
+const UserSettings = ({ user, token }: { user: any; token: string }) => {
+  const [name, setName] = useState(user.name);
+  const [img, setImage] = useState(user.photo);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="relative h-fit my-5">
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <div className="relative w-[260px] h-[260px]">
-          {img && img !== vista && (
-            <button
-              type="button"
-              onClick={delteImage}
-              className="absolute top-0 right-0 w-fit h-9 text-[10px] px-4 text-white bg-[#2828287b] border-gray-300 rounded cursor-pointer focus:outline-none"
-            >
-              <Close /> Quitar
-            </button>
-          )}
+    <form className="flex flex-col items-center gap-6">
+      {/* Avatar Circular con Botón de Edición */}
+      <div className="relative group">
+        <div className="w-32 h-32 rounded-full border-4 border-gray-100 shadow-xl overflow-hidden relative">
           <Image
-            loading="eager"
-            src={img}
-            width={260}
-            height={260}
-            alt="Vista previa"
-            className="object-cover rounded-md max-h-[260px] max-w-[260px]"
+            src={img || "/images/image_placeholder.png"}
+            alt="Profile"
+            width={100}
+            height={100}
+            quality={75}
+            loading="lazy"
+            className="object-cover w-full h-full"
           />
         </div>
-        <Button
-          sx={{
-            bgcolor: "blue",
-            borderRadius: "5px",
-            paddingX: "14px",
-            paddingY: "6px",
-            fontSize: "10px",
-          }}
-          disabled={off}
-          component="label"
-          variant="contained"
-          startIcon={<CloudUpload />}
-        >
-          Cambiar imagen
+        <label className="absolute bottom-1 right-1 text-sm bg-[#2bee79] p-1.5 rounded-xl border-2 border-white cursor-pointer hover:scale-110 transition shadow-md">
+          <input type="file" className="hidden" accept="image/*" onChange={() => { }} /> Cambiar
+        </label>
+      </div>
+
+      {/* Inputs de Formulario */}
+      <div className="w-full space-y-4">
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-gray-500 ml-1 uppercase">Nombre del Chef</label>
           <input
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={(event) => {
-              const file = event.target.files?.[0];
-              if (file) imageCapture(file);
-            }}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full bg-gray-100 border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-[#2bee79]"
           />
-        </Button>
+        </div>
+
+        <div className="space-y-1">
+          <label className="text-xs font-bold text-gray-500 ml-1 uppercase">Restaurante</label>
+          <input
+            type="text"
+            placeholder="Nombre de tu local"
+            className="w-full bg-gray-100 border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-[#2bee79]"
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="name">Nombre:</label>
-        <input type="text" id="name" value={name} onChange={handleNameChange} />
+
+      {/* Acciones */}
+      <div className="w-full flex gap-3 pt-4">
+        <button
+          type="submit"
+          className="flex-1 bg-[#2bee79] text-[#102217] font-bold py-3 rounded-xl hover:opacity-90 transition shadow-sm"
+        >
+          Guardar Cambios
+        </button>
+        <button
+          type="button"
+          className="px-6 py-3 border border-gray-200 text-gray-500 font-bold rounded-xl hover:bg-gray-50 transition"
+        >
+          Cancelar
+        </button>
       </div>
-      <div></div>
-      <button className="px-4 py-1.5 text-md font-bold text-white cursor-pointer bg-lime-500 rounded-md hover:bg-lime-600 transition" type="submit">Guardar cambios</button>
-      <button
-        onClick={() => { }}
-        className="px-4 py-1.5 text-md font-bold text-white cursor-pointer bg-red-500 rounded-md hover:bg-red-600 transition" type="submit">Cancelar</button>
     </form>
   );
 };
-
 export default UserSettings;

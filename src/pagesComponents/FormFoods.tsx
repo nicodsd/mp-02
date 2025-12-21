@@ -22,7 +22,7 @@ export default function FormFoods({
   const [description, setDescription] = useState<string>("");
   const [categories, setCategories] = useState<any[]>(initialCategories || []);
   const [price, setPrice] = useState<string>("");
-  const [allergens, setAllergens] = useState<string[]>([]);
+  //const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
 
   // liberar URL temporal al desmontar
@@ -62,7 +62,7 @@ export default function FormFoods({
     formData.append("price", price);
     formData.append("category", JSON.stringify(categories));
     formData.append("user_id", user.id);
-    formData.append("allergens", JSON.stringify(allergens));
+    //formData.append("allergens", JSON.stringify(allergens));
 
     try {
       const res = await fetch(apiUrl + `api/foods/postfood`, {
@@ -135,7 +135,7 @@ export default function FormFoods({
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="name">Nombre</label>
             <input
               id="name"
-              className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+              className="w-full bg-white border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
               placeholder="Ej: Milanesa con papas"
               type="text"
               value={name}
@@ -148,7 +148,7 @@ export default function FormFoods({
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="description">Descripción</label>
             <textarea
               id="description"
-              className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
+              className="w-full bg-white border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
               placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
               rows={3}
               value={description}
@@ -163,7 +163,7 @@ export default function FormFoods({
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
               <input
                 id="price"
-                className="w-full bg-[#f5f5f5] border border-gray-400 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+                className="w-full bg-white border border-gray-400 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
                 placeholder="10.000"
                 type="number"
                 min="0"
@@ -177,7 +177,7 @@ export default function FormFoods({
           </div>
 
           {/* Categorías */}
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 min-h-[10vh]">
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">Categorías</label>
             <div className="p-1 rounded-2xl">
               {initialCategories?.length > 0 ? (

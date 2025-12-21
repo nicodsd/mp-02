@@ -50,40 +50,41 @@ export default function CategoriesForm({
     setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
   };
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-y-2">
       {/* Lista de categorías */}
-      <div className="flex flex-wrap gap-y-1 gap-x-px">
-        {allCategories.map((item) => (
-          <label
-            key={item._id}
-            className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-      ${selected.includes(item.name)
-                ? "bg-indigo-600 text-white border-indigo-600"
-                : "bg-gray-100 text-gray-500 border-gray-300 hover:bg-gray-200"
-              }`}
-          >
-            <input
-              type="checkbox"
-              value={item.name}
-              checked={selected.includes(item.name)}
-              onChange={() =>
-                handleCheckboxChange(item.name)
-              }
-              className="hidden"
-            />
-            {item.name}
-          </label>
-        ))}
+      {allCategories?.length > 0 && (
+        <div className="flex flex-wrap gap-y-1 gap-x-px">
+          {allCategories.map((item) => (
+            <label
+              key={item._id}
+              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
+            ${selected.includes(item.name)
+                  ? "bg-indigo-600 text-white border-indigo-600"
+                  : "bg-gray-100 text-gray-500 border-gray-300 hover:bg-gray-200"
+                }`}
+            >
+              <input
+                type="checkbox"
+                value={item.name}
+                checked={selected.includes(item.name)}
+                onChange={() => handleCheckboxChange(item.name)}
+                className="hidden"
+              />
+              {item.name}
+            </label>
+          ))}
+        </div>
+      )}
 
-      </div>
-      <div className="flex flex-col gap-y-2 bg-gray-100 min-h-[170px] justify-between rounded-xl px-5 py-5">
+      {/* Bloque para nuevas categorías */}
+      <div className="flex flex-col gap-y-2 bg-white border border-gray-300 min-h-[170px] justify-between rounded-xl px-5 py-5">
         <h3 className="font-semibold text-sm text-gray-500">Agrega nuevas categorías</h3>
         <div className="flex flex-wrap gap-y-1 h-full gap-x-1 w-full">
           {arrayNewCategory.map((item) => (
             <label
               key={item}
               className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-              ${selected.includes(item)
+            ${selected.includes(item)
                   ? "bg-indigo-600 text-white border-indigo-600"
                   : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
                 }`}
@@ -107,6 +108,7 @@ export default function CategoriesForm({
             </label>
           ))}
         </div>
+
         {/* Input para agregar categoría */}
         <div className="flex w-full justify-center">
           <div className="flex gap-1 w-full items-center">
@@ -114,8 +116,8 @@ export default function CategoriesForm({
               type="text"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
-              placeholder="Nueva categoría"
-              className="px-3 py-2 border w-full text-gray-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              placeholder="Ej: Pizza"
+              className="px-3 py-2 border w-full text-gray-400 placeholder-gray-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <button
               type="button"

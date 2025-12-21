@@ -1,326 +1,67 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Delete, Edit } from "@mui/icons-material";
-import { CloudUpload, DeleteOutline, PhotoCamera } from "@mui/icons-material";
+import React, { useState } from "react";
 import imageCompression from "browser-image-compression";
-import imgPlaceholder from "../../../public/images/image_placeholder.png";
+import plus from "@/public/images/icons-index/PLUS.svg"
 import Image from "next/image";
-import {
-  Box,
-  Button,
-  TextField,
-  Card,
-  CardContent,
-  Grid,
-  IconButton,
-} from "@mui/material";
+import { FaEdit, FaSearch } from 'react-icons/fa';
 
-type MenuItem = {
-  _id: string | number;
-  photo: string;
-  name: string;
-  description: string;
-  price: number | string;
-  category: string;
-};
-
-export function MenuItems({ dataFoods }: { dataFoods: MenuItem[] }) {
-  //function para formatear precio
-  function formatearPrecio(precio: number | string) {
-    const value = typeof precio === "string" ? Number(precio) : precio;
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
-
-  const [img, setImage] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const [off, setOff] = useState<boolean>(false);
-
-  // Liberar URL temporal al desmontar o cambiar imagen
-  useEffect(() => {
-    return () => {
-      if (img && img !== imgPlaceholder.src) {
-        URL.revokeObjectURL(img);
-      }
-    };
-  }, [img]);
-
-  // Estados para manejar el formulario de añadir/editar platos
-  const [items, setItems] = useState<MenuItem[]>(dataFoods ?? []); // Estado de lista de platos
-  const [isEditing, setIsEditing] = useState(false); //BOOL
-  const [currentItem, setCurrentItem] = useState<MenuItem>({
-    // Estado del plato actual (nuevo o a editar)
-    _id: "",
-    name: "",
-    photo: "",
-    description: "",
-    price: 0,
-    category: "",
-  });
-
-  // Manejo de cambios en los campos del formulario
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCurrentItem((prev) => ({
-      ...prev,
-      [name]: name === "price" ? (value === "" ? "" : Number(value)) : value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isEditing) {
-      // Update existing item
-      setItems((prev) =>
-        prev.map((item) => (item._id === currentItem._id ? currentItem : item))
-      );
-      setIsEditing(false);
-    } else {
-      // Add new item
-      setItems((prev) => [
-        ...prev,
-        { ...currentItem, _id: Date.now().toString() },
-      ]);
-    }
-    // Reset form
-    setImage(imgPlaceholder.src);
-    setCurrentItem({
-      _id: "",
-      name: "",
-      photo: imgPlaceholder.src,
-      description: "",
-      price: 0,
-      category: "",
-    });
-  };
-
-  // Manejo de la carga y compresión de imágenes
-  const imageCapture = async (selectedFile: File) => {
-    if (!selectedFile) return;
-    const validTypes = ["image/jpeg", "image/png", "image/webp"];
-
-    if (!validTypes.includes(selectedFile.type)) {
-      setError("Formato no permitido. Usa JPG, PNG o WEBP.");
-      return;
-    }
-
-    try {
-      const options = {
-        maxSizeMB: 1, // tamaño máximo deseado
-        maxWidthOrHeight: 1024, // redimensiona si es necesario
-        useWebWorker: true,
-      };
-
-      const compressedFile = await imageCompression(selectedFile, options); // Comprime la imagen, pasamos la imagen y la options
-      const imageUrl = URL.createObjectURL(compressedFile);
-
-      setImage(imageUrl);
-      setCurrentItem((prev) => ({ ...prev, photo: imageUrl }));
-      setOff(true);
-      setError("");
-
-      /*       console.log(
-          "Imagen comprimida:",
-          compressedFile.name,
-          compressedFile.size
-        ); */
-    } catch (err) {
-      console.error("Error al comprimir la imagen:", err);
-      setError("No se pudo comprimir la imagen.");
-    }
-  };
-
-  // Datos del formulario
-
-  const delteImage = () => {
-    if (img && img !== imgPlaceholder.src) {
-      URL.revokeObjectURL(img); // libera la URL temporal
-    }
-    setOff(false);
-    setImage(imgPlaceholder.src);
-    console.log("Imagen eliminada");
-  };
-
-  const handleEdit = (item: MenuItem) => {
-    setCurrentItem(item);
-    setImage(item.photo || imgPlaceholder.src);
-    setIsEditing(true);
-  };
-
-  const handleDelete = (id: string | number) => {
-    setItems((prev) => prev.filter((item) => item._id !== id));
-  };
-
-  const postFood = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Formulario enviado");
-
-    // Aquí iría la lógica para guardar el plato
-    /*     const formData = new FormData();
-    formData.append("image", file); // file es el comprimido
-    
-    await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    }); */
-  };
+export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
+  const [items, setItems] = useState(dataFoods ?? []);
 
   return (
-    <Box sx={{ pt: 0 }}>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} sx={{ mb: 6 }}>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              fullWidth
-              name="name"
-              label="Nombre del plato"
-              value={currentItem.name}
-              onChange={handleInputChange}
-              required
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              fullWidth
-              name="category"
-              label="Categoría"
-              value={currentItem.category}
-              onChange={handleInputChange}
-              required
-            />
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6 }}>
-            <TextField
-              fullWidth
-              name="price"
-              label="Precio"
-              type="number"
-              value={currentItem.price}
-              onChange={handleInputChange}
-              required
-            />
-          </Grid>
-          <Grid size={12}>
-            <div className="relative h-fit my-5">
-              {error && <p style={{ color: "red" }}>{error}</p>}
-              <Image
-                src={currentItem.photo || imgPlaceholder.src}
-                width={260}
-                height={260}
-                alt={currentItem.name || "Vista previa"}
-                className="object-cover rounded-md max-h-[260px] max-w-[260px]"
-              />
-              {img && img !== imgPlaceholder.src && (
-                <button
-                  type="button"
-                  onClick={delteImage}
-                  className="absolute top-0 right-0 w-fit h-9 text-[10px] px-4 text-white bg-[#ff0000] border-gray-300 rounded cursor-pointer focus:outline-none"
-                >
-                  <DeleteOutline /> Borrar
-                </button>
-              )}
-            </div>
-          </Grid>
-          <Button
-            sx={{
-              bgcolor: "black",
-              borderRadius: "5px",
-              paddingX: "12px",
-              paddingY: "6px",
-              fontSize: "10px",
-            }}
-            disabled={off}
-            component="label"
-            variant="contained"
-            startIcon={<PhotoCamera />}
-          >
-            Subir Imagen
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              hidden
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) imageCapture(file);
-              }}
-            />
-          </Button>
-          <Button
-            sx={{
-              bgcolor: "blue",
-              borderRadius: "5px",
-              paddingX: "12px",
-              paddingY: "6px",
-              fontSize: "10px",
-            }}
-            disabled={off}
-            component="label"
-            variant="contained"
-            startIcon={<CloudUpload />}
-          >
-            Seleccionar de la galería
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (file) imageCapture(file);
-              }}
-            />
-          </Button>
-          <Grid size={12}>
-            <TextField
-              fullWidth
-              name="description"
-              label="Descripción"
-              multiline
-              rows={2}
-              value={currentItem.description}
-              onChange={handleInputChange}
-              required
-            />
-          </Grid>
-          <Grid size={12}>
-            <Button type="submit" variant="contained" color="primary">
-              {isEditing ? "Actualizar Plato" : "Añadir Plato"}
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+    <div className="flex flex-col gap-6">
+      {/* KPIs - Estadísticas */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col items-start p-4 rounded-xl bg-orange-100 border border-orange-300">
+          <span className=" text-orange-400 mb-1">Platos</span>
+          <span className="text-2xl font-bold text-orange-700">{items.length}</span>
+          <span className="text-xs font-medium text-gray-600">Platos Activos</span>
+        </div>
+        {/* <div className="flex flex-col items-start p-4 rounded-xl bg-[#E0F7FA] border border-teal-100/70">
+          <span className=" text-[#00796B] mb-1">Visitas</span>
+          <span className="text-2xl font-bold text-[#00796B]">1.2k</span>
+          <span className="text-xs font-medium text-gray-600">Vistas</span>
+        </div> */}
+      </div>
 
-      <Grid container spacing={1}>
-        {items.map((item) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4 }} key={item._id}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <h3 className="text-xl font-extrabold ">{item.name}</h3>
-                  <Box>
-                    <IconButton onClick={() => handleEdit(item)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton onClick={() => handleDelete(item._id)}>
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                </Box>
-                <p>{item.description}</p>
-                <p>Categoría: {item.category}</p>
-                <span className="text-md font-bold">
-                  Precio: {formatearPrecio(item.price)}
-                </span>
-              </CardContent>
-            </Card>
-          </Grid>
+      {/* Buscador */}
+      <div className="relative">
+        <input
+          className="w-full bg-gray-100 border-none rounded-xl py-3 pl-11 pr-4 text-sm focus:ring-2 focus:ring-[#2bee79]"
+          placeholder="Buscar plato..."
+        />
+        <FaSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+      </div>
+
+      {/* Lista de Platos */}
+      <div className="space-y-3">
+        {items.map((food) => (
+          <div key={food._id} className="group flex items-center gap-3 p-2 rounded-xl bg-gray-50 border border-gray-100 hover:border-[#2bee79]/50 transition-all">
+            <div
+              className="w-16 h-16 shrink-0 rounded-lg bg-cover bg-center shadow-sm"
+              style={{ backgroundImage: `url(${food.photo})` }}
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-sm truncate">{food.name}</h3>
+                <span className="text-[#2bee79] font-bold text-sm">${food.price}</span>
+              </div>
+              <p className="text-xs text-gray-500 truncate">{food.description}</p>
+            </div>
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-[#2bee79] transition-colors">
+              <span className=" text-sm"><FaEdit /></span>
+            </button>
+          </div>
         ))}
-      </Grid>
-    </Box>
+      </div>
+
+      {/* Botón Flotante (Portal o Relativo) */}
+      <div className="fixed bottom-10 right-10 md:right-[calc(50%-180px)]">
+        <button className="h-14 w-14 rounded-full bg-[#2bee79] text-[#102217] shadow-lg flex items-center justify-center hover:scale-105 transition-transform">
+          <span className=""><Image src={plus} alt="icono de agregar" className="text-green-700" width={30} height={30} /></span>
+        </button>
+      </div>
+    </div>
   );
 }
-
 export default MenuItems;
