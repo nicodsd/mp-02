@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import Categories from "@/src/components/Categories";
-import Search from "@/src/components/Index/filters/Search";
-import MenuCard from "@/src/components/Cards";
 import PromoDay from "@/src/components/PromoDay";
-import FoodsOptions from "../components/Index/filters/FoodsOptions";
-import SortPriceButton from "../components/Index/filters/SortPrice";
+import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
+import Categories from "@/src/components/Categories";
+import SortPriceButton from "@/src/components/Index/filters/SortPrice";
+import SearchInput from "@/src/components/Index/filters/Search";
+import RenderCards from "@/src/components/RenderCards";
 import Image from "next/image";
 import plus from "@/public/images/icons-index/PLUS.svg"
 type Food = {
@@ -55,17 +55,17 @@ export default function UserIndex({
                     <section className="flex flex-col">
                         <PromoDay />
                     </section>
-                    <section className="flex h-full flex-col gap-0.5 md:px-8 md:pb-8 md:pt-3 md:mx-[2vh] lg:mx-[15vh] md:rounded-b-2xl">
+                    <section className="flex min-h-[calc(90vh-100px)] flex-col gap-0.5 md:px-8 md:pb-8 md:pt-3 md:mx-[2vh] lg:mx-[15vh] md:rounded-b-2xl">
                         {
-                            initialCategories?.length > 0 || arrayFoods?.length > 0 ? ( //sin 1 no hay otra
+                            initialCategories?.length > 0 || arrayFoods ? ( //sin 1 no hay otra
                                 <>
                                     <FoodsOptions />
-                                    <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+                                    <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
                                     <div className="flex justify-between items-center mt-4">
                                         <Categories categories={initialCategories} selectCategory={setCats} />
                                         <SortPriceButton onSortChange={setSortOrder} />
                                     </div>
-                                    <MenuCard foods={arrayFoods} />
+                                    <RenderCards foods={arrayFoods} count={4} context={false} />
                                 </>
                             ) : (
                                 <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">

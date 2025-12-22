@@ -84,9 +84,9 @@ export default function FormFoods({
     <form
       encType="multipart/form-data"
       onSubmit={postFood}
-      className="max-w-md mx-auto min-h-screen flex flex-col bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
+      className="min-h-screen flex flex-col bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
     >
-      <div className="px-5 space-y-8 flex flex-col justify-center flex-1 py-10">
+      <div className="px-5 md:w-[25vw] mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
 
         {/* Sección de Imagen */}
         <div className="flex flex-col items-center gap-4 relative">
@@ -135,7 +135,7 @@ export default function FormFoods({
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="name">Nombre</label>
             <input
               id="name"
-              className="w-full bg-white border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
               placeholder="Ej: Milanesa con papas"
               type="text"
               value={name}
@@ -148,7 +148,7 @@ export default function FormFoods({
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="description">Descripción</label>
             <textarea
               id="description"
-              className="w-full bg-white border border-gray-400 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
               placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
               rows={3}
               value={description}
@@ -163,7 +163,7 @@ export default function FormFoods({
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
               <input
                 id="price"
-                className="w-full bg-white border border-gray-400 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+                className="w-full bg-white border border-gray-300 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
                 placeholder="10.000"
                 type="number"
                 min="0"
@@ -177,9 +177,9 @@ export default function FormFoods({
           </div>
 
           {/* Categorías */}
-          <div className="flex flex-col gap-1 min-h-[10vh]">
+          <div className="flex flex-col w-full gap-1 min-h-[10vh]">
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">Categorías</label>
-            <div className="p-1 rounded-2xl">
+            <div className="w-full rounded-2xl">
               {initialCategories?.length > 0 ? (
                 <Categories categoriesList={initialCategories} onChange={setCategories} />
               ) : (
@@ -191,10 +191,10 @@ export default function FormFoods({
       </div>
 
       {/* Botón Flotante de Acción */}
-      <div className="w-full px-5 pb-15 pt-5 border-t border-gray-300">
+      <div className="w-full flex justify-center px-5 pb-15 pt-5 border-t border-gray-300">
         <button
           type="submit"
-          className="w-full bg-[#8400ff] hover:bg-green-800 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl shadow-lg shadow-primary/30 transform active:scale-[0.98] transition-all"
+          className="w-full md:w-[25vw] bg-[#8400ff] hover:bg-green-800 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl shadow-lg shadow-primary/30 transform active:scale-[0.98] transition-all"
         >
           Agregar Plato
         </button>

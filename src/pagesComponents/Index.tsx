@@ -4,7 +4,8 @@ import foods from "@/src/data/foods-1.json";
 import categoriesData from "@/src/data/categories.json";
 import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
 import Categories from "@/src/components/Categories";
-import MenuCard from "@/src/components/Cards";
+import MenuCard from "@/src/components/FoodsCards";
+import RenderCards from "@/src/components/RenderCards";
 import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
@@ -48,14 +49,14 @@ export default function Inicio() {
         <section className="flex flex-col">
           <PromoDay />
         </section>
-        <section className="flex h-full flex-col gap-0.5 md:px- md:pb-8 md:pt-3 md:shadow md:mx-[25vh] md:rounded-b-2xl">
+        <section className="flex h-full flex-col gap-3 md:px- md:pb-8 md:pt-3 md:mx-[25vh] md:rounded-b-2xl">
           <FoodsOptions />
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
           <div className="flex justify-between items-center mt-4">
             <Categories categories={categoriesData} selectCategory={setCats} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>
-          <MenuCard foods={arrayFoods} />
+          <RenderCards foods={arrayFoods} count={6} context={false} />
         </section>
       </div>
     </div>

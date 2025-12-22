@@ -12,46 +12,44 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
             .catch((err) => console.error("Error", err));
     };
     return (
-        <div className="min-h-[calc(100vh-56px)] font-sans text-gray-900 px-[3vw] py-[2vh]">
-            <div className="relative flex flex-col px-[3.4vw] md:px-[2vw]">
+        <>
+            <div className="min-h-[calc(100vh-56px)] h-fit text-gray-900 px-[2vw] py-[2vh]">
+                <div className="relative flex flex-col md:px-[3vw]">
 
-                {/* Header Fijo */}
-                <header className="md:py-2 flex justify-between items-center z-10">
-                    <h2 className="text-xl font-bold tracking-tight">Panel de Usuario</h2>
-                </header>
-                <div className="flex md:flex-row flex-col items-center w-full">
-                    <TabGroup className="md:flex md:gap-x-2 w-full">
-                        {/* Navegación de Pestañas Estilo Pastilla */}
-                        <div className="mt-1 h-fit bg-white md:px-4 md:py-5 rounded-2xl">
-                            <TabList className="flex border-b border-gray-300 pb-5 md:flex-col space-x-1 md:space-x-0 md:space-y-2 w-full md:h-fit">
+                    <div className="flex md:flex-row flex-col items-center w-full">
+                        <TabGroup className="md:flex md:gap-x-2 w-full justify-center">
+
+                            <TabList className="flex w-full md:flex-col space-x-1 md:space-x-0 md:space-y-2 md:w-[20vw] md:h-fit">
                                 <Tab className={({ selected }) =>
                                     `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border outline outline-[#2bee79]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
                                 }>Usuario</Tab>
                                 <Tab className={({ selected }) =>
                                     `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border outline outline-[#2bee79]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
                                 }>Menú</Tab>
+                                <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-10 bg-red-50 cursor-pointer w-full hidden md:block rounded-xl transition">
+                                    <span className="font-bold">Cerrar Sesión</span>
+                                </button>
                             </TabList>
-                            <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-8 bg-red-50 cursor-pointer w-full hidden md:block rounded-xl transition">
-                                <span className="font-bold">Cerrar Sesión</span>
-                            </button>
-                        </div>
 
-                        <TabPanels className="flex w-full mt-4 md:mt-0 bg-white rounded-2xl p-6 shadow-sm">
-                            <TabPanel>
-                                <UserSettings user={user} token={token} />
-                            </TabPanel>
-                            <TabPanel>
-                                <MenuItems dataFoods={foods} />
-                            </TabPanel>
-                        </TabPanels>
-                    </TabGroup>
-                    <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-10 bg-red-50 cursor-pointer w-60 block md:hidden rounded-xl transition">
-                        <span className="font-bold">Cerrar Sesión</span>
-                    </button>
+                            <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-4">
+                                <TabPanel className="w-full md:w-[60%]">
+                                    <UserSettings user={user} token={token} />
+                                </TabPanel>
+                                <TabPanel className="w-full min-h-[calc(100vh-200px)] h-fit ">
+                                    <MenuItems dataFoods={foods} />
+                                </TabPanel>
+                            </TabPanels>
+                        </TabGroup>
+
+                        <button onClick={handleLogout} className="text-red-500 border border-red-800/20 w-full hover:bg-red-100 p-2 mt-10 bg-red-50 cursor-pointer block md:hidden rounded-xl transition">
+                            <span className="font-bold">Cerrar Sesión</span>
+                        </button>
+
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
