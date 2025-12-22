@@ -17,7 +17,7 @@ const FoodGroupOptions: React.FC = () => {
                     <div
                         onClick={() => console.log(option.name)}
                         key={index}
-                        className="flex border px-5 mt-1 mb-1 border-gray-400 flex-col w-[22%] h-25 cursor-pointer items-center justify-center bg-white rounded-2xl shadow-md hover:bg-gray-100 transition-colors duration-200"
+                        className="flex border px-5 mt-1 mb-1 border-gray-300 flex-col w-[22%] h-25 cursor-pointer items-center justify-center hover:bg-gray-50 rounded-2xl transition-colors duration-200"
                     >
                         <Image
                             className="w-7 h-7"
@@ -28,7 +28,7 @@ const FoodGroupOptions: React.FC = () => {
                             quality={75}
                             loading="eager"
                         />
-                        <span className="text-sm mt-2 font-semibold text-gray-700">{option.name}</span>
+                        <span className="text-sm mt-2 font-semibold text-gray-600">{option.name}</span>
                     </div>
                 ))}
             </div>

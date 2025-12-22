@@ -1,7 +1,7 @@
-export default function Loading() {
+export default function Loading({ count }: { count: number }) {
   return (
-    <div className="space-y-2">
-      {[...Array(4)].map((_, i) => (
+    <div className="space-y-2 w-full">
+      {[...Array(count)].map((_, i) => (
         <div
           key={i}
           className="menu-card rounded-[7px] overflow-hidden my-0.5 shadow-md flex w-full bg-white p-3.5"

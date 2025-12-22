@@ -34,7 +34,7 @@ export default function PromoDay() {
           className="md:w-1/4 h-[20vh] md:h-[25vh] lg:h-[30vh] md:rounded-xl md:shadow-2xl md:shadow-yellow-400"
         />
         <div
-          className="flex flex-row md:bg-white/15 border-2 border-yellow-300/40 md:ml-2 rounded-xl text-white p-3.5 md:w-full md:p-10"
+          className="flex flex-row md:ml-2 rounded-xl text-white p-3.5 md:w-full md:p-10"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -44,7 +44,7 @@ export default function PromoDay() {
             className="md:flex md:flex-col md:justify-around"
             style={{ flex: 1, textAlign: "left" }}>
             <h2
-              className="leading-5.5 md:leading-tight text-[21px] md:text-[3vw] font-black mb-1.5 md:w-full"
+              className="leading-5.5 md:leading-none text-[21px] md:text-[3vw] font-black mb-1.5 md:w-full"
             >
               {title}
             </h2>

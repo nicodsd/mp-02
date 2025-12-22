@@ -50,7 +50,7 @@ export default function CategoriesForm({
     setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
   };
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex w-full flex-col gap-y-2">
       {/* Lista de categorías */}
       {allCategories?.length > 0 && (
         <div className="flex flex-wrap gap-y-1 gap-x-px">
@@ -77,7 +77,7 @@ export default function CategoriesForm({
       )}
 
       {/* Bloque para nuevas categorías */}
-      <div className="flex flex-col gap-y-2 bg-white border border-gray-300 min-h-[170px] justify-between rounded-xl px-5 py-5">
+      <div className="flex w-full shadow flex-col gap-y-2 bg-white border border-gray-300 min-h-[170px] justify-between rounded-xl px-5 py-5">
         <h3 className="font-semibold text-sm text-gray-500">Agrega nuevas categorías</h3>
         <div className="flex flex-wrap gap-y-1 h-full gap-x-1 w-full">
           {arrayNewCategory.map((item) => (
