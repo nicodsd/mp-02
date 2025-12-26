@@ -34,8 +34,8 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
                             </TabList>
 
                             <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-4">
-                                <TabPanel className="w-full md:w-[60%]">
-                                    <UserSettings user={user} token={token} />
+                                <TabPanel className="w-full min-h-[calc(100vh-200px)] md:w-[60%]">
+                                    <UserSettings user={user} token={token} apiUrl={apiUrl} />
                                 </TabPanel>
                                 <TabPanel className="w-full min-h-[calc(100vh-200px)] h-fit ">
                                     <MenuItems dataFoods={foods} />

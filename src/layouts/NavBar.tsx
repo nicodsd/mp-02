@@ -41,7 +41,7 @@ export default function NavBar({ state, text, cookie, photo, user }: NavBarProps
             </Link> :
             <Link
               href="/registro-de-usuario"
-              className="px-4 py-1.5 text-md font-bold newfood border border-yellow-200 text-white rounded-md transition"
+              className="px-4 py-1.5 text-md font-bold newfood border border-[#fff1a2] text-white rounded-md transition"
             >
               Prueba ahora!
             </Link>

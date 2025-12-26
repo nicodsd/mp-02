@@ -4,11 +4,10 @@ import foods from "@/src/data/foods-1.json";
 import categoriesData from "@/src/data/categories.json";
 import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
 import Categories from "@/src/components/Categories";
-import MenuCard from "@/src/components/FoodsCards";
-import RenderCards from "@/src/components/RenderCards";
 import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
+import RenderCards from "../components/RenderCards";
 type Food = {
   _id: string | number;
   photo: string;
@@ -19,6 +18,15 @@ type Food = {
 };
 export default function Inicio() {
   const [arrayFoods, setarrayFoods] = useState<Food[]>(foods);
+  console.log(arrayFoods);
+  function formatearPrecio(precio: number | string) {
+    const value = typeof precio === "string" ? Number(precio) : precio;
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0,
+    }).format(value);
+  }
   function setCats(category: string) {
     if (category.length > 1) {
       const result = foods.filter((food) => food.category === category);
@@ -49,14 +57,14 @@ export default function Inicio() {
         <section className="flex flex-col">
           <PromoDay />
         </section>
-        <section className="flex h-full flex-col gap-3 md:px- md:pb-8 md:pt-3 md:mx-[25vh] md:rounded-b-2xl">
+        <section className="flex min-h-[calc(90vh-100px)] flex-col gap-3 md:px- md:pb-8 md:pt-3 md:mx-[25vh] md:rounded-b-2xl">
           <FoodsOptions />
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
           <div className="flex justify-between items-center mt-4">
             <Categories categories={categoriesData} selectCategory={setCats} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>
-          <RenderCards foods={arrayFoods} count={6} context={false} />
+          <RenderCards foods={arrayFoods} count={4} context={false} />
         </section>
       </div>
     </div>
