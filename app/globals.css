@@ -6,8 +6,8 @@ html {
 
 .newfood {
   background: #fff7ab;
-  background: -webkit-linear-gradient(270deg, rgba(255, 247, 171, 1) 0%, rgba(240, 200, 0, 1) 35%, rgba(201, 201, 201, 1) 100%);
-  background: -moz-linear-gradient(270deg, rgba(255, 247, 171, 1) 0%, rgba(240, 200, 0, 1) 35%, rgba(201, 201, 201, 1) 100%);
-  background: linear-gradient(270deg, rgba(255, 247, 171, 1) 0%, rgba(240, 200, 0, 1) 35%, rgba(201, 201, 201, 1) 100%);
+  background: -webkit-linear-gradient(270deg, rgba(255, 32, 199) 0%, rgba(240, 200, 0, 1) 35%, rgb(255, 40, 40) 100%);
+  background: -moz-linear-gradient(200deg, rgba(255, 32, 199) 0%, rgba(240, 200, 0, 1) 35%, rgb(255, 40, 40) 100%);
+  background: linear-gradient(290deg, rgb(255, 32, 199) 0%, rgba(240, 200, 0, 1) 35%, rgb(255, 40, 40) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#FFF7AB", endColorstr="#C9C9C9", GradientType=0);
 }

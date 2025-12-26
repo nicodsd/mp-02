@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const foods = await getFoodsByUser(apiUrl, user.id);
   return (
     <>
-      <NavBarWrapper state={2} text={user.name!} cookie={token!} photo={user.photo!} user={user!} />
+      <NavBarWrapper state={1} text={"Panel de usuario"} cookie={token!} photo={user.photo!} user={user!} />
       <PanelUser user={user!} foods={foods!} token={token!} />
     </>
   );
