@@ -6,33 +6,46 @@ import UserIndex from "@/src/pagesComponents/UserIndex"
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
+import { FaPlus } from 'react-icons/fa';
+import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 export default async function Page() {
   let foodsByUser;
   let categoriesByUser;
   let subCategoriesByUser;
   let user;
-  const state = 0;
+  let description;
+  description = "Comida al paso.";
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   const userCookie = cookieStore.get("user")?.value;
   if (userCookie) {
     user = JSON.parse(userCookie);
+    if (user.description) {
+      description = user.description;
+    }
     foodsByUser = await getFoodsByUser(apiUrl, user.id!);
     categoriesByUser = await getCategoriesByUser(apiUrl, user.id!);
     subCategoriesByUser = await getSubCategoriesByUser(apiUrl, user.id!);
   }
   return (
-    <>
-      <NavBar state={state} text={user?.name!} cookie={token!} photo={user?.photo!} user={user!} />
+    <div className="flex relative flex-col min-h-screen">
+      <NavBar state={0} text={user?.name!} cookie={token!} photo={user?.photo!} user={user!} description={description!} />
       {
         user ? <UserIndex
           initialCategories={categoriesByUser!}
           initialFoods={foodsByUser!}
           initialSubCategories={subCategoriesByUser!}
+          user={user!}
+          token={token!}
         /> : <Index />
       }
+      {token && user &&
+        <div className="fixed bottom-10 right-10">
+          <AddFoodBttn state={true} />
+        </div>
+      }
       <Footer />
-    </>
+    </div>
   );
 }

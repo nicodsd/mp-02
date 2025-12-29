@@ -7,7 +7,7 @@ import { PhotoCamera, CloudUpload, DeleteOutline } from '@mui/icons-material';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const imgPlaceholder = "/images/image_placeholder.png";
+const imgPlaceholder = "/images/placeholders/image_placeholder.png";
 
 export default function FormFoods({
   initialCategories,
