@@ -5,12 +5,12 @@ import Index from "@/src/pagesComponents/Index";
 import UserIndex from "@/src/pagesComponents/UserIndex"
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
-//import logo from "@/public/images/logo/LOGO2.svg";
-//import Image from "next/image";
+import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 export default async function Page() {
   let foodsByUser;
   let categoriesByUser;
+  let subCategoriesByUser;
   let user;
   const state = 0;
   const cookieStore = await cookies();
@@ -20,6 +20,7 @@ export default async function Page() {
     user = JSON.parse(userCookie);
     foodsByUser = await getFoodsByUser(apiUrl, user.id!);
     categoriesByUser = await getCategoriesByUser(apiUrl, user.id!);
+    subCategoriesByUser = await getSubCategoriesByUser(apiUrl, user.id!);
   }
   return (
     <>
@@ -28,6 +29,7 @@ export default async function Page() {
         user ? <UserIndex
           initialCategories={categoriesByUser!}
           initialFoods={foodsByUser!}
+          initialSubCategories={subCategoriesByUser!}
         /> : <Index />
       }
       <Footer />

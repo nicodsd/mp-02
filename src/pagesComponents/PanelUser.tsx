@@ -21,11 +21,11 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
 
                             <TabList className="flex w-full md:flex-col space-x-1 md:space-x-0 md:space-y-2 md:w-[20vw] md:h-fit">
                                 <Tab className={({ selected }) =>
-                                    `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                    `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
                                 ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
                                 }>Usuario</Tab>
                                 <Tab className={({ selected }) =>
-                                    `w-full md:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                    `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
                                 ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
                                 }>Menú</Tab>
                                 <button onClick={handleLogout} className="text-red-500 border border-red-800/20 hover:bg-red-100 p-2 mt-10 bg-red-50 cursor-pointer w-full hidden md:block rounded-xl transition">
@@ -34,10 +34,10 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
                             </TabList>
 
                             <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-4">
-                                <TabPanel className="w-full min-h-[calc(100vh-200px)] md:w-[60%]">
+                                <TabPanel className="w-full md:min-h-[calc(100vh-200px)] md:w-[60%]">
                                     <UserSettings user={user} token={token} apiUrl={apiUrl} />
                                 </TabPanel>
-                                <TabPanel className="w-full min-h-[calc(100vh-200px)] h-fit ">
+                                <TabPanel className="w-full md:min-h-[calc(100vh-200px)] h-fit">
                                     <MenuItems dataFoods={foods} />
                                 </TabPanel>
                             </TabPanels>

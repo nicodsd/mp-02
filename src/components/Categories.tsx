@@ -25,7 +25,7 @@ export function Categories({
           msOverflowStyle: "none",
         }}
       >
-        <a
+        {categories?.length > 1 && <a
           key="All"
           href="#"
           onClick={(e) => {
@@ -36,8 +36,8 @@ export function Categories({
             }`}
         >
           Todo
-        </a>
-        {categories?.map((category) => (
+        </a>}
+        {categories?.map((category: Category) => (
           <a
             key={category._id}
             href="#"

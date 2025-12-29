@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 export async function refreshPage() {
     revalidateTag('categories', 'max');
     revalidateTag('foods', 'max');
+    revalidateTag('sub_categories', 'max');
 }
 
 export async function setAuthCookie(token: string) {

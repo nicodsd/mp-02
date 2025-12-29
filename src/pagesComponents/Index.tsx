@@ -18,15 +18,6 @@ type Food = {
 };
 export default function Inicio() {
   const [arrayFoods, setarrayFoods] = useState<Food[]>(foods);
-  console.log(arrayFoods);
-  function formatearPrecio(precio: number | string) {
-    const value = typeof precio === "string" ? Number(precio) : precio;
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
   function setCats(category: string) {
     if (category.length > 1) {
       const result = foods.filter((food) => food.category === category);
