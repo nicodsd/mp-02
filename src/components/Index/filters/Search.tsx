@@ -5,7 +5,7 @@ interface SearchInputProps {
     arrayFoods: any[];
     setSearch: (query: string) => void;
 }
-const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Buscar...', arrayFoods, setSearch }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Buscá tu plato...', arrayFoods, setSearch }) => {
     const [query, setQuery] = useState('');
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filteredFoods = arrayFoods.filter((food) => food.name.toLowerCase().includes(e.target.value.toLowerCase()));
@@ -13,13 +13,13 @@ const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Buscar...', ar
         setSearch(e.target.value);
     };
     return (
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full">
             <input
                 type="search"
                 placeholder={placeholder}
                 value={query}
                 onChange={handleSearch}
-                className="pl-10 pr-2 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                className="pl-10 pr-2 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
             />
             <FaSearch className="absolute left-3 text-red-500" />
         </div>

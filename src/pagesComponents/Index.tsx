@@ -16,6 +16,7 @@ type Food = {
   price: number
   category: string;
 };
+const background = "/images/placeholders/background.png";
 export default function Inicio() {
   const [arrayFoods, setarrayFoods] = useState<Food[]>(foods);
   function setCats(category: string) {
@@ -43,21 +44,20 @@ export default function Inicio() {
     }
   }
   return (
-    <div className="w-full asap h-auto">
-      <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
-        <section className="flex flex-col">
-          <PromoDay />
-        </section>
-        <section className="flex min-h-[calc(90vh-100px)] flex-col gap-3 md:px- md:pb-8 md:pt-3 md:mx-[25vh] md:rounded-b-2xl">
-          <FoodsOptions />
-          <Search arrayFoods={arrayFoods} setSearch={setSearch} />
-          <div className="flex justify-between items-center mt-4">
+    <div className="w-full p-3 md:p-0 md:px-10 bg-white md:py-6 h-full">
+      <section className="flex flex-col">
+        <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+      </section>
+      <section className="flex min-h-[calc(90vh-100px)] mt-4 flex-col gap-8 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw]">
+        <PromoDay />
+        <div className="flex flex-col gap-1">
+          <div className="flex justify-between items-center">
             <Categories categories={categoriesData} selectCategory={setCats} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>
           <RenderCards foods={arrayFoods} count={4} context={false} />
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

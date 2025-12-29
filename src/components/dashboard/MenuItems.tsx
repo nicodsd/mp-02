@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { FaSearch, FaPlus } from 'react-icons/fa';
 import RenderCards from "@/src/components/RenderCards";
 import SearchInput from "@/src/components/Index/filters/Search";
+import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
   const [arrayFoods, setarrayFoods] = useState(dataFoods);
   function setSearch(query: string) {
@@ -29,20 +29,15 @@ export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
           <span className="text-xs font-medium text-gray-600">Vistas</span>
         </div>
       </div>
-
       <div className="flex flex-col gap-6 w-full px-2 border-t border-gray-200 pt-6">
-        <div className="relative ">
+        <div className="flex items-center gap-2 w-full">
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
+          <AddFoodBttn state={false} />
         </div>
-        <div className="flex w-full">
+        <div className="flex w-full relative">
           <RenderCards foods={arrayFoods} count={6} context={true} />
         </div>
       </div>
-
-      <button className="fixed bottom-10 right-10 h-14 w-14 rounded-full bg-[#ff6600] border-white border shadow-lg flex items-center justify-center cursor-pointer hover:border-white hover:border-3 hover:opacity-80 hover:scale-105 transition-transform">
-        <span className="cursor-pointer"><FaPlus className="text-white" size={20} /></span>
-      </button>
-
     </div>
   );
 }
