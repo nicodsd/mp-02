@@ -1,64 +1,93 @@
 "use client";
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
-import axios from "axios";
+
 interface Category {
   _id: string;
   name: string;
 }
+
+interface User {
+  id: string;
+}
+
 interface CategoriesFormProps {
   categoriesList: Category[];
   onChange?: (selected: string[]) => void;
+  user: User;
 }
+
 export default function CategoriesForm({
   categoriesList,
   onChange,
+  user,
 }: CategoriesFormProps) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [selected, setSelected] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [arrayNewCategory, setArrayNewCategory] = useState<string[]>([]);
-  if (!categoriesList) {
-    categoriesList = [];
-  }
-  const allCategories = categoriesList;
+
+  const allCategories = categoriesList ?? [];
 
   const handleCheckboxChange = (name: string): void => {
     if (!selected.includes(name)) {
       const updated = [...selected, name];
       setSelected(updated);
       onChange?.(updated);
-    }
-    else {
+    } else {
       const updated = selected.filter((item) => item !== name);
       setSelected(updated);
       onChange?.(updated);
     }
   };
 
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     if (!newCategory.trim()) return;
     const newCat = { _id: crypto.randomUUID(), name: newCategory };
     setSelected([...selected, newCat.name]);
     setArrayNewCategory([...arrayNewCategory, newCat.name]);
     setNewCategory("");
     handleCheckboxChange(newCat.name);
+
+    const formData = new FormData();
+    formData.append("names_sub_category", newCategory);
+    formData.append("user_id", user.id);
+
+    try {
+      const res = await fetch(apiUrl + `api/foods/sub`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Network response was not ok");
+      const data = await res.json();
+      console.log("Success:", data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const deleteNewCategory = (category: string) => {
-    const updatedArrayNewCategory = arrayNewCategory.filter((cat) => cat !== category);
+    const updatedArrayNewCategory = arrayNewCategory.filter(
+      (cat) => cat !== category
+    );
     setArrayNewCategory(updatedArrayNewCategory);
-    setSelected((prevSelected) => prevSelected.filter((cat) => cat !== category));
+    setSelected((prevSelected) =>
+      prevSelected.filter((cat) => cat !== category)
+    );
   };
+
   return (
     <div className="flex w-full flex-col gap-y-2">
       {/* Lista de categorías */}
-      {allCategories?.length > 0 && (
+      {allCategories.length > 0 && (
         <div className="flex flex-wrap gap-y-1 gap-x-px">
           {allCategories.map((item) => (
             <label
               key={item._id}
               className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-            ${selected.includes(item.name)
+              ${selected.includes(item.name)
                   ? "bg-indigo-600 text-white border-indigo-600"
                   : "bg-gray-100 text-gray-500 border-gray-300 hover:bg-gray-200"
                 }`}
@@ -78,13 +107,15 @@ export default function CategoriesForm({
 
       {/* Bloque para nuevas categorías */}
       <div className="flex w-full shadow flex-col gap-y-2 bg-white border border-gray-300 min-h-[170px] justify-between rounded-xl px-5 py-5">
-        <h3 className="font-semibold text-sm text-gray-500">Agrega nuevas categorías</h3>
+        <h3 className="font-semibold text-sm text-gray-500">
+          Agrega nuevas categorías
+        </h3>
         <div className="flex flex-wrap gap-y-1 h-full gap-x-1 w-full">
           {arrayNewCategory.map((item) => (
             <label
               key={item}
               className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-            ${selected.includes(item)
+              ${selected.includes(item)
                   ? "bg-indigo-600 text-white border-indigo-600"
                   : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
                 }`}

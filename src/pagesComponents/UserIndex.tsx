@@ -15,20 +15,23 @@ type Food = {
     description: string;
     price: number
     category: string;
+    sub_category: string;
 };
 export default function UserIndex({
     initialCategories,
     initialFoods,
+    initialSubCategories,
 }: {
     initialCategories: any[];
     initialFoods: any[];
+    initialSubCategories: any[];
 }) {
     const [arrayFoods, setarrayFoods] = useState<Food[]>(initialFoods);
-    function setCats(category: string) {
-        if (category.length > 1) {
-            const result = initialFoods.filter((food) => food.category === category);
+    function setCats(subCategory: string) {
+        if (subCategory.length > 1) {
+            const result = initialFoods.filter((food) => food.sub_category === subCategory);
             setarrayFoods(result);
-        } else if (category === "0") {
+        } else if (subCategory === "0") {
             setarrayFoods(initialFoods);
         }
     }
@@ -57,12 +60,12 @@ export default function UserIndex({
                     </section>
                     <section className="flex min-h-[calc(90vh-100px)] flex-col gap-0.5 md:px-8 md:pb-8 md:pt-3 md:mx-[2vh] lg:mx-[15vh] md:rounded-b-2xl">
                         {
-                            initialCategories?.length > 0 || arrayFoods ? ( //sin 1 no hay otra
+                            initialSubCategories?.length > 0 || arrayFoods ? ( //sin 1 no hay otra
                                 <>
                                     <FoodsOptions />
                                     <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
                                     <div className="flex justify-between items-center mt-4">
-                                        <Categories categories={initialCategories} selectCategory={setCats} />
+                                        <Categories categories={initialSubCategories} selectCategory={setCats} />
                                         <SortPriceButton onSortChange={setSortOrder} />
                                     </div>
                                     <RenderCards foods={arrayFoods} count={4} context={false} />

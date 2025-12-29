@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@mui/material";
 import { PhotoCamera, CloudUpload, DeleteOutline } from '@mui/icons-material';
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const imgPlaceholder = "/images/image_placeholder.png";
 
@@ -15,14 +16,15 @@ export default function FormFoods({
   initialCategories: any;
   user: any;
 }) {
+  const router = useRouter();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [preview, setPreview] = useState<string>(imgPlaceholder); // URL para mostrar en <Image />
   const [file, setFile] = useState<File | null>(null); // archivo real
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categories, setCategories] = useState<any[]>(initialCategories || []);
+  const [subCategories, setSubCategories] = useState<string[]>([]);
+  const [category, setCategory] = useState<string>("Comidas");
   const [price, setPrice] = useState<string>("");
-  //const [allergens, setAllergens] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
 
   // liberar URL temporal al desmontar
@@ -60,19 +62,19 @@ export default function FormFoods({
     formData.append("name", name);
     formData.append("description", description);
     formData.append("price", price);
-    formData.append("category", JSON.stringify(categories));
-    formData.append("user_id", user.id);
-    //formData.append("allergens", JSON.stringify(allergens));
+    formData.append("sub_category", subCategories.join(","));
+    formData.append("category", category);
 
     try {
-      const res = await fetch(apiUrl + `api/foods/postfood`, {
+      const res = await fetch(apiUrl + `api/foods/postfood/${user.id}`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
-
-      if (!res.ok) throw new Error("Network response was not ok");
+      console.log(res);
+      if (!res.ok) { throw new Error("Network response was not ok"); }
       const data = await res.json();
+      router.push('/');
       console.log("Success:", data);
     } catch (error) {
       console.error("Error:", error);
@@ -181,7 +183,7 @@ export default function FormFoods({
             <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">Categorías</label>
             <div className="w-full rounded-2xl">
               {initialCategories?.length > 0 ? (
-                <Categories categoriesList={initialCategories} onChange={setCategories} />
+                <Categories categoriesList={initialCategories} onChange={setSubCategories} user={user} />
               ) : (
                 <p className="text-sm text-gray-400 italic p-2">Cargando categorías...</p>
               )}

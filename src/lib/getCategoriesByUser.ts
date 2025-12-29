@@ -1,7 +1,7 @@
 'use server';
 export async function getCategoriesByUser(apiUrl: string, userId: string) {
     try {
-        const res = await fetch(`${apiUrl}api/categories?user_id=${userId}`, {
+        const res = await fetch(`${apiUrl}api/categories/${userId}`, {
             next: { tags: ['categories'], revalidate: 120 }
         });
         let data = await res?.json();
