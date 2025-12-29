@@ -9,11 +9,12 @@ interface NavBarProps {
   cookie: string;
   photo: string;
   user: any;
-  description: string;
+  description?: string;
 }
 export default function NavBar({ state, text, cookie, photo, user, description }: NavBarProps) {
   const name = text || "QMenu";
   const logo = photo ? photo : "/images/logo/LOGO2.svg";
+  const descrip = description || "Comida al paso.";
   const logoColor = "/images/logo/logo-color.png"
   const background = "/images/placeholders/background.png";
   const navVariants: Record<number, JSX.Element> = {
@@ -36,7 +37,7 @@ export default function NavBar({ state, text, cookie, photo, user, description }
                 </Link>
                 <div className="flex flex-col items-center gap-1">
                   <span className="text-2xl uppercase font-bold text-white">{name}</span>
-                  <p className="text-white text-sm">{description}</p>
+                  <p className="text-white text-sm">{descrip}</p>
                   <div className="flex items-center gap-3 text-gray-300">
                     <p className="text-xs font-light">Salta 1488, Sgo. del Estero, Argentina.</p>
                     <span className="border border-white w-1 h-1 rounded-full"></span>
