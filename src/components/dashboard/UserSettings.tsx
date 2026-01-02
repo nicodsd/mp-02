@@ -1,11 +1,15 @@
 "use client";
 import React, { useState } from "react";
+import InputsUserSettings from "@/src/components/dashboard_comps/InputsUserSettings";
 import Image from "next/image";
 
 const UserSettings = ({ user, token, apiUrl }: { user: any; token: string; apiUrl: string }) => {
   const [name, setName] = useState(user.name);
-  const [preview, setPreview] = useState<string>(user.photo); // URL para mostrar en <Image />
-  const [file, setFile] = useState<File>(); // archivo real
+  const [preview, setPreview] = useState<string>(user.photo);
+  const [file, setFile] = useState<File>();
+  const [description, setDescription] = useState(user.description);
+  const [location, setLocation] = useState(user.location);
+  const [phone, setPhone] = useState(user.phone);
 
   const imageCapture = (selectedFile: File) => {
     if (!selectedFile) return;
@@ -21,6 +25,9 @@ const UserSettings = ({ user, token, apiUrl }: { user: any; token: string; apiUr
     const formData = new FormData();
     if (file) formData.append("photo", file);
     formData.append("name", name);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("phone", phone);
     formData.append("user_id", user.id)
 
     try {
@@ -60,33 +67,7 @@ const UserSettings = ({ user, token, apiUrl }: { user: any; token: string; apiUr
         </label>
       </div>
 
-      {/* Inputs de Formulario */}
-      <div className="w-full space-y-4">
-        <label className="text-gray-600 dark:text-gray-800">Nombre</label>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          className="w-full bg-white border border-gray-300 mt-1 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
-        />
-        <label className="text-gray-600 dark:text-gray-800">Descripción</label>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          className="w-full bg-white border border-gray-300 mt-1 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
-        />
-        <label className="text-gray-600 dark:text-gray-800">Ubicacion</label>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          className="w-full bg-white border border-gray-300 mt-1 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
-        />
-        <label className="text-gray-600 dark:text-gray-800">Telefono</label>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          className="w-full bg-white border border-gray-300 mt-1 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
-        />
-      </div>
+      <InputsUserSettings name={name} setName={setName} description={description} setDescription={setDescription} location={location} setLocation={setLocation} phone={phone} setPhone={setPhone} />
 
       {/* Acciones */}
       <div className="w-full flex gap-3">

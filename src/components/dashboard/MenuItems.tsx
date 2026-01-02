@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import RenderCards from "@/src/components/RenderCards";
+import RenderCards from "@/src/components/RenderCardsExample";
 import SearchInput from "@/src/components/Index/filters/Search";
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 export function MenuItems({ dataFoods }: { dataFoods: any[] }) {

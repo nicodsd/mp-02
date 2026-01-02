@@ -4,7 +4,8 @@
         "name": "Pizza Margherita",
         "description": "Clásica pizza italiana con tomate, mozzarella y albahaca.",
         "price": 10000,
-        "category": "Pizzas",
+        "category": "Comidas",
+        "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/R.jpeg",
         "allergens" : "gluten, dairy"
     },
@@ -13,7 +14,8 @@
         "name": "Hamburguesa",
         "description": "Jugosa hamburguesa de res con queso, lechuga y tomate.",
         "price": 7000,
-        "category": "Hamburguesas",
+        "category": "Entradas",
+        "sub_category": "Hamburguesas",
         "photo": "/images/foods/burguers/OIP.webp",
         "allergens" : "gluten, dairy, egg"
     },
@@ -22,7 +24,8 @@
         "name": "Pizza de Pepperoni",
         "description": "Pizza italiana con queso, pepperoni y albahaca.",
         "price": 12000,
-        "category": "Pizzas",
+        "category": "Comidas",
+        "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/pizza.jpeg",
         "allergens" : "gluten, dairy"
     },
@@ -31,7 +34,8 @@
         "name": "Ensalada César",
         "description": "Ensalada fresca con pollo, crutones y aderezo César.",
         "price": 6000,
-        "category": "Picadas",
+        "category": "Entradas",
+        "sub_category": "Picadas",
         "photo": "/images/foods/picadas/5e997e650c7b6.jpeg",
         "allergens" : "dairy, fish, egg"
     },
@@ -40,7 +44,8 @@
         "name": "Sushi Roll",
         "description": "Rollos de sushi rellenos de salmón y aguacate.",
         "price": 9500,
-        "category": "Sushi",
+        "category": "Entradas",    
+        "sub_category": "Sushi",
         "photo": "/images/foods/picadas/R.jpeg",
         "allergens" : "fish, soy, sesame"
     },
@@ -49,7 +54,8 @@
         "name": "Tacos al Pastor",
         "description": "Tacos mexicanos de cerdo marinado con piña y cebolla.",
         "price": 5000,
-        "category": "Tacos",
+        "category": "Entradas",
+        "sub_category": "Tacos",
         "photo": "/images/foods/tacos/OIP.webp",
         "allergens" : "gluten"
     },
@@ -58,7 +64,8 @@
         "name": "Ensalada de Pollo",
         "description": "Ensalada de pollo con queso, lechuga y tomate.",
         "price": 6000,
-        "category": "Picadas",
+        "category": "Entradas",
+        "sub_category": "Picadas",
         "photo": "/images/foods/picadas/1571779987281.jpeg",
         "allergens" : "dairy, fish, egg"
     },
@@ -68,6 +75,7 @@
         "description": "Jugo de naranja fresco con hierbas y hierbas.",
         "price": 2000,
         "category": "Bebidas",
+        "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/batidos/OIP.webp",
         "allergens" : "dairy"
     },
@@ -77,7 +85,18 @@
         "description": "Jugo de limón fresco con hierbas y hierbas.",
         "price": 2000,
         "category": "Bebidas",
+        "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/batidos/jugo-de-limon-con-menta.jpg",
+        "allergens" : "dairy"
+    },
+    {
+        "_id": 10,
+        "name": "Tiramisú",
+        "description": "Postre italiano con queso y café.",
+        "price": 2000,
+        "category": "Postres",
+        "sub_category": "Postres",
+        "photo": "/images/foods/postres/R.jpeg",
         "allergens" : "dairy"
     }
 ]

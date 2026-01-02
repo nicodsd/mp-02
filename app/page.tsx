@@ -8,6 +8,7 @@ import NavBar from "@/src/layouts/NavBar";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
 import { FaPlus } from 'react-icons/fa';
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
+import categoriesData from "@/src/data/categories.json";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 export default async function Page() {
   let foodsByUser;
@@ -25,7 +26,6 @@ export default async function Page() {
       description = user.description;
     }
     foodsByUser = await getFoodsByUser(apiUrl, user.id!);
-    categoriesByUser = await getCategoriesByUser(apiUrl, user.id!);
     subCategoriesByUser = await getSubCategoriesByUser(apiUrl, user.id!);
   }
   return (
@@ -33,7 +33,7 @@ export default async function Page() {
       <NavBar state={0} text={user?.name!} cookie={token!} photo={user?.photo!} user={user!} description={description!} />
       {
         user ? <UserIndex
-          initialCategories={categoriesByUser!}
+          initialCategories={categoriesData}
           initialFoods={foodsByUser!}
           initialSubCategories={subCategoriesByUser!}
           user={user!}
@@ -41,7 +41,7 @@ export default async function Page() {
         /> : <Index />
       }
       {token && user &&
-        <div className="fixed bottom-10 right-10">
+        <div className="fixed bottom-10 right-7 md:right-10">
           <AddFoodBttn state={true} />
         </div>
       }

@@ -12,7 +12,7 @@ const asap = Asap({
 
 export const metadata: Metadata = {
   title: "QMenú",
-  description: "Aplicación de menú con diferentes platillos",
+  description: "Tu menú en tus manos.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
