@@ -32,7 +32,7 @@ export function Categories({
             e.preventDefault();
             handleClick("0");
           }}
-          className={`py-0.5 no-underline px-3 border-b-[3px] font-bold ${activeCategory === "0" ? "border-red-600" : "border-gray-300"
+          className={`py-0.5 no-underline px-3 border-x border-b-[3px] rounded-[7px] font-bold ${activeCategory === "0" ? "border-red-500" : "border-gray-300"
             }`}
         >
           Todo
@@ -45,8 +45,8 @@ export function Categories({
               e.preventDefault();
               handleClick(category.name);
             }}
-            className={`py-0.5 no-underline px-3 border-b-[3px] font-bold ${activeCategory === category.name
-              ? "border-red-600"
+            className={`py-0.5 no-underline px-3 border-x border-b-[3px] rounded-[7px] font-bold ${activeCategory === category.name
+              ? "border-red-500"
               : "border-gray-300"
               }`}
           >

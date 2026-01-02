@@ -14,7 +14,7 @@ interface NavBarProps {
 export default function NavBar({ state, text, cookie, photo, user, description }: NavBarProps) {
   const name = text || "QMenu";
   const logo = photo ? photo : "/images/logo/LOGO2.svg";
-  const descrip = description || "Comida al paso.";
+  const descrip = description ? description : "Comida al paso.";
   const logoColor = "/images/logo/logo-color.png"
   const background = "/images/placeholders/background.png";
   const navVariants: Record<number, JSX.Element> = {

@@ -1,0 +1,34 @@
+[
+{
+    "_id": 1,
+    "name": "Pizzas"
+},
+{
+    "_id": 2,
+    "name": "Hamburguesas"
+},
+{
+    "_id": 3,
+    "name": "Picadas"
+},
+{
+    "_id": 4,
+    "name": "Sushi"
+},
+{
+    "_id": 5,
+    "name": "Tacos"
+},
+{
+    "_id": 6,
+    "name": "Bebidas"
+},
+{
+    "_id": 7,
+    "name": "Postres"
+},
+{
+    "_id": 8,
+    "name": "Ensaladas"
+}
+]

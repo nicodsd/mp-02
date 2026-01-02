@@ -24,8 +24,8 @@ export default async function Page() {
     if (user.description) {
       description = user.description;
     }
-    foodsByUser = await getFoodsByUser(apiUrl, user.id!);
     categoriesByUser = await getCategoriesByUser(apiUrl, user.id!);
+    foodsByUser = await getFoodsByUser(apiUrl, user.id!);
     subCategoriesByUser = await getSubCategoriesByUser(apiUrl, user.id!);
   }
   return (
@@ -34,14 +34,14 @@ export default async function Page() {
       {
         user ? <UserIndex
           initialCategories={categoriesByUser!}
-          initialFoods={foodsByUser!}
+          foods={foodsByUser!}
           initialSubCategories={subCategoriesByUser!}
           user={user!}
           token={token!}
         /> : <Index />
       }
       {token && user &&
-        <div className="fixed bottom-10 right-10">
+        <div className="fixed bottom-10 right-7 md:right-10">
           <AddFoodBttn state={true} />
         </div>
       }

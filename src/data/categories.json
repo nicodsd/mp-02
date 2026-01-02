@@ -1,34 +1,52 @@
 [
-{
-    "_id": 1,
-    "name": "Pizzas"
-},
-{
-    "_id": 2,
-    "name": "Hamburguesas"
-},
-{
-    "_id": 3,
-    "name": "Picadas"
-},
-{
-    "_id": 4,
-    "name": "Sushi"
-},
-{
-    "_id": 5,
-    "name": "Tacos"
-},
-{
-    "_id": 6,
-    "name": "Bebidas"
-},
-{
-    "_id": 7,
-    "name": "Postres"
-},
-{
-    "_id": 8,
-    "name": "Ensaladas"
-}
+    {
+        "_id": 1,
+        "name": "Entradas",
+        "icon": "/images/icons-index/burga.svg"
+    },
+    {
+        "_id": 2,
+        "name": "Comidas",
+        "icon": "/images/icons-index/pizzas.svg"
+    },
+    {
+        "_id": 3,
+        "name": "Bebidas",
+        "icon": "/images/icons-index/copa.svg"
+    },
+    {
+        "_id": 4,
+        "name": "Postres",
+        "icon": "/images/icons-index/cono.svg"
+    },
+    {
+        "_id": 5,
+        "name": "Ensaladas",
+        "icon": "/images/icons-index/pastas.svg"
+    },
+    {
+        "_id": 6,
+        "name": "Helados",
+        "icon": "/images/icons-index/cono.svg"
+    },
+    {
+        "_id": 7,
+        "name": "Pastas",
+        "icon": "/images/icons-index/pastas.svg"
+    },
+    {
+        "_id": 8,
+        "name": "Pescados",
+        "icon": "/images/icons-index/pescado.svg"
+    },
+    {
+        "_id": 9,
+        "name": "Cafés",
+        "icon": "/images/icons-index/cafe.svg"
+    },
+    {
+        "_id": 10,
+        "name": "Tortas",
+        "icon": "/images/icons-index/torta.svg"
+    }
 ]
