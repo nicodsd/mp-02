@@ -13,7 +13,6 @@ export default function PromoDay() {
   }
   return (
     <section className="flex flex-col text-gray-700 mb-2 items-center md:items-start w-full gap-1.5">
-      <h2 className="text-md ml-1 uppercase font-bold text-start w-full">aprovecha la promo del día</h2>
       <div className="animate__animated animate__bounceIn w-full md:px-[6vw] rounded-lg h-[12vh] md:py-2 bg-radial-[at_50%_75%] md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-red-700 via-red-600 to-yellow-600 to-100% md:w-full flex"
         style={{
           overflow: "hidden",

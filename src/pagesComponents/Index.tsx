@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import foods from "@/src/data/foods-1.json";
-import subCategoriesData from "@/src/data/sub_categories.json";
 import categoriesData from "@/src/data/categories.json";
-import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
+import subCategoriesData from "@/src/data/sub_categories.json";
 import Categories from "@/src/components/Categories";
+import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
 import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
@@ -65,6 +65,7 @@ export default function Inicio() {
   // 🔹 Manejo de subcategorías
   function handleSubCategoryClick(subCategory: string) {
     if (subCategory === "0") {
+      console.log("Mostrar todos los platos de la categoría seleccionada");
       // Mostrar todos los platos de la categoría seleccionada
       const filteredFoods =
         selectedCategory && selectedCategory !== "0"
@@ -72,13 +73,22 @@ export default function Inicio() {
           : foods;
       setarrayFoods(filteredFoods);
     } else {
+      console.log("Mostrar platos de la subcategoría seleccionada");
       // Filtrar platos por subcategoría dentro de la categoría seleccionada
-      const filteredFoods = foods.filter(
-        (food) =>
-          (selectedCategory === "0" || food.category === selectedCategory) &&
-          food.sub_category === subCategory
-      );
-      setarrayFoods(filteredFoods);
+      if (selectedCategory === "0") {
+        const filteredFoods = foods.filter(
+          (food) => food.sub_category === subCategory
+        );
+        setarrayFoods(filteredFoods);
+        console.log("si solo si", filteredFoods);
+      } else {
+        const filteredFoods = foods.filter(
+          (food) =>
+            food.sub_category === subCategory
+        );
+        setarrayFoods(filteredFoods);
+        console.log("si no es 0", filteredFoods);
+      }
     }
   }
 
@@ -101,19 +111,28 @@ export default function Inicio() {
   }
 
   return (
-    <div className="w-full p-3 md:p-0 md:px-10 bg-white md:py-6 h-full">
-      <section className="flex min-h-[calc(90vh-100px)] flex-col gap-8 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw]">
-        <PromoDay />
-        <div className="flex flex-col gap-1">
+    <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
+      <section className="flex min-h-[calc(90vh-100px)] flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
+        <div className="bg-[#fffbf8] rounded-2xl px-2 mx-2 py-2 shadow-md">
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
-          <FoodsOptions
-            selectedCategory={selectedCategory}
-            handleCategoryClick={handleCategoryClick}
-            availableCategories={availableCategories}
-          />
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
+            <PromoDay />
+          </div>
+          <div className="flex flex-col gap-1">
+            <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
+            <FoodsOptions
+              selectedCategory={selectedCategory}
+              handleCategoryClick={handleCategoryClick}
+              availableCategories={availableCategories}
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-1">
-          <div className="flex justify-between items-center">
+          <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">Tipos de platos</h2>
+          <div className="flex justify-between items-end">
             <Categories categories={subCategories} selectCategory={handleSubCategoryClick} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>

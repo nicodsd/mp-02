@@ -18,13 +18,13 @@ type SubCategory = {
     name: string;
 };
 export default function UserIndex({
-    initialCategories,
+    categories,
     foods,
     initialSubCategories,
     user,
     token
 }: {
-    initialCategories: any[];
+    categories: any[];
     foods: any[];
     initialSubCategories: any[];
     user: any;
@@ -34,7 +34,7 @@ export default function UserIndex({
     const [subCategories, setSubCategories] = useState<SubCategory[]>(initialSubCategories);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-    const availableCategories = initialCategories.filter((option) =>
+    const availableCategories = categories.filter((option) =>
         foods.some((food) => food.category === option.name)
     );
 
@@ -70,6 +70,7 @@ export default function UserIndex({
     // 🔹 Manejo de subcategorías
     function handleSubCategoryClick(subCategory: string) {
         if (subCategory === "0") {
+            console.log("Mostrar todos los platos de la categoría seleccionada");
             // Mostrar todos los platos de la categoría seleccionada
             const filteredFoods =
                 selectedCategory && selectedCategory !== "0"
@@ -77,13 +78,22 @@ export default function UserIndex({
                     : foods;
             setarrayFoods(filteredFoods);
         } else {
+            console.log("Mostrar platos de la subcategoría seleccionada");
             // Filtrar platos por subcategoría dentro de la categoría seleccionada
-            const filteredFoods = foods.filter(
-                (food) =>
-                    (selectedCategory === "0" || food.category === selectedCategory) &&
-                    food.sub_category === subCategory
-            );
-            setarrayFoods(filteredFoods);
+            if (selectedCategory === "0") {
+                const filteredFoods = foods.filter(
+                    (food) => food.sub_category === subCategory
+                );
+                setarrayFoods(filteredFoods);
+                console.log("si solo si", filteredFoods);
+            } else {
+                const filteredFoods = foods.filter(
+                    (food) =>
+                        food.sub_category === subCategory
+                );
+                setarrayFoods(filteredFoods);
+                console.log("si no es 0", filteredFoods);
+            }
         }
     }
 

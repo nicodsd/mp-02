@@ -17,42 +17,48 @@ export function Categories({
     selectCategory(name);
   };
   return (
-    <section className="w-[82%] text-[17px] font-medium">
+    <section className="w-[82%] h-fit text-[17px] font-medium">
       <div
-        className="flex gap-1 py-1 pl-3 overflow-y-scroll text-gray-700"
+        className="flex gap-1 pl-2 overflow-y-scroll text-gray-700"
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
       >
-        {categories?.length > 1 && <a
-          key="All"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            handleClick("0");
-          }}
-          className={`py-0.5 no-underline px-3 border-x border-b-[3px] rounded-[7px] font-bold ${activeCategory === "0" ? "border-red-500" : "border-gray-300"
-            }`}
-        >
-          Todo
-        </a>}
-        {categories?.map((category: Category) => (
-          <a
-            key={category._id}
-            href="#"
+        {
+          categories?.length > 1 && <button
+            key="All"
             onClick={(e) => {
               e.preventDefault();
-              handleClick(category.name);
+              handleClick("0");
             }}
-            className={`py-0.5 no-underline px-3 border-x border-b-[3px] rounded-[7px] font-bold ${activeCategory === category.name
-              ? "border-red-500"
-              : "border-gray-300"
+            className={`py-0.5 no-underline px-3 rounded-[7px] font-bold 
+              ${activeCategory === "0"
+                ? "bg-gray-900 text-white border"
+                : "text-gray-800 border border-gray-300"
               }`}
           >
-            {category.name}
-          </a>
-        ))}
+            Todo
+          </button>
+        }
+        {
+          categories?.map((category: Category) => (
+            <button
+              key={category._id}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClick(category.name);
+              }}
+              className={`py-0.5 no-underline px-3 rounded-[7px] font-bold 
+                ${activeCategory === category.name
+                  ? "bg-gray-900 text-white border"
+                  : "text-gray-800 border border-gray-300"
+                }`}
+            >
+              {category.name}
+            </button>
+          ))
+        }
       </div>
     </section>
   );
