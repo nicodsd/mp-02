@@ -6,7 +6,6 @@ import UserIndex from "@/src/pagesComponents/UserIndex"
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
-import { FaPlus } from 'react-icons/fa';
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 export default async function Page() {
@@ -33,7 +32,7 @@ export default async function Page() {
       <NavBar state={0} text={user?.name!} cookie={token!} photo={user?.photo!} user={user!} description={description!} />
       {
         user ? <UserIndex
-          initialCategories={categoriesByUser!}
+          categories={categoriesByUser!}
           foods={foodsByUser!}
           initialSubCategories={subCategoriesByUser!}
           user={user!}
