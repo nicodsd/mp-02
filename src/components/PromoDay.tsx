@@ -13,6 +13,7 @@ interface Food {
 
 //debemos traer una prop llamada promo
 export default function PromoDay({ foods }: { foods: Food[] }) {
+  //let lastPrice = foods[0]?.lastPrice ? foods[0].lastPrice : foods[0].price + (foods[0].price * 0.2);
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {
@@ -64,7 +65,7 @@ export default function PromoDay({ foods }: { foods: Food[] }) {
               <p
                 className="text-[12px] text-center font-bold text-white line-through md:text-[2vw]"
               >
-                {/* Antes: {formatearPrecio(lastPrice)} */}
+                Antes: {formatearPrecio(foods[0].price + (foods[0].price * 0.2))}
               </p>
               <p
                 className="text-[22px] text-center font-bold text-white md:text-[2vw]"

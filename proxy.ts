@@ -6,7 +6,7 @@ export function proxy(req: any) {
     const protectedRoutes = ["/panel-de-usuario", "/nuevo-plato"];
     if (protectedRoutes.some((path) => req.nextUrl.pathname.startsWith(path))) {
         if (!token || !user) {
-            return NextResponse.redirect(new URL("/iniciar-sesion", req.url));
+            return NextResponse.redirect(new URL("/registro-de-usuario", req.url));
         }
     }
     return NextResponse.next();

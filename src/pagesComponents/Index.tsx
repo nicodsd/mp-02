@@ -9,6 +9,7 @@ import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
 import RenderCards from "../components/RenderCardsExample";
+import Footer from "../layouts/Footer";
 
 type Food = {
   _id: string | number;
@@ -111,15 +112,15 @@ export default function Inicio() {
   }
 
   return (
-    <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
-      <section className="flex min-h-[calc(90vh-100px)] flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
+    <div className="w-full px-3 md:p-0 md:px-10 md:py-6 min-h-[calc(90vh-100px)] -translate-y-10">
+      <section className="flex h-fit flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw]">
         <div className="bg-[#fffbf8] rounded-2xl px-2 mx-2 py-2 shadow-md">
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
-            {/* <PromoDay foods={arrayFoods} /> */}
+            <PromoDay foods={arrayFoods} />
           </div>
           <div className="flex flex-col gap-1">
             <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
@@ -136,7 +137,7 @@ export default function Inicio() {
             <Categories categories={subCategories} selectCategory={handleSubCategoryClick} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>
-          <div className="h-[calc(50vh-100px)]">
+          <div className="">
             <RenderCards foods={arrayFoods} count={4} context={false} />
           </div>
         </div>
