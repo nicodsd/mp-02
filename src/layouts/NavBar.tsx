@@ -14,7 +14,7 @@ interface NavBarProps {
 }
 export default function NavBar({ state, text, cookie, photo, user, description }: NavBarProps) {
   const name = text || "QMenu";
-  const logo = photo ? photo : "/images/logo/LOGO2.svg";
+  const logo = "/images/logo/LOGO2.svg";
   const descrip = description ? description : "Comida al paso.";
   const logoColor = "/images/logo/logo-color.png"
   const background = "/images/placeholders/background.png";
@@ -27,7 +27,7 @@ export default function NavBar({ state, text, cookie, photo, user, description }
               <div className={`flex flex-col items-center ${cookie && user ? "gap-4" : "gap-2"} drop-shadow-xl drop-shadow-black/50`}>
                 <Link className="relative" href="/panel-de-usuario">
                   <Image
-                    src={logo}
+                    src={photo}
                     loading="lazy"
                     alt="Logo"
                     width={100}

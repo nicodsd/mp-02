@@ -1,7 +1,8 @@
 "use client";
 import FoodsCardsExample from "@/src/components/foods_cards/FoodsCardsExample";
 import Loading from "@/src/skeleton/Loading";
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
+
 type RenderCardsProps = {
     foods: any[];
     count?: number;

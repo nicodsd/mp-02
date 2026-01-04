@@ -25,7 +25,7 @@ type SubCategory = {
 };
 
 export default function Inicio() {
-  const [arrayFoods, setarrayFoods] = useState<Food[]>(foods);
+  const [arrayFoods, setArrayFoods] = useState<Food[]>(foods);
   const [subCategories, setSubCategories] = useState<SubCategory[]>(subCategoriesData);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
@@ -38,7 +38,7 @@ export default function Inicio() {
     // Si vuelvo a presionar la misma categoría, reinicio todo
     if (selectedCategory === category) {
       setSelectedCategory("0"); // reinicio selección
-      setarrayFoods(foods); // muestro todos los platos
+      setArrayFoods(foods); // muestro todos los platos
       setSubCategories(subCategoriesData); // muestro todas las subcategorías
       return;
     }
@@ -47,12 +47,12 @@ export default function Inicio() {
 
     if (category === "0") {
       // Mostrar todos los platos y todas las subcategorías
-      setarrayFoods(foods);
+      setArrayFoods(foods);
       setSubCategories(subCategoriesData);
     } else {
       // Filtrar platos por categoría
       const filteredFoods = foods.filter((food) => food.category === category);
-      setarrayFoods(filteredFoods);
+      setArrayFoods(filteredFoods);
 
       // Filtrar subcategorías en base a los platos filtrados
       const filteredSubCategories = subCategoriesData.filter((subCat) =>
@@ -71,7 +71,7 @@ export default function Inicio() {
         selectedCategory && selectedCategory !== "0"
           ? foods.filter((food) => food.category === selectedCategory)
           : foods;
-      setarrayFoods(filteredFoods);
+      setArrayFoods(filteredFoods);
     } else {
       console.log("Mostrar platos de la subcategoría seleccionada");
       // Filtrar platos por subcategoría dentro de la categoría seleccionada
@@ -79,14 +79,14 @@ export default function Inicio() {
         const filteredFoods = foods.filter(
           (food) => food.sub_category === subCategory
         );
-        setarrayFoods(filteredFoods);
+        setArrayFoods(filteredFoods);
         console.log("si solo si", filteredFoods);
       } else {
         const filteredFoods = foods.filter(
           (food) =>
             food.sub_category === subCategory
         );
-        setarrayFoods(filteredFoods);
+        setArrayFoods(filteredFoods);
         console.log("si no es 0", filteredFoods);
       }
     }
@@ -96,7 +96,7 @@ export default function Inicio() {
     const sorted = [...arrayFoods].sort((a, b) =>
       order === "asc" ? a.price - b.price : b.price - a.price
     );
-    setarrayFoods(sorted);
+    setArrayFoods(sorted);
   }
 
   function setSearch(query: string) {
@@ -104,9 +104,9 @@ export default function Inicio() {
       const result = foods.filter((food) =>
         food.name.toLowerCase().includes(query.toLowerCase())
       );
-      setarrayFoods(result);
+      setArrayFoods(result);
     } else {
-      setarrayFoods(foods);
+      setArrayFoods(foods);
     }
   }
 
@@ -136,9 +136,11 @@ export default function Inicio() {
             <Categories categories={subCategories} selectCategory={handleSubCategoryClick} />
             <SortPriceButton onSortChange={setSortOrder} />
           </div>
-          <RenderCards foods={arrayFoods} count={4} context={false} />
+          <div className="h-[calc(50vh-100px)]">
+            <RenderCards foods={arrayFoods} count={4} context={false} />
+          </div>
         </div>
       </section>
     </div>
-  );
+  )
 }

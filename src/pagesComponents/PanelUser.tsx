@@ -3,8 +3,11 @@ import { Tab, TabPanel, TabPanels, TabGroup, TabList } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
+import ConfigureMenu from "@/src/components/dashboard/Templates";
+import PromoPanel from "@/src/components/dashboard/PromoPanel";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
-export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[] }) {
+export default function PanelUser({ user, token, foods, subCategories }: { user: any; token: string; foods: any[]; subCategories: any[] }) {
+    console.log(foods);
     const router = useRouter();
     const handleLogout = () => {
         fetch(`${apiUrl}api/auth/signout`, { method: "POST", credentials: "include" })
@@ -27,10 +30,19 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
                                 <Tab className={({ selected }) =>
                                     `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
                                 ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
-                                }>Menú</Tab>
+                                }>Platos</Tab>
+                                <Tab className={({ selected }) =>
+                                    `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                }>Personalización</Tab>
+                                <Tab className={({ selected }) =>
+                                    `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
+                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                }>Promociones</Tab>
 
-
-
+                                <button onClick={handleLogout} className="text-red-500 border border-red-800/20 w-full hover:bg-red-100 p-2 bg-red-50 cursor-pointer hidden md:block rounded-xl transition">
+                                    <span className="font-bold">Cerrar Sesión</span>
+                                </button>
                             </TabList>
 
                             <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-10">
@@ -39,6 +51,12 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
                                 </TabPanel>
                                 <TabPanel className="w-full h-fit md:min-h-[calc(100vh-200px)]">
                                     <MenuItems dataFoods={foods} />
+                                </TabPanel>
+                                <TabPanel className="w-full h-fit md:min-h-[calc(100vh-200px)]">
+                                    <ConfigureMenu />
+                                </TabPanel>
+                                <TabPanel className="w-full h-fit md:min-h-[calc(100vh-200px)]">
+                                    <PromoPanel foods={foods} />
                                 </TabPanel>
                             </TabPanels>
                         </TabGroup>
