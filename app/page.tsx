@@ -7,6 +7,8 @@ import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
+import QrButtonWithModal from "@/src/components/buttons/QrButtonWithModal";
+import logo from "@/public/images/logo/LOGO2.svg";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
 export default async function Page() {
   let foodsByUser;
@@ -39,8 +41,11 @@ export default async function Page() {
           token={token!}
         /> : <Index />
       }
-      {token && user &&
-        <div className="fixed bottom-10 right-7 md:right-10">
+      {
+        //user &&
+        <div className="fixed flex w-fit bg-white p-3 rounded-full border border-gray-300 gap-2 items-center justify-center bottom-3 right-1/2 left-1/2 -translate-x-1/2 shadow-lg md:right-10">
+          <QrButtonWithModal name={user?.name! || "QMENU"} id={user?.id! || "456"} logoUrl={logo.src} />
+          <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
           <AddFoodBttn state={true} />
         </div>
       }
