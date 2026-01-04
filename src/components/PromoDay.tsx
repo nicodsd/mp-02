@@ -1,6 +1,18 @@
 import 'animate.css';
 import Image from "next/image";
-export default function PromoDay({ imageUrl, title, description, price, lastPrice }: { imageUrl: string, title: string, description: string, price: number, lastPrice: number }) {
+
+interface Food {
+  _id: string | number;
+  photo: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  sub_category: string;
+}
+
+//debemos traer una prop llamada promo
+export default function PromoDay({ foods }: { foods: Food[] }) {
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
     return new Intl.NumberFormat("es-AR", {
@@ -20,8 +32,8 @@ export default function PromoDay({ imageUrl, title, description, price, lastPric
       >
         <Image
           loading="eager"
-          src={imageUrl}
-          alt={title}
+          src={foods[0].photo}
+          alt={foods[0].name}
           width={500}
           height={500}
           style={{
@@ -43,21 +55,21 @@ export default function PromoDay({ imageUrl, title, description, price, lastPric
               <h2
                 className="leading-4 text-pretty md:leading-none md:text-[3vw] font-bold mb-1"
               >
-                {title}
+                {foods[0].name}
               </h2>
-              <span className="text-[12px] leading-3 text-gray-200">{description}</span>
+              <span className="text-[12px] leading-3 text-gray-200">{foods[0].description}</span>
             </div>
             <div className="border border-white h-full"></div>
             <div className="flex flex-col justify-around h-full">
               <p
                 className="text-[12px] text-center font-bold text-white line-through md:text-[2vw]"
               >
-                Antes: {formatearPrecio(lastPrice)}
+                {/* Antes: {formatearPrecio(lastPrice)} */}
               </p>
               <p
                 className="text-[22px] text-center font-bold text-white md:text-[2vw]"
               >
-                {formatearPrecio(price)}
+                {formatearPrecio(foods[0].price)}
               </p>
             </div>
           </div>

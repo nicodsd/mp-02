@@ -176,13 +176,9 @@ export default function PromoPanel({ foods }: { foods: Food[] }) {
                     <div className="flex flex-col gap-4">
                         {activePromos.map((promo) => (
                             <div key={promo._id} className="relative">
-                                <PromoDay
-                                    imageUrl={promo.photo}
-                                    title={promo.name}
-                                    description={promo.description}
-                                    price={promo.price}
-                                    lastPrice={promo.lastPrice}
-                                />
+                                {/*     <PromoDay
+                                    foods={promo.foods}
+                                /> */}
                                 <div className="flex gap-2 mt-2">
                                     <button
                                         onClick={() => removePromo(promo._id)}
