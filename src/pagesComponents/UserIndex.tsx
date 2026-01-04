@@ -2,8 +2,13 @@
 import React, { useState } from "react";
 import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
 import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
-import SearchInput from "@/src/components/Index/filters/Search";
-import ListCardsByCategory from "../components/Index/sections/ListCardsByCategory";
+import Search from "@/src/components/Index/filters/Search";
+import categoriesData from "@/src/data/categories.json";
+import Categories from "@/src/components/Categories";
+import PromoDay from "@/src/components/PromoDay";
+import SortPriceButton from "@/src/components/Index/filters/SortPrice";
+import RenderCards from "@/src/components/RenderCardsExample";
+import ListCardsByCategory from "@/src/components/Index/sections/ListCardsByCategory";
 type Food = {
     _id: string | number;
     photo: string;
@@ -34,7 +39,7 @@ export default function UserIndex({
     const [subCategories, setSubCategories] = useState<SubCategory[]>(initialSubCategories);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
-    const availableCategories = categories.filter((option) =>
+    const availableCategories = categoriesData.filter((option) =>
         foods.some((food) => food.category === option.name)
     );
 
@@ -70,7 +75,6 @@ export default function UserIndex({
     // 🔹 Manejo de subcategorías
     function handleSubCategoryClick(subCategory: string) {
         if (subCategory === "0") {
-            console.log("Mostrar todos los platos de la categoría seleccionada");
             // Mostrar todos los platos de la categoría seleccionada
             const filteredFoods =
                 selectedCategory && selectedCategory !== "0"
@@ -78,21 +82,18 @@ export default function UserIndex({
                     : foods;
             setarrayFoods(filteredFoods);
         } else {
-            console.log("Mostrar platos de la subcategoría seleccionada");
             // Filtrar platos por subcategoría dentro de la categoría seleccionada
             if (selectedCategory === "0") {
                 const filteredFoods = foods.filter(
                     (food) => food.sub_category === subCategory
                 );
                 setarrayFoods(filteredFoods);
-                console.log("si solo si", filteredFoods);
             } else {
                 const filteredFoods = foods.filter(
                     (food) =>
                         food.sub_category === subCategory
                 );
                 setarrayFoods(filteredFoods);
-                console.log("si no es 0", filteredFoods);
             }
         }
     }
@@ -115,39 +116,62 @@ export default function UserIndex({
         }
     }
     return (
-        <div className="w-full asap h-auto">
-            <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
-                <section className="flex flex-col">
-                    <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
-                    <FoodsOptions selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} availableCategories={availableCategories} />
-                </section>
-                <ListCardsByCategory arrayFoods={arrayFoods} />
-                {
-                    arrayFoods.length > 0 ? (
-                        <CardsFoodsByCategories initialSubCategories={subCategories} setSubCats={handleSubCategoryClick} setSortOrder={setSortOrder} arrayFoods={arrayFoods} />
-                    ) : (
-                        user && token ? (
-                            <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
-                                <h3 className="text-xl font-bold">Sube tus platos</h3>
-                                <a href="/nuevo-plato"
-                                    className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
-                                >
-                                    Agregar
-                                </a>
-                            </div>
-                        ) : (
-                            <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
-                                <h3 className="text-xl font-bold">Sube tus platos</h3>
-                                <a href="/login"
-                                    className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
-                                >
-                                    Iniciar Sesión
-                                </a>
-                            </div>
-                        )
-                    )
-                }
-            </div>
+        <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
+            <section className="flex min-h-[calc(90vh-100px)] flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
+                <div className="bg-[#fffbf8] rounded-2xl px-2 mx-2 py-2 shadow-md">
+                    <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+                </div>
+                <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-1">
+                        <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
+                        {/*  <PromoDay foods={arrayFoods} /> */}
+                    </div>
+                    <div className="flex flex-col gap-1 w-full">
+                        <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
+                        <FoodsOptions
+                            selectedCategory={selectedCategory}
+                            handleCategoryClick={handleCategoryClick}
+                            availableCategories={availableCategories}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">Tipos de platos</h2>
+                    <div className="flex justify-between items-end">
+                        <Categories categories={subCategories} selectCategory={handleSubCategoryClick} />
+                        <SortPriceButton onSortChange={setSortOrder} />
+                    </div>
+                    <div className="h-[calc(50vh-100px)]">
+                        {
+                            arrayFoods.length > 0 ? (
+                                <RenderCards foods={arrayFoods} count={4} context={false} />
+                                /*  <CardsFoodsByCategories initialSubCategories={subCategories} setSubCats={handleSubCategoryClick} setSortOrder={setSortOrder} arrayFoods={arrayFoods} /> */
+                            ) : (
+                                user && token ? (
+                                    <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
+                                        <h3 className="text-xl font-bold">Sube tus platos</h3>
+                                        <a href="/nuevo-plato"
+                                            className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
+                                        >
+                                            Agregar
+                                        </a>
+                                    </div>
+                                ) : (
+                                    <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
+                                        <h3 className="text-xl font-bold">Sube tus platos</h3>
+                                        <a href="/login"
+                                            className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
+                                        >
+                                            Iniciar Sesión
+                                        </a>
+                                    </div>
+                                )
+                            )
+                        }
+                    </div>
+                </div>
+                {/* <ListCardsByCategory arrayFoods={arrayFoods} /> */}
+            </section>
         </div>
     );
 }

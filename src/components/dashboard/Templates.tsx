@@ -1,38 +1,87 @@
-'use client'
-import React, { useEffect, useState } from 'react';
+"use client";
+import React, { useState } from "react";
+
+// Tipos para las opciones de personalización
+type TemplateOptions = {
+    primaryColor: string;
+    showPromo: boolean;
+    showCategories: boolean;
+};
 
 const Templates: React.FC = () => {
-    const [loading, setLoading] = useState(true);
-    const [options, setOptions] = useState<any[]>([]);
+    // Estado de personalización
+    const [options, setOptions] = useState<TemplateOptions>({
+        primaryColor: "#ff6600", // color por defecto
+        showPromo: true,
+        showCategories: true,
+    });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('/api/templates'); // Cambia la URL según tu backend
-                const data = await response.json();
-                setOptions(data);
-            } catch (error) {
-                console.error('Error fetching templates:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // 🔹 Funciones para actualizar opciones
+    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOptions({ ...options, primaryColor: e.target.value });
+    };
 
-        fetchData();
-    }, []);
+    const togglePromo = () => {
+        setOptions({ ...options, showPromo: !options.showPromo });
+    };
 
-    if (loading) {
-        return <div>Cargando...</div>; // Componente de carga
-    }
+    const toggleCategories = () => {
+        setOptions({ ...options, showCategories: !options.showCategories });
+    };
 
     return (
-        <div>
-            <h1>Selecciona un Template</h1>
-            <ul>
-                {options.map((option) => (
-                    <li key={option.id}>{option.name}</li> // Ajusta según la estructura de tus datos
-                ))}
-            </ul>
+        <div className="p-6">
+            <h1 className="text-xl font-bold mb-4">🎨 Personaliza tu aplicación</h1>
+
+            {/* Selector de color */}
+            <div className="mb-4">
+                <label className="block mb-2 font-semibold">Color principal:</label>
+                <input
+                    type="color"
+                    value={options.primaryColor}
+                    onChange={handleColorChange}
+                    className="w-16 h-10 cursor-pointer"
+                />
+            </div>
+
+            {/* Toggles para condicionales */}
+            <div className="mb-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={options.showPromo}
+                        onChange={togglePromo}
+                    />
+                    Mostrar sección PromoDay
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer mt-2">
+                    <input
+                        type="checkbox"
+                        checked={options.showCategories}
+                        onChange={toggleCategories}
+                    />
+                    Mostrar categorías
+                </label>
+            </div>
+
+            {/* Vista previa dinámica */}
+            <div
+                className="p-4 rounded-lg"
+                style={{ backgroundColor: options.primaryColor }}
+            >
+                <h2 className="text-white font-bold">Vista previa</h2>
+                {options.showPromo && (
+                    <div className="bg-white text-black p-2 mt-2 rounded">
+                        PromoDay renderizado 🎉
+                    </div>
+                )}
+                {options.showCategories && (
+                    <div className="bg-white text-black p-2 mt-2 rounded">
+                        Categorías renderizadas 📂
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
