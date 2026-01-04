@@ -111,7 +111,7 @@ export default function QrButtonWithModal({ name, id, logoUrl }: QrButtonProps) 
         <>
             <button
                 onClick={() => setIsOpen(true)}
-                className="flex flex-col text-sm items-center font-bold"
+                className="flex flex-col text-sm items-center font-bold fixed bottom-3 right-1/2 left-1/2 -translate-x-1/2 shadow-lg md:right-10 p-4 h-fit w-fit rounded-full backdrop-blur-lg border border-gray-200"
             >
                 <BsQrCodeScan className="h-15 w-15 p-3 flex flex-col text-sm items-center bg-black text-white font-bold rounded-full hover:bg-blue-700 transition" />
             </button>
