@@ -124,7 +124,7 @@ export default function UserIndex({
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
-                        <PromoDay foods={arrayFoods} />
+                        {/*  <PromoDay foods={arrayFoods} /> */}
                     </div>
                     <div className="flex flex-col gap-1 w-full">
                         <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
