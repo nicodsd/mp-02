@@ -39,5 +39,4 @@ const FoodGroupOptions: React.FC<{
         </div>
     );
 };
-
 export default FoodGroupOptions;
