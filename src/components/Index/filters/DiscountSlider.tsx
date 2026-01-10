@@ -1,4 +1,5 @@
 "use client";
+import "@/app/globals.css";
 import React, { useState } from "react";
 
 export default function DiscountSlider({
@@ -21,8 +22,8 @@ export default function DiscountSlider({
     };
 
     return (
-        <div className="flex flex-col gap-2 w-full">
-            <label className="font-semibold">Selecciona descuento:</label>
+        <div className="flex flex-col gap-1 mt-2 w-full border border-gray-400 rounded-xl py-2 px-4">
+            <label className="text-sm">Selecciona descuento:</label>
 
             <div className="relative w-full">
                 <input
@@ -32,15 +33,18 @@ export default function DiscountSlider({
                     step={10}
                     value={value}
                     onChange={handleChange}
-                    className="w-full h-2 appearance-none bg-transparent cursor-pointer"
+                    className="w-full appearance-none bg-transparent cursor-pointer"
                     style={{
-                        background:
-                            "linear-gradient(to right, #eab308, #f97316, #dc2626)",
+                        background: "black",
+                        color: "white",
+                        height: "6px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
                     }}
                 />
             </div>
 
-            <div className="flex justify-between text-xs text-gray-600 px-1">
+            <div className="flex justify-between text-[13px] text-gray-600 px-1 border-b border-gray-300 pb-3">
                 <span>10%</span>
                 <span>20%</span>
                 <span>50%</span>
@@ -50,7 +54,7 @@ export default function DiscountSlider({
             </div>
 
             <p
-                className={`text-sm font-bold ${value <= 20
+                className={`text-lg text-end font-bold ${value <= 20
                     ? "text-yellow-600"
                     : value <= 50
                         ? "text-orange-600"
@@ -63,7 +67,7 @@ export default function DiscountSlider({
             </p>
 
             {showModal && (
-                <div className="fixed inset-0 bg-gray-200/70 flex items-center justify-center">
+                <div className="fixed inset-0 bg-gray-400/60 flex items-center justify-center">
                     <div className="bg-white rounded-lg shadow-lg p-6 w-80">
                         <h2 className="text-lg font-bold mb-4 text-red-600">⚠ Atención</h2>
                         <p className="text-gray-700 mb-4">

@@ -9,8 +9,7 @@ import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
 import RenderCards from "../components/RenderCardsExample";
-import Footer from "../layouts/Footer";
-
+import promoday from "@/src/data/promoday";
 type Food = {
   _id: string | number;
   photo: string;
@@ -24,7 +23,6 @@ type SubCategory = {
   _id: number;
   name: string;
 };
-
 export default function Inicio() {
   const [arrayFoods, setArrayFoods] = useState<Food[]>(foods);
   const [subCategories, setSubCategories] = useState<SubCategory[]>(subCategoriesData);
@@ -112,7 +110,7 @@ export default function Inicio() {
   }
 
   return (
-    <div className="w-full px-3 md:p-0 md:px-10 md:py-6 min-h-[calc(90vh-100px)] -translate-y-10">
+    <div className="w-full px-3 md:p-0 md:px-10 md:py-6 min-h-[calc(140vh-100px)] -translate-y-10">
       <section className="flex h-fit flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw]">
         <div className="bg-[#fffbf8] rounded-2xl px-2 mx-2 py-2 shadow-md">
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
@@ -120,7 +118,7 @@ export default function Inicio() {
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
-            <PromoDay foods={arrayFoods} />
+            <PromoDay promo={promoday} />
           </div>
           <div className="flex flex-col gap-1">
             <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
@@ -132,7 +130,7 @@ export default function Inicio() {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">Tipos de platos</h2>
+          <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">Platos</h2>
           <div className="flex justify-between items-end">
             <Categories categories={subCategories} selectCategory={handleSubCategoryClick} />
             <SortPriceButton onSortChange={setSortOrder} />

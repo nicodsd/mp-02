@@ -5,39 +5,38 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
-export default function PanelUser({ user, token, foods, subCategories }: { user: any; token: string; foods: any[]; subCategories: any[] }) {
-    console.log(foods);
+import { URL } from "@/src/lib/const";
+export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[]; }) {
     const router = useRouter();
     const handleLogout = () => {
-        fetch(`${apiUrl}api/auth/signout`, { method: "POST", credentials: "include" })
+        fetch(`${URL}api/auth/signout`, { method: "POST", credentials: "include" })
             .then((res) => res.ok && router.push("/"))
             .catch((err) => console.error("Error", err));
     };
     return (
         <div className="min-h-[calc(100vh-56px)] flex flex-col justify-between text-gray-900">
             <div className="px-[2vw] py-[2vh]">
-                <div className="relative flex flex-col md:px-[3vw]">
+                <div className="relative flex flex-col lg:px-[3vw]">
 
                     <div className="flex md:flex-row flex-col items-center w-full">
                         <TabGroup className="md:flex md:gap-x-2 w-full justify-center">
 
-                            <TabList className="flex w-full md:flex-col space-x-1 md:space-x-0 md:space-y-2 md:w-[20vw] md:h-fit">
+                            <TabList className="flex w-full md:flex-col space-x-1 md:space-x-0 md:space-y-2 md:w-[24vw] md:h-fit">
                                 <Tab className={({ selected }) =>
                                     `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "text-white outline-none bg-gray-900 border border-transparent" : "text-gray-500 hover:text-gray-700 border border-gray-200"}`
                                 }>Usuario</Tab>
                                 <Tab className={({ selected }) =>
                                     `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "text-white outline-none bg-gray-900 border border-transparent" : "text-gray-500 hover:text-gray-700 border border-gray-200"}`
                                 }>Platos</Tab>
                                 <Tab className={({ selected }) =>
                                     `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "text-white outline-none bg-gray-900 border border-transparent" : "text-gray-500 hover:text-gray-700 border border-gray-200"}`
                                 }>Personalización</Tab>
                                 <Tab className={({ selected }) =>
                                     `w-full lg:px-20 rounded-xl cursor-pointer py-2.5 text-sm font-bold leading-5 transition-all
-                                ${selected ? "bg-white text-gray-900 border border-transparent outline outline-[#ff6600]" : "text-gray-500 border border-gray-200 hover:text-gray-700"}`
+                                ${selected ? "text-white outline-none bg-gray-900 border border-transparent" : "text-gray-500 hover:text-gray-700 border border-gray-200"}`
                                 }>Promociones</Tab>
 
                                 <button onClick={handleLogout} className="text-red-500 border border-red-800/20 w-full hover:bg-red-100 p-2 bg-red-50 cursor-pointer hidden md:block rounded-xl transition">
@@ -47,7 +46,7 @@ export default function PanelUser({ user, token, foods, subCategories }: { user:
 
                             <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-10">
                                 <TabPanel className="w-full md:min-h-[calc(100vh-200px)] md:w-[60%]">
-                                    <UserSettings user={user} token={token} apiUrl={apiUrl} />
+                                    <UserSettings user={user} token={token} apiUrl={URL} />
                                 </TabPanel>
                                 <TabPanel className="w-full h-fit md:min-h-[calc(100vh-200px)]">
                                     <MenuItems dataFoods={foods} />

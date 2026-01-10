@@ -1,5 +1,5 @@
 "use client";
-export default function InputsUserSettings({ name, setName, description, setDescription, location, setLocation, phone, setPhone }: { name: string; setName: (name: string) => void; description: string; setDescription: (description: string) => void; location: string; setLocation: (location: string) => void; phone: string; setPhone: (phone: string) => void }) {
+export default function InputsUserSettings({ setName, setDescription, setLocation, setPhone }: { setName: (name: string) => void; setDescription: (description: string) => void; setLocation: (location: string) => void; setPhone: (phone: string) => void }) {
     return (
         <div className="w-full space-y-4">
             <label className="text-gray-600 dark:text-gray-800">Nombre</label>

@@ -8,6 +8,7 @@ import Categories from "@/src/components/Categories";
 import PromoDay from "@/src/components/PromoDay";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import RenderCards from "@/src/components/RenderCardsExample";
+import promoday from "@/src/data/promoday.js";
 import ListCardsByCategory from "@/src/components/Index/sections/ListCardsByCategory";
 type Food = {
     _id: string | number;
@@ -40,7 +41,7 @@ export default function UserIndex({
     const [selectedCategory, setSelectedCategory] = useState<string>("");
 
     const availableCategories = categoriesData.filter((option) =>
-        foods.some((food) => food.category === option.name)
+        foods.some((food) => food.category.toLowerCase() === option.name.toLowerCase())
     );
 
     // 🔹 Manejo de categorías
@@ -61,7 +62,7 @@ export default function UserIndex({
             setSubCategories(initialSubCategories);
         } else {
             // Filtrar platos por categoría
-            const filteredFoods = foods.filter((food) => food.category === category);
+            const filteredFoods = foods.filter((food) => food.category.toLowerCase() === category.toLowerCase());
             setarrayFoods(filteredFoods);
 
             // Filtrar subcategorías en base a los platos filtrados
@@ -78,7 +79,7 @@ export default function UserIndex({
             // Mostrar todos los platos de la categoría seleccionada
             const filteredFoods =
                 selectedCategory && selectedCategory !== "0"
-                    ? foods.filter((food) => food.category === selectedCategory)
+                    ? foods.filter((food) => food.category.toLowerCase() === selectedCategory.toLowerCase())
                     : foods;
             setarrayFoods(filteredFoods);
         } else {
@@ -91,7 +92,7 @@ export default function UserIndex({
             } else {
                 const filteredFoods = foods.filter(
                     (food) =>
-                        food.sub_category === subCategory
+                        food.sub_category.toLowerCase() === subCategory.toLowerCase()
                 );
                 setarrayFoods(filteredFoods);
             }
@@ -124,7 +125,7 @@ export default function UserIndex({
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-1">
                         <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
-                        {/*  <PromoDay foods={arrayFoods} /> */}
+                        <PromoDay promo={promoday} />
                     </div>
                     <div className="flex flex-col gap-1 w-full">
                         <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
