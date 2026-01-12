@@ -1,18 +1,14 @@
 'use client';
 import { useRef, useEffect, useState } from "react";
-import { BsQrCodeScan } from "react-icons/bs";
-import QrButtonIndex from "../buttons/QrButtonIndex";
-
+import QrButtonIndex from "@/src/components/buttons/QrButtonIndex";
+import { URL_LOCAL } from "@/src/lib/const";
 interface QrButtonProps {
     name: string;
-    id: string | number;
-    logoUrl?: string; // 👉 logo opcional
+    logoUrl?: string;
 }
-export default function QrModalsGenerator({ name, id, logoUrl }: QrButtonProps) {
+export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
     const qrRef = useRef<HTMLDivElement>(null);
-    const url = `https://qrmenu-gold-alpha.vercel.app?name=${encodeURIComponent(
-        name
-    )}`;
+    const url = `${URL_LOCAL}menu/${encodeURIComponent(name)}`;
     const [isOpen, setIsOpen] = useState(false);
     useEffect(() => {
         if (isOpen && qrRef.current && window.QRCode) {

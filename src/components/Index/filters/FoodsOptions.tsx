@@ -15,6 +15,7 @@ const FoodGroupOptions: React.FC<{
             <div className="flex flex-wrap justify-center gap-1 w-full">
                 {availableCategories.map((option, index) => (
                     <button
+                        type="button"
                         onClick={() => handleCategoryClick(option.name)}
                         key={index}
                         className={`flex border border-gray-300 px-5 mt-1 mb-1 flex-col w-[24%] h-25 cursor-pointer items-center justify-center hover:bg-gray-50 rounded-2xl transition-colors duration-200 ${selectedCategory === option.name

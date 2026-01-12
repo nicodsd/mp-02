@@ -103,7 +103,6 @@ export default function Register() {
                 </p>
 
                 {/* Progress */}
-
                 <ol className="flex w-full relative">
                     {steps.map((s, idx) => {
                         const active = idx <= step;

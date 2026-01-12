@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-export function proxy(req: any) {
+import { NextRequest } from "next/server";
+export function proxy(req: NextRequest) {
     const token = req.cookies.get("token")?.value;
     const user = req.cookies.get("user")?.value;
     // Rutas protegidas
