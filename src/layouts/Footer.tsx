@@ -61,8 +61,8 @@ export default function Footer() {
     </div> */}
 
       {/* Línea inferior */}
-      <div className="mt-5 text-center py-10 text-xs bg-black text-white">
-        <p className="text-sm mb-10">Creá tu menú con QMenu. <a className="font-bold px-3 py-2 ml-2 text-base bg-white text-black rounded-md transition" href="https://qmenu.com.ar" target="_blank" rel="noopener noreferrer">¡Prueba ahora!</a></p>
+      <div className=" text-center py-10 text-xs bg-primary text-white">
+        <p className="text-sm mb-10">Creá tu menú con QMenu. <a className="font-bold px-3 py-2 ml-2 text-base bg-white shadow-black shadow-xs text-black rounded-md transition" href="/registro-de-usuario" target="_blank">¡Prueba ahora!</a></p>
         <br />
         <p>© {new Date().getFullYear()} QMenu. Todos los derechos reservados.</p>
         <p>Por <a className="font-bold" href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">Nico Barrera</a></p>

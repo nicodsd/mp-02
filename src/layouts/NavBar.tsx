@@ -13,13 +13,12 @@ interface NavBarProps {
   cookie: string;
 }
 export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps) {
-  console.log(user)
   const logoColor = logotipoColor
   const logo = logotipo
   const phone = user?.phone || "123456789";
-  const name = user?.name || "QMenu"
+  const name = user?.name || ""
   const address = user?.address || "Sgo. Del Estero, Argentina";
-  const description = user?.description || "Comida al paso.";
+  const description = user?.description || "Crea tu menú con QMenu.";
   let background;
   if (bttn === true) {
     background = "/images/placeholders/back-qmenu.png"
@@ -32,7 +31,7 @@ export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps
         <div className="flex items-center flex-col w-full h-full justify-end pb-15 text-white">
           {
             cookie && user ?
-              <div className={`flex flex-col items-center ${cookie && user ? "gap-4" : "gap-2"} ${background ? "drop-shadow-xl drop-shadow-black/60" : ""}`}>
+              <div className={`flex flex-col items-center ${cookie && user ? "gap-4" : "gap-2"} ${background ? "drop-shadow-xl drop-shadow-black/30" : ""}`}>
                 <Link className="relative" href="/panel-de-usuario">
                   <Image
                     src={photo}
@@ -88,7 +87,7 @@ export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps
     ),
     1: (
       <div className="flex items-center justify-between w-full px-5 py-2 md:px-10 md:py-4 h-full">
-        <span className="text-[22px] font-bold text-gray-800">{name}</span>
+        <span className="text-[22px] font-bold text-gray-800">Agregar Plato</span>
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -110,9 +109,9 @@ export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps
 
   return (
     <>
-      {
-        state === 0 && bttn === true ? (
-          <div className="flex flex-col w-full items-center">
+      <div className="flex flex-col w-full items-center">
+        {
+          state !== 1 && state !== 2 && (
             <div className="flex w-full items-center justify-between min-h-14 px-6">
               <Image src={logo} width={100} height={100} alt="Logo" loading="lazy" className="h-12 w-15" />
               {
@@ -127,54 +126,41 @@ export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps
                   <></>
               }
             </div>
-            <div
-              style={{
-                background: `url(${background}) no-repeat center center/cover`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundAttachment: "no-repeat"
-              }}
-              className={`flex justify-end w-full ${cookie && user ? "h-80" : "h-80"}`}
-            >
-              <nav
-                className="flex justify-between items-center w-full">
-                {navVariants[state] ?? navVariants[0]}
-              </nav>
-            </div>
+          )
+        }
+        {background ?
+          <div
+            style={{
+              background: `url(${background}) no-repeat center center/cover`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat"
+            }}
+            className={`flex justify-end w-full h-80`}
+          >
+            <nav
+              className="flex justify-between items-center w-full">
+              {navVariants[state] ?? navVariants[0]}
+            </nav>
           </div>
-        ) : (
-          <div className={`flex relative flex-col w-full items-center`}>
-            <div className="flex w-full items-center justify-between min-h-12 px-6">
-              <Image src={logo} width={100} height={100} alt="Logo" loading="lazy" className="h-12 w-15" />
-            </div>
-            {background ?
-              <div
-                style={{
-                  background: `url(${background}) no-repeat center center/cover`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat"
-                }}
-                className={`flex justify-end w-full ${cookie && user ? "h-10" : "h-80"}`}
-              >
-                <nav
-                  className="flex justify-between items-center w-full">
-                  {navVariants[state] ?? navVariants[0]}
-                </nav>
-              </div>
+          :
+          <div
+            className={`flex justify-end w-full bg-radial from-transparent ${state !== 1
+              &&
+              state !== 2
+              ?
+              "via-[#fff9f4] to-[#c7c7c7] h-80"
               :
-              <div
-                className={`flex justify-end w-full bg-radial from-transparent via-[#fff9f4] to-[#c7c7c7] ${cookie && user ? "h-10" : "h-80"}`}
-              >
-                <nav
-                  className="flex justify-between items-center w-full">
-                  {navVariants[state] ?? navVariants[0]}
-                </nav>
-              </div>
-            }
-          </div >
-        )
-      }
+              "min-h-14"
+              }`}
+          >
+            <nav
+              className="flex justify-between items-center w-full">
+              {navVariants[state] ?? navVariants[0]}
+            </nav>
+          </div>
+        }
+      </div>
     </>
   );
 }
