@@ -1,30 +1,37 @@
 "use client";
 import { JSX } from "react";
 import Link from "next/link";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import Image from "next/image";
+import { logotipo, logotipoColor } from "@/src/lib/const";
+import { FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 interface NavBarProps {
-  state: number;
-  text: string;
-  cookie: string;
-  photo: string;
   user: any;
-  description?: string;
+  bttn: boolean;
+  photo: string;
+  state: number;
+  cookie: string;
 }
-export default function NavBar({ state, text, cookie, photo, user, description }: NavBarProps) {
-  const name = text || "QMenu";
-  const logo = "/images/logo/LOGO2.svg";
-  const descrip = description ? description : "Comida al paso.";
-  const logoColor = "/images/logo/logo-color.png"
-  const background = "/images/placeholders/background.png";
+export default function NavBar({ state, bttn, cookie, photo, user }: NavBarProps) {
+  const logoColor = logotipoColor
+  const logo = logotipo
+  const phone = user?.phone || "123456789";
+  const name = user?.name || ""
+  const address = user?.address || "Sgo. Del Estero, Argentina";
+  const description = user?.description || "Crea tu menú con QMenu.";
+  let background;
+  if (bttn === true) {
+    background = "/images/placeholders/back-qmenu.png"
+  } else {
+    background = user?.coverPhoto
+  }
   const navVariants: Record<number, JSX.Element> = {
     0: (
-      <div className="flex items-center justify-between w-full px-5 md:px-10 h-full bg-[#000000a1]">
-        <div className="flex items-center flex-col w-full h-full justify-end pb-13 text-white">
+      <div className={`flex items-center justify-between w-full px-5 md:px-10 h-full ${background ? "" : "bg-transparent"}`}>
+        <div className="flex items-center flex-col w-full h-full justify-end pb-15 text-white">
           {
             cookie && user ?
-              <div className={`flex flex-col items-center ${cookie && user ? "gap-4" : "gap-2"} drop-shadow-xl drop-shadow-black/50`}>
+              <div className={`flex flex-col items-center ${cookie && user ? "gap-4" : "gap-2"} ${background ? "drop-shadow-xl drop-shadow-black/30" : ""}`}>
                 <Link className="relative" href="/panel-de-usuario">
                   <Image
                     src={photo}
@@ -34,33 +41,43 @@ export default function NavBar({ state, text, cookie, photo, user, description }
                     height={100}
                     className="rounded-full h-27 w-27 border-5 border-white"
                   />
-                  <button className="text-black absolute -bottom-2 font-bold bg-white rounded-lg left-1/2 transform w-20 -translate-x-1/2 text-xs px-2 py-1">Editar Perfil</button>
+                  <div className="text-black absolute -bottom-2 font-bold bg-white rounded-lg left-1/2 transform w-20 -translate-x-1/2 text-xs px-2 py-1">Editar Perfil</div>
                 </Link>
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-2xl uppercase font-bold text-white">{name}</span>
-                  <p className="text-white text-sm">{descrip}</p>
-                  <div className="flex items-center gap-1.5 text-gray-300">
-                    <p className="text-xs font-light">Salta 1488, Sgo. del Estero, Argentina.</p>
-                    <span className="border border-white w-1 h-1 rounded-full"></span>
-                    <p className="text-xs font-light">Tel: 3864-4567.</p>
+                <div className="flex flex-col items-center">
+                  <span className={`text-2xl uppercase font-bold pb-1 ${background ? "text-white" : "text-gray-900"}`}>{name}</span>
+                  <p className={`text-sm ${background ? "text-white" : "text-gray-900"}`}>{description}</p>
+                  <div className={`flex flex-col items-center ${background ? "text-gray-200" : "text-gray-900"}`}>
+                    {
+                      address && <p className="text-xs flex items-center gap-1 font-light"><FaMapMarkerAlt /> {address}</p>
+                    }
+                    {
+                      phone && <p className="text-xs flex items-center gap-1 font-light"><FaPhone className="rotate-180" /> {phone}</p>
+                    }
                   </div>
                 </div>
-              </div> :
-              <div className="flex flex-col items-center gap-3 drop-shadow-xl drop-shadow-black/50">
-                <Image
-                  width={100}
-                  height={100}
-                  src={logoColor}
-                  alt="Logo"
-                  loading="lazy"
-                  className="rounded-full h-27 w-27"
-                />
+              </div>
+              :
+              <div className={`flex flex-col items-center gap-3 ${background ? "drop-shadow-xl drop-shadow-black/30" : ""}`}>
+                <div className={`relative rounded-full ${background ? "bg-white" : ""}`}>
+                  <Image
+                    width={100}
+                    height={100}
+                    src={photo ? photo : logoColor}
+                    alt="Logo"
+                    loading="lazy"
+                    className={`rounded-full h-27 w-27 border-5 ${background ? "border-white" : "border-gray-900"}`}
+                  />
+                </div>
                 <div className="flex flex-col items-center">
-                  <span className="text-2xl uppercase font-bold pb-1 text-white">{name}</span>
-                  <p className="text-white text-sm">Tu menú en tus manos.</p>
-                  <div className="flex flex-col items-center gap- text-gray-300">
-                    <p className="text-xs flex items-center gap-1 font-light"><FaMapMarkerAlt /> Ejemplo 1488, Sgo. del Estero, Argentina.</p>
-                    <p className="text-xs flex items-center gap-1 font-light"><FaPhone className="rotate-180" /> Tel: 3864-4567.</p>
+                  <span className={`text-2xl uppercase font-bold pb-1 ${background ? "text-white" : "text-gray-900"}`}>{name}</span>
+                  <p className={`text-sm ${background ? "text-white" : "text-gray-900"}`}>{description}</p>
+                  <div className={`flex flex-col items-center ${background ? "text-gray-200" : "text-gray-900"}`}>
+                    {
+                      address && <p className="text-xs flex items-center gap-1 font-light"><FaMapMarkerAlt /> {address}</p>
+                    }
+                    {
+                      phone && <p className="text-xs flex items-center gap-1 font-light"><FaPhone className="rotate-180" /> {phone}</p>
+                    }
                   </div>
                 </div>
               </div>
@@ -70,7 +87,7 @@ export default function NavBar({ state, text, cookie, photo, user, description }
     ),
     1: (
       <div className="flex items-center justify-between w-full px-5 py-2 md:px-10 md:py-4 h-full">
-        <span className="text-[22px] font-bold text-gray-800">{name}</span>
+        <span className="text-[22px] font-bold text-gray-800">Agregar Plato</span>
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -92,39 +109,58 @@ export default function NavBar({ state, text, cookie, photo, user, description }
 
   return (
     <>
-      {
-        state === 0 ? (
-          <div className="flex flex-col w-full items-center">
+      <div className="flex flex-col w-full items-center">
+        {
+          state !== 1 && state !== 2 && (
             <div className="flex w-full items-center justify-between min-h-14 px-6">
-              <Image src={logo} width={100} height={100} alt="Logo" loading="lazy" className="rounded-full h-10 w-18" />
+              <Image src={logo} width={100} height={100} alt="Logo" loading="lazy" className="h-12 w-15" />
               {
                 !cookie && !user ?
                   <Link
                     href="/registro-de-usuario"
                     className="px-3 py-1.5 max-w-35 shadow-sm hover:shadow-md ease-in-out duration-300 bg-[#FF0004] text-center text-md font-bold text-white rounded-md transition"
                   >
-                    Prueba ahora!
-                  </Link> :
+                    ¡Prueba ahora!
+                  </Link>
+                  :
                   <></>
               }
             </div>
-            <div
-              style={{ background: `url(${background}) no-repeat center center/cover`, backgroundSize: "cover" }}
-              className={`flex justify-end w-full ${cookie && user ? "h-80" : "h-80"}`}
-            >
-              <nav
-                className="flex justify-between items-center w-full shadow-sm">
-                {navVariants[state] ?? navVariants[0]}
-              </nav>
-            </div>
+          )
+        }
+        {background ?
+          <div
+            style={{
+              background: `url(${background}) no-repeat center center/cover`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat"
+            }}
+            className={`flex justify-end w-full h-80`}
+          >
+            <nav
+              className="flex justify-between items-center w-full">
+              {navVariants[state] ?? navVariants[0]}
+            </nav>
           </div>
-        ) : (
-          <nav
-            className="flex justify-between items-center w-full border-b border-gray-200">
-            {navVariants[state] ?? navVariants[0]}
-          </nav>
-        )
-      }
+          :
+          <div
+            className={`flex justify-end w-full bg-radial from-transparent ${state !== 1
+              &&
+              state !== 2
+              ?
+              "via-[#fff9f4] to-[#c7c7c7] h-80"
+              :
+              "min-h-14"
+              }`}
+          >
+            <nav
+              className="flex justify-between items-center w-full">
+              {navVariants[state] ?? navVariants[0]}
+            </nav>
+          </div>
+        }
+      </div>
     </>
   );
 }

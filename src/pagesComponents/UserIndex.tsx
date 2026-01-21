@@ -127,14 +127,16 @@ export default function UserIndex({
                         <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Promociones</h2>
                         <PromoDay promo={promoday} />
                     </div>
-                    <div className="flex flex-col gap-1 w-full">
-                        <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
-                        <FoodsOptions
-                            selectedCategory={selectedCategory}
-                            handleCategoryClick={handleCategoryClick}
-                            availableCategories={availableCategories}
-                        />
-                    </div>
+                    {availableCategories.length > 2 && arrayFoods.length >= 10 && (
+                        <div className="flex flex-col gap-1">
+                            <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">Categorias</h2>
+                            <FoodsOptions
+                                selectedCategory={selectedCategory}
+                                handleCategoryClick={handleCategoryClick}
+                                availableCategories={availableCategories}
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="flex flex-col gap-1">
                     <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">Tipos de platos</h2>

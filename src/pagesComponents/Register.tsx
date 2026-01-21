@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { MdChevronLeft } from "react-icons/md";
+import logo from "@/public/images/logo/logo-rojo.png";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 type FormValues = {
     email: string;
     password: string;
     logo: File | null;
     name: string;
-    coverPhoto: File | null;
     description: string;
     phone: string;
 };
@@ -26,7 +27,6 @@ const validationSchemas = [
         logo: Yup.mixed().required("Seleccione un logo"),
     }),
     Yup.object({
-        coverPhoto: Yup.mixed(),
         description: Yup.string().min(10, "Mínimo 10 caracteres"),
         phone: Yup.string().matches(/^\+54 9 \d+$/, "Formato inválido (+54 9 ...)").required("Ingrese un teléfono"),
     }),
@@ -42,14 +42,7 @@ export default function Register() {
     const router = useRouter();
     const [step, setStep] = useState(0);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
-    const [coverPreview, setCoverPreview] = useState<string | null>(null);
     const [apiError, setApiError] = useState<string | null>(null);
-
-    useEffect(() => {
-        return () => {
-            if (coverPreview) URL.revokeObjectURL(coverPreview);
-        };
-    }, [coverPreview]);
 
     useEffect(() => {
         return () => {
@@ -66,7 +59,6 @@ export default function Register() {
         body.append("description", values.description);
         body.append("phone", values.phone);
         if (values.logo) body.append("logo", values.logo);
-        if (values.coverPhoto) body.append("coverPhoto", values.coverPhoto);
 
         try {
             const res = await fetch("/api/registro-de-usuario", { method: "POST", body });
@@ -85,9 +77,10 @@ export default function Register() {
     };
 
     return (
-        <div className="relative mx-auto bg-primary min-h-screen px-4 py-8 flex flex-col items-center">
+        <div className="relative mx-auto px-4 py-8 flex flex-col items-center">
             <div className="absolute top-0 left-0 w-full px-6 py-8 z-10">
                 <button
+                    type="button"
                     onClick={() => router.back()}
                     className="flex items-center text-white text-sm font-semibold hover:opacity-80 transition-opacity"
                 >
@@ -97,23 +90,37 @@ export default function Register() {
             </div>
 
             <div className="w-full mt-12 bg-white rounded-3xl shadow-xl">
-                <h1 className="text-2xl font-bold text-gray-900 text-center">Regístrate</h1>
-                <p className="mt-1 text-sm text-gray-500 text-center mb-8">
-                    Completa los pasos para configurar tu perfil.
-                </p>
+                <div className="absolute top-10 right-8 transform">
+                    <div className="w-20 h-20 rounded-full bg-primary border-7 border-white flex items-center justify-center">
+                        <div className="w-full h-full rounded-full flex items-center justify-center">
+                            <Image
+                                src={logo}
+                                alt="User"
+                                width={100}
+                                height={100}
+                                className="w-full h-full rounded-full"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="p-5">
+                    <h1 className="text-2xl font-bold text-gray-900 text-start">Regístrate</h1>
+                    <p className="text-xs mt-1 text-gray-500 text-start">
+                        Completa los pasos para configurar tu perfil.
+                    </p>
+                </div>
 
                 {/* Progress */}
-
-                <ol className="flex w-full relative">
+                <ol className="flex w-full h-20 mb-5 justify-center border-b border-gray-200">
                     {steps.map((s, idx) => {
                         const active = idx <= step;
                         const completed = idx < step;
 
                         return (
-                            <li key={s.id} className="flex w-24 relative items-center">
-                                <div className="flex flex-col z-10">
+                            <li key={s.id} className="flex w-fit relative items-center">
+                                <div className="flex flex-col w-10 justify-center items-center z-10">
                                     <span
-                                        className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300 ${active || completed
+                                        className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold transition-colors duration-300 ${active || completed
                                             ? "bg-primary text-white"
                                             : "bg-gray-200 text-gray-500"
                                             }`}
@@ -121,7 +128,7 @@ export default function Register() {
                                         {idx + 1}
                                     </span>
                                     <span
-                                        className={`mt-2 text-xs font-medium transition-colors duration-300 ${active ? "text-primary dark:text-primary" : "text-gray-400"
+                                        className={`mt-1 text-xs font-medium transition-colors duration-300 ${active ? "text-primary dark:text-primary" : "text-gray-400"
                                             }`}
                                     >
                                         {s.label}
@@ -129,7 +136,7 @@ export default function Register() {
                                 </div>
                                 {idx < steps.length - 1 && (
                                     <div
-                                        className={`h-0.5 flex-1 mx-2 -mt-6 transition-colors duration-300 ${idx < step ? "bg-primary" : "bg-gray-200"
+                                        className={`h-0.5 w-13 flex-1 mx-2 -mt-6 transition-colors duration-300 ${idx < step ? "bg-primary" : "bg-gray-200"
                                             }`}
                                     />
                                 )}
@@ -146,7 +153,7 @@ export default function Register() {
                 )}
 
                 <Formik<FormValues>
-                    initialValues={{ email: "", password: "", logo: null, name: "", coverPhoto: null, description: "", phone: "" }}
+                    initialValues={{ email: "", password: "", logo: null, name: "", description: "", phone: "" }}
                     validationSchema={validationSchemas[step]}
                     onSubmit={(values, { setSubmitting }) => {
                         if (step < steps.length - 1) {
@@ -159,49 +166,43 @@ export default function Register() {
                     }}
                 >
                     {({ setFieldValue, isSubmitting, values }) => (
-                        <Form className="space-y-6">
+                        <Form className="space-y-6 pb-8 relative">
                             {step === 0 && (
-                                <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-                                    <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                                            Email
-                                        </label>
+                                <div className="animate-in fade-in space-y-2 slide-in-from-right-4 duration-300 px-5">
+                                    <h3 className="text-gray-600 font-semibold">Ingrese su email y contraseña</h3>
+                                    <div className="h-30 flex flex-col items-start">
                                         <Field
                                             id="email"
                                             name="email"
                                             type="email"
                                             placeholder="tu@correo.com"
-                                            className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                                            className="block w-full px-4 py-3 outline-none rounded-t-lg border-x border-t border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base"
                                         />
-                                        <ErrorMessage
-                                            name="email"
-                                            component="div"
-                                            className="mt-1 text-sm text-red-500 font-medium"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                                            Contraseña
-                                        </label>
                                         <Field
                                             id="password"
                                             name="password"
                                             type="password"
                                             placeholder="••••••••"
-                                            className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                                            className="block w-full px-4 py-3 outline-none rounded-b-lg border border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base shadow-md"
                                         />
-                                        <ErrorMessage
-                                            name="password"
-                                            component="div"
-                                            className="mt-1 text-sm text-red-500 font-medium"
-                                        />
+                                        <div className="mt-2">
+                                            <ErrorMessage
+                                                name="password"
+                                                component="div"
+                                                className="text-xs text-red-500 font-medium"
+                                            />
+                                            <ErrorMessage
+                                                name="email"
+                                                component="div"
+                                                className="text-xs text-red-500 font-medium"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             )}
 
                             {step === 1 && (
-                                <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                                <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300 px-5">
                                     <div>
                                         <label htmlFor="logo" className="block text-sm font-medium text-gray-700 mb-1">
                                             Logo (PNG/JPG)
@@ -280,30 +281,30 @@ export default function Register() {
                                                     className="sr-only"
                                                     onChange={(e) => {
                                                         const file = e.currentTarget.files?.[0] || null;
-                                                        setFieldValue("coverPhoto", file);
+                                                        setFieldValue("logo", file);
                                                         if (file) {
                                                             const url = URL.createObjectURL(file);
-                                                            setCoverPreview(url);
+                                                            setLogoPreview(url);
                                                         } else {
-                                                            setCoverPreview(null);
+                                                            setLogoPreview(null);
                                                         }
                                                     }}
                                                 />
                                             </label>
                                             <span className="text-sm text-gray-500">
-                                                {values.coverPhoto ? values.coverPhoto.name : "Ningún archivo seleccionado"}
+                                                {values.logo ? values.logo.name : "Ningún archivo seleccionado"}
                                             </span>
                                         </div>
                                         <ErrorMessage
-                                            name="coverPhoto"
+                                            name="logo"
                                             component="div"
                                             className="mt-1 text-sm text-red-500 font-medium"
                                         />
-                                        {coverPreview && (
+                                        {logoPreview && (
                                             <div className="mt-3 relative w-full h-32">
                                                 <Image
-                                                    src={coverPreview}
-                                                    alt="Cover preview"
+                                                    src={logoPreview}
+                                                    alt="Logo preview"
                                                     fill
                                                     className="rounded-lg border border-gray-200 object-cover"
                                                 />
@@ -351,7 +352,7 @@ export default function Register() {
                             )}
 
                             {/* Actions */}
-                            <div className="flex items-center justify-between pt-6 border-t border-gray-100">
+                            <div className="flex items-center justify-between border-t border-gray-300 p-5">
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -359,9 +360,9 @@ export default function Register() {
                                         setApiError(null);
                                     }}
                                     disabled={step === 0 || isSubmitting}
-                                    className={`inline-flex items-center px-6 py-3 text-sm font-bold rounded-xl transition-all ${step === 0
+                                    className={`inline-flex items-center px-6 py-3 text-sm font-bold rounded-lg transition-all ${step === 0
                                         ? "text-gray-300 cursor-not-allowed"
-                                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 bg-gray-100"
                                         }`}
                                 >
                                     Atrás
@@ -370,7 +371,7 @@ export default function Register() {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="inline-flex items-center justify-center px-8 py-3 text-sm font-bold text-white transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-primary hover:bg-[#d00000] rounded-xl shadow-lg shadow-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="inline-flex items-center justify-center px-8 py-3 text-sm font-bold text-white transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-primary hover:bg-[#d00000] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isSubmitting ? (
                                         <span className="flex items-center gap-2">
@@ -384,6 +385,14 @@ export default function Register() {
                                         step === steps.length - 1 ? "Finalizar" : "Siguiente"
                                     )}
                                 </button>
+                            </div>
+                            <div className="flex items-center justify-center gap-1 text-center">
+                                <p className="text-xs font-semibold text-gray-600">
+                                    ¿Ya tienes cuenta?
+                                </p>
+                                <Link className="text-blue-600 font-bold hover:underline text-xs" href="/iniciar-sesion">
+                                    Iniciar sesión
+                                </Link>
                             </div>
                         </Form>
                     )}

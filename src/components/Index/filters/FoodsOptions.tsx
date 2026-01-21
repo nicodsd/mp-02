@@ -11,13 +11,14 @@ const FoodGroupOptions: React.FC<{
     availableCategories: Category[];
 }> = ({ selectedCategory, handleCategoryClick, availableCategories }) => {
     return (
-        <div className="flex flex-col w-full justify-center rounded-xl gap-2 text-gray-700 md:px-40 md:bg-transparent">
-            <div className="flex flex-wrap justify-center gap-1 w-full">
+        <div className="flex flex-col w-full justify-center rounded-xl gap-2 text-gray-700 md:bg-transparent">
+            <div className="flex-wrap justify-center gap-1 w-full grid grid-cols-4">
                 {availableCategories.map((option, index) => (
                     <button
+                        type="button"
                         onClick={() => handleCategoryClick(option.name)}
                         key={index}
-                        className={`flex border border-gray-300 px-5 mt-1 mb-1 flex-col w-[24%] h-25 cursor-pointer items-center justify-center hover:bg-gray-50 rounded-2xl transition-colors duration-200 ${selectedCategory === option.name
+                        className={`flex border border-gray-300 px-5 mt-1 mb-1 flex-col h-25 cursor-pointer items-center justify-center hover:bg-gray-50 rounded-2xl transition-colors duration-200 ${selectedCategory === option.name
                             ? "bg-orange-100 border-orange-600"
                             : ""
                             }`}
