@@ -77,7 +77,7 @@ export default function Register() {
     };
 
     return (
-        <div className="relative mx-auto px-4 py-8 flex flex-col items-center">
+        <div className="relative mx-auto px-2 py-2 md:mx-[12vw] lg:mx-[27vw]  flex flex-col items-center">
             <div className="absolute top-0 left-0 w-full px-6 py-8 z-10">
                 <button
                     type="button"
@@ -91,7 +91,7 @@ export default function Register() {
 
             <div className="w-full mt-12 bg-white rounded-3xl shadow-xl">
                 <div className="absolute top-10 right-8 transform">
-                    <div className="w-20 h-20 rounded-full bg-primary border-7 border-white flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg- border-7 border-white flex items-center justify-center">
                         <div className="w-full h-full rounded-full flex items-center justify-center">
                             <Image
                                 src={logo}
@@ -111,7 +111,7 @@ export default function Register() {
                 </div>
 
                 {/* Progress */}
-                <ol className="flex w-full h-20 mb-5 justify-center border-b border-gray-200">
+                <ol className="flex w-full h-20 mb-5 justify-center">
                     {steps.map((s, idx) => {
                         const active = idx <= step;
                         const completed = idx < step;
