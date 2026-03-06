@@ -11,7 +11,7 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
     const router = useRouter();
 
     const handleLogout = async () => {
-        fetch(`${URI}auth/signout`, { method: "POST", credentials: "include" })
+        await fetch(`${URI}auth/signout`, { method: "POST", credentials: "include" })
             .then((res) => res.ok && router.push("/"))
             .catch((err) => console.error("Error", err));
     };
