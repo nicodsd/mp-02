@@ -9,7 +9,7 @@ import { URI } from "@/src/lib/const";
 export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[]; }) {
     const router = useRouter();
     const handleLogout = () => {
-        fetch(`${URI}api/auth/signout`, { method: "POST", credentials: "include" })
+        fetch(`${URI}auth/signout`, { method: "POST", credentials: "include" })
             .then((res) => res.ok && router.push("/"))
             .catch((err) => console.error("Error", err));
     };
