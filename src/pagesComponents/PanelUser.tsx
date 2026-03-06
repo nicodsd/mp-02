@@ -5,7 +5,7 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
-import { URI } from "@/src/lib/const";
+const URI = process.env.NEXT_PUBLIC_API_URL
 export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[]; }) {
 
     const router = useRouter();
