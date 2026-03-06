@@ -28,12 +28,13 @@ export default function LoginPage() {
     formData.append('password', password);
 
     try {
-      const response = await fetch(`${URI}api/auth/signin`, {
+      const response = await fetch(`${URI}auth/signin`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
       const data = await response.json();
+      console.log(data)
       if (response.ok) {
         let user = data.user;
         const { token } = data;
