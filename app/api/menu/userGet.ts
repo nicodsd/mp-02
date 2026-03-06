@@ -11,4 +11,4 @@ export async function userGet(name: string) {
     } else {
         return NextResponse.json({ error: dataDB.message || "Fallo el registro." }, { status: 400 });
     }
-}
+} 
