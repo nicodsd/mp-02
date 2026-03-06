@@ -69,8 +69,8 @@ export default function Register() {
         body.append("description", values.description);
         body.append("phone", values.phone.toString());
         body.append("location", values.location);
-        body.append("is_active", values.is_active);
-        body.append("is_online", values.is_online);
+        body.append("is_active", values.is_active ? "1" : "0");
+        body.append("is_online", values.is_online ? "1" : "0");
         if (!values.plan) body.append("plan", "free");
         if (values.logo) body.append("logo", values.logo);
         if (values.cover) body.append("cover", values.cover);
