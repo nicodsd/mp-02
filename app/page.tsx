@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { URL, logotipo } from "@/src/lib/const";
+import { URI, logotipo } from "@/src/lib/const";
 import { getFoodsByUser } from "@/src/lib/getFoodsByUser";
 import { getCategoriesByUser } from "@/src/lib/getCategoriesByUser";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
@@ -19,9 +19,9 @@ export default async function Page() {
   const userCookie = cookieStore.get("user")?.value;
   if (userCookie) {
     user = JSON.parse(userCookie);
-    categoriesByUser = await getCategoriesByUser(URL, user.id!);
-    foodsByUser = await getFoodsByUser(URL, user.id!);
-    subCategoriesByUser = await getSubCategoriesByUser(URL, user.id!);
+    categoriesByUser = await getCategoriesByUser(URI, user.id!);
+    foodsByUser = await getFoodsByUser(URI, user.id!);
+    subCategoriesByUser = await getSubCategoriesByUser(URI, user.id!);
   }
   return (
     <div className="flex relative flex-col min-h-screen">

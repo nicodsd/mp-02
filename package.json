@@ -15,6 +15,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
     "@headlessui/react": "^2.2.9",
+    "@mercadopago/sdk-js": "^0.0.3",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "@vercel/analytics": "^1.6.1",
