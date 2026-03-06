@@ -6,9 +6,9 @@ import { MdChevronLeft, MdImage } from "react-icons/md";
 import Link from "next/link";
 import logo from "@/public/images/logo/logo-rojo.png";
 import Image from "next/image";
+import { URI } from "@/src/lib/const";
 
 export default function LoginPage() {
-  const URL = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -28,7 +28,7 @@ export default function LoginPage() {
     formData.append('password', password);
 
     try {
-      const response = await fetch(`${URL}api/auth/signin`, {
+      const response = await fetch(`${URI}api/auth/signin`, {
         method: "POST",
         body: formData,
         credentials: "include",

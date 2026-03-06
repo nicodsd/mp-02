@@ -1,6 +1,6 @@
 // app/api/register/route.ts
 import { setAuthCookie, setUserCookie } from "@/app/actions";
-import { URL } from "@/src/lib/const";
+import { URI } from "@/src/lib/const";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Campos requeridos faltantes" }, { status: 400 });
     }
     try {
-        const response = await fetch(`${URL}api/auth/signup`, {
+        const response = await fetch(`${URI}api/auth/signup`, {
             method: "POST",
             body: formData,
             credentials: "include",

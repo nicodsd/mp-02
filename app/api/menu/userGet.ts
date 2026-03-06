@@ -1,9 +1,9 @@
 "use cache";
 import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
-import { URL } from "@/src/lib/const";
+import { URI } from "@/src/lib/const";
 export async function userGet(name: string) {
-    const response = await fetch(`${URL}api/menu/${name}`);
+    const response = await fetch(`${URI}api/menu/${name}`);
     const dataDB = await response.json();
     if (name === "QMENU") { return redirect("/"); }
     if (response.ok) {
