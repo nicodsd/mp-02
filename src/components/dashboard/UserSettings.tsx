@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { FaPhone, FaMapMarkerAlt, FaTimes, FaUser } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
-
-const UserSettings = ({ user, token, apiUrl }: { user: any; token: string; apiUrl: string }) => {
+const URI = process.env.NEXT_PUBLIC_API_URL
+const UserSettings = ({ user, token }: { user: any; token: string; }) => {
   const [name, setName] = useState(user.name);
   const [preview, setPreview] = useState<string>(user.photo);
   const [file, setFile] = useState<File>();
@@ -57,7 +57,7 @@ const UserSettings = ({ user, token, apiUrl }: { user: any; token: string; apiUr
     formData.append("user_id", user.id)
 
     try {
-      const res = await fetch(apiUrl + `api/auth/update/${user.id}`, {
+      const res = await fetch(URI + `api/auth/update/${user.id}`, {
         method: "PUT",
         body: formData,
         credentials: "include",
