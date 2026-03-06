@@ -5,11 +5,11 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
-import { URL } from "@/src/lib/const";
+import { URI } from "@/src/lib/const";
 export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[]; }) {
     const router = useRouter();
     const handleLogout = () => {
-        fetch(`${URL}api/auth/signout`, { method: "POST", credentials: "include" })
+        fetch(`${URI}api/auth/signout`, { method: "POST", credentials: "include" })
             .then((res) => res.ok && router.push("/"))
             .catch((err) => console.error("Error", err));
     };
