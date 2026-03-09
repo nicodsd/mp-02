@@ -1,28 +1,18 @@
 'use client';
 import { useRef, useEffect, useState } from "react";
 import QrButtonIndex from "@/src/components/buttons/QrButtonIndex";
-import { URL_LOCAL } from "@/src/lib/const";
+import { URL_PROD } from "@/src/lib/const";
+
 interface QrButtonProps {
     name: string;
     logoUrl?: string;
 }
+
 export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
     const qrRef = useRef<HTMLDivElement>(null);
-    const url = `${URL_LOCAL}menu/${encodeURIComponent(name)}`;
+    const url = `${URL_PROD}menu/${encodeURIComponent(name)}`;
     const [isOpen, setIsOpen] = useState(false);
-    useEffect(() => {
-        if (isOpen && qrRef.current && window.QRCode) {
-            qrRef.current.innerHTML = "";
-            new window.QRCode(qrRef.current, {
-                text: url,
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: window.QRCode.CorrectLevel.H,
-            });
-        }
-    }, [isOpen, url]);
+    const [copied, setCopied] = useState(false); // Estado para el feedback
 
     useEffect(() => {
         if (isOpen && qrRef.current && window.QRCode) {
@@ -37,61 +27,103 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
             });
         }
     }, [isOpen, url]);
+
+    // Función para copiar al portapapeles
+    const handleCopyUrl = async () => {
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopied(true);
+            // Revertir el estado después de 2 segundos
+            setTimeout(() => setCopied(false), 2000);
+        } catch (err) {
+            console.error("Error al copiar: ", err);
+        }
+    };
 
     const handleDownload = () => {
         const qrCanvas = qrRef.current?.querySelector("canvas") as HTMLCanvasElement;
         if (!qrCanvas) return;
 
-        // Crear un canvas más grande para la plantilla
         const templateCanvas = document.createElement("canvas");
         const ctx = templateCanvas.getContext("2d");
         if (!ctx) return;
 
-        const width = 300;
-        const height = 400;
+        // Aumentamos un poco el tamaño de la plantilla para mejor calidad general (Opcional)
+        const width = 350;
+        const height = 450;
         templateCanvas.width = width;
         templateCanvas.height = height;
 
-        // Fondo blanco
+        // Fondo blanco con esquinas redondeadas (un toque pro)
         ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, width, height);
+        // ctx.fillRect(0, 0, width, height); // Fondo rectangular simple
+
+        // Función para dibujar rectángulo redondeado (Mejora visual)
+        const roundRect = (x: number, y: number, w: number, h: number, r: number) => {
+            if (w < 2 * r) r = w / 2;
+            if (h < 2 * r) r = h / 2;
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+            return ctx;
+        }
+        roundRect(0, 0, width, height, 20).fill();
 
         // Dibujar QR centrado
-        const qrSize = 200;
-        ctx.drawImage(
-            qrCanvas,
-            width / 2 - qrSize / 2,
-            40,
-            qrSize,
-            qrSize
-        );
+        const qrSize = 250; // Aumentamos el tamaño del QR en la plantilla
+        const qrX = width / 2 - qrSize / 2;
+        const qrY = 50;
+        ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
 
-        // Dibujar logo encima del QR
+        // Dibujar logo encima del QR con reescalado PROPORCIONAL
         if (logoUrl) {
             const img = new Image();
+            // Importante: CrossOrigin para evitar errores de seguridad al descargar
+            img.crossOrigin = "anonymous";
             img.src = typeof logoUrl === "string" ? logoUrl : "";
+
             img.onload = () => {
-                const logoSize = 60;
+                // --- LÓGICA DE REESCALADO SENIOR ---
+                const maxLogoSize = 70; // Tamaño máximo (ancho o alto)
+                let logoWidth = img.width;
+                let logoHeight = img.height;
+
+                // Calculamos la relación de aspecto
+                const ratio = logoWidth / logoHeight;
+
+                // Ajustamos proporcionalmente
+                if (logoWidth > logoHeight) {
+                    // Es más ancha que alta
+                    logoWidth = maxLogoSize;
+                    logoHeight = maxLogoSize / ratio;
+                } else {
+                    // Es más alta que ancha (o cuadrada)
+                    logoHeight = maxLogoSize;
+                    logoWidth = maxLogoSize * ratio;
+                }
+
+                // Coordenadas para centrar el logo reescalado
+                const logoX = width / 2 - logoWidth / 2;
+                const logoY = qrY + qrSize / 2 - logoHeight / 2;
+
+                // Dibujar fondo blanco detrás del logo (para que no se pise con el QR)
+                // Lo hacemos un poco más grande que el logo para que respire
+                const padding = 10;
                 ctx.fillStyle = "#fff";
-                ctx.fillRect(
-                    width / 2 - logoSize / 2,
-                    40 + qrSize / 2 - logoSize / 2,
-                    logoSize,
-                    logoSize
-                );
-                ctx.drawImage(
-                    img,
-                    width / 2 - logoSize / 2,
-                    40 + qrSize / 2 - logoSize / 2,
-                    logoSize,
-                    logoSize
-                );
+                roundRect(logoX - padding / 2, logoY - padding / 2, logoWidth + padding, logoHeight + padding, 10).fill();
+
+                // Dibujar el logo final
+                ctx.drawImage(img, logoX, logoY, logoWidth, logoHeight);
 
                 // Texto debajo
-                ctx.font = "bold 18px Arial";
+                ctx.font = "bold 22px Arial"; // Un poco más grande
                 ctx.fillStyle = "#000";
                 ctx.textAlign = "center";
-                ctx.fillText(name, width / 2, qrSize + 120);
+                ctx.fillText(name, width / 2, qrY + qrSize + 50);
 
                 // Descargar PNG
                 const link = document.createElement("a");
@@ -99,70 +131,88 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
                 link.href = templateCanvas.toDataURL("image/png");
                 link.click();
             };
+
+            img.onerror = () => {
+                console.error("No se pudo cargar el logo para la descarga.");
+                // Si falla el logo, descargamos solo el QR para no trabar al usuario
+                downloadJustQr(ctx, width, qrSize, qrY, name);
+            };
         } else {
             // Texto debajo sin logo
-            ctx.font = "bold 18px Arial";
-            ctx.fillStyle = "#000";
-            ctx.textAlign = "center";
-            ctx.fillText(name, width / 2, qrSize + 120);
-
-            const link = document.createElement("a");
-            link.download = `${name}-qr.png`;
-            link.href = templateCanvas.toDataURL("image/png");
-            link.click();
+            downloadJustQr(ctx, width, qrSize, qrY, name);
         }
     };
+
+    // Función auxiliar por si no hay logo o falla
+    const downloadJustQr = (ctx: CanvasRenderingContext2D, width: number, qrSize: number, qrY: number, name: string) => {
+        ctx.font = "bold 22px Arial";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.fillText(name, width / 2, qrY + qrSize + 50);
+
+        const link = document.createElement("a");
+        link.download = `${name}-QR.png`;
+        // Usamos el canvas de la plantilla, no el del QR original
+        link.href = ctx.canvas.toDataURL("image/png");
+        link.click();
+    }
+
     return (
         <div className="">
             <QrButtonIndex openModal={() => setIsOpen(true)} />
-            {
-                isOpen && (
-                    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white animate__animated animate__fadeIn rounded-lg shadow-lg p-6 text-center relative w-[320px]">
-                            <h2 className="text-2xl font-semibold mb-4">Descarga y comparte</h2>
-                            <div className="relative inline-block mx-auto">
-                                <div ref={qrRef} className="mx-auto my-4" />
-                                {logoUrl ? (
-                                    <img
-                                        src={typeof logoUrl === "string" ? logoUrl : ""}
-                                        alt="Logo"
-                                        className="absolute top-1/2 left-1/2 w-15 h-15 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-1"
-                                    />
-                                ) : (
-                                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded text-sm font-bold">
-                                        {name}
-                                    </span>
-                                )}
-                            </div>
+            {isOpen && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50">
+                    <div className="bg-white animate__animated animate__fadeIn rounded-xl shadow-2xl p-6 text-center relative w-85">
+                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Comparte tu menú</h2>
 
-                            <p className="text-sm wrap-break-word mb-4">
-                                <a
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-blue-600 underline"
-                                >
-                                    {url}
-                                </a>
+                        <div className="relative inline-block mx-auto mb-4">
+                            <div ref={qrRef} className="mx-auto border-4 border-gray-50 p-2 rounded-lg" />
+                            {logoUrl ? (
+                                <img
+                                    src={typeof logoUrl === "string" ? logoUrl : ""}
+                                    alt="Logo"
+                                    className="absolute top-1/2 left-1/2 w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white border-2 border-white shadow-sm"
+                                />
+                            ) : (
+                                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded text-[10px] font-bold shadow-sm uppercase">
+                                    {name}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Sección de URL y Botón de Copiar */}
+                        <div className="bg-gray-50 p-3 rounded-lg flex items-center justify-between mb-4 border border-gray-100">
+                            <p className="text-xs text-gray-500 truncate mr-2 text-left">
+                                {url}
                             </p>
+                            <button
+                                onClick={handleCopyUrl}
+                                className={`shrink-0 p-2 rounded-md transition-all ${copied ? "bg-green-100 text-green-600" : "bg-white text-blue-600 hover:bg-blue-50 border border-blue-100 shadow-sm"
+                                    }`}
+                                title="Copiar enlace"
+                            >
+                                {copied ? <span className="text-xs font-bold">¡Copiado!</span> : <span className="text-xs font-bold">Copiar</span>}
+                            </button>
+                        </div>
 
+                        <div className="space-y-2">
                             <button
                                 onClick={handleDownload}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition mb-2"
+                                className="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md shadow-blue-100"
                             >
                                 Descargar plantilla PNG
                             </button>
 
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition"
+                                className="w-full px-4 py-3 text-gray-500 font-medium hover:text-gray-700 transition"
                             >
                                 Cerrar
                             </button>
                         </div>
                     </div>
-                )
-            }
+                </div>
+            )}
         </div>
     );
 }
