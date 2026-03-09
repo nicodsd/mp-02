@@ -2,8 +2,7 @@
 import Allergens from "@/src/components/newfood_comps/Allergens";
 import Categories from "@/src/components/newfood_comps/Categories";
 import Image from "next/image";
-import { Button } from "@mui/material";
-import { PhotoCamera, CloudUpload, DeleteOutline } from '@mui/icons-material';
+import { PhotoCamera, CloudUpload, DeleteOutline } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -55,7 +54,6 @@ export default function FormFoods({
 
   const postFood = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Formulario enviado");
 
     const formData = new FormData();
     if (file) formData.append("photo", file);
@@ -66,15 +64,17 @@ export default function FormFoods({
     formData.append("category", category);
 
     try {
-      const res = await fetch(apiUrl + `api/foods/postfood/${user.id}`, {
+      const res = await fetch(apiUrl + `foods/postfood/${user.id}`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
       console.log(res);
-      if (!res.ok) { throw new Error("Network response was not ok"); }
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await res.json();
-      router.push('/');
+      router.push("/");
       console.log("Success:", data);
     } catch (error) {
       console.error("Error:", error);
@@ -89,7 +89,6 @@ export default function FormFoods({
       className="min-h-screen flex flex-col bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
     >
       <div className="px-5 md:w-[25vw] mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
-
         {/* Sección de Imagen */}
         <div className="flex flex-col items-center gap-4 relative">
           <div className="w-48 h-48 rounded-3xl flex items-center justify-center shadow-inner border border-gray-400 relative overflow-hidden group">
@@ -119,13 +118,29 @@ export default function FormFoods({
             <label className="flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:opacity-90 transition-opacity shadow-sm cursor-pointer">
               <PhotoCamera sx={{ fontSize: 16 }} />
               Subir Imagen
-              <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) imageCapture(f); }} />
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) imageCapture(f);
+                }}
+              />
             </label>
 
             <label className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
               <CloudUpload sx={{ fontSize: 16 }} />
               Galería
-              <input type="file" accept="image/*" hidden onChange={(e) => { const f = e.target.files?.[0]; if (f) imageCapture(f); }} />
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) imageCapture(f);
+                }}
+              />
             </label>
           </div>
           {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
@@ -134,7 +149,12 @@ export default function FormFoods({
         {/* Inputs de Texto */}
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
-            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="name">Nombre</label>
+            <label
+              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              htmlFor="name"
+            >
+              Nombre
+            </label>
             <input
               id="name"
               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
@@ -147,7 +167,12 @@ export default function FormFoods({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="description">Descripción</label>
+            <label
+              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              htmlFor="description"
+            >
+              Descripción
+            </label>
             <textarea
               id="description"
               className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
@@ -160,9 +185,16 @@ export default function FormFoods({
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1" htmlFor="price">Precio</label>
+            <label
+              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              htmlFor="price"
+            >
+              Precio
+            </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                $
+              </span>
               <input
                 id="price"
                 className="w-full bg-white border border-gray-300 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
@@ -180,12 +212,20 @@ export default function FormFoods({
 
           {/* Categorías */}
           <div className="flex flex-col w-full gap-1 min-h-[10vh]">
-            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">Categorías</label>
+            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">
+              Categorías
+            </label>
             <div className="w-full rounded-2xl">
               {initialCategories?.length > 0 ? (
-                <Categories categoriesList={initialCategories} onChange={setSubCategories} user={user} />
+                <Categories
+                  categoriesList={initialCategories}
+                  onChange={setSubCategories}
+                  user={user}
+                />
               ) : (
-                <p className="text-sm text-gray-400 italic p-2">Cargando categorías...</p>
+                <p className="text-sm text-gray-400 italic p-2">
+                  Cargando categorías...
+                </p>
               )}
             </div>
           </div>
