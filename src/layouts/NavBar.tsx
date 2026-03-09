@@ -26,8 +26,6 @@ export default function NavBar({
   const address = user?.location || "Sgo. Del Estero, Argentina";
   const description = user?.description || "Crea tu menú con QMenu.";
 
-  console.log("NavBar - user:", user);
-
   let background;
   if (bttn === true) {
     if (!user) background = "/images/placeholders/back-qmenu.png";
