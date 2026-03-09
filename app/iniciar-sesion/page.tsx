@@ -6,7 +6,7 @@ import { MdChevronLeft, MdImage } from "react-icons/md";
 import Link from "next/link";
 import logo from "@/public/images/logo/logo-rojo.png";
 import Image from "next/image";
-import { URI } from "@/src/lib/const";
+const URI = process.env.NEXT_PUBLIC_API_URL
 
 export default function LoginPage() {
   const router = useRouter();

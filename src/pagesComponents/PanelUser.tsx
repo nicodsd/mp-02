@@ -5,7 +5,7 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
-import { URI } from "@/src/lib/const";
+const URI = process.env.NEXT_PUBLIC_API_URL
 export default function PanelUser({ user, token, foods }: { user: any; token: string; foods: any[]; }) {
 
     const router = useRouter();
@@ -48,7 +48,7 @@ export default function PanelUser({ user, token, foods }: { user: any; token: st
 
                             <TabPanels className="flex w-full justify-center mt-4 md:mt-0 bg-white h-fit border border-gray-200 rounded-2xl md:px-3 py-10">
                                 <TabPanel className="w-full md:min-h-[calc(100vh-200px)] md:w-[60%]">
-                                    <UserSettings user={user} token={token} apiUrl={URI} />
+                                    <UserSettings user={user} token={token} />
                                 </TabPanel>
                                 <TabPanel className="w-full h-fit md:min-h-[calc(100vh-200px)]">
                                     <MenuItems dataFoods={foods} />
