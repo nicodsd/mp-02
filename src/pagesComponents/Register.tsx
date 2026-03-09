@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, isInteger } from "formik";
 import { setAuthCookie, setUserCookie } from "@/app/actions";
 import * as Yup from "yup";
 import { MdChevronLeft } from "react-icons/md";
@@ -40,7 +40,7 @@ const validationSchemas = [
     cover: Yup.mixed().optional(),
     location: Yup.string().optional(),
     description: Yup.string().min(10, "Mínimo 10 caracteres").optional(),
-    phone: Yup.string().optional(),
+    phone: Yup.number().integer().min(10).max(10).optional(),
   }),
 ];
 
@@ -96,9 +96,9 @@ export default function Register() {
       const { token } = data;
       await setAuthCookie(token);
       await setUserCookie(user);
+      console.log(response);
       if (!response.ok) {
         setApiError(data.error || "Ocurrió un error al registrarse.");
-        console.log(apiError);
         return;
       }
       router.push("/");
@@ -424,13 +424,12 @@ export default function Register() {
                             </div>
                           )) || (
                             <div className="rounded-full w-20 h-20">
-                              <div className="rounded-full w-20 h-20 border-2 border-black object-cover"></div>
-                              {/* <Image
+                              <div className="rounded-full w-20 h-20 border-2 border-black object-cover">{/* <Image
                                                         src="/placeholder.png"
                                                         alt="Logo preview"
                                                         fill
                                                         className="rounded-full border border-gray-200 object-cover"
-                                                    /> */}
+                                                    /> */}</div>
                             </div>
                           )}
                         </div>
@@ -440,56 +439,60 @@ export default function Register() {
                           className="mt-1 text-sm text-red-500 font-medium"
                         />
                       </div>
-                      <div className="">
-                        <label
-                          htmlFor="cover"
-                          className="block text-md font-medium text-gray-700 mb-1"
-                        >
-                          Foto de portada
-                        </label>
-                        <div className="flex items-center space-x-4 relative">
-                          <label className="cursor-pointer absolute -bottom-2 left-0 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
-                            <span>Activar con Premium</span>
-                            <input
-                              id="cover"
-                              name="cover"
-                              type="file"
-                              accept="image/*"
-                              className="sr-only"
-                              onChange={(e) => {
-                                const file = e.currentTarget.files?.[0] || null;
-                                setFieldValue("cover", file);
-                                if (file) {
-                                  const url = URL.createObjectURL(file);
-                                  setCoverPhotoPreview(url);
-                                } else {
-                                  setCoverPhotoPreview(null);
-                                }
-                              }}
-                            />
+                      {values.plan !== "free" && (
+                        <div className="">
+                          <label
+                            htmlFor="cover"
+                            className="block text-md font-medium text-gray-700 mb-1"
+                          >
+                            Foto de portada
                           </label>
-                          {(coverPhotoPreview && (
-                            <div className="mt-3 relative w-full h-32">
-                              <Image
-                                src={coverPhotoPreview}
-                                alt="Cover photo preview"
-                                fill
-                                className="rounded-lg border border-gray-200 object-cover"
+                          <div className="flex items-center space-x-4 relative">
+                            <label className="cursor-pointer absolute z-10 -bottom-2 left-0 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
+                              <span>Activar con Premium</span>
+                              <input
+                                id="cover"
+                                name="cover"
+                                type="file"
+                                accept="image/*"
+                                className="sr-only"
+                                onChange={(e) => {
+                                  const file =
+                                    e.currentTarget.files?.[0] || null;
+                                  setFieldValue("cover", file);
+                                  if (file) {
+                                    const url = URL.createObjectURL(file);
+                                    setCoverPhotoPreview(url);
+                                  } else {
+                                    setCoverPhotoPreview(null);
+                                  }
+                                }}
                               />
-                            </div>
-                          )) || (
-                            <div className="">
-                              <div className="rounded-2xl w-40 h-20 border-2 border-black object-cover"></div>
-                              {/* <Image
+                            </label>
+                            {(coverPhotoPreview && (
+                              <div className="relative z-0 w-full h-20">
+                                <Image
+                                  src={coverPhotoPreview}
+                                  alt="Cover photo preview"
+                                  width={100}
+                                  height={60}
+                                  className="rounded-lg border w-30 h-20 border-gray-200 object-cover"
+                                />
+                              </div>
+                            )) || (
+                              <div className="">
+                                <div className="rounded-2xl w-40 h-20 border-2 border-black object-cover"></div>
+                                {/* <Image
                                                         src="/placeholder.png"
                                                         alt="Logo preview"
                                                         fill
                                                         className="rounded-full border border-gray-200 object-cover"
                                                     /> */}
-                            </div>
-                          )}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                     <div className="flex items-center justify-between">
                       <label

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { updateUserCookie } from "@/app/actions";
 import { useRouter } from "next/navigation";
-import { useNotification } from "@/src/components/notifications/NotificationContext";
+
 import {
   FaPhone,
   FaMapMarkerAlt,

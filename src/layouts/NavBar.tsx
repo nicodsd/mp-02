@@ -26,17 +26,18 @@ export default function NavBar({
   const address = user?.location || "Sgo. Del Estero, Argentina";
   const description = user?.description || "Crea tu menú con QMenu.";
 
+  console.log("NavBar - user:", user);
+
   let background;
   if (bttn === true) {
     if (!user) background = "/images/placeholders/back-qmenu.png";
-  } else {
-    if (user?.plan === "plus" || user?.plan === "premium") {
-      background = user?.cover
-        ? user.cover
-        : "/images/placeholders/back-qmenu.png";
-    }
   }
-  
+  if (user?.plan === "plus" || user?.plan === "premium") {
+    background = user?.cover
+      ? user.cover
+      : "/images/placeholders/back-qmenu.png";
+  }
+
   const navVariants: Record<number, JSX.Element> = {
     0: (
       <div
@@ -183,7 +184,7 @@ export default function NavBar({
             )}
           </div>
         )}
-        {background ? (
+        {background && state !== 2 ? (
           <div
             style={{
               background: `url(${background}) no-repeat center center/cover`,
