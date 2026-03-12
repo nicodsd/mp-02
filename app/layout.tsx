@@ -2,9 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Asap, Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import Script from "next/script";
 import EmotionProvider from "@/src/components/EmotionProvider";
 import { cn } from "@/lib/utils";
+import { headers } from "next/headers";
+
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const asap = Asap({
@@ -18,22 +19,23 @@ export const metadata: Metadata = {
   description: "Tu menú en tus manos.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headerList = await headers();
+  const nonce = headerList.get("x-nonce") || "";
   return (
     <html lang="es" className={cn(asap.className, "font-sans", geist.variable)}>
+      <head>
+        <meta property="csp-nonce" content={nonce} />
+      </head>
       <body className="antialiased">
         <EmotionProvider>
           <main>{children}</main>
           <Analytics />
         </EmotionProvider>
-        <Script
-          src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"
-          strategy="beforeInteractive"
-        />
       </body>
     </html>
   );

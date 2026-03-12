@@ -88,7 +88,6 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
 
       if (!res.ok) {
         if (data.errors) {
-          console.error("Errores de validación:", data.errors);
           alert(`Error de validación: ${data.errors.join(", ")}`);
         } else {
           alert(data.message || "Ocurrió un error inesperado");
@@ -97,7 +96,6 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
       }
 
       if (data.success) {
-        console.log("Usuario actualizado:", data.user);
         await updateUserCookie(data.user);
         router.refresh();
         setEditStates({
@@ -120,15 +118,14 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     <>
       <form
         onSubmit={userUpdate}
-        className="flex w-full flex-col items-center justify-center gap-3 px-"
+        className="flex w-full relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
-        <h2 className="text-xl font-bold text-gray-600 dark:text-gray-800 text-start">
+        <h1 className="text-xl h-fit font-bold mb-2 text-gray-800">
           Editar Perfil
-        </h2>
-
+        </h1>
         <div className="w-full flex items-center justify-center flex-col gap-10 px-7">
           <div className="relative">
-            <div className="w-40 h-40 rounded-full border-4 border-gray-100 shadow-xl overflow-hidden">
+            <div className="w-40 h-40 rounded-full border-gray-500 bg-black border-4 overflow-hidden">
               <Image
                 src={preview || "/images/image_placeholder.png"}
                 alt="Profile"
@@ -139,7 +136,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                 className="object-cover w-full h-full"
               />
             </div>
-            <label className="absolute bottom-0 w-28 right-1/2 text-center -translate-x-1/2 translate-y-1/3 left-1/2 text-xs text-white bg-red-500 py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+            <label className="absolute bottom-0 w-28 right-1/2 text-center -translate-x-1/2 translate-y-1/3 left-1/2 text-xs text-white bg-[#ff0000] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
               <input
                 type="file"
                 accept="image/*"
@@ -153,11 +150,12 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
             </label>
           </div>
 
-          <div className="w-full flex flex-col gap-8">
+          <div className="w-full flex flex-col gap-5 pt-5">
+            <h2 className="text-lg text-text">Tus datos:</h2>
             <div className="w-full">
               {editStates.name ? (
                 <div className="relative">
-                  <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
                     <FaUser /> Nombre
                   </label>
                   <div className="relative">
@@ -176,9 +174,9 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-gray-500">
                   <div>
-                    <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
                       <FaUser /> Nombre
                     </label>
                     <p className="text-lg">{name}</p>
@@ -196,7 +194,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
             <div className="w-full">
               {editStates.description ? (
                 <div className="relative">
-                  <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
                     <TbNotes /> Descripción
                   </label>
                   <div className="relative">
@@ -215,9 +213,9 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-gray-500">
                   <div>
-                    <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-bold">
                       <TbNotes /> Descripción
                     </label>
                     <p className="text-lg">{description}</p>
@@ -236,7 +234,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
             <div className="w-full">
               {editStates.location ? (
                 <div className="relative">
-                  <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
                     <FaMapMarkerAlt /> Ubicación
                   </label>
                   <div className="relative">
@@ -255,9 +253,9 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-gray-500">
                   <div>
-                    <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-bold">
                       <FaMapMarkerAlt /> Ubicación
                     </label>
                     <p className="text-lg">{location}</p>
@@ -275,7 +273,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
             <div className="w-full">
               {editStates.phone ? (
                 <div className="relative">
-                  <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
                     <FaPhone className="rotate-180" /> Teléfono
                   </label>
                   <div className="relative">
@@ -294,9 +292,9 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                   </div>
                 </div>
               ) : (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center text-gray-500">
                   <div>
-                    <label className="flex items-center gap-1 text-xs font-bold text-gray-600 mb-1">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
                       <FaPhone className="rotate-180" /> Telefono
                     </label>
                     <p className="text-lg">{phone}</p>
@@ -313,14 +311,20 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
             </div>
           </div>
         </div>
-
-        {/* Acciones */}
-
         {isEditing && (
           <div className="w-full flex gap-3 border-t border-gray-200 px-7 pt-5">
             <button
               type="button"
-              onClick={() => router.refresh()} // Al refrescar se resetean los estados desde la cookie
+              onClick={() =>
+                isEditing &&
+                setEditStates({
+                  name: false,
+                  description: false,
+                  location: false,
+                  phone: false,
+                  photo: false,
+                })
+              }
               className="px-6 py-3 border rounded-xl"
             >
               Cancelar
@@ -341,11 +345,10 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
           </div>
         )}
       </form>
-      <QrCode
-        name={name}
-        url={`${process.env.NEXT_PUBLIC_BASE_URL}/menu/${user.id}`}
-        logoUrl={preview}
-      />
+      <div className="w-full mt-7 px-7">
+        <h2 className="text-xl font-bold mb-4 text-gray-800">Tu código QR</h2>
+        <QrCode name={name} logoUrl={preview} />
+      </div>
     </>
   );
 };
