@@ -80,7 +80,7 @@ export default function PromoPanel({ foods }: { foods: Food[] }) {
             food.name.toLowerCase().includes(searchTerm.toLowerCase());
         return matchesCategory && matchesSearch;
     });
-
+ 
     return (
         <div className="p-3 flex flex-col gap-7">
             <h1 className="text-xl font-bold">Panel de Promociones</h1>

@@ -4,9 +4,9 @@ export default function Loading({ count }: { count: number }) {
       {[...Array(count)].map((_, i) => (
         <div
           key={i}
-          className="menu-card rounded-[7px] overflow-hidden my-0.5 shadow-md flex w-full bg-white p-3.5"
+          className="menu-card rounded-[7px] animate-animate overflow-hidden my-0.5 shadow-md flex w-full bg-white p-3.5"
         >
-          <div className="bg-gray-300 rounded-[7px] w-[100px] h-[100px]" />
+          <div className="bg-gray-300 rounded-[7px] w-25 h-25" />
           <div className="flex flex-col justify-between pl-3 w-full">
             <div className="space-y-2">
               <div className="h-4 bg-gray-300 rounded w-3/4" />

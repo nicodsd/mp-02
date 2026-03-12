@@ -1,218 +1,239 @@
-'use client';
-import { useRef, useEffect, useState } from "react";
+"use client";
+import { useRef, useState } from "react";
+import { QRCodeCanvas } from "qrcode.react";
 import QrButtonIndex from "@/src/components/buttons/QrButtonIndex";
 import { URL_PROD } from "@/src/lib/const";
+import { Download, Check } from "lucide-react";
 
 interface QrButtonProps {
-    name: string;
-    logoUrl?: string;
+  name: string;
+  logoUrl?: string;
+  isOpen: boolean;
+  openModal: () => void;
 }
 
-export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
-    const qrRef = useRef<HTMLDivElement>(null);
-    const url = `${URL_PROD}menu/${encodeURIComponent(name)}`;
-    const [isOpen, setIsOpen] = useState(false);
-    const [copied, setCopied] = useState(false); // Estado para el feedback
+// 1. Definimos las plantillas con colores de alto contraste
+const TEMPLATES = [
+  { id: 1, name: "Clásico", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
+  { id: 2, name: "Noche", bg: "#1a1a1a", fg: "#ffffff", accent: "#333333" },
+  { id: 3, name: "Sunset", bg: "#ff5f6d", fg: "#ffffff", accent: "#ffc371" },
+  { id: 4, name: "Bosque", bg: "#004d40", fg: "#e0f2f1", accent: "#00695c" },
+];
 
-    useEffect(() => {
-        if (isOpen && qrRef.current && window.QRCode) {
-            qrRef.current.innerHTML = "";
-            new window.QRCode(qrRef.current, {
-                text: url,
-                width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: window.QRCode.CorrectLevel.H,
-            });
-        }
-    }, [isOpen, url]);
+export default function QrModalsGenerator({
+  name,
+  logoUrl,
+  isOpen,
+  openModal,
+}: QrButtonProps) {
+  const [copied, setCopied] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
-    // Función para copiar al portapapeles
-    const handleCopyUrl = async () => {
-        try {
-            await navigator.clipboard.writeText(url);
-            setCopied(true);
-            // Revertir el estado después de 2 segundos
-            setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
-            console.error("Error al copiar: ", err);
-        }
-    };
+  const qrCanvasRef = useRef<HTMLCanvasElement>(null);
+  const url = `${URL_PROD}menu/${encodeURIComponent(name)}`;
 
-    const handleDownload = () => {
-        const qrCanvas = qrRef.current?.querySelector("canvas") as HTMLCanvasElement;
-        if (!qrCanvas) return;
-
-        const templateCanvas = document.createElement("canvas");
-        const ctx = templateCanvas.getContext("2d");
-        if (!ctx) return;
-
-        // Aumentamos un poco el tamaño de la plantilla para mejor calidad general (Opcional)
-        const width = 350;
-        const height = 450;
-        templateCanvas.width = width;
-        templateCanvas.height = height;
-
-        // Fondo blanco con esquinas redondeadas (un toque pro)
-        ctx.fillStyle = "#ffffff";
-        // ctx.fillRect(0, 0, width, height); // Fondo rectangular simple
-
-        // Función para dibujar rectángulo redondeado (Mejora visual)
-        const roundRect = (x: number, y: number, w: number, h: number, r: number) => {
-            if (w < 2 * r) r = w / 2;
-            if (h < 2 * r) r = h / 2;
-            ctx.beginPath();
-            ctx.moveTo(x + r, y);
-            ctx.arcTo(x + w, y, x + w, y + h, r);
-            ctx.arcTo(x + w, y + h, x, y + h, r);
-            ctx.arcTo(x, y + h, x, y, r);
-            ctx.arcTo(x, y, x + w, y, r);
-            ctx.closePath();
-            return ctx;
-        }
-        roundRect(0, 0, width, height, 20).fill();
-
-        // Dibujar QR centrado
-        const qrSize = 250; // Aumentamos el tamaño del QR en la plantilla
-        const qrX = width / 2 - qrSize / 2;
-        const qrY = 50;
-        ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
-
-        // Dibujar logo encima del QR con reescalado PROPORCIONAL
-        if (logoUrl) {
-            const img = new Image();
-            // Importante: CrossOrigin para evitar errores de seguridad al descargar
-            img.crossOrigin = "anonymous";
-            img.src = typeof logoUrl === "string" ? logoUrl : "";
-
-            img.onload = () => {
-                // --- LÓGICA DE REESCALADO SENIOR ---
-                const maxLogoSize = 70; // Tamaño máximo (ancho o alto)
-                let logoWidth = img.width;
-                let logoHeight = img.height;
-
-                // Calculamos la relación de aspecto
-                const ratio = logoWidth / logoHeight;
-
-                // Ajustamos proporcionalmente
-                if (logoWidth > logoHeight) {
-                    // Es más ancha que alta
-                    logoWidth = maxLogoSize;
-                    logoHeight = maxLogoSize / ratio;
-                } else {
-                    // Es más alta que ancha (o cuadrada)
-                    logoHeight = maxLogoSize;
-                    logoWidth = maxLogoSize * ratio;
-                }
-
-                // Coordenadas para centrar el logo reescalado
-                const logoX = width / 2 - logoWidth / 2;
-                const logoY = qrY + qrSize / 2 - logoHeight / 2;
-
-                // Dibujar fondo blanco detrás del logo (para que no se pise con el QR)
-                // Lo hacemos un poco más grande que el logo para que respire
-                const padding = 10;
-                ctx.fillStyle = "#fff";
-                roundRect(logoX - padding / 2, logoY - padding / 2, logoWidth + padding, logoHeight + padding, 10).fill();
-
-                // Dibujar el logo final
-                ctx.drawImage(img, logoX, logoY, logoWidth, logoHeight);
-
-                // Texto debajo
-                ctx.font = "bold 22px Arial"; // Un poco más grande
-                ctx.fillStyle = "#000";
-                ctx.textAlign = "center";
-                ctx.fillText(name, width / 2, qrY + qrSize + 50);
-
-                // Descargar PNG
-                const link = document.createElement("a");
-                link.download = `${name}-qr.png`;
-                link.href = templateCanvas.toDataURL("image/png");
-                link.click();
-            };
-
-            img.onerror = () => {
-                console.error("No se pudo cargar el logo para la descarga.");
-                // Si falla el logo, descargamos solo el QR para no trabar al usuario
-                downloadJustQr(ctx, width, qrSize, qrY, name);
-            };
-        } else {
-            // Texto debajo sin logo
-            downloadJustQr(ctx, width, qrSize, qrY, name);
-        }
-    };
-
-    // Función auxiliar por si no hay logo o falla
-    const downloadJustQr = (ctx: CanvasRenderingContext2D, width: number, qrSize: number, qrY: number, name: string) => {
-        ctx.font = "bold 22px Arial";
-        ctx.fillStyle = "#000";
-        ctx.textAlign = "center";
-        ctx.fillText(name, width / 2, qrY + qrSize + 50);
-
-        const link = document.createElement("a");
-        link.download = `${name}-QR.png`;
-        // Usamos el canvas de la plantilla, no el del QR original
-        link.href = ctx.canvas.toDataURL("image/png");
-        link.click();
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Error al copiar: ", err);
     }
+  };
 
-    return (
-        <div className="">
-            <QrButtonIndex openModal={() => setIsOpen(true)} />
-            {isOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50">
-                    <div className="bg-white animate__animated animate__fadeIn rounded-xl shadow-2xl p-6 text-center relative w-85">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-800">Comparte tu menú</h2>
+  const handleDownload = () => {
+    const qrCanvas = qrCanvasRef.current;
+    if (!qrCanvas) return;
 
-                        <div className="relative inline-block mx-auto mb-4">
-                            <div ref={qrRef} className="mx-auto border-4 border-gray-50 p-2 rounded-lg" />
-                            {logoUrl ? (
-                                <img
-                                    src={typeof logoUrl === "string" ? logoUrl : ""}
-                                    alt="Logo"
-                                    className="absolute top-1/2 left-1/2 w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white border-2 border-white shadow-sm"
-                                />
-                            ) : (
-                                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 py-1 rounded text-[10px] font-bold shadow-sm uppercase">
-                                    {name}
-                                </span>
-                            )}
-                        </div>
+    const templateCanvas = document.createElement("canvas");
+    const ctx = templateCanvas.getContext("2d");
+    if (!ctx) return;
 
-                        {/* Sección de URL y Botón de Copiar */}
-                        <div className="bg-gray-50 p-3 rounded-lg flex items-center justify-between mb-4 border border-gray-100">
-                            <p className="text-xs text-gray-500 truncate mr-2 text-left">
-                                {url}
-                            </p>
-                            <button
-                                onClick={handleCopyUrl}
-                                className={`shrink-0 p-2 rounded-md transition-all ${copied ? "bg-green-100 text-green-600" : "bg-white text-blue-600 hover:bg-blue-50 border border-blue-100 shadow-sm"
-                                    }`}
-                                title="Copiar enlace"
-                            >
-                                {copied ? <span className="text-xs font-bold">¡Copiado!</span> : <span className="text-xs font-bold">Copiar</span>}
-                            </button>
-                        </div>
+    const width = 350;
+    const height = 450;
+    templateCanvas.width = width;
+    templateCanvas.height = height;
 
-                        <div className="space-y-2">
-                            <button
-                                onClick={handleDownload}
-                                className="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md shadow-blue-100"
-                            >
-                                Descargar plantilla PNG
-                            </button>
+    // Aplicamos el color de fondo de la plantilla
+    ctx.fillStyle = selectedTemplate.bg;
+    const roundRect = (
+      x: number,
+      y: number,
+      w: number,
+      h: number,
+      r: number,
+    ) => {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, r);
+      ctx.fill();
+    };
 
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="w-full px-4 py-3 text-gray-500 font-medium hover:text-gray-700 transition"
-                            >
-                                Cerrar
-                            </button>
-                        </div>
-                    </div>
+    roundRect(0, 0, width, height, 20);
+
+    const qrSize = 250;
+    const qrX = width / 2 - qrSize / 2;
+    const qrY = 50;
+
+    // Dibujamos el QR
+    ctx.drawImage(qrCanvas, qrX, qrY, qrSize, qrSize);
+
+    if (logoUrl) {
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = logoUrl;
+      img.onload = () => {
+        const size = 100;
+        const lX = width / 2 - size / 2;
+        const lY = qrY + qrSize / 2 - size / 2;
+
+        // El fondo del logo usa el color de fondo de la plantilla para el borde
+        ctx.fillStyle = selectedTemplate.bg;
+        ctx.beginPath();
+        ctx.arc(width / 2, qrY + qrSize / 2, size / 2 + 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(width / 2, qrY + qrSize / 2, size / 2, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+
+        const aspect = img.width / img.height;
+        let drawW = size;
+        let drawH = size;
+        if (aspect > 1) drawW = size * aspect;
+        else drawH = size / aspect;
+
+        ctx.drawImage(
+          img,
+          lX - (drawW - size) / 2,
+          lY - (drawH - size) / 2,
+          drawW,
+          drawH,
+        );
+        ctx.restore();
+        finalizeDownload(ctx, name);
+      };
+      img.onerror = () => finalizeDownload(ctx, name);
+    } else {
+      finalizeDownload(ctx, name);
+    }
+  };
+
+  const finalizeDownload = (ctx: CanvasRenderingContext2D, text: string) => {
+    ctx.font = "bold 22px Arial";
+    // El texto usa el color de contenido (Foreground) de la plantilla
+    ctx.fillStyle = selectedTemplate.fg;
+    ctx.textAlign = "center";
+    ctx.fillText(text, 350 / 2, 350);
+
+    const link = document.createElement("a");
+    link.download = `${text}-QR-${selectedTemplate.name}.png`;
+    link.href = ctx.canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  return (
+    <div>
+      {isOpen && (
+        <div className="fixed inset-0 backdrop-blur bg-gray-700/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 text-center w-[95%] max-w-96 animate-in fade-in zoom-in duration-200">
+            <h3 className="text-2xl mb-4 text-gray-800">
+              Personaliza y Comparte <br />
+              <span className="font-bold">{name}</span>
+            </h3>
+
+            <div
+              className="relative flex justify-center mb-6 p-6 rounded-2xl border border-gray-300 transition-colors duration-300"
+              style={{ backgroundColor: selectedTemplate.bg }}
+            >
+              <QRCodeCanvas
+                ref={qrCanvasRef}
+                value={url}
+                size={230}
+                level={"H"}
+                bgColor={selectedTemplate.bg}
+                fgColor={selectedTemplate.fg}
+                includeMargin={false}
+              />
+              {logoUrl && (
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-4"
+                  style={{
+                    borderColor: selectedTemplate.bg,
+                    backgroundColor: selectedTemplate.bg,
+                  }}
+                >
+                  <img
+                    src={logoUrl}
+                    alt="Logo"
+                    className="w-16 h-16 rounded-full object-cover"
+                  />
                 </div>
-            )}
+              )}
+            </div>
+
+            <div className="flex justify-center gap-5 mb-6">
+              {TEMPLATES.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => setSelectedTemplate(t)}
+                  className={`group relative w-12 h-12 rounded-full border-2 transition-all ${
+                    selectedTemplate.id === t.id
+                      ? "border-blue-600 scale-110"
+                      : "border-transparent"
+                  }`}
+                  style={{ backgroundColor: t.bg }}
+                  title={t.name}
+                >
+                  <div
+                    className="absolute inset-2 rounded-full"
+                    style={{ backgroundColor: t.fg }}
+                  />
+                  {selectedTemplate.id === t.id && (
+                    <div className="absolute -top-1 -right-1 bg-blue-600 rounded-full p-0.5">
+                      <Check className="w-3 h-3 text-white" />
+                    </div>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <div className="bg-slate-50 p-2 rounded-lg flex items-center gap-2 mb-4 border border-slate-200">
+              <p className="text-[11px] text-slate-700 truncate text-left flex-1 font-mono">
+                {url}
+              </p>
+              <button
+                onClick={handleCopyUrl}
+                className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${
+                  copied
+                    ? "bg-green-500 text-white"
+                    : "bg-blue-600 text-white hover:bg-blue-700"
+                }`}
+              >
+                {copied ? "¡Listo!" : "Copiar"}
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleDownload}
+                className="w-full flex justify-center items-center py-3.5 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
+              >
+                <Download className="w-5 h-5 mr-2" />
+                Descargar tu QR {selectedTemplate.name}
+              </button>
+              <button
+                onClick={() => openModal()}
+                className="w-full py-2 text-gray-500 text-sm font-medium hover:text-gray-800"
+              >
+                Volver
+              </button>
+            </div>
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 }

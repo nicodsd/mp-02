@@ -4,9 +4,13 @@ import { revalidateTag, revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 
 export async function refreshPage() {
-    revalidateTag('categories', 'max');
+// Marcamos los tags como "stale" usando el perfil recomendado
     revalidateTag('foods', 'max');
-    revalidateTag('sub_categories', 'max');
+    revalidateTag('categories', 'max');
+    
+    // Forzamos la revalidación del path del dashboard para que el 
+    // Server Component vuelva a ejecutarse y mande la data nueva al cliente
+   revalidatePath('/dashboard', 'page'); 
     revalidatePath('/', 'layout');
 }
 

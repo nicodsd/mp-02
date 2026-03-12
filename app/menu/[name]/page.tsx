@@ -2,13 +2,14 @@
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
 import Menu from "@/src/pagesComponents/Menu";
+import PageNotFound from "@/app/not-found";
 import { userGet } from "@/app/api/menu/userGet";
 
 export default async function Page({ params }: { params: Promise<{ name: string }> }) {
   const { name } = await params;
   const user = await userGet(name);
   if (!user?.data) {
-    return <div className="flex items-center justify-center h-screen"><h1 className="text-2xl font-bold text-gray-900">Menú no encontrado</h1></div>
+    return <PageNotFound name={name} />;
   }
   return (
     <>

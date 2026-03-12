@@ -111,7 +111,7 @@ export default function Inicio() {
 
   return (
     <div className="w-full px-3 md:p-0 md:px-10 min-h-[calc(140vh-100px)] -translate-y-10">
-      <div className="bg-[#fffbf8] rounded-2xl px-2 py-2 md:mx-[12vw] lg:mx-[27vw] shadow-md sticky top-13 z-20">
+      <div className="bg-background rounded-2xl px-2 py-2 md:mx-[12vw] lg:mx-[27vw] shadow-md sticky top-13 z-20">
         <Search arrayFoods={arrayFoods} setSearch={setSearch} />
       </div>
       <section className="flex h-fit flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 pt-4 lg:mx-[27vw]">

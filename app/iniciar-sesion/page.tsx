@@ -106,7 +106,7 @@ export default function LoginPage() {
               <div className="relative">
                 <label className="sr-only" htmlFor="password">Contraseña</label>
                 <input
-                  className="block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base shadow-md"
+                  className="block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base"
                   id="password"
                   name="password"
                   placeholder="Contraseña"
