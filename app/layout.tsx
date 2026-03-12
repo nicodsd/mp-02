@@ -5,7 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import EmotionProvider from "@/src/components/EmotionProvider";
 import { cn } from "@/lib/utils";
 import { headers } from "next/headers";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const asap = Asap({
@@ -34,6 +34,7 @@ export default async function RootLayout({
       <body className="antialiased">
         <EmotionProvider>
           <main>{children}</main>
+          <SpeedInsights />
           <Analytics />
         </EmotionProvider>
       </body>
