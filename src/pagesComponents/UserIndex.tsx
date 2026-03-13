@@ -127,7 +127,7 @@ export default function UserIndex({
   return (
     <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
       <section className="flex min-h-[calc(90vh-100px)] flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
-        <div className="bg-background rounded-2xl px-2 py-2 md:mx-[12vw] lg:mx-[27vw] shadow-md sticky top-13 z-20">
+        <div className="bg-background rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20">
           <Search arrayFoods={arrayFoods} setSearch={setSearch} />
         </div>
         <div className="flex flex-col gap-3">
@@ -151,11 +151,11 @@ export default function UserIndex({
           )}
         </div>
         <div className="flex flex-col gap-1">
-          {arrayFoods.length > 0 ? (
+          <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">
+            Tipos de platos
+          </h2>
+          {arrayFoods.length > 5 ? (
             <>
-              <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">
-                Tipos de platos
-              </h2>
               <div className="flex justify-between items-end">
                 <Categories
                   categories={subCategories}
@@ -168,27 +168,20 @@ export default function UserIndex({
           <div className="h-[calc(50vh-100px)]">
             {arrayFoods.length > 0 ? (
               <RenderCards foods={arrayFoods} count={4} context={false} />
-            ) : /*  <CardsFoodsByCategories initialSubCategories={subCategories} setSubCats={handleSubCategoryClick} setSortOrder={setSortOrder} arrayFoods={arrayFoods} /> */
-            user && token ? (
-              <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
-                <h3 className="text-xl font-bold">Sube tus platos</h3>
-                <a
-                  href="/nuevo-plato"
-                  className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
-                >
-                  Agregar
-                </a>
-              </div>
             ) : (
-              <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
-                <h3 className="text-xl font-bold">Sube tus platos</h3>
-                <a
-                  href="/login"
-                  className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
-                >
-                  Iniciar Sesión
-                </a>
-              </div>
+              /*  <CardsFoodsByCategories initialSubCategories={subCategories} setSubCats={handleSubCategoryClick} setSortOrder={setSortOrder} arrayFoods={arrayFoods} /> */
+              user &&
+              token && (
+                <div className="flex h-[52vh] flex-col justify-center items-center gap-5 text-gray-800">
+                  <h3 className="text-xl font-bold">Sube tus platos</h3>
+                  <a
+                    href="/nuevo-plato"
+                    className="cursor-pointer flex flex-col items-center justify-center h-52 w-52 bg-lime-100 border-lime-500 border rounded-full hover:bg-lime-600 transition text-md font-bold text-gray-500 hover:text-white shadow-md focus:outline-none focus:ring-2 focus:ring-lime-600 focus:ring-opacity-75 duration-200"
+                  >
+                    Agregar
+                  </a>
+                </div>
+              )
             )}
           </div>
         </div>

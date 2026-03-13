@@ -89,8 +89,8 @@ export default function PromoPanel({
 
   return (
     <div className="fixed inset-0 backdrop-blur bg-gray-700/40 flex items-center h-screen justify-center z-50 overflow-hidden">
-      <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-[95%] px-7 py-8 flex flex-col gap-7 rounded-xl">
-        <h3 className="text-xl text-gray-800">Panel de Promociones</h3>
+      <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-[95%] px-4 py-6 flex flex-col gap-7 rounded-xl">
+        <h3 className="text-xl text-gray-800">Agregar Promociones</h3>
 
         <div className="relative flex items-center w-full">
           <input
@@ -130,14 +130,14 @@ export default function PromoPanel({
             ))}
           </div>
 
-          <div className="flex flex-col gap-1 h-40 overflow-auto">
+          <div className="flex flex-col gap-1 h-50 bg-gray-100/60 p-1 rounded-xl overflow-auto">
             {filteredFoods.map((food) => (
               <div
                 key={food._id}
                 onClick={() =>
                   !isFoodInPromo(food._id) && handleSelectFood(food)
                 }
-                className={`flex cursor-pointer items-start gap-2 border rounded-lg p-1.5 transition hover:shadow-lg ${
+                className={`flex cursor-pointer bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition hover:shadow-lg ${
                   isFoodInPromo(food._id)
                     ? "opacity-40 cursor-not-allowed"
                     : selectedFood?._id === food._id
@@ -150,8 +150,10 @@ export default function PromoPanel({
                   alt={food.name}
                   className="w-16 h-16 object-cover rounded-md"
                 />
-                <div className="flex flex-col">
-                  <h3 className="text-lg text-gray-800">{food.name}</h3>
+                <div className="flex flex-col justify-between h-full">
+                  <h3 className="text-lg tracking-thin leading-4 text-gray-800">
+                    {food.name}
+                  </h3>
                   <p className="text-xl font-bold text-gray-600">
                     {formatearPrecio(food.price)}
                   </p>

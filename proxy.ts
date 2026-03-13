@@ -24,6 +24,14 @@ export function proxy(req: NextRequest) {
 
     res.headers.set("Content-Security-Policy", cspHeader);
 
+    if (req.nextUrl.pathname === "/iniciar-sesion") {
+        const token = req.cookies.get("token")?.value;
+        const user = req.cookies.get("user")?.value;
+        if (token && user) {
+            return NextResponse.redirect(new URL("/", req.url));
+        }
+    }
+
     const protectedRoutes = ["/panel-de-usuario", "/nuevo-plato"];
     if (protectedRoutes.some((path) => req.nextUrl.pathname.startsWith(path))) {
         const token = req.cookies.get("token")?.value;
@@ -32,10 +40,8 @@ export function proxy(req: NextRequest) {
             return NextResponse.redirect(new URL("/registro-de-usuario", req.url));
         }
     }
-
     return res;
 }
-
 export const config = {
-    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*"],
+    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*" , "/iniciar-sesion"],
 };
