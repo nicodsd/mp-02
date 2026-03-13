@@ -34,6 +34,7 @@ export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
         </div>
       </div>
       <div className="flex flex-col gap-6 w-full px-2 border-t border-gray-200 pt-6">
+        <span className="text-lg font-semibold text-gray-700">Edita tus Platos</span>
         <div className="flex items-center gap-2 w-full">
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />

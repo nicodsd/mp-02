@@ -1,5 +1,7 @@
 "use client";
 import { useState, Fragment } from "react";
+import Image from "next/image";
+import { logotipo } from "@/src/lib/const";
 import {
   Tab,
   TabPanel,
@@ -66,7 +68,7 @@ export default function PanelUser({
   ];
 
   return (
-    <div className="min-h-[calc(100vh-56px)] relative">
+    <div className="h-screen relative">
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <button
           onClick={() => setIsSidebarOpen(true)}
@@ -102,7 +104,14 @@ export default function PanelUser({
               >
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
                   <div className="flex items-center justify-between px-6 py-8 border-b border-gray-100">
-                    <h2 className="text-xl font-black text-gray-900">QMENÚ</h2>
+                    <Image
+                      src={logotipo}
+                      alt="Logo"
+                      width={70}
+                      height={40}
+                      priority
+                    />
+                    <h3 className="text-xl text-gray-900">Hola {user?.name}</h3>
                     <button
                       onClick={() => setIsSidebarOpen(false)}
                       className="text-gray-400"
@@ -161,7 +170,7 @@ export default function PanelUser({
             </aside>
 
             <main className="flex-1">
-              <TabPanels className="border border-gray-200 rounded-xl min-h-[75vh] overflow-hidden">
+              <TabPanels className="min-h-full overflow-hidden">
                 <div className="py-6 md:p-10">
                   <TabPanel className="focus:outline-none">
                     <UserSettings user={user} token={token} />

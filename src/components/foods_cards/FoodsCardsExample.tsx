@@ -24,11 +24,11 @@ export default function FoodsCardsExample({
   return (
     <div className="flex w-full h-fit items-center">
       <div
-        className={`flex w-full h-24.5 overflow-hidden
+        className={`flex w-full overflow-hidden
       ${
         context
-          ? "border-r border-gray-300 md:pr-6 px-2 py-3 h-full"
-          : "border border-gray-300 rounded-[7px] p-1.5 items-center"
+          ? "border-r border-gray-300 md:pr-6 px-2 py-2 h-full"
+          : "border h-24.5 border-gray-300 rounded-[7px] py-1 px-2 items-center"
       }`}
       >
         <Image
@@ -41,24 +41,28 @@ export default function FoodsCardsExample({
           height={100}
         />
         <div className="flex flex-col justify-between pl-2 w-full h-full">
-          <div className="menu-card__content text-left h-full">
+          <div className="menu-card__content text-left">
             <h2
-              className={`font-semibold text-gray-700 text-[18px] md:text-[1vw] md:h-fit ${context ? "h-fit leading-4" : "h-4"}`}
+              className={`font-semibold text-gray-700 text-[18px] md:text-[1vw] md:h-fit ${context ? "leading-4" : "h-4"}`}
             >
               {name}
             </h2>
             <p
-              className={`text-[#555] text-sm text-pretty leading-4 ${context ? "overflow-hidden mt-2" : "mt-3.5"}`}
+              className={`text-[#555] text-sm text-pretty leading-4 ${context ? "overflow-hidden mt-2" : "mt-2.5 md:mt-0"}`}
             >
               {description.length > 250
                 ? `${description.substring(0, 250)}...`
                 : description}
             </p>
           </div>
-          <div className="flex items-center gap-1 mt-1 justify-end">
-            <span className="menu-card__description text-[#969696] md:text-lg">
-              c/u
-            </span>
+          <div
+            className={`flex items-center gap-1 mt-1 justify-end ${context ? "justify-start" : "justify-end"}`}
+          >
+            {!context && (
+              <span className="menu-card__description text-[#969696] md:text-lg">
+                c/u
+              </span>
+            )}
             <span className="font-bold text-gray-700 oldstyle-nums text-xl md:text-2xl">
               {formatearPrecio(price)}
             </span>

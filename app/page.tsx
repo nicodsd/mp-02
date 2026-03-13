@@ -8,8 +8,6 @@ import Index from "@/src/pagesComponents/Index";
 import UserIndex from "@/src/pagesComponents/UserIndex";
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
-import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
-import QrModalsGenerator from "@/src/components/modals/QrModalsGenerator";
 export default async function Page() {
   let foodsByUser;
   let categoriesByUser;
@@ -53,13 +51,7 @@ export default async function Page() {
           foods={foodsByUser!}
           logoUrl={user?.photo}
         />
-      ) : (
-        <BottomNavigation
-          name={user?.name! || "QMENU"}
-          foods={foodsByUser!}
-          logoUrl={user?.photo}
-        />
-      )}
+      ) : null}
     </div>
   );
 }
