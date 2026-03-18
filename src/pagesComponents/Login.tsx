@@ -1,73 +1,69 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { setAuthCookie, setUserCookie } from "@/app/actions";
-import { MdChevronLeft, MdImage } from "react-icons/md";
 import Link from "next/link";
-import logo from "@/public/images/logo/logo-rojo.png";
 import Image from "next/image";
+import logo from "@/public/images/logo/logo-rojo.png";
+import BttnBack from "@/src/components/buttons/BttnBack";
+
 const URI = process.env.NEXT_PUBLIC_API_URL;
 
-interface LoginProps {
-  user: string;
-  token: string;
-}
+const validationSchema = Yup.object({
+  email: Yup.string()
+    .email("Introduce un email válido")
+    .required("El email es obligatorio"),
+  password: Yup.string()
+    .min(6, "La contraseña debe tener al menos 6 caracteres")
+    .required("La contraseña es obligatoria"),
+});
 
-export default function LoginPage({ user, token }: LoginProps) {
+export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [serverError, setServerError] = useState<string | null>(null);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      setServerError(null);
+      const formData = new FormData();
+      formData.append("email", values.email);
+      formData.append("password", values.password);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "email") {
-      setEmail(e.target.value);
-    } else if (e.target.name === "password") {
-      setPassword(e.target.value);
-    }
-  };
+      try {
+        const response = await fetch(`${URI}auth/signin`, {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
-    try {
-      const response = await fetch(`${URI}auth/signin`, {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (response.ok) {
-        let user = data.user;
-        const { token } = data;
-        await setAuthCookie(token);
-        await setUserCookie(user);
-        router.push("/");
-      } else {
-        alert(data.message || "Error al iniciar sesión");
+        const data = await response.json();
+        if (response.ok) {
+          await setAuthCookie(data.token);
+          await setUserCookie(data.user);
+          router.push("/");
+        } else {
+          setServerError(data.message || "Error de credenciales");
+        }
+      } catch (error) {
+        setServerError("Error de conexión");
       }
-    } catch (error) {
-      console.error("Login error:", error);
-    }
-  };
+    },
+  });
 
   return (
-    <div className="min-h-screen font-sans flex flex-col relative selection:bg-secondary selection:text-primary overflow-x-hidden">
-      <div className="absolute top-0 left-0 w-full px-6 py-8 z-10">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="flex items-center text-sm font-semibold hover:opacity-80 transition-opacity"
-        >
-          <MdChevronLeft className="text-xl mr-1" />
-          Volver
-        </button>
+    <div className="min-h-screen flex flex-col relative">
+      <div className="w-full py-3 z-10">
+        <BttnBack />
       </div>
 
       <main className="flex-1 flex flex-col items-end justify-start mt-18 px-3 w-full">
-        <div className="w-full bg-card-light py-8 rounded-3xl border border-gray-500 pt-16 relative transition-colors duration-200 mt-10">
+        <div className="w-full py-8 rounded-3xl border border-gray-500 pt-10 relative mt-2">
           <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
             <div className="w-24 h-24 rounded-full bg-primary ring-1 border-7 border-white ring-gray-500 flex items-center justify-center">
               <div className="w-full h-full rounded-full flex items-center justify-center">
@@ -81,71 +77,87 @@ export default function LoginPage({ user, token }: LoginProps) {
               </div>
             </div>
           </div>
-          <div></div>
           <div className="text-start mb-8 ml-8">
             <h1 className="text-card-dark text-4xl font-extrabold leading-7 tracking-tight">
-              ¡Hola
-              <br />
-              de nuevo!
+              ¡Hola <br /> de nuevo!
             </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={formik.handleSubmit} className="space-y-8">
             <div className="px-5">
+              {serverError && (
+                <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+                  {serverError}
+                </div>
+              )}
+
               <div className="relative">
-                <label className="sr-only" htmlFor="email">
-                  Email
-                </label>
                 <input
-                  className="block w-full px-4 py-3 rounded-t-lg border-x border-t border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base"
                   id="email"
                   name="email"
-                  placeholder="Email"
                   type="email"
-                  value={email}
-                  onChange={handleChange}
-                  required
+                  placeholder="Email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  className={`block w-full px-4 py-3 rounded-t-lg border-x border-t border-gray-500 text-gray-900 outline-none transition-all ${
+                    formik.touched.email && formik.errors.email
+                      ? "border-red-500 bg-red-50"
+                      : ""
+                  }`}
                 />
               </div>
+
               <div className="relative">
-                <label className="sr-only" htmlFor="password">
-                  Contraseña
-                </label>
                 <input
-                  className="block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 placeholder-gray-500 placeholder:text-base transition-all text-base"
                   id="password"
                   name="password"
-                  placeholder="Contraseña"
                   type="password"
-                  value={password}
-                  onChange={handleChange}
-                  required
+                  placeholder="Contraseña"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  className={`block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 outline-none transition-all ${
+                    formik.touched.password && formik.errors.password
+                      ? "border-red-500 bg-red-50"
+                      : ""
+                  }`}
                 />
+                <div className="flex flex-col mt-1">
+                  {formik.touched.email && formik.errors.email && (
+                    <span className="text-[10px] text-red-600 font-bold ml-2">
+                      {formik.errors.email}
+                    </span>
+                  )}
+                  {formik.touched.password && formik.errors.password && (
+                    <span className="text-[10px] text-red-600 font-bold ml-2">
+                      {formik.errors.password}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="flex justify-center">
-              <a
-                className="text-xs font-semibold text-gray-500 hover:text-primary transition-colors"
-                href="#"
-              >
-                ¿Olvidaste tu contraseña?
-              </a>
             </div>
 
             <div className="border-t border-gray-300 pt-4 px-5">
               <button
-                className="w-full bg-primary hover:bg-[#d00000] shadow-md text-white font-semibold py-4 px-3 rounded-lg transform active:scale-[0.98] transition-all duration-200 text-sm uppercase tracking-wide cursor-pointer"
                 type="submit"
+                disabled={formik.isSubmitting}
+                className={`w-full bg-primary text-white font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${
+                  formik.isSubmitting
+                    ? "opacity-50"
+                    : "hover:bg-[#d00000] active:scale-[0.98]"
+                }`}
               >
-                Iniciar sesión
+                {formik.isSubmitting ? "Verificando..." : "Iniciar sesión"}
               </button>
             </div>
             <div className="mt-2 text-center">
-              <p className="text-sm font-semibold text-gray-600">
+              <p className="text-sm h-4 font-semibold text-gray-600">
                 ¿Aún no tienes cuenta?
               </p>
+
               <Link
-                className="block text-blue-600 font-bold hover:underline text-sm"
+                className="block text-blue-600 font-bold hover:underline"
                 href="/registro-de-usuario"
               >
                 Registrarse
@@ -154,7 +166,7 @@ export default function LoginPage({ user, token }: LoginProps) {
           </form>
         </div>
       </main>
-      <footer className="w-full h-fit flex flex-col items-center justify-between bg-primary space-y-5 py-3">
+      {/*      <footer className="w-full h-fit flex flex-col items-center justify-between bg-primary space-y-5 py-3">
         <div className="flex items-center justify-center space-x-6">
           <h3 className="text-white text-sm font-semibold">
             ¿Ya viste las novedades?
@@ -182,7 +194,7 @@ export default function LoginPage({ user, token }: LoginProps) {
             </a>
           </p>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

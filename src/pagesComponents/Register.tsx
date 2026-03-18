@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage, isInteger } from "formik";
 import { setAuthCookie, setUserCookie } from "@/app/actions";
 import * as Yup from "yup";
-import { MdChevronLeft } from "react-icons/md";
 import logo from "@/public/images/logo/logo-rojo.png";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
+import BttnBack from "@/src/components/buttons/BttnBack";
 
 type FormValues = {
   email: string;
@@ -111,14 +111,7 @@ export default function Register() {
   return (
     <div className="relative h-full md:mx-[12vw] lg:mx-[27vw] flex flex-col items-center">
       <div className="w-full py-3 z-10">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
-        >
-          <MdChevronLeft className="text-xl mr-1" />
-          Volver
-        </button>
+        <BttnBack />
       </div>
 
       <div className="h-full w-[80%] pb-50">
@@ -131,7 +124,7 @@ export default function Register() {
               Completa los pasos para configurar tu perfil.
             </p>
           </div>
-          <div className="w-15 h-15 flex items-center justify-center">
+          <div className="w-10 h-10 flex items-center justify-center">
             <div className="w-full h-full flex items-center justify-center">
               <Image
                 src={logo}
@@ -424,12 +417,14 @@ export default function Register() {
                             </div>
                           )) || (
                             <div className="rounded-full w-20 h-20">
-                              <div className="rounded-full w-20 h-20 border-2 border-black object-cover">{/* <Image
+                              <div className="rounded-full w-20 h-20 border-2 border-black object-cover">
+                                {/* <Image
                                                         src="/placeholder.png"
                                                         alt="Logo preview"
                                                         fill
                                                         className="rounded-full border border-gray-200 object-cover"
-                                                    /> */}</div>
+                                                    /> */}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -544,9 +539,8 @@ export default function Register() {
                 </div>
               )}
 
-              {/* Actions */}
-              <div className="h-fit fixed bottom-0 left-0 right-0 py-2 bg-[#fffbf8] flex flex-col items-center justify-between mt-10">
-                <div className="flex items-center mb-5 w-[80%] justify-between">
+              <div className="h-fit fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
+                <div className="flex items-center mb-3 w-[80%] justify-between">
                   <button
                     type="button"
                     onClick={() => {
