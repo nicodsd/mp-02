@@ -16,12 +16,18 @@ export default async function Page() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const userCookie = cookieStore.get("user")?.value;
+
   if (userCookie) {
     user = JSON.parse(userCookie);
     categoriesByUser = await getCategoriesByUser(URI, user.id!);
     foodsByUser = await getFoodsByUser(URI, user.id!);
     subCategoriesByUser = await getSubCategoriesByUser(URI, user.id!);
   }
+
+  const userNameFormatted = user?.name
+    ? user.name.toLowerCase().replace(/\s/g, "-")
+    : "qmenu";
+
   return (
     <div className="flex relative flex-col min-h-screen">
       <NavBar
@@ -47,7 +53,7 @@ export default async function Page() {
       )}
       {user ? (
         <BottomNavigation
-          name={user?.name! || "QMENU"}
+          name={userNameFormatted}
           foods={foodsByUser!}
           logoUrl={user?.photo}
         />

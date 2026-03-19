@@ -109,7 +109,7 @@ export default function NavBar({
       )}
 
       <div
-        className={`relative w-full transition-all ${isSpecialState ? "h-14" : "h-80"} flex items-center bg-center bg-cover bg-no-repeat`}
+        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-80 bg-linear-to-t from-primary/90 via-orange-300/90"} flex items-center bg-center bg-cover bg-no-repeat`}
         style={inlineStyle}
       >
         {!isSpecialState && (

@@ -124,12 +124,12 @@ export default function Menu({ data }: { data: any }) {
 
   return (
     <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
-      <section className="flex min-h-[calc(90vh-100px)] flex-col gap-5 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
-        {arrayFoods.length >= 1 && (
-          <div className="bg-background rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20">
-            <Search arrayFoods={arrayFoods} setSearch={setSearch} />
-          </div>
-        )}
+      <section
+        className={`flex min-h-[calc(90vh-100px)] flex-col ${arrayFoods.length >= 2 && promoday ? "gap-5" : "gap-4"} md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10`}
+      >
+        <div className="bg-background rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20">
+          <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+        </div>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
             {arrayFoods.length >= 2 && promoday && (
@@ -157,8 +157,8 @@ export default function Menu({ data }: { data: any }) {
         <div className="flex flex-col gap-1">
           <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">
             {arrayFoods.length > 1
-              ? "¿Qué quieres comer?"
-              : `¡Hoy! especialidad de la casa`}
+              ? "¿Qué queres comer?"
+              : `¡Hoy! Especialidad de la casa`}
           </h2>
           {arrayFoods.length > 5 ? (
             <>

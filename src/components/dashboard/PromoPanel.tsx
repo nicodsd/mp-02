@@ -1,110 +1,145 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PromoDay from "@/src/components/PromoDay";
 import DiscountSlider from "@/src/components/Index/filters/DiscountSlider";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaTrashAlt } from "react-icons/fa";
+import { useFoodStore } from "@/src/lib/useFoodStore";
+import { refreshPage } from "@/app/actions";
+import Image from "next/image";
 
-type Food = {
-  _id: string | number;
-  name: string;
-  description: string;
-  photo: string;
-  price: number;
-  category?: string;
-  sub_category?: string;
-};
+const URI = process.env.NEXT_PUBLIC_API_URL;
 
-type Promo = Food & {
-  lastPrice: number;
-  expiresAt?: Date;
-};
+const priceFormatter = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS",
+  minimumFractionDigits: 0,
+});
 
-export default function PromoPanel({ foods }: { foods: Food[] }) {
-  function formatearPrecio(precio: number | string) {
-    const value = typeof precio === "string" ? Number(precio) : precio;
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
-  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+export default function PromoPanel() {
+  const { foods, updatePromo } = useFoodStore();
+  const [selectedFood, setSelectedFood] = useState<any | null>(null);
   const [promoPrice, setPromoPrice] = useState<string>("");
-  const [activePromos, setActivePromos] = useState<Promo[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSelectFood = (food: Food) => {
+  const categories = useMemo(() => Array.from(new Set(foods.map((f) => f.sub_category))), [foods]);
+
+  const activePromos = useMemo(() => foods.filter((f) => f.is_promo), [foods]);
+
+  const filteredFoods = useMemo(() => {
+    return foods.filter((food) => {
+      const matchesCategory = !selectedCategory || food.sub_category === selectedCategory;
+      const matchesSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [foods, selectedCategory, searchTerm]);
+
+  const handleSelectFood = (food: any) => {
     setSelectedFood(food);
     setPromoPrice(String(food.price));
   };
 
   const applyDiscount = (percent: number) => {
     if (selectedFood) {
-      const discounted =
-        selectedFood.price - (selectedFood.price * percent) / 100;
+      const discounted = selectedFood.price - (selectedFood.price * percent) / 100;
       setPromoPrice(String(Math.round(discounted)));
     }
   };
 
-  const handlePublishPromo = () => {
-    if (selectedFood) {
-      const newPromo: Promo = {
-        ...selectedFood,
-        lastPrice: selectedFood.price,
-        price: Number(promoPrice),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      };
-      setActivePromos([...activePromos, newPromo]);
-      setSelectedFood(null);
-      setPromoPrice("");
+  const handlePublishPromo = async () => {
+    if (!selectedFood) return;
+    setLoading(true);
+
+    try {
+      const pPrice = Number(promoPrice);
+      const res = await fetch(`${URI}foods/promo/${selectedFood._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ is_promo: true, promo_price: pPrice }),
+      });
+
+      if (res.ok) {
+        updatePromo(selectedFood._id, true, pPrice);
+        await refreshPage();
+        setSelectedFood(null);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const removePromo = (id: string | number) => {
-    setActivePromos(activePromos.filter((promo) => promo._id !== id));
+  const removePromo = async (id: string | number) => {
+    try {
+      const res = await fetch(`${URI}foods/promo/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ is_promo: false, promo_price: 0 }),
+      });
+
+      if (res.ok) {
+        updatePromo(id, false, 0);
+        await refreshPage();
+      }
+    } catch (error) {
+      console.error("Error al quitar promo:", error);
+    }
   };
 
-  const isFoodInPromo = (foodId: string | number) =>
-    activePromos.some((promo) => promo._id === foodId);
-
-  // 🔹 Obtener categorías únicas
-  const categories = Array.from(new Set(foods.map((f) => f.sub_category)));
-
-  // 🔹 Filtrar por categoría y búsqueda
-  const filteredFoods = foods.filter((food) => {
-    const matchesCategory =
-      selectedCategory === "" || food.sub_category === selectedCategory;
-    const matchesSearch =
-      searchTerm === "" ||
-      food.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
   return (
-    <div className="p-3 flex h-full flex-col gap-7">
-      <h1 className="text-xl text-gray-800">Panel de Promociones</h1>
+    <div className="p-3 flex h-full flex-col gap-6 pb-24">
+      <header className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold text-gray-800">Promociones</h1>
+        <p className="text-gray-500 text-sm">Gestiona los descuentos destacados de hoy.</p>
+      </header>
 
-      <div className="relative flex items-center w-full">
-        <input
-          type="text"
-          placeholder="Buscar plato..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 pr-2 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-        />
-        <FaSearch className="absolute left-3 text-red-500" />
-      </div>
+      {activePromos.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+          </h3>
+          <div className="flex flex-col gap-2">
+            {activePromos.map((promo) => (
+              <div key={promo._id} className="flex items-center h-25 bg-white border border-red-200 p-3 rounded-2xl justify-between animate-fade-in">
+                <div className="flex items-center gap-3">
+                  <Image priority loading="eager" src={promo.photo} width={64} height={64} className="w-14 h-14 object-cover rounded-xl" alt={promo.name} />
+                  <div>
+                    <h4 className="font-bold text-gray-800 leading-none">{promo.name}</h4>
+                    <div className="flex items-center gap-2">
+                      <p className="text-red-600 font-bold text-lg">{priceFormatter.format(promo.promo_price || 0)}</p>
+                      <p className="text-gray-400 font-bold">Antes: $ {filteredFoods.find((f) => f._id === promo._id)?.price}</p>
+                    </div>
+                  </div>
+                </div>
+                <button onClick={() => removePromo(promo._id)} className="p-2 text-gray-400 hover:text-red-500 transition-colors">
+                  <FaTrashAlt size={18} />
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-      <div className="flex h-full flex-col gap-2">
-        <div className="flex gap-1 flex-wrap">
+      <div className="flex flex-col gap-4">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Buscar plato para promocionar..."
+            className="w-full pl-10 pr-4 py-3 bg-gray-100 border-none rounded-xl focus:ring-2 focus:ring-red-500 transition-all"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        </div>
+
+        <div className="flex gap-2 ml-2 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setSelectedCategory("")}
-            className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${
-              selectedCategory === ""
-                ? "bg-red-600 text-white border"
-                : "text-gray-800 border border-gray-300"
-            }`}
+            className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${!selectedCategory ? "bg-red-600 text-white" : "bg-gray-100 text-gray-600"}`}
           >
             Todas
           </button>
@@ -112,126 +147,74 @@ export default function PromoPanel({ foods }: { foods: Food[] }) {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat!)}
-              className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${
-                selectedCategory === cat
-                  ? "bg-red-600 text-white border"
-                  : "text-gray-800 border border-gray-300"
-              }`}
+              className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${selectedCategory === cat ? "bg-red-600 text-white" : "bg-gray-100 text-gray-600"}`}
             >
               {cat}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="flex flex-col gap-1 h-fit bg-gray-100/60 p-1 rounded-xl overflow-auto">
-          {filteredFoods.map((food) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1">
+        {filteredFoods.map((food) => {
+          const inPromo = activePromos.some(p => p._id === food._id);
+          return (
             <div
               key={food._id}
-              onClick={() => !isFoodInPromo(food._id) && handleSelectFood(food)}
-              className={`flex items-center justify-center h-full cursor-pointer bg-background gap-2 border-[0.3] rounded-lg p-2 transition hover:shadow-lg ${
-                isFoodInPromo(food._id)
-                  ? "opacity-40 cursor-not-allowed"
-                  : selectedFood?._id === food._id
-                    ? "border-red-500 shadow-lg"
-                    : "border-gray-300"
-              }`}
+              onClick={() => !inPromo && handleSelectFood(food)}
+              className={`flex items-center p-2 rounded-xl border-2 transition-all ${inPromo ? "opacity-50 grayscale cursor-not-allowed border-transparent bg-gray-50" :
+                selectedFood?._id === food._id ? "border-red-500 bg-red-50/30" : "bg-white border border-gray-200"
+                }`}
             >
-              <img
-                src={food.photo}
-                alt={food.name}
-                className="w-16 h-16 object-cover rounded-md"
-              />
-              <div className="flex flex-col justify-between h-16 py-1">
-                <h3 className="text-lg tracking-thin leading-4 text-gray-800">
-                  {food.name}
-                </h3>
-                <p className="text-xl font-bold text-gray-600">
-                  {formatearPrecio(food.price)}
-                </p>
-                {isFoodInPromo(food._id) && (
-                  <span className="text-xs text-red-500">Ya en promo</span>
-                )}
+              <Image priority loading="eager" src={food.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-xl" alt={food.name} />
+              <div className="ml-3 flex-1">
+                <h5 className="font-semibold text-gray-800 line-clamp-1">{food.name}</h5>
+                <p className="text-gray-500 font-bold text-xl">{priceFormatter.format(food.price)}</p>
+                {inPromo && <span className="text-[10px] font-black uppercase text-red-500">En promoción</span>}
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
       {selectedFood && (
-        <div className="fixed inset-0 bg-gray-400/60 flex items-center justify-center">
-          <div className="flex flex-col h-fit justify-center gap-3 bg-background z-50 w-[93%] lg:w-[50%] shadow-lg p-3 rounded-lg">
-            <div className="flex items-start px-2 justify-between">
-              <div className="flex flex-col gap-y-1">
-                <span className="block text-xs px-2 py-1 w-fit border text-center border-amber-300 bg-amber-300 rounded-full mt-3 font-semibold">
-                  {selectedFood.sub_category}
-                </span>
-                <span className="block text-xl font-semibold">
-                  {selectedFood.name}
-                </span>
+        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center">
+          <div className="bg-white w-full sm:w-[500px] rounded-t-[32px] sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
+            <div className="flex justify-between items-start mb-6">
+              <div>
+                <span className="text-xs font-bold text-red-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedFood.name}</h2>
               </div>
-              <img
-                src={selectedFood.photo}
-                alt={selectedFood.name}
-                className="w-24 h-24 object-cover rounded-md"
-              />
+              <img src={selectedFood.photo} className="w-20 h-20 object-cover rounded-2xl shadow-md" alt="" />
             </div>
-            <DiscountSlider onChange={(percent) => applyDiscount(percent)} />
-            <div className="flex flex-col justify-between">
-              <div className="px-2 flex items-center h-25">
-                <div className="text-end w-full">
-                  <h2 className="font-semibold text-sm">Aplicar promoción:</h2>
-                  <span className="block line-through">
-                    Antes: ${selectedFood.price}
-                  </span>
-                  <span className="text-3xl font-bold">
-                    Ahora: ${promoPrice}
-                  </span>
-                </div>
-              </div>
-              <div className="flex gap-x-2">
-                <button
-                  onClick={() => setSelectedFood(null)}
-                  className="cursor-pointer bg-black w-1/2 text-white border-gray-300 border px-4 py-3 rounded-lg hover:bg-red-700 transition mt-2"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={handlePublishPromo}
-                  className="bg-red-600 w-1/2 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition mt-2"
-                >
-                  Publicar promoción
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {activePromos.length > 0 && (
-        <div>
-          <h2 className="text-lg font-bold mb-2">Promos activas</h2>
-          <div className="flex flex-col gap-4">
-            {activePromos.map((promo) => (
-              <div key={promo._id} className="relative">
-                <PromoDay promo={promo} />
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => removePromo(promo._id)}
-                    className="bg-gray-200 text-red-600 px-3 py-1 rounded hover:bg-red-100"
-                  >
-                    ❌ Quitar
-                  </button>
-                  {promo.expiresAt && (
-                    <span className="text-sm text-gray-600">
-                      Expira: {promo.expiresAt.toLocaleString()}
-                    </span>
-                  )}
-                </div>
+            <DiscountSlider onChange={applyDiscount} />
+
+            <div className="bg-gray-50 p-4 rounded-2xl my-6 flex justify-between items-center">
+              <div>
+                <p className="text-gray-500 text-sm line-through">{priceFormatter.format(selectedFood.price)}</p>
+                <p className="text-3xl font-black text-gray-900">{priceFormatter.format(Number(promoPrice))}</p>
               </div>
-            ))}
+              <div className="text-right">
+                <p className="text-xs font-bold text-green-600">AHORRO</p>
+                <p className="text-lg font-bold text-green-600">{priceFormatter.format(selectedFood.price - Number(promoPrice))}</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setSelectedFood(null)} className="flex-1 py-4 font-bold text-gray-500 hover:text-gray-800 transition-colors">Cancelar</button>
+              <button
+                onClick={handlePublishPromo}
+                disabled={loading || promoPrice == selectedFood.price}
+                className="flex-[2] bg-red-600 text-white py-4 rounded-lg font-bold active:scale-95 transition-all disabled:bg-gray-300"
+              >
+                {loading ? "Publicando..." : "Publicar Promo"}
+              </button>
+            </div>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }

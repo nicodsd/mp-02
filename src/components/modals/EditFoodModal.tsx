@@ -27,7 +27,6 @@ export default function EditFoodModal({
   food,
   onUpdate,
 }: EditFoodModalProps) {
-  const router = useRouter();
   const URI = process.env.NEXT_PUBLIC_API_URL;
   const [loading, setLoading] = useState(false);
   const updateFoodInStore = useFoodStore((state) => state.updateFood); // HOOK AFUERA

@@ -5,7 +5,7 @@ interface SearchInputProps {
     arrayFoods: any[];
     setSearch: (query: string) => void;
 }
-const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Buscá tu plato...', arrayFoods, setSearch }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Busca tu comida...', arrayFoods, setSearch }) => {
     const [query, setQuery] = useState('');
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filteredFoods = arrayFoods.filter((food) => food.name.toLowerCase().includes(e.target.value.toLowerCase()));
