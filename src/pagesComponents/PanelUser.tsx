@@ -54,10 +54,9 @@ export default function PanelUser({
 
   const tabClass = (selected: boolean) =>
     `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm font-bold transition-all outline-none
-    ${
-      selected
-        ? "text-white bg-gray-900 transform scale-[1.02]"
-        : "text-gray-500 hover:bg-gray-100 bg-transparent"
+    ${selected
+      ? "text-white bg-gray-900 transform scale-[1.02]"
+      : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
 
   const menuItems = [
@@ -72,7 +71,7 @@ export default function PanelUser({
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="md:hidden absolute -top-3 right-1 z-40 bg-black text-white border-back border-7 p-4 rounded-full active:scale-90 transition-all"
+          className="md:hidden fixed top-3 right-3 z-40 bg-gray-200 ring-7 ring-background text-gray-500 border-gray-500 border p-4 rounded-full active:scale-90 transition-all"
         >
           <HiMenuAlt2 size={28} />
         </button>
@@ -103,15 +102,18 @@ export default function PanelUser({
                 leaveTo="-translate-x-full"
               >
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
-                  <div className="flex items-center justify-between px-6 py-8 border-b border-gray-100">
-                    <Image
-                      src={logotipo}
-                      alt="Logo"
-                      width={70}
-                      height={40}
-                      priority
-                    />
-                    <h3 className="text-xl text-gray-900">Hola {user?.name}</h3>
+                  <div className="flex items-start justify-between px-6 py-8 border-b border-gray-100">
+                    <div className="flex flex-col gap-1">
+                      <Image
+                        src={logotipo}
+                        alt="Logo"
+                        width={70}
+                        height={40}
+                        priority
+                      />
+                      <h3 className="text-lg ml-2 text-gray-800">{user?.name}</h3>
+
+                    </div>
                     <button
                       onClick={() => setIsSidebarOpen(false)}
                       className="text-gray-400"
@@ -120,22 +122,24 @@ export default function PanelUser({
                     </button>
                   </div>
 
-                  <nav className="mt-6 px-4 space-y-2">
-                    {menuItems.map((item, index) => (
-                      <button
-                        key={item.name}
-                        onClick={() => {
-                          setSelectedIndex(index);
-                          setIsSidebarOpen(false);
-                        }}
-                        className={tabClass(selectedIndex === index)}
-                      >
-                        {item.icon} {item.name}
-                      </button>
-                    ))}
+                  <nav className="mt-6 px-4 space-y-2 flex flex-col justify-between h-full">
+                    <div>
+                      {menuItems.map((item, index) => (
+                        <button
+                          key={item.name}
+                          onClick={() => {
+                            setSelectedIndex(index);
+                            setIsSidebarOpen(false);
+                          }}
+                          className={tabClass(selectedIndex === index)}
+                        >
+                          {item.icon} {item.name}
+                        </button>
+                      ))}
+                    </div>
                     <button
                       onClick={handleLogout}
-                      className="mt-10 flex items-center gap-3 w-full text-red-500 font-bold p-3 rounded-lg bg-red-50 border border-red-100"
+                      className="flex items-center gap-3 w-full text-red-500 font-bold px-4 py-3 rounded-lg bg-red-50 border border-red-100"
                     >
                       <HiOutlineLogout size={20} /> Cerrar Sesión
                     </button>
@@ -182,7 +186,7 @@ export default function PanelUser({
                     <ConfigureMenu />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
-                    <PromoPanel foods={foods} />
+                    <PromoPanel />
                   </TabPanel>
                 </div>
               </TabPanels>
