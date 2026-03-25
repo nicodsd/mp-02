@@ -23,12 +23,11 @@ import {
   HiMenuAlt2,
   HiX,
 } from "react-icons/hi";
-import PinUserPlan from "@/src/components/user-plan/PinUserPlan";
-
 import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
+import PinUserPlan from "@/src/components/user-plan/PinUserPlan"
 
 const URI = process.env.NEXT_PUBLIC_API_URL;
 export default function PanelUser({

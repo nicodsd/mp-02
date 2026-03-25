@@ -13,7 +13,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
 import { logotipo, logotipo2, logo_w, logotipoColor } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
-import PinUserPlan from "@/src/components/user-plan/PinUserPlan";
+import PinUserPlan from "@/src/components/user-plan/PinUserPlan"
 
 interface NavBarProps {
   user?: any;
