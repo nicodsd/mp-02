@@ -5,6 +5,7 @@ import Image from "next/image";
 import { PhotoCamera, CloudUpload, DeleteOutline } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { URI } from "@/src/lib/const";
 
 const imgPlaceholder = "/images/placeholders/image_placeholder.png";
 
@@ -16,7 +17,6 @@ export default function FormFoods({
   user: any;
 }) {
   const router = useRouter();
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [preview, setPreview] = useState<string>(imgPlaceholder); // URL para mostrar en <Image />
   const [file, setFile] = useState<File | null>(null); // archivo real
   const [name, setName] = useState<string>("");
@@ -62,9 +62,12 @@ export default function FormFoods({
     formData.append("price", price);
     formData.append("sub_category", subCategories.join(","));
     formData.append("category", category);
-
+    console.log(formData);
     try {
-      const res = await fetch(apiUrl + `foods/postfood/${user.id}`, {
+      const userId = user?.id || user?._id;
+      if (!userId) throw new Error("No se encontró el ID del usuario.");
+
+      const res = await fetch(URI + `foods/postfood/${userId}`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -235,7 +238,7 @@ export default function FormFoods({
       <div className="w-full flex justify-center px-5 pb-15 pt-5 border-t border-gray-300">
         <button
           type="submit"
-          className="w-full md:w-[25vw] bg-[#8400ff] hover:bg-green-800 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl shadow-lg shadow-primary/30 transform active:scale-[0.98] transition-all"
+          className="w-full md:w-[25vw] bg-primary hover:bg-primary/80 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl transform active:scale-[0.98] transition-all"
         >
           Agregar Plato
         </button>

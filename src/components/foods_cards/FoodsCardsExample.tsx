@@ -25,18 +25,17 @@ export default function FoodsCardsExample({
     <div className="flex w-full h-fit items-center">
       <div
         className={`flex w-full overflow-hidden
-      ${
-        context
-          ? "border-r border-gray-300 md:pr-6 px-2 py-2 h-full"
-          : "border h-24.5 border-gray-300 rounded-[7px] py-1 px-2 items-center"
-      }`}
+      ${context
+            ? "border-r border-gray-300 md:pr-6 px-2 py-2 h-full"
+            : "border h-24.5 border-gray-300 rounded-[7px] py-1 px-2 items-center"
+          }`}
       >
         <Image
           quality={75}
           loading="lazy"
           src={photo}
           alt={name}
-          className="max-w-16 md:max-w-25 h-20 md:max-h-36 object-cover rounded-[7px]"
+          className="w-17 md:max-w-25 h-20 md:max-h-36 object-cover rounded-[7px]"
           width={100}
           height={100}
         />
@@ -48,11 +47,9 @@ export default function FoodsCardsExample({
               {name}
             </h2>
             <p
-              className={`text-[#555] text-sm text-pretty leading-4 ${context ? "overflow-hidden mt-2" : "mt-2.5 md:mt-0"}`}
+              className={`text-[#555] text-sm line-clamp-2 text-pretty leading-4 ${context ? "overflow-hidden mt-2" : "mt-2.5 md:mt-0"}`}
             >
-              {description.length > 250
-                ? `${description.substring(0, 250)}...`
-                : description}
+              {description}
             </p>
           </div>
           <div

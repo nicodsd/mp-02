@@ -19,7 +19,6 @@ export const useFoodStore = create<FoodStore>((set) => ({
         set((state) => ({
             foods: state.foods.filter((f) => f._id !== foodId),
         })),
-    // Agrega esto a tu FoodStore
     updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number) =>
         set((state) => ({
             foods: state.foods.map((f) =>

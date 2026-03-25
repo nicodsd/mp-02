@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import PromoDay from "@/src/components/PromoDay";
 import DiscountSlider from "@/src/components/Index/filters/DiscountSlider";
 import { FaSearch, FaTrashAlt } from "react-icons/fa";
 import { useFoodStore } from "@/src/lib/useFoodStore";
@@ -157,10 +156,10 @@ export default function PromoPanel() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1">
         {filteredFoods.map((food) => {
-          const inPromo = activePromos.some(p => p._id === food._id);
+          const inPromo = activePromos.some(p => p.id === food.id);
           return (
             <div
-              key={food._id}
+              key={food.id}
               onClick={() => !inPromo && handleSelectFood(food)}
               className={`flex items-center p-2 rounded-xl border-2 transition-all ${inPromo ? "opacity-50 grayscale cursor-not-allowed border-transparent bg-gray-50" :
                 selectedFood?._id === food._id ? "border-red-500 bg-red-50/30" : "bg-white border border-gray-200"
@@ -178,7 +177,7 @@ export default function PromoPanel() {
       </div>
 
       {selectedFood && (
-        <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center">
+        <div className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center">
           <div className="bg-white w-full sm:w-[500px] rounded-t-[32px] sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
             <div className="flex justify-between items-start mb-6">
               <div>
@@ -206,7 +205,7 @@ export default function PromoPanel() {
               <button
                 onClick={handlePublishPromo}
                 disabled={loading || promoPrice == selectedFood.price}
-                className="flex-[2] bg-red-600 text-white py-4 rounded-lg font-bold active:scale-95 transition-all disabled:bg-gray-300"
+                className="flex-2 bg-red-600 text-white py-4 rounded-lg font-bold active:scale-95 transition-all disabled:bg-gray-300"
               >
                 {loading ? "Publicando..." : "Publicar Promo"}
               </button>

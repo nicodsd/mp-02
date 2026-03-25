@@ -3,17 +3,22 @@ interface PinUserPlanProps {
   plan: string;
 }
 export default function PinUserPlan({ plan }: PinUserPlanProps) {
-  if (plan === "Gratuito") return null;
+  if (plan === "Gratuito")
+    return (
+      <div className="w-fit h-fit py-1 px-4 rounded-full bg-gray-300 border-gray-600 border font-medium flex items-center justify-center">
+        <p className="text-white text-xs">{plan}</p>
+      </div>
+    );
   if (plan === "plus") {
     return (
-      <div className="w-fit h-fit py-1 px-3 rounded-full absolute -top-1 right-4 bg-linear-to-r from-primary to-gray-300 border-white border flex items-center justify-center">
-        <p className="text-white text-xs">{plan}dddd</p>
+      <div className="w-fit h-fit py-1 px-4 rounded-full bg-linear-to-r from-primary to-gray-400 font-medium flex items-center justify-center">
+        <p className="text-white text-xs">{plan}</p>
       </div>
     );
   }
-  if (plan === "prr") {
+  if (plan === "premium") {
     return (
-      <div className="w-fit h-fit py-1 px-3 rounded-full absolute -right-15 top-0.5 bg-linear-to-r from-gray-600 to-gray-400 border-white border flex items-center justify-center">
+      <div className="w-fit h-fit py-1 px-3 rounded-full bg-linear-to-r from-gray-600 to-gray-400 border-white border flex items-center justify-center">
         <p className="text-white text-xs">{plan}</p>
       </div>
     );

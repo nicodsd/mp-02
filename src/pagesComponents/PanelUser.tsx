@@ -23,6 +23,7 @@ import {
   HiMenuAlt2,
   HiX,
 } from "react-icons/hi";
+import PinUserPlan from "@/src/components/user-plan/PinUserPlan";
 
 import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
@@ -103,7 +104,7 @@ export default function PanelUser({
               >
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
                   <div className="flex items-start justify-between px-6 py-8 border-b border-gray-100">
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-2">
                       <Image
                         src={logotipo}
                         alt="Logo"
@@ -111,8 +112,10 @@ export default function PanelUser({
                         height={40}
                         priority
                       />
-                      <h3 className="text-lg ml-2 text-gray-800">{user?.name}</h3>
-
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg ml-2 text-gray-800">{user?.name}</h3>
+                        <PinUserPlan plan={user?.plan} />
+                      </div>
                     </div>
                     <button
                       onClick={() => setIsSidebarOpen(false)}
@@ -177,7 +180,7 @@ export default function PanelUser({
               <TabPanels className="min-h-full overflow-hidden">
                 <div className="py-6 md:p-10">
                   <TabPanel className="focus:outline-none">
-                    <UserSettings user={user} token={token} />
+                    <UserSettings user={user} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
                     <MenuItems dataFoods={foods} />

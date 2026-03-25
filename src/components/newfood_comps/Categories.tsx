@@ -30,66 +30,74 @@ export default function CategoriesForm({
   const allCategories = categoriesList ?? [];
 
   const handleCheckboxChange = (name: string): void => {
+    let updated: string[];
     if (!selected.includes(name)) {
-      const updated = [...selected, name];
-      setSelected(updated);
-      onChange?.(updated);
+      updated = [...selected, name];
     } else {
-      const updated = selected.filter((item) => item !== name);
-      setSelected(updated);
-      onChange?.(updated);
+      updated = selected.filter((item) => item !== name);
     }
+    setSelected(updated);
+    onChange?.(updated);
   };
 
-  const handleAddCategory = async () => {
+  const handleAddCategory = async (e: React.MouseEvent) => {
+    e.preventDefault(); // Evitamos cualquier acción del form padre
     if (!newCategory.trim()) return;
-    const newCat = { _id: crypto.randomUUID(), name: newCategory };
-    setSelected([...selected, newCat.name]);
-    setArrayNewCategory([...arrayNewCategory, newCat.name]);
-    setNewCategory("");
-    handleCheckboxChange(newCat.name);
 
-    const formData = new FormData();
-    formData.append("names_sub_category", newCategory);
-    formData.append("user_id", user.id);
+    const categoryName = newCategory.trim();
+
+    // 1. Actualización optimista de la UI
+    const updatedSelected = [...selected, categoryName];
+    setSelected(updatedSelected);
+    setArrayNewCategory([...arrayNewCategory, categoryName]);
+    setNewCategory("");
+    onChange?.(updatedSelected);
 
     try {
-      const res = await fetch(apiUrl + `api/foods/sub`, {
+      // 2. Enviamos como JSON (Solución al body undefined)
+      const res = await fetch(`${apiUrl}categories/sub/${user.id}`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: categoryName,
+          user_id: user.id,
+        }),
         credentials: "include",
       });
 
-      if (!res.ok) throw new Error("Network response was not ok");
+      if (!res.ok) throw new Error("Error en la petición");
       const data = await res.json();
-      console.log("Success:", data);
+      console.log("Categoría guardada:", data);
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error al guardar:", error);
+      // Opcional: Revertir estado local si falla
     }
   };
 
   const deleteNewCategory = (category: string) => {
-    const updatedArrayNewCategory = arrayNewCategory.filter(
-      (cat) => cat !== category
-    );
-    setArrayNewCategory(updatedArrayNewCategory);
-    setSelected((prevSelected) =>
-      prevSelected.filter((cat) => cat !== category)
-    );
+    const updatedArray = arrayNewCategory.filter((cat) => cat !== category);
+    const updatedSelected = selected.filter((cat) => cat !== category);
+    setArrayNewCategory(updatedArray);
+    setSelected(updatedSelected);
+    onChange?.(updatedSelected);
   };
 
   return (
-    <div className="flex w-full flex-col gap-y-2">
-      {/* Lista de categorías */}
+    <fieldset className="flex w-full flex-col gap-y-4 border-none p-0 m-0">
+      <legend className="sr-only">Selección de categorías</legend>
+
+      {/* Lista de categorías existentes */}
       {allCategories.length > 0 && (
-        <div className="flex flex-wrap gap-y-1 gap-x-px">
+        <div className="flex flex-wrap gap-2" role="group" aria-label="Categorías existentes">
           {allCategories.map((item) => (
             <label
               key={item._id}
-              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
+              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition flex items-center
               ${selected.includes(item.name)
-                  ? "bg-indigo-600 text-white border-indigo-600"
-                  : "bg-gray-100 text-gray-500 border-gray-300 hover:bg-gray-200"
+                  ? "bg-indigo-600 text-white border-indigo-600 shadow-md"
+                  : "bg-gray-100 text-gray-500 border-gray-300 hover:border-gray-400"
                 }`}
             >
               <input
@@ -97,7 +105,7 @@ export default function CategoriesForm({
                 value={item.name}
                 checked={selected.includes(item.name)}
                 onChange={() => handleCheckboxChange(item.name)}
-                className="hidden"
+                className="sr-only" // Mejor que hidden para accesibilidad
               />
               {item.name}
             </label>
@@ -105,61 +113,52 @@ export default function CategoriesForm({
         </div>
       )}
 
-      {/* Bloque para nuevas categorías */}
-      <div className="flex w-full shadow flex-col gap-y-2 bg-white border border-gray-300 min-h-[170px] justify-between rounded-xl px-5 py-5">
-        <h3 className="font-semibold text-sm text-gray-500">
-          Agrega nuevas categorías
+      {/* Contenedor para nuevas categorías */}
+      <section className="flex w-full shadow-sm flex-col gap-y-4 bg-white border border-gray-300 min-h-[170px] rounded-xl p-5">
+        <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider">
+          Nuevas categorías personalizadas
         </h3>
-        <div className="flex flex-wrap gap-y-1 h-full gap-x-1 w-full">
+
+        <div className="flex flex-wrap gap-2 min-h-[40px]">
           {arrayNewCategory.map((item) => (
-            <label
+            <div
               key={item}
-              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition
-              ${selected.includes(item)
-                  ? "bg-indigo-600 text-white border-indigo-600"
-                  : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
-                }`}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-sm font-bold animate-in fade-in zoom-in duration-200"
             >
-              <input
-                type="checkbox"
-                value={item}
-                checked={selected.includes(item)}
-                onChange={() => handleCheckboxChange(item)}
-                className="hidden"
-              />
-              {item}
+              <span>{item}</span>
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  deleteNewCategory(item);
-                }}
+                type="button"
+                aria-label={`Eliminar ${item}`}
+                onClick={() => deleteNewCategory(item)}
+                className="hover:text-red-500 transition-colors"
               >
-                <Close sx={{ marginLeft: "6px" }} />
+                <Close sx={{ fontSize: 18 }} />
               </button>
-            </label>
+            </div>
           ))}
         </div>
 
-        {/* Input para agregar categoría */}
-        <div className="flex w-full justify-center">
-          <div className="flex gap-1 w-full items-center">
+        {/* Input con mejor semántica */}
+        <div className="mt-auto pt-4 border-t border-gray-100">
+          <div className="flex gap-2 items-center">
             <input
               type="text"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
-              placeholder="Ej: Pizza"
-              className="px-3 py-2 border w-full text-gray-400 placeholder-gray-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddCategory(e as any))}
+              placeholder="Ej: Pizza a la piedra"
+              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
             />
             <button
               type="button"
               onClick={handleAddCategory}
-              className="bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-indigo-700"
+              className="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 active:scale-95 transition-all"
             >
               Agregar
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </fieldset>
   );
 }

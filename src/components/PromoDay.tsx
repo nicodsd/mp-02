@@ -1,79 +1,67 @@
 import 'animate.css';
 import Image from "next/image";
 
-interface Promo {
-  photo: string;
-  name: string;
-  description: string;
-  price: number;
-  lastPrice: number;
-}
-
-//debemos traer una prop llamada promo
-export default function PromoDay({ promo }: { promo: Promo }) {
-  //let lastPrice = foods[0]?.lastPrice ? foods[0].lastPrice : foods[0].price + (foods[0].price * 0.2);
-  function formatearPrecio(precio: number | string) {
-    const value = typeof precio === "string" ? Number(precio) : precio;
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
+export default function PromoDay({ foods }: { foods: any }) {
+  const priceFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  });
   return (
     <section className="flex flex-col text-gray-700 mb-2 items-center md:items-start w-full gap-1.5">
-      <div className="animate__animated animate__bounceIn p-3 gap-2 w-full md:px-[2vw] rounded-lg h-60 max-h-fit md:py-2 bg-radial-[at_50%_75%] md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-yellow-500 via-red-600 to-red-900 to-100% md:w-full flex"
-        style={{
-          overflow: "hidden",
-          maxWidth: "100%",
-          boxShadow: "0 6px 10px rgba(0,0,0,0.25)",
-        }}
-      >
-        <Image
-          loading="eager"
-          src={promo.photo}
-          alt={promo.name}
-          width={200}
-          height={200}
+      {foods?.map((food: any) => (
+        <div key={food._id} className="animate__animated animate__bounceIn p-2 gap-2 w-full md:px-[2vw] rounded-xl h-60 max-h-fit md:py-2 bg-primary md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-yellow-400 via-red-600 to-violet-400/60 to-100% md:w-full flex"
           style={{
-            objectFit: "cover",
-          }}
-          className="h-full rounded-xl w-[43%] md:w-[30%] md:rounded-xl shadow-xl md:shadow-yellow-400"
-        />
-        <div
-          className="flex justify-center items-center md:ml-2 text-white px-1 py-1 w-full h-full"
-          style={{
-            display: "flex",
-            flexDirection: "row",
+            overflow: "hidden",
+            maxWidth: "100%",
           }}
         >
+          <Image
+            loading="eager"
+            src={food.photo}
+            alt={food.name}
+            width={200}
+            height={200}
+            style={{
+              objectFit: "cover",
+            }}
+            className="h-full rounded-xl w-[43%] md:w-[30%] md:rounded-xl shadow-xl md:shadow-yellow-400"
+          />
           <div
-            className="flex flex-col items-center justify-between gap-5 w-full h-full"
-            style={{ flex: 1, textAlign: "left" }}>
-            <div className="flex flex-col justify-start h-full">
-              <h2
-                className="leading-5 text-xl text-pretty md:leading-none md:text-3xl font-bold mb-1"
-              >
-                {promo.name}
-              </h2>
-              <span className="text-sm leading-4 text-gray-100">{promo.description}</span>
-            </div>
-            <div className="border-[.5px] border-white/70 w-full"></div>
-            <div className="flex w-full flex-col items-end justify-end h-full">
-              <p
-                className="text-[15px] text-center font-bold text-white line-through md:text-xl"
-              >
-                Antes {formatearPrecio(promo.lastPrice)}
-              </p>
-              <p
-                className="text-xl drop-shadow text-center font-bold text-[#FFE282] md:text-3xl"
-              >
-                ¡Ahora! {formatearPrecio(promo.price)}
-              </p>
+            className="flex justify-center items-center md:ml-2 text-white px-1 py-1 w-full h-full"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <div
+              className="flex flex-col items-center justify-between gap-5 w-full h-full py-1"
+              style={{ flex: 1, textAlign: "left" }}>
+              <div className="flex flex-col w-full justify-start min-h-18.5 h-fit">
+                <h3
+                  className="leading-5.5 text-[1.4rem] h-fit line-clamp-2 text-pretty md:leading-none md:text-3xl font-black"
+                >
+                  {food.name.toUpperCase()}
+                </h3>
+                <span className="text-sm leading-4 text-pretty text-gray-100 line-clamp-2">{food.description}</span>
+              </div>
+
+              <div className="flex w-full border-t-2 pt-2 border-yellow-200 flex-col items-end justify-end h-full">
+                <p
+                  className="text-center font-semibold text-gray-200/90 line-through text-lg md:text-xl"
+                >
+                  Antes {priceFormatter.format(food.price)}
+                </p>
+                <p
+                  className="text-[1.6rem] drop-shadow-lg text-center font-bold text-[#fff2cc] md:text-3xl"
+                >
+                  ¡Ahora! {priceFormatter.format(food.promo_price)}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ))}
     </section >
   );
 }

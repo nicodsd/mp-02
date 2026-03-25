@@ -11,12 +11,13 @@ export default function RenderCardsOptions({
   count,
   context,
 }: RenderCardsProps) {
+  const foodsFilteredByDrinks = foods.filter((food) => food.category === "Bebidas");
   return (
-    <div className="w-full flex justify-center gap-1">
-      {foods.length < 0 ? (
+    <div className="w-full flex justify-start overflow-x-scroll gap-1">
+      {foodsFilteredByDrinks.length < 0 ? (
         <Loading count={count ?? 6} />
       ) : (
-        foods.map((food) => (
+        foodsFilteredByDrinks.map((food) => (
           <div
             key={food._id}
             className={`flex justify-between items-center ${context ? "bg-[#f0f0f093] rounded-xl" : ""}`}

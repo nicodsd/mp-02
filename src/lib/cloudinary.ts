@@ -11,6 +11,6 @@ export const getBannerImage = (url: string) => {
     if (!url || !url.includes("cloudinary.com")) return url;
 
     // Para banners usamos un ancho mayor y recorte horizontal
-    const transformation = `c_fill,w_1200,h_400,g_center,q_auto,f_auto`;
+    const transformation = `c_fill,w_1400,h_700,g_center,q_auto,f_auto`;
     return url.replace("/upload/", `/upload/${transformation}/`);
 };

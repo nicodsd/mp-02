@@ -100,11 +100,10 @@ export default function LoginPage() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  className={`block w-full px-4 py-3 rounded-t-lg border-x border-t border-gray-500 text-gray-900 outline-none transition-all ${
-                    formik.touched.email && formik.errors.email
-                      ? "border-red-500 bg-red-50"
-                      : ""
-                  }`}
+                  className={`block w-full px-4 py-3 rounded-t-lg border-x border-t border-gray-500 text-gray-900 outline-none transition-all ${formik.touched.email && formik.errors.email
+                    ? "border-red-500 bg-red-50"
+                    : ""
+                    }`}
                 />
               </div>
 
@@ -117,11 +116,10 @@ export default function LoginPage() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  className={`block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 outline-none transition-all ${
-                    formik.touched.password && formik.errors.password
-                      ? "border-red-500 bg-red-50"
-                      : ""
-                  }`}
+                  className={`block w-full px-4 py-3 rounded-b-lg border border-gray-500 text-gray-900 outline-none transition-all ${formik.touched.password && formik.errors.password
+                    ? "border-red-500 bg-red-50"
+                    : ""
+                    }`}
                 />
                 <div className="flex flex-col mt-1">
                   {formik.touched.email && formik.errors.email && (
@@ -142,11 +140,10 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={formik.isSubmitting}
-                className={`w-full bg-primary text-white font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${
-                  formik.isSubmitting
-                    ? "opacity-50"
-                    : "hover:bg-[#d00000] active:scale-[0.98]"
-                }`}
+                className={`w-full bg-primary text-white font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting
+                  ? "opacity-50"
+                  : "hover:bg-[#d00000] active:scale-[0.98]"
+                  }`}
               >
                 {formik.isSubmitting ? "Verificando..." : "Iniciar sesión"}
               </button>

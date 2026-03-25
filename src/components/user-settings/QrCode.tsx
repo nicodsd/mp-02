@@ -9,6 +9,8 @@ interface QrButtonProps {
   logoUrl?: string;
 }
 
+const URI = process.env.NEXT_PUBLIC_API_URL;
+
 const TEMPLATES = [
   { id: 1, name: "Clásico", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
   { id: 2, name: "Noche", bg: "#1a1a1a", fg: "#ffffff", accent: "#333333" },
@@ -21,7 +23,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${URL_PROD}menu/${encodeURIComponent(name)}`;
+  const url = `${URI}menu/${encodeURIComponent(name.replace(" ", "-")).toLowerCase()}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -159,11 +161,10 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(t)}
-              className={`group relative w-12 h-12 rounded-full border-2 transition-all ${
-                selectedTemplate.id === t.id
-                  ? "border-blue-600 scale-110"
-                  : "border-transparent"
-              }`}
+              className={`group relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
+                ? "border-blue-600 scale-110"
+                : "border-transparent"
+                }`}
               style={{ backgroundColor: t.bg }}
               title={t.name}
             >
@@ -186,11 +187,10 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           </p>
           <button
             onClick={handleCopyUrl}
-            className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${
-              copied
-                ? "bg-green-500 text-white"
-                : "bg-blue-600 text-white hover:bg-blue-700"
-            }`}
+            className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${copied
+              ? "bg-green-500 text-white"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+              }`}
           >
             {copied ? "¡Listo!" : "Copiar"}
           </button>

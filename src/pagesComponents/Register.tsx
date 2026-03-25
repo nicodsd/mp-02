@@ -22,6 +22,10 @@ type FormValues = {
   phone: string;
   plan: string;
   location: string;
+  instagram: string;
+  facebook: string;
+  tiktok: string;
+  themeColor: string;
 };
 
 const validationSchemas = [
@@ -36,11 +40,15 @@ const validationSchemas = [
   }),
   Yup.object({
     name: Yup.string().required("Ingrese un nombre"),
-    logo: Yup.mixed().optional(),
-    cover: Yup.mixed().optional(),
+    logo: Yup.mixed().nullable().optional(),
+    cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
-    description: Yup.string().min(10, "Mínimo 10 caracteres").optional(),
-    phone: Yup.number().integer().min(10).max(10).optional(),
+    description: Yup.string().test("len", "Mínimo 10 caracteres", (val) => !val || val.length >= 10).optional(),
+    phone: Yup.string().test("len", "Mínimo 10 dígitos", (val) => !val || val.length >= 10).optional(),
+    instagram: Yup.string().optional(),
+    facebook: Yup.string().optional(),
+    tiktok: Yup.string().optional(),
+    themeColor: Yup.string().optional(),
   }),
 ];
 
@@ -78,6 +86,10 @@ export default function Register() {
     body.append("is_active", values.is_active ? "1" : "0");
     body.append("is_online", values.is_online ? "1" : "0");
     body.append("plan", values.plan || "free");
+    body.append("instagram", values.instagram || "");
+    body.append("facebook", values.facebook || "");
+    body.append("tiktok", values.tiktok || "");
+    body.append("themeColor", values.themeColor || "default");
     if (values.logo instanceof File) {
       body.append("photo", values.logo);
     }
@@ -147,29 +159,26 @@ export default function Register() {
               <li key={s.id} className="flex w-fit relative items-center">
                 <div className="flex flex-col w-10 justify-center items-center z-10">
                   <span
-                    className={`flex h-7 w-10 items-center justify-center rounded-full text-md font-bold transition-colors duration-300 ${
-                      active || completed
-                        ? "bg-primary text-white"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
+                    className={`flex h-7 w-10 items-center justify-center rounded-full text-md font-bold transition-colors duration-300 ${active || completed
+                      ? "bg-primary text-white"
+                      : "bg-gray-200 text-gray-500"
+                      }`}
                   >
                     {idx + 1}
                   </span>
                   <span
-                    className={`mt-1 text-xs font-medium transition-colors duration-300 ${
-                      active
-                        ? "text-primary dark:text-primary"
-                        : "text-gray-400"
-                    }`}
+                    className={`mt-1 text-xs font-medium transition-colors duration-300 ${active
+                      ? "text-primary dark:text-primary"
+                      : "text-gray-400"
+                      }`}
                   >
                     {s.label}
                   </span>
                 </div>
                 {idx < steps.length - 1 && (
                   <div
-                    className={`h-0.5 w-8 flex-1 mx-2 -mt-6 transition-colors duration-300 ${
-                      idx < step ? "bg-primary h-0.75" : "bg-gray-200 h-0.5"
-                    }`}
+                    className={`h-0.5 w-8 flex-1 mx-2 -mt-6 transition-colors duration-300 ${idx < step ? "bg-primary h-0.75" : "bg-gray-200 h-0.5"
+                      }`}
                   />
                 )}
               </li>
@@ -177,36 +186,34 @@ export default function Register() {
           })}
         </ol>
 
-        {apiError && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm text-center">
-            {apiError}
-          </div>
-        )}
-
         <Formik<FormValues>
           initialValues={{
             email: "",
             password: "",
             logo: null,
+            cover: null,
             name: "",
             description: "",
             phone: "",
-            cover: null,
             plan: "",
             location: "",
             is_active: true,
             is_online: true,
+            instagram: "",
+            facebook: "",
+            tiktok: "",
+            themeColor: "default",
           }}
           validationSchema={validationSchemas[step]}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
+          onSubmit={async (values, { setSubmitting }) => {
             if (step < steps.length - 1) {
-              console.log("step", step);
               setStep(step + 1);
               setSubmitting(false);
               setApiError(null);
             } else {
-              handleFinalSubmit(values);
+              console.log("submit final");
+              await handleFinalSubmit(values);
+              setSubmitting(false);
             }
           }}
         >
@@ -275,7 +282,7 @@ export default function Register() {
                     Elige tu plan{" "}
                     <span className="text-xs font-light text-gray-500">
                       (es opcional)
-                    </span>{" "}
+                    </span>
                   </h3>
                   <p className="text-xs font-light text-gray-500">
                     Tu email nos sirve para restablecer tu contraseña por si te
@@ -416,17 +423,17 @@ export default function Register() {
                               />
                             </div>
                           )) || (
-                            <div className="rounded-full w-20 h-20">
-                              <div className="rounded-full w-20 h-20 border-2 border-black object-cover">
-                                {/* <Image
+                              <div className="rounded-full w-20 h-20">
+                                <div className="rounded-full w-20 h-20 border-2 border-black object-cover">
+                                  {/* <Image
                                                         src="/placeholder.png"
                                                         alt="Logo preview"
                                                         fill
                                                         className="rounded-full border border-gray-200 object-cover"
                                                     /> */}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                         </div>
                         <ErrorMessage
                           name="logo"
@@ -475,16 +482,16 @@ export default function Register() {
                                 />
                               </div>
                             )) || (
-                              <div className="">
-                                <div className="rounded-2xl w-40 h-20 border-2 border-black object-cover"></div>
-                                {/* <Image
+                                <div className="">
+                                  <div className="rounded-2xl w-40 h-20 border-2 border-black object-cover"></div>
+                                  {/* <Image
                                                         src="/placeholder.png"
                                                         alt="Logo preview"
                                                         fill
                                                         className="rounded-full border border-gray-200 object-cover"
                                                     /> */}
-                              </div>
-                            )}
+                                </div>
+                              )}
                           </div>
                         </div>
                       )}
@@ -504,20 +511,23 @@ export default function Register() {
                         className="block w-[70%] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                       />
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-start justify-between">
                       <label
                         htmlFor="phone"
-                        className="block text-md font-medium text-gray-700 mb-1"
+                        className="block text-md font-medium text-gray-700 mt-3"
                       >
                         Teléfono
                       </label>
-                      <Field
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        placeholder="+54 9 385 ..."
-                        className="block w-[70%] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                      />
+                      <div className="flex flex-col w-[70%]">
+                        <Field
+                          id="phone"
+                          name="phone"
+                          type="tel"
+                          placeholder="+54 9 385 ..."
+                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                        />
+                        <ErrorMessage name="phone" component="div" className="mt-1 text-sm text-red-500 font-medium" />
+                      </div>
                     </div>
                     <div>
                       <label
@@ -534,6 +544,78 @@ export default function Register() {
                         placeholder="Cuenta en pocas líneas qué ofreces y tu propuesta de valor."
                         className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
+                      <ErrorMessage name="description" component="div" className="mt-1 text-sm text-red-500 font-medium" />
+                    </div>
+
+                    <div>
+                      <label className="block text-md font-medium text-gray-700 mt-2 mb-2">
+                        Redes Sociales (opcional)
+                      </label>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-center gap-3">
+                          <span className="w-20 text-sm text-gray-600">Instagram</span>
+                          <Field
+                            name="instagram"
+                            type="text"
+                            placeholder="@tu_usuario"
+                            className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                          />
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="w-20 text-sm text-gray-600">Facebook</span>
+                          <Field
+                            name="facebook"
+                            type="text"
+                            placeholder="Enlace o usuario"
+                            className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                          />
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="w-20 text-sm text-gray-600">TikTok</span>
+                          <Field
+                            name="tiktok"
+                            type="text"
+                            placeholder="@tu_usuario"
+                            className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-md font-medium text-gray-700 mt-4 mb-2">
+                        Plantilla de color
+                      </label>
+                      <div className="flex flex-wrap items-center gap-4">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field type="radio" name="themeColor" value="default" className="w-4 h-4 accent-black" />
+                          <div className="flex items-center gap-1">
+                            <span className="w-4 h-4 rounded-full bg-red-600"></span>
+                            <span className="text-sm">Rojo</span>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field type="radio" name="themeColor" value="blue" className="w-4 h-4 accent-black" />
+                          <div className="flex items-center gap-1">
+                            <span className="w-4 h-4 rounded-full bg-blue-600"></span>
+                            <span className="text-sm">Azul</span>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field type="radio" name="themeColor" value="green" className="w-4 h-4 accent-black" />
+                          <div className="flex items-center gap-1">
+                            <span className="w-4 h-4 rounded-full bg-green-600"></span>
+                            <span className="text-sm">Verde</span>
+                          </div>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Field type="radio" name="themeColor" value="dark" className="w-4 h-4 accent-black" />
+                          <div className="flex items-center gap-1">
+                            <span className="w-4 h-4 rounded-full bg-gray-900"></span>
+                            <span className="text-sm">Oscuro</span>
+                          </div>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -548,11 +630,10 @@ export default function Register() {
                       setApiError(null);
                     }}
                     disabled={step === 0 || isSubmitting}
-                    className={`inline-flex items-center px-6 py-3 text-sm font-bold rounded-lg transition-all ${
-                      step === 0
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-white bg-black"
-                    }`}
+                    className={`inline-flex items-center px-6 py-3 text-sm font-bold rounded-lg transition-all ${step === 0
+                      ? "text-gray-300 cursor-not-allowed"
+                      : "text-white bg-black"
+                      }`}
                   >
                     Atrás
                   </button>
@@ -604,6 +685,11 @@ export default function Register() {
                     Iniciar sesión
                   </Link>
                 </div>
+                {apiError && (
+                  <div className="mb-6 p-4 w-[90%] mx-auto absolute bottom-0 left-0 right-0 bg-red-100 border border-red-400 rounded-lg text-red-600 text-sm text-center">
+                    {apiError}
+                  </div>
+                )}
                 <div className="text-center py-6 text-xs">
                   <p>
                     © {new Date().getFullYear()} QMenu. Todos los derechos

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Campos requeridos faltantes" }, { status: 400 });
     }
     try {
-        const response = await fetch(`${URI}api/auth/signup`, {
+        const response = await fetch(`${URI}auth/signup`, {
             method: "POST",
             body: formData,
             credentials: "include",

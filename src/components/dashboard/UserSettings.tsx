@@ -4,8 +4,13 @@ import Image from "next/image";
 import { updateUserCookie } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import QrCode from "@/src/components/user-settings/QrCode";
+import { placeholder } from "@/src/lib/const";
 import {
-  FaPhone,
+  FaCamera,
+  FaInstagram,
+  FaFacebook,
+  FaTiktok,
+  FaWhatsapp,
   FaMapMarkerAlt,
   FaTimes,
   FaUser,
@@ -15,18 +20,23 @@ import { TbNotes } from "react-icons/tb";
 
 const URI = process.env.NEXT_PUBLIC_API_URL;
 
-const UserSettings = ({ user, token }: { user: any; token: string }) => {
+const UserSettings = ({ user }: { user: any }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState(user.name);
-  const [preview, setPreview] = useState<string>(user.photo);
-  const [file, setFile] = useState<File>();
+  const [previewPhoto, setPreviewPhoto] = useState<string>(user.photo);
+  const [previewBackground, setPreviewBackground] = useState<string>(user.cover);
+  const [filePhoto, setFilePhoto] = useState<File>();
+  const [fileBackground, setFileBackground] = useState<File>();
   const [description, setDescription] = useState(
-    user.description || "Bar de comida deliciosa...",
+    user.description || "Bar de comida.",
   );
   const [location, setLocation] = useState(user.location || "");
   const [phone, setPhone] = useState(user.phone || "");
+  const [instagram, setInstagram] = useState(user.instagram || "");
+  const [facebook, setFacebook] = useState(user.facebook || "");
+  const [tiktok, setTiktok] = useState(user.tiktok || "");
 
   const [editStates, setEditStates] = useState({
     name: false,
@@ -34,16 +44,24 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     location: false,
     phone: false,
     photo: false,
+    cover: false,
+    instagram: false,
+    facebook: false,
+    tiktok: false,
   });
 
   const isEditing = Object.values(editStates).some((state) => state === true);
 
   useEffect(() => {
     setName(user.name);
-    setPreview(user.photo);
+    setPreviewPhoto(user.photo || placeholder);
+    setPreviewBackground(user.cover || placeholder);
     setDescription(user.description || "");
     setLocation(user.location || "");
     setPhone(user.phone || "");
+    setInstagram(user.instagram || "");
+    setFacebook(user.facebook || "");
+    setTiktok(user.tiktok || "");
 
     setEditStates({
       name: false,
@@ -51,6 +69,10 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
       location: false,
       phone: false,
       photo: false,
+      cover: false,
+      instagram: false,
+      facebook: false,
+      tiktok: false,
     });
   }, [user]);
 
@@ -58,11 +80,17 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     setEditStates((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
-  const imageCapture = (selectedFile: File) => {
+  const photoCapture = (selectedFile: File) => {
     if (!selectedFile) return;
-    setFile(selectedFile);
-    setPreview(URL.createObjectURL(selectedFile));
+    setFilePhoto(selectedFile);
+    setPreviewPhoto(URL.createObjectURL(selectedFile));
     setEditStates((prev) => ({ ...prev, photo: true }));
+  };
+  const backgroundCapture = (selectedFile: File) => {
+    if (!selectedFile) return;
+    setFileBackground(selectedFile);
+    setPreviewBackground(URL.createObjectURL(selectedFile));
+    setEditStates((prev) => ({ ...prev, background: true }));
   };
 
   const userUpdate = async (e: React.FormEvent) => {
@@ -70,12 +98,16 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
     setLoading(true);
 
     const formData = new FormData();
-    if (file) formData.append("photo", file);
+    if (filePhoto) formData.append("photo", filePhoto);
+    if (fileBackground) formData.append("cover", fileBackground);
     formData.append("name", name);
     formData.append("description", description);
     formData.append("location", location);
     formData.append("phone", phone);
     formData.append("user_id", user.id);
+    formData.append("instagram", instagram);
+    formData.append("facebook", facebook);
+    formData.append("tiktok", tiktok);
 
     try {
       const res = await fetch(URI + `auth/update/${user.id}`, {
@@ -104,6 +136,10 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
           location: false,
           phone: false,
           photo: false,
+          cover: false,
+          instagram: false,
+          facebook: false,
+          tiktok: false,
         });
       }
     } catch (error) {
@@ -120,37 +156,66 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
         onSubmit={userUpdate}
         className="flex w-full relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
-        <h1 className="text-xl h-fit font-bold mb-2 text-gray-800">
+        <h1 className="text-xl h-fit font-bold mb-5 text-gray-7S00">
           Editar Perfil
         </h1>
-        <div className="w-full flex items-center justify-center flex-col gap-10 px-7">
-          <div className="relative">
-            <div className="w-40 h-40 rounded-full border-gray-500 bg-black border-4 overflow-hidden">
-              <Image
-                src={preview || "/images/image_placeholder.png"}
-                alt="Profile"
-                width={200}
-                height={200}
-                quality={75}
-                loading="eager"
-                className="object-cover w-full h-full"
-              />
+        <div className="w-full px-7 flex flex-col">
+          <div className="flex justify-center gap-8 mb-4 pb-10 border-b border-gray-200">
+            <div className="relative flex items-center justify-center gap-2 flex-col">
+              <h3 className="text-lg font-bold text-gray-800">Logo</h3>
+              <div className="w-30 h-30 relative rounded-full border-gray-500 bg-black border-4 overflow-hidden">
+                <Image
+                  src={previewPhoto}
+                  alt="Profile"
+                  width={200}
+                  height={200}
+                  quality={75}
+                  loading="eager"
+                  className="object-cover w-full h-full"
+                />
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-bold text-white/70 text-2xl flex items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) photoCapture(f);
+                    }}
+                  />
+                  <FaCamera />
+                </label>
+              </div>
             </div>
-            <label className="absolute bottom-0 w-28 right-1/2 text-center -translate-x-1/2 translate-y-1/3 left-1/2 text-xs text-white bg-[#ff0000] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) imageCapture(f);
-                }}
-              />
-              Cambiar Imagen
-            </label>
-          </div>
 
-          <div className="w-full flex flex-col gap-5 pt-5">
+            <div className="relative flex items-center justify-center gap-2 flex-col">
+              <h3 className="text-lg font-bold text-gray-800">Fondo</h3>
+              <div className="w-50 h-30 relative rounded-lg border-gray-500 bg-black border-4 overflow-hidden">
+                <Image
+                  src={previewBackground || placeholder}
+                  alt="background"
+                  width={200}
+                  height={200}
+                  quality={75}
+                  loading="eager"
+                  className="object-cover w-full h-full"
+                />
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-bold text-white/70 text-2xl flex items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => {
+                      const f = e.target.files?.[0];
+                      if (f) backgroundCapture(f);
+                    }}
+                  />
+                  <FaCamera />
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="w-full flex flex-col gap-5">
             <h2 className="text-lg text-text">Tus datos:</h2>
             <div className="w-full">
               {editStates.name ? (
@@ -225,7 +290,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                     onClick={() => toggleEdit("description")}
                     className="text-xs font-bold text-blue-500"
                   >
-                    Editar
+                    {!user.description ? "Agregar" : "Editar"}
                   </button>
                 </div>
               )}
@@ -265,7 +330,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                     onClick={() => toggleEdit("location")}
                     className="text-xs font-bold text-blue-500"
                   >
-                    Editar
+                    {!user.location ? "Agregar" : "Editar"}
                   </button>
                 </div>
               )}
@@ -274,7 +339,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
               {editStates.phone ? (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaPhone className="rotate-180" /> Teléfono
+                    <FaWhatsapp /> Teléfono
                   </label>
                   <div className="relative">
                     <input
@@ -295,7 +360,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                 <div className="flex justify-between items-center text-gray-500">
                   <div>
                     <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaPhone className="rotate-180" /> Telefono
+                      <FaWhatsapp /> WhatsApp
                     </label>
                     <p className="text-lg">{phone}</p>
                   </div>
@@ -304,7 +369,124 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                     onClick={() => toggleEdit("phone")}
                     className="text-xs font-bold text-blue-500"
                   >
-                    Editar
+                    {!user.phone ? "Agregar" : "Editar"}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="w-full">
+              {editStates.instagram ? (
+                <div className="relative">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
+                    <FaInstagram /> Instagram
+                  </label>
+                  <div className="relative">
+                    <input
+                      className="w-full border p-3 rounded-lg"
+                      value={instagram}
+                      onChange={(e) => setInstagram(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => toggleEdit("instagram")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center text-gray-500">
+                  <div>
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      <FaInstagram /> Instagram
+                    </label>
+                    <p className="text-lg">{instagram}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleEdit("instagram")}
+                    className="text-xs font-bold text-blue-500"
+                  >
+                    {!user.instagram ? "Agregar" : "Editar"}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="w-full">
+              {editStates.facebook ? (
+                <div className="relative">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
+                    <FaFacebook /> Facebook
+                  </label>
+                  <div className="relative">
+                    <input
+                      className="w-full border p-3 rounded-lg"
+                      value={facebook}
+                      onChange={(e) => setFacebook(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => toggleEdit("facebook")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center text-gray-500">
+                  <div>
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      <FaFacebook /> Facebook
+                    </label>
+                    <p className="text-lg">{facebook}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleEdit("facebook")}
+                    className="text-xs font-bold text-blue-500"
+                  >
+                    {!user.facebook ? "Agregar" : "Editar"}
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="w-full">
+              {editStates.tiktok ? (
+                <div className="relative">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
+                    <FaTiktok /> TikTok
+                  </label>
+                  <div className="relative">
+                    <input
+                      className="w-full border p-3 rounded-lg"
+                      value={tiktok}
+                      onChange={(e) => setTiktok(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => toggleEdit("tiktok")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center text-gray-500">
+                  <div>
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      <FaTiktok /> TikTok
+                    </label>
+                    <p className="text-lg">{tiktok}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleEdit("tiktok")}
+                    className="text-xs font-bold text-blue-500"
+                  >
+                    {!user.tiktok ? "Agregar" : "Editar"}
                   </button>
                 </div>
               )}
@@ -323,6 +505,10 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
                   location: false,
                   phone: false,
                   photo: false,
+                  cover: false,
+                  instagram: false,
+                  facebook: false,
+                  tiktok: false,
                 })
               }
               className="px-6 py-3 border rounded-xl"
@@ -347,7 +533,7 @@ const UserSettings = ({ user, token }: { user: any; token: string }) => {
       </form>
       <div className="w-full mt-7 px-7">
         <h2 className="text-xl font-bold mb-4 text-gray-800">Tu código QR</h2>
-        <QrCode name={name} logoUrl={preview} />
+        <QrCode name={name} logoUrl={previewPhoto} />
       </div>
     </>
   );

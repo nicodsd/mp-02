@@ -16,6 +16,7 @@ export function Categories({
     setActiveCategory(name);
     selectCategory(name);
   };
+  console.log(categories)
   return (
     <section className="w-[82%] h-fit text-[17px] font-medium">
       <div

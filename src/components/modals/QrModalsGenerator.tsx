@@ -1,7 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import QrButtonIndex from "@/src/components/buttons/QrButtonIndex";
 import { URL_PROD } from "@/src/lib/const";
 import { Download, Check } from "lucide-react";
 
@@ -11,6 +10,8 @@ interface QrButtonProps {
   isOpen: boolean;
   openModal: () => void;
 }
+
+const URI = process.env.NEXT_PUBLIC_API_URL;
 
 // 1. Definimos las plantillas con colores de alto contraste
 const TEMPLATES = [
@@ -30,7 +31,7 @@ export default function QrModalsGenerator({
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${URL_PROD}menu/${encodeURIComponent(name)}`;
+  const url = `${URI}menu/${encodeURIComponent(name)}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -179,11 +180,10 @@ export default function QrModalsGenerator({
                 <button
                   key={t.id}
                   onClick={() => setSelectedTemplate(t)}
-                  className={`group relative w-12 h-12 rounded-full border-2 transition-all ${
-                    selectedTemplate.id === t.id
+                  className={`group relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
                       ? "border-blue-600 scale-110"
                       : "border-transparent"
-                  }`}
+                    }`}
                   style={{ backgroundColor: t.bg }}
                   title={t.name}
                 >
@@ -206,11 +206,10 @@ export default function QrModalsGenerator({
               </p>
               <button
                 onClick={handleCopyUrl}
-                className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${
-                  copied
+                className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${copied
                     ? "bg-green-500 text-white"
                     : "bg-blue-600 text-white hover:bg-blue-700"
-                }`}
+                  }`}
               >
                 {copied ? "¡Listo!" : "Copiar"}
               </button>
