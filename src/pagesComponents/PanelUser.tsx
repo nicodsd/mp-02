@@ -27,7 +27,7 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
-import PinUserPlan from "@/src/components/user-plan/PinUserPlan"
+import UserPlan from "@/src/components/user-plan/UserPlan";
 
 const URI = process.env.NEXT_PUBLIC_API_URL;
 export default function PanelUser({
@@ -54,9 +54,10 @@ export default function PanelUser({
 
   const tabClass = (selected: boolean) =>
     `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm font-bold transition-all outline-none
-    ${selected
-      ? "text-white bg-gray-900 transform scale-[1.02]"
-      : "text-gray-500 hover:bg-gray-100 bg-transparent"
+    ${
+      selected
+        ? "text-white bg-gray-900 transform scale-[1.02]"
+        : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
 
   const menuItems = [
@@ -112,8 +113,10 @@ export default function PanelUser({
                         priority
                       />
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg ml-2 text-gray-800">{user?.name}</h3>
-                        <PinUserPlan plan={user?.plan} />
+                        <h3 className="text-lg ml-2 text-gray-800">
+                          {user?.name}
+                        </h3>
+                        <UserPlan plan={user?.plan} />
                       </div>
                     </div>
                     <button

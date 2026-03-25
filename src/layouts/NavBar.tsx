@@ -13,7 +13,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
 import { logotipo, logotipo2, logo_w, logotipoColor } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
-import PinUserPlan from "@/src/components/user-plan/PinUserPlan"
+import UserPlan from "@/src/components/user-plan/UserPlan";
 
 interface NavBarProps {
   user?: any;
@@ -36,11 +36,9 @@ export default function NavBar({
     setIsMounted(true);
   }, []);
 
-  console.log(user)
+  console.log(user);
 
-  const isSpecialState = 
-  state === 1 
-  || state === 2;
+  const isSpecialState = state === 1 || state === 2;
   const canShowCover = user && user.plan !== "free" && user.cover;
   const backgroundImage = canShowCover
     ? user.cover
@@ -90,26 +88,32 @@ export default function NavBar({
     <header className="flex flex-col w-full">
       {!isSpecialState && (
         <div className="flex w-full absolute text-white top-0 z-50 bg-linear-to-b from-black/40 to-transparent items-center justify-between h-14 px-6">
-          <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/">By:
-            {user?.plan === "free" && <Image
-              priority
-              src={logotipo}
-              width={60}
-              height={60}
-              alt="Logo"
-              className="w-18 h-10 md:w-24 md:h-16 object-contain"
-            />}
-            {user?.plan !== "free" && <Image
-              priority
-              src={logo_w}
-              width={60}
-              height={60}
-              alt="Logo"
-              className="w-18 h-10 md:w-24 md:h-16 object-contain"
-            />}
-            {
-              user && cookie && <PinUserPlan plan={user?.plan} />
-            }
+          <Link
+            className="flex w-full justify-center gap-2 items-center text-xs"
+            href="/"
+          >
+            By:
+            {user?.plan === "free" && (
+              <Image
+                priority
+                src={logotipo}
+                width={60}
+                height={60}
+                alt="Logo"
+                className="w-18 h-10 md:w-24 md:h-16 object-contain"
+              />
+            )}
+            {user?.plan !== "free" && (
+              <Image
+                priority
+                src={logo_w}
+                width={60}
+                height={60}
+                alt="Logo"
+                className="w-18 h-10 md:w-24 md:h-16 object-contain"
+              />
+            )}
+            {user && cookie && <UserPlan plan={user?.plan} />}
           </Link>
           {user && cookie && (
             <Link
@@ -136,10 +140,7 @@ export default function NavBar({
       >
         {!isSpecialState && (
           <div
-            className={`absolute inset-0 ${canShowCover
-              ? "bg-black/65"
-              : ""
-              }`}
+            className={`absolute inset-0 ${canShowCover ? "bg-black/65" : ""}`}
           />
         )}
         <nav className="relative z-10 w-full">{renderNavContent()}</nav>

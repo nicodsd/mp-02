@@ -1,8 +1,8 @@
 "use client";
-interface PinUserPlanProps {
+interface UserPlanProps {
   plan: string;
 }
-export default function PinUserPlan({ plan }: PinUserPlanProps) {
+export default function UserPlan({ plan }: UserPlanProps) {
   if (plan === "Gratuito")
     return (
       <div className="w-fit h-fit py-1 px-4 rounded-full bg-gray-300 border-gray-600 border font-medium flex items-center justify-center">
