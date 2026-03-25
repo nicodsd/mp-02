@@ -38,7 +38,9 @@ export default function NavBar({
 
   console.log(user)
 
-  const isSpecialState = state === 1 || state === 2;
+  const isSpecialState = 
+  state === 1 
+  || state === 2;
   const canShowCover = user && user.plan !== "free" && user.cover;
   const backgroundImage = canShowCover
     ? user.cover
