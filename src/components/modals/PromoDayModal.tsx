@@ -12,11 +12,8 @@ type Food = {
   price: number;
   category?: string;
   sub_category?: string;
-};
-
-type Promo = Food & {
-  lastPrice: number;
-  expiresAt?: Date;
+  is_promo?: boolean;
+  promo_price?: number;
 };
 
 export default function PromoPanel({
@@ -26,17 +23,16 @@ export default function PromoPanel({
   foods: Food[];
   openModal: () => void;
 }) {
-  function formatearPrecio(precio: number | string) {
-    const value = typeof precio === "string" ? Number(precio) : precio;
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
+
+  console.log(foods)
+  const priceFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+  });
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
   const [promoPrice, setPromoPrice] = useState<string>("");
-  const [activePromos, setActivePromos] = useState<Promo[]>([]);
+  const [activePromos, setActivePromos] = useState<Food[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -55,11 +51,11 @@ export default function PromoPanel({
 
   const handlePublishPromo = () => {
     if (selectedFood) {
-      const newPromo: Promo = {
+      const newPromo: Food = {
         ...selectedFood,
-        lastPrice: selectedFood.price,
         price: Number(promoPrice),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        is_promo: true,
+        promo_price: Number(promoPrice),
       };
       setActivePromos([...activePromos, newPromo]);
       setSelectedFood(null);
@@ -107,11 +103,10 @@ export default function PromoPanel({
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => setSelectedCategory("")}
-              className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${
-                selectedCategory === ""
-                  ? "bg-red-600 text-white border"
-                  : "text-gray-800 border border-gray-300"
-              }`}
+              className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${selectedCategory === ""
+                ? "bg-red-600 text-white border"
+                : "text-gray-800 border border-gray-300"
+                }`}
             >
               Todas
             </button>
@@ -119,11 +114,10 @@ export default function PromoPanel({
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat!)}
-                className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${
-                  selectedCategory === cat
-                    ? "bg-red-600 text-white border"
-                    : "text-gray-800 border border-gray-300"
-                }`}
+                className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${selectedCategory === cat
+                  ? "bg-red-600 text-white border"
+                  : "text-gray-800 border border-gray-300"
+                  }`}
               >
                 {cat}
               </button>
@@ -137,13 +131,12 @@ export default function PromoPanel({
                 onClick={() =>
                   !isFoodInPromo(food._id) && handleSelectFood(food)
                 }
-                className={`flex cursor-pointer bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition hover:shadow-lg ${
-                  isFoodInPromo(food._id)
-                    ? "opacity-40 cursor-not-allowed"
-                    : selectedFood?._id === food._id
-                      ? "border-red-500 shadow-lg"
-                      : "border-gray-300"
-                }`}
+                className={`flex cursor-pointer bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition hover:shadow-lg ${isFoodInPromo(food._id)
+                  ? "opacity-40 cursor-not-allowed"
+                  : selectedFood?._id === food._id
+                    ? "border-red-500 shadow-lg"
+                    : "border-gray-300"
+                  }`}
               >
                 <img
                   src={food.photo}
@@ -155,7 +148,7 @@ export default function PromoPanel({
                     {food.name}
                   </h3>
                   <p className="text-xl font-bold text-gray-600">
-                    {formatearPrecio(food.price)}
+                    {priceFormatter.format(food.price)}
                   </p>
                   {isFoodInPromo(food._id) && (
                     <span className="text-xs text-red-500">Ya en promo</span>
@@ -230,7 +223,7 @@ export default function PromoPanel({
             <div className="flex flex-col gap-4">
               {activePromos.map((promo) => (
                 <div key={promo._id} className="relative">
-                  <PromoDay promo={promo} />
+                  <PromoDay foods={foods} />
                   <div className="flex gap-2 mt-2">
                     <button
                       onClick={() => removePromo(promo._id)}
@@ -238,11 +231,6 @@ export default function PromoPanel({
                     >
                       ❌ Quitar
                     </button>
-                    {promo.expiresAt && (
-                      <span className="text-sm text-gray-600">
-                        Expira: {promo.expiresAt.toLocaleString()}
-                      </span>
-                    )}
                   </div>
                 </div>
               ))}

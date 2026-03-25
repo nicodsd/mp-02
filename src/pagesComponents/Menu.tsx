@@ -4,6 +4,7 @@ import categoriesData from "@/src/data/categories.json";
 import subCategoriesData from "@/src/data/sub_categories.json";
 import Categories from "@/src/components/Categories";
 import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
+import SearchModal from "@/src/components/modals/SearchModal";
 import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
@@ -24,6 +25,7 @@ type SubCategory = {
 };
 export default function Menu({ data }: { data: any }) {
   const [arrayFoods, setArrayFoods] = useState<Food[]>(data.foods);
+  const [showModal, setShowModal] = useState(false);
   const [subCategories, setSubCategories] = useState<SubCategory[]>(
     data.categories,
   );
@@ -73,18 +75,16 @@ export default function Menu({ data }: { data: any }) {
   // 🔹 Manejo de subcategorías
   function handleSubCategoryClick(subCategory: string) {
     if (subCategory === "0") {
-      console.log("Mostrar todos los platos de la categoría seleccionada");
       // Mostrar todos los platos de la categoría seleccionada
       const filteredFoods =
         selectedCategory && selectedCategory !== "0"
           ? data.foods.filter(
-              (food: { category: string }) =>
-                food.category.toLowerCase() === selectedCategory.toLowerCase(),
-            )
+            (food: { category: string }) =>
+              food.category.toLowerCase() === selectedCategory.toLowerCase(),
+          )
           : data.foods;
       setArrayFoods(filteredFoods);
     } else {
-      console.log("Mostrar platos de la subcategoría seleccionada");
       // Filtrar platos por subcategoría dentro de la categoría seleccionada
       if (selectedCategory === "0") {
         const filteredFoods = data.foods.filter(
@@ -92,14 +92,12 @@ export default function Menu({ data }: { data: any }) {
             food.sub_category.toLowerCase() === subCategory.toLowerCase(),
         );
         setArrayFoods(filteredFoods);
-        console.log("si solo si", filteredFoods);
       } else {
         const filteredFoods = data.foods.filter(
           (food: { sub_category: string }) =>
             food.sub_category.toLowerCase() === subCategory.toLowerCase(),
         );
         setArrayFoods(filteredFoods);
-        console.log("si no es 0", filteredFoods);
       }
     }
   }
@@ -123,15 +121,16 @@ export default function Menu({ data }: { data: any }) {
   }
 
   return (
-    <div className="w-full p-3 md:p-0 md:px-10 md:py-6 h-full">
+    <main className="w-full relative p-3 md:p-0 md:px-10 md:py-6 h-full">
+      <SearchModal arrayFoods={arrayFoods} setSearch={setSearch} setShowModal={setShowModal} showModal={showModal} />
       <section
         className={`flex min-h-[calc(90vh-100px)] flex-col ${arrayFoods.length >= 2 && promoday ? "gap-5" : "gap-4"} md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10`}
       >
         <div className="bg-background rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20">
-          <Search arrayFoods={arrayFoods} setSearch={setSearch} />
+          <Search arrayFoods={arrayFoods} setSearch={setSearch} setShowModal={setShowModal} />
         </div>
         <div className="flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
+          {/* <div className="flex flex-col gap-1">
             {arrayFoods.length >= 2 && promoday && (
               <>
                 <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">
@@ -140,7 +139,7 @@ export default function Menu({ data }: { data: any }) {
                 <PromoDay promo={promoday} />
               </>
             )}
-          </div>
+          </div> */}
           {availableCategories.length > 2 && arrayFoods.length >= 10 && (
             <div className="flex flex-col gap-1">
               <h2 className="text-lg ml-2 font-normal text-gray-600 text-start w-full">
@@ -176,6 +175,6 @@ export default function Menu({ data }: { data: any }) {
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

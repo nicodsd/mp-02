@@ -29,6 +29,14 @@ export default function RenderCards({
   } | null>(null);
   const { foods, setFoods, removeFoodLocal } = useFoodStore();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const foodsFilteredByDrinks = foods.filter((food) => food.category === "Bebidas");
+  const foodsFilteredByEntradas = foods.filter((food) => food.category === "Entradas");
+  const foodsFilteredByPlatos = foods.filter((food) => food.category === "Platos");
+  const foodsFilteredByPostres = foods.filter((food) => food.category === "Postres");
+  console.log(foodsFilteredByDrinks);
+  console.log(foodsFilteredByEntradas);
+  console.log(foodsFilteredByPlatos);
+  console.log(foodsFilteredByPostres);
 
   useEffect(() => {
     if (initialFoods) setFoods(initialFoods);
@@ -66,9 +74,8 @@ export default function RenderCards({
       setUndoToast(null);
     }
   };
-
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-1 h-full overflow-y-scroll">
       {foods.length === 0 ? (
         <Loading count={count ?? 4} />
       ) : (

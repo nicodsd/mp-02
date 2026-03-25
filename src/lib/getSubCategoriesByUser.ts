@@ -5,8 +5,10 @@ export async function getSubCategoriesByUser(apiUrl: string, userId: string) {
             next: { tags: ['sub_categories'], revalidate: 120 }
         });
         let data = await res?.json();
+        console.log(userId)
+        console.log(data)
         if (data?.subCategories?.map((category: any) => category?.user_id).includes(userId)) {
-            return data.subCategories
+            return data.subCategories.filter((category: any) => category?.user_id === userId)
         } else {
             return data.subCategories = [];
         }

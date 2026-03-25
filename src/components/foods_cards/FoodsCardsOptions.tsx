@@ -22,9 +22,9 @@ export default function Cards({
     }).format(value);
   }
   return (
-    <div className="flex w-35 items-center justify-center">
+    <div className="flex w-40 items-center justify-center">
       <div
-        className={`flex flex-col w-full h-53 shadow-md overflow-hidden border border-gray-300 rounded-[7px] p-2 items-center`}
+        className={`flex flex-col w-full h-57 shadow-md overflow-hidden border border-gray-300 rounded-[7px] p-2 items-center`}
       >
         <Image
           quality={75}
@@ -33,20 +33,18 @@ export default function Cards({
           alt={name}
           className="min-w-full min-h-25 md:max-w-25 md:max-h-36 object-cover rounded-[7px]"
           width={130}
-          height={80}
+          height={100}
         />
         <div className="flex flex-col justify-between w-full h-full">
           <div className="menu-card__content text-left flex flex-col justify-between h-full">
-            <h2 className="font-semibold text-gray-700 leading-3.5 mt-2 md:h-fit">
-              {name} sadsad sad
+            <h2 className="font-semibold text-gray-700 text-lg leading-3.5 line-clamp-1 mt-3 md:h-fit">
+              {name}
             </h2>
-            <p className="mt-1 text-[#555] text-sm text-pretty leading-3 h-8">
-              {description.length > 250
-                ? `${description.substring(0, 250)}...`
-                : description + " asdasd dsadas dsadas"}
+            <p className="mt-1 text-[#555] text-sm text-pretty line-clamp-3 leading-4">
+              {description}
             </p>
           </div>
-          <div className="flex items-center gap-1 justify-end h-5 mt-1">
+          <div className="flex items-center gap-1 justify-end h-5 mt-2">
             <span className="menu-card__description text-[#969696] md:text-lg">
               c/u
             </span>
