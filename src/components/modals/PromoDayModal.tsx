@@ -24,7 +24,6 @@ export default function PromoPanel({
   openModal: () => void;
 }) {
 
-  console.log(foods)
   const priceFormatter = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",

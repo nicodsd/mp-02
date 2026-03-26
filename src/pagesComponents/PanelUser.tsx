@@ -54,10 +54,9 @@ export default function PanelUser({
 
   const tabClass = (selected: boolean) =>
     `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm font-bold transition-all outline-none
-    ${
-      selected
-        ? "text-white bg-gray-900 transform scale-[1.02]"
-        : "text-gray-500 hover:bg-gray-100 bg-transparent"
+    ${selected
+      ? "text-white bg-black transform scale-[1.02]"
+      : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
 
   const menuItems = [
@@ -72,7 +71,7 @@ export default function PanelUser({
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="md:hidden fixed top-3 right-3 z-40 bg-gray-200 ring-7 ring-background text-gray-500 border-gray-500 border p-4 rounded-full active:scale-90 transition-all"
+          className="md:hidden fixed top-3 right-3 z-40 bg-background ring-7 ring-background text-gray-800 border-gray-800 border p-4 rounded-full active:scale-90 transition-all"
         >
           <HiMenuAlt2 size={28} />
         </button>
@@ -113,7 +112,7 @@ export default function PanelUser({
                         priority
                       />
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg ml-2 text-gray-800">
+                        <h3 className="text-lg ml-2 text-gray-800 uppercase">
                           {user?.name}
                         </h3>
                         <UserPlan plan={user?.plan} />
@@ -180,7 +179,7 @@ export default function PanelUser({
 
             <main className="flex-1">
               <TabPanels className="min-h-full overflow-hidden">
-                <div className="py-6 md:p-10">
+                <div className="pb-13 md:p-10">
                   <TabPanel className="focus:outline-none">
                     <UserSettings user={user} />
                   </TabPanel>

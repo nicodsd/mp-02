@@ -7,11 +7,11 @@ import {
   FaInstagram,
   FaFacebook,
   FaTiktok,
+  FaEdit,
 } from "react-icons/fa";
-import { User } from "lucide-react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
-import { logotipo, logotipo2, logo_w, logotipoColor } from "@/src/lib/const";
+import { logotipo, logo_w, logotipoColor } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
@@ -35,8 +35,6 @@ export default function NavBar({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  console.log(user);
 
   const isSpecialState = state === 1 || state === 2;
   const canShowCover = user && user.plan !== "free" && user.cover;
@@ -79,16 +77,17 @@ export default function NavBar({
             user={user}
             photo={photo}
             isLight={!!backgroundImage}
+            cookie={cookie}
           />
         );
     }
   };
 
   return (
-    <header className="flex flex-col w-full">
+    <header className="flex flex-col w-full bg-primary/80">
       {!isSpecialState && (
-        <div className="flex w-full absolute text-white top-0 z-50 bg-linear-to-b from-black/40 to-transparent items-center justify-between h-14 px-6">
-          <Link
+        <div className={`flex w-full z-50 ${!user ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-primary/30 to-primary/10 h-14 p-2 text-white" : "absolute top-2 text-gray-300 italic"} items-center justify-between`}>
+          {user && <Link
             className="flex w-full justify-center gap-2 items-center text-xs"
             href="/"
           >
@@ -100,7 +99,7 @@ export default function NavBar({
                 width={60}
                 height={60}
                 alt="Logo"
-                className="w-18 h-10 md:w-24 md:h-16 object-contain"
+                className="w-13 h-13 md:w-24 md:h-16 object-contain"
               />
             )}
             {user?.plan !== "free" && (
@@ -110,32 +109,29 @@ export default function NavBar({
                 width={60}
                 height={60}
                 alt="Logo"
-                className="w-18 h-10 md:w-24 md:h-16 object-contain"
+                className="w-13 h-13 md:w-24 md:h-16 object-contain"
               />
             )}
-            {user && cookie && <UserPlan plan={user?.plan} />}
-          </Link>
-          {user && cookie && (
-            <Link
-              href="/panel-de-usuario"
-              className="rounded-2xl flex items-center px-4 py-1.5 border-[0.5px] font-bold"
-            >
-              Perfil <User className="inline-block ml-1" size={18} />
-            </Link>
-          )}
+            {user && cookie && (
+              <UserPlan plan={user?.plan} />
+            )}
+          </Link>}
           {!user && (
-            <Link
-              href="/registro-de-usuario"
-              className="bg-white border-2 shadow-lg border-white text-black text-lg px-2.5 py-1 rounded-md font-bold"
-            >
-              ¡Prueba ahora!
-            </Link>
+            <div className="flex w-full justify-around items-center">
+              <span className="text-md font-bold">Crea tu Menú ¡GRATIS!</span>
+              <Link
+                href="/registro-de-usuario"
+                className="bg-white shadow-xl shadow-white/60 hover:bg-gray-100 transition-all duration-100 hover:scale-95 hover:shadow-lg hover:shadow-white/60 ease-in-out text-gray-800 px-2.5 py-1 rounded-md font-black"
+              >
+                ¡Prueba ahora!
+              </Link>
+            </div>
           )}
         </div>
       )}
 
       <div
-        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-110 bg-linear-to-t from-black/50 via-transparent to-transparent"} flex items-center bg-center bg-cover bg-no-repeat`}
+        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-100 bg-linear-to-t from-black/50 via-transparent to-transparent"} flex items-center bg-center bg-cover bg-no-repeat`}
         style={inlineStyle}
       >
         {!isSpecialState && (
@@ -149,10 +145,10 @@ export default function NavBar({
   );
 }
 
-function DefaultNavUser({ user, photo, isLight }: any) {
+function DefaultNavUser({ user, photo, isLight, cookie }: any) {
   const displayData = {
     name: user?.name,
-    description: user?.description || "Es hora de probar lo bueno",
+    description: user?.description,
     address: user?.location,
     phone: user?.phone,
     background:
@@ -165,27 +161,40 @@ function DefaultNavUser({ user, photo, isLight }: any) {
   };
   const optimizedPhoto = getOptimizedImage(photo, 108, 108);
   return (
-    <div className="flex flex-col items-center justify-center drop-shadow-md text-white w-full">
-      <div className={`rounded-full p-1 ${isLight ? "bg-white" : "bg-black"}`}>
-        <Image
-          priority
-          src={optimizedPhoto || logotipoColor}
-          width={110}
-          height={110}
-          className="rounded-full object-cover"
-          alt="Profile"
-        />
+    <div className="flex flex-col items-center justify-center drop-shadow drop-shadow-gray-900/30 text-white w-full">
+      <div className="relative">
+        <div className={`rounded-full p-1 ${isLight ? "bg-white" : "bg-black"}`}>
+          <Image
+            priority
+            src={optimizedPhoto || logotipoColor}
+            width={135}
+            height={135}
+            className="rounded-full object-cover"
+            alt="Profile"
+          />
+        </div>
+        {
+          user && cookie && (
+            <Link
+              className="flex items-center absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 bg-white text-sm text-black px-3 py-2 rounded-full"
+              href="/panel-de-usuario"
+            >
+              <FaEdit size={14} /> Perfil
+            </Link>
+          )
+        }
       </div>
 
-      <h1 className="text-2xl font-bold mt-2 uppercase">
+      <h1 className="text-2xl font-bold mt-3 uppercase">
         {displayData?.name || (!user ? "QMENÚ" : "")}
       </h1>
 
-      <p className="opacity-90 text-lg">
+      <p className="">
         {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
       </p>
 
-      <div className="flex flex-col items-center gap-1 text-sm mt-1 opacity-80">
+      <div className="flex flex-col items-center gap-1 text-xs mt-0.5">
+
         {(displayData?.address || !user) && (
           <span className="flex items-center gap-1">
             <FaMapMarkerAlt />

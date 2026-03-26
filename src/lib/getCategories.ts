@@ -5,7 +5,6 @@ export async function getCategories(apiUrl: string) {
         const data = await res?.json();
         return data?.categories ?? [];
     } catch (error) {
-        console.log(error);
         return [];
     }
 }

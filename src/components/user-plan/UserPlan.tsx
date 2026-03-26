@@ -18,7 +18,7 @@ export default function UserPlan({ plan }: UserPlanProps) {
   }
   if (plan === "premium") {
     return (
-      <div className="w-fit h-fit py-1 px-3 rounded-full bg-linear-to-r from-gray-600 to-gray-400 border-white border flex items-center justify-center">
+      <div className="w-fit h-fit py-1 px-3 rounded-full bg-linear-to-r from-black to-gray-600 border-white border flex items-center justify-center">
         <p className="text-white text-xs">{plan}</p>
       </div>
     );

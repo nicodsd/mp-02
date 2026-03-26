@@ -108,14 +108,12 @@ export default function Register() {
       const { token } = data;
       await setAuthCookie(token);
       await setUserCookie(user);
-      console.log(response);
       if (!response.ok) {
         setApiError(data.error || "Ocurrió un error al registrarse.");
         return;
       }
       router.push("/");
     } catch (err) {
-      console.error(err);
       setApiError("Error de conexión. Intente nuevamente.");
     }
   };
@@ -149,7 +147,6 @@ export default function Register() {
           </div>
         </div>
 
-        {/* Progress */}
         <ol className="flex w-full h-20 mb-5 justify-center">
           {steps.map((s, idx) => {
             const active = idx <= step;
@@ -211,7 +208,6 @@ export default function Register() {
               setSubmitting(false);
               setApiError(null);
             } else {
-              console.log("submit final");
               await handleFinalSubmit(values);
               setSubmitting(false);
             }

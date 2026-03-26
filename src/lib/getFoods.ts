@@ -5,7 +5,6 @@ export async function getFoods(apiUrl: string) {
         const data = await res.json();
         return data?.foods ?? [];
     } catch (error) {
-        console.log(error);
         return [];
     }
 }

@@ -69,10 +69,8 @@ export default function CategoriesForm({
 
       if (!res.ok) throw new Error("Error en la petición");
       const data = await res.json();
-      console.log("Categoría guardada:", data);
     } catch (error) {
       console.error("Error al guardar:", error);
-      // Opcional: Revertir estado local si falla
     }
   };
 

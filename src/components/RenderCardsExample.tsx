@@ -29,14 +29,24 @@ export default function RenderCards({
   } | null>(null);
   const { foods, setFoods, removeFoodLocal } = useFoodStore();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const foodsFilteredByDrinks = foods.filter((food) => food.category === "Bebidas");
-  const foodsFilteredByEntradas = foods.filter((food) => food.category === "Entradas");
-  const foodsFilteredByPlatos = foods.filter((food) => food.category === "Platos");
-  const foodsFilteredByPostres = foods.filter((food) => food.category === "Postres");
-  console.log(foodsFilteredByDrinks);
-  console.log(foodsFilteredByEntradas);
-  console.log(foodsFilteredByPlatos);
-  console.log(foodsFilteredByPostres);
+
+  const foodsFilteredByCategory = foods.map((food) => food.category);
+
+  const foodsFilteredByDrinks = foods.filter(
+    (food) => food.category === "Bebidas",
+  );
+  const foodsFilteredByEntradas = foods.filter(
+    (food) => food.category === "Entradas",
+  );
+  const foodsFilteredByPlatos = foods.filter(
+    (food) => food.category === "Comidas",
+  );
+  const foodsFilteredByPostres = foods.filter(
+    (food) => food.category === "Postres",
+  );
+
+  const platos: any = [];
+  platos.push([...foodsFilteredByEntradas, ...foodsFilteredByPlatos]);
 
   useEffect(() => {
     if (initialFoods) setFoods(initialFoods);
@@ -79,10 +89,10 @@ export default function RenderCards({
       {foods.length === 0 ? (
         <Loading count={count ?? 4} />
       ) : (
-        foods.map((food) => (
+        platos[0].map((food: any) => (
           <div
             key={food._id}
-            className={`flex justify-between items-center bg-background ${context ? "border-l border-t border-b border-gray-200 rounded-2xl overflow-hidden min-h-34 h-fit" : ""}`}
+            className={`flex justify-between items-center rounded-xl bg-background ${context ? "border-l border-t border-b border-gray-200 rounded-2xl overflow-hidden min-h-34 h-fit" : ""}`}
           >
             <div
               className={`w-full ${context ? "border-l border-t border-b border-gray-200 rounded-l-2xl overflow-hidden h-full" : ""}`}

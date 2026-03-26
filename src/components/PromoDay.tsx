@@ -1,67 +1,52 @@
 import 'animate.css';
 import Image from "next/image";
 
-export default function PromoDay({ foods }: { foods: any }) {
+export default function PromoDayCard({ foods }: { foods: any }) {
   const priceFormatter = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
     minimumFractionDigits: 0,
   });
-  return (
-    <section className="flex flex-col text-gray-700 mb-2 items-center md:items-start w-full gap-1.5">
-      {foods?.map((food: any) => (
-        <div key={food._id} className="animate__animated animate__bounceIn p-2 gap-2 w-full md:px-[2vw] rounded-xl h-60 max-h-fit md:py-2 bg-primary md:bg-radial-[at_0%_0%] hover:-translate-y-2 transition-all duration-300 ease-in-out from-yellow-400 via-red-600 to-violet-400/60 to-100% md:w-full flex"
-          style={{
-            overflow: "hidden",
-            maxWidth: "100%",
-          }}
-        >
-          <Image
-            loading="eager"
-            src={food.photo}
-            alt={food.name}
-            width={200}
-            height={200}
-            style={{
-              objectFit: "cover",
-            }}
-            className="h-full rounded-xl w-[43%] md:w-[30%] md:rounded-xl shadow-xl md:shadow-yellow-400"
-          />
-          <div
-            className="flex justify-center items-center md:ml-2 text-white px-1 py-1 w-full h-full"
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <div
-              className="flex flex-col items-center justify-between gap-5 w-full h-full py-1"
-              style={{ flex: 1, textAlign: "left" }}>
-              <div className="flex flex-col w-full justify-start min-h-18.5 h-fit">
-                <h3
-                  className="leading-5.5 text-[1.4rem] h-fit line-clamp-2 text-pretty md:leading-none md:text-3xl font-black"
-                >
-                  {food.name.toUpperCase()}
-                </h3>
-                <span className="text-sm leading-4 text-pretty text-gray-100 line-clamp-2">{food.description}</span>
-              </div>
 
-              <div className="flex w-full border-t-2 pt-2 border-yellow-200 flex-col items-end justify-end h-full">
-                <p
-                  className="text-center font-semibold text-gray-200/90 line-through text-lg md:text-xl"
-                >
-                  Antes {priceFormatter.format(food.price)}
-                </p>
-                <p
-                  className="text-[1.6rem] drop-shadow-lg text-center font-bold text-[#fff2cc] md:text-3xl"
-                >
-                  ¡Ahora! {priceFormatter.format(food.promo_price)}
-                </p>
-              </div>
-            </div>
-          </div>
+  return (
+    <div key={foods._id} className="animate__animated animate__bounceIn shadow-lg p-2 gap-2 w-full md:px-[2vw] rounded-xl h-48 relative overflow-hidden flex hover:-translate-y-1 transition-all duration-300 ease-in-out"
+      style={{
+        backgroundImage: `url("${foods.photo}")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="absolute inset-0 bg-linear-to-r from-red-800/50 to-red-800/15 to-100% backdrop-blur-lg z-10 rounded-xl"></div>
+
+      <div className="relative z-20 w-[45%] h-full shrink-0">
+        <Image
+          loading="eager"
+          src={foods.photo}
+          alt={foods.name}
+          fill
+          className="object-cover rounded-lg shadow-xl border border-white/30"
+        />
+      </div>
+
+      <div className="relative z-20 flex flex-col justify-between w-full h-full py-1 text-white">
+        <div className="flex flex-col gap-0.5">
+          <h3 className="leading-none text-xl md:text-3xl font-black line-clamp-2 uppercase">
+            {foods.name}
+          </h3>
+          <p className="text-xs md:text-sm leading-tight text-gray-50 line-clamp-2">
+            {foods.description}
+          </p>
         </div>
-      ))}
-    </section >
+
+        <div className="flex flex-col items-end border-t border-yellow-200/30 pt-1">
+          <span className="text-[13px] md:text-sm text-gray-300 line-through decoration-red-500">
+            Antes {priceFormatter.format(foods.price)}
+          </span>
+          <span className="text-xl md:text-2xl font-black text-[#fff2cc] drop-shadow-md">
+            ¡Hoy {priceFormatter.format(foods.promo_price)}!
+          </span>
+        </div>
+      </div>
+    </div>
   );
 }

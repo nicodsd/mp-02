@@ -17,8 +17,8 @@ export default function FormFoods({
   user: any;
 }) {
   const router = useRouter();
-  const [preview, setPreview] = useState<string>(imgPlaceholder); // URL para mostrar en <Image />
-  const [file, setFile] = useState<File | null>(null); // archivo real
+  const [preview, setPreview] = useState<string>(imgPlaceholder);
+  const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [subCategories, setSubCategories] = useState<string[]>([]);
@@ -26,7 +26,6 @@ export default function FormFoods({
   const [price, setPrice] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  // liberar URL temporal al desmontar
   useEffect(() => {
     return () => {
       if (preview !== imgPlaceholder) {
@@ -49,7 +48,6 @@ export default function FormFoods({
     }
     setFile(null);
     setPreview(imgPlaceholder);
-    console.log("Imagen eliminada");
   };
 
   const postFood = async (e: React.FormEvent) => {
@@ -62,7 +60,6 @@ export default function FormFoods({
     formData.append("price", price);
     formData.append("sub_category", subCategories.join(","));
     formData.append("category", category);
-    console.log(formData);
     try {
       const userId = user?.id || user?._id;
       if (!userId) throw new Error("No se encontró el ID del usuario.");
@@ -77,9 +74,7 @@ export default function FormFoods({
       }
       const data = await res.json();
       router.push("/");
-      console.log("Success:", data);
     } catch (error) {
-      console.error("Error:", error);
       setError("No se pudo crear el plato.");
     }
   };

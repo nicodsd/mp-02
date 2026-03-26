@@ -152,18 +152,19 @@ const UserSettings = ({ user }: { user: any }) => {
 
   return (
     <>
+      <header className="p-3 flex flex-col gap-1">
+        <h1 className="text-2xl font-bold text-gray-800">Perfil</h1>
+        <p className="text-gray-500 text-sm">Edita la información de tu negocio.</p>
+      </header>
       <form
         onSubmit={userUpdate}
-        className="flex w-full relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
+        className="flex w-full mt-4 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
-        <h1 className="text-xl h-fit font-bold mb-5 text-gray-7S00">
-          Editar Perfil
-        </h1>
-        <div className="w-full px-7 flex flex-col">
-          <div className="flex justify-center gap-8 mb-4 pb-10 border-b border-gray-200">
+        <div className="w-full px-6 flex flex-col">
+          <div className="flex justify-center gap-8 mb-4 pb-6">
             <div className="relative flex items-center justify-center gap-2 flex-col">
-              <h3 className="text-lg font-bold text-gray-800">Logo</h3>
-              <div className="w-30 h-30 relative rounded-full border-gray-500 bg-black border-4 overflow-hidden">
+              <h3 className="text-lg text-gray-700">Logo</h3>
+              <div className="w-30 h-30 relative rounded-full overflow-hidden">
                 <Image
                   src={previewPhoto}
                   alt="Profile"
@@ -173,7 +174,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-bold text-white/70 text-2xl flex items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"
@@ -183,14 +184,14 @@ const UserSettings = ({ user }: { user: any }) => {
                       if (f) photoCapture(f);
                     }}
                   />
-                  <FaCamera />
+                  <FaCamera /> Editar
                 </label>
               </div>
             </div>
 
             <div className="relative flex items-center justify-center gap-2 flex-col">
-              <h3 className="text-lg font-bold text-gray-800">Fondo</h3>
-              <div className="w-50 h-30 relative rounded-lg border-gray-500 bg-black border-4 overflow-hidden">
+              <h3 className="text-lg text-gray-700">Fondo</h3>
+              <div className="w-50 h-30 relative rounded-lg overflow-hidden">
                 <Image
                   src={previewBackground || placeholder}
                   alt="background"
@@ -200,7 +201,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-bold text-white/70 text-2xl flex items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"
@@ -210,7 +211,7 @@ const UserSettings = ({ user }: { user: any }) => {
                       if (f) backgroundCapture(f);
                     }}
                   />
-                  <FaCamera />
+                  <FaCamera /> Editar
                 </label>
               </div>
             </div>
