@@ -44,5 +44,5 @@ export function proxy(req: NextRequest) {
     return res;
 }
 export const config = {
-    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*" , "/iniciar-sesion"],
+    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*", "/iniciar-sesion"],
 };

@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
     'local-origin.dev',
     '*.local-origin.dev',
     '192.168.*.*',
+    'qmenu.com.ar',
+    '*.qmenu.com.ar',
   ],
   crossOrigin: 'anonymous',
 
@@ -23,11 +25,15 @@ const nextConfig: NextConfig = {
 
   images: {
     remotePatterns: [
-      new URL('https://floraprodutosnaturais.com.br/wp-content/uploads/2023/05/cheeseburguer-grelhado-com-tomate-cebola-e-fritas-gerado-por-ia-scaled.jpg'),
       new URL('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "floraprodutosnaturais.com.br",
         pathname: "/**",
       },
     ],

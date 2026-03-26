@@ -5,6 +5,8 @@
         "description": "Clásica pizza italiana con tomate, mozzarella y albahaca.",
         "price": 10000,
         "category": "Comidas",
+        "promo_price": 8000,
+        "is_promo": true,
         "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/R.jpeg",
         "allergens" : "gluten, dairy"
@@ -15,6 +17,8 @@
         "description": "Jugosa hamburguesa de res con queso, lechuga y tomate.",
         "price": 7000,
         "category": "Entradas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Hamburguesas",
         "photo": "/images/foods/burguers/OIP.webp",
         "allergens" : "gluten, dairy, egg"
@@ -25,6 +29,8 @@
         "description": "Pizza italiana con queso, pepperoni y albahaca.",
         "price": 12000,
         "category": "Comidas",
+        "promo_price": 10000,
+        "is_promo": true,
         "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/pizza.jpeg",
         "allergens" : "gluten, dairy"
@@ -35,6 +41,8 @@
         "description": "Ensalada fresca con pollo, crutones y aderezo César.",
         "price": 6000,
         "category": "Entradas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Picadas",
         "photo": "/images/foods/picadas/5e997e650c7b6.jpeg",
         "allergens" : "dairy, fish, egg"
@@ -45,6 +53,8 @@
         "description": "Rollos de sushi rellenos de salmón y aguacate.",
         "price": 9500,
         "category": "Entradas",    
+        "promo_price": 8000,
+        "is_promo": true,
         "sub_category": "Sushi",
         "photo": "/images/foods/picadas/R.jpeg",
         "allergens" : "fish, soy, sesame"
@@ -55,6 +65,8 @@
         "description": "Tacos mexicanos de cerdo marinado con piña y cebolla.",
         "price": 5000,
         "category": "Entradas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Tacos",
         "photo": "/images/foods/tacos/OIP.webp",
         "allergens" : "gluten"
@@ -65,6 +77,8 @@
         "description": "Ensalada de pollo con queso, lechuga y tomate.",
         "price": 6000,
         "category": "Entradas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Picadas",
         "photo": "/images/foods/picadas/1571779987281.jpeg",
         "allergens" : "dairy, fish, egg"
@@ -75,6 +89,8 @@
         "description": "Jugo de naranja fresco con hierbas y hierbas.",
         "price": 2000,
         "category": "Bebidas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/batidos/OIP.webp",
         "allergens" : "dairy"
@@ -85,6 +101,8 @@
         "description": "Jugo de limón fresco con hierbas y hierbas.",
         "price": 2000,
         "category": "Bebidas",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/batidos/jugo-de-limon-con-menta.jpg",
         "allergens" : "dairy"
@@ -95,8 +113,34 @@
         "description": "Postre italiano con queso y café.",
         "price": 2000,
         "category": "Postres",
+        "promo_price": 0,
+        "is_promo": false,
         "sub_category": "Postres",
         "photo": "/images/foods/postres/R.jpeg",
+        "allergens" : "dairy"
+    },
+    {
+        "_id": 11,
+        "name": "Gaseosa",
+        "description": "Gaseosa de cola.",
+        "price": 2000,
+        "category": "Bebidas",
+        "promo_price": 0,
+        "is_promo": false,
+        "sub_category": "Gaseosas",
+        "photo": "/images/foods/bebidas/gaseosas/vaso-cola.avif",
+        "allergens" : "dairy"
+    },
+    {
+        "_id": 12,
+        "name": "Agua mineral",
+        "description": "Agua mineral sin gas.",
+        "price": 2000,
+        "promo_price": 0,
+        "is_promo": false,
+        "category": "Bebidas",
+        "sub_category": "Bebidas",
+        "photo": "/images/foods/bebidas/vaso-de-agua-mineral.webp",
         "allergens" : "dairy"
     }
 ]

@@ -22,22 +22,22 @@ export default function Cards({
     }).format(value);
   }
   return (
-    <div className="flex w-40 items-center justify-center">
+    <div className="flex w-40 items-center bg-background justify-center">
       <div
-        className={`flex flex-col w-full h-57 shadow-md overflow-hidden border border-gray-300 rounded-[7px] p-2 items-center`}
+        className={`flex flex-col w-full h-60 shadow-md overflow-hidden border border-gray-300 rounded-[7px] p-2 items-center`}
       >
         <Image
           quality={75}
           loading="lazy"
           src={photo}
           alt={name}
-          className="min-w-full min-h-25 md:max-w-25 md:max-h-36 object-cover rounded-[7px]"
+          className="min-w-full min-h-30 md:max-w-25 md:max-h-36 object-cover rounded-[7px]"
           width={130}
-          height={100}
+          height={130}
         />
         <div className="flex flex-col justify-between w-full h-full">
           <div className="menu-card__content text-left flex flex-col justify-between h-full">
-            <h2 className="font-semibold text-gray-700 text-lg leading-3.5 line-clamp-1 mt-3 md:h-fit">
+            <h2 className="font-semibold text-gray-700 text-lg leading-6 line-clamp-1 mt-3 md:h-fit">
               {name}
             </h2>
             <p className="mt-1 text-[#555] text-sm text-pretty line-clamp-3 leading-4">
