@@ -29,7 +29,7 @@ export default function Inicio() {
         showModal={showModal}
       />
 
-      <article className="flex min-h-[calc(90vh-100px)] flex-col gap-2 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
+      <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
 
         <FilterHeader
           foods={filteredFoods}
@@ -37,7 +37,7 @@ export default function Inicio() {
           onOpenModal={() => setShowModal(true)}
         />
 
-        <section className="flex h-fit flex-col gap-5 pt-4">
+        <section className="flex h-fit flex-col gap-8 pt-4">
           <OffersSection foods={foodsData} />
 
           <FoodCatalog

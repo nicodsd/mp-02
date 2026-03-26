@@ -5,6 +5,7 @@ import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import icons from "@/public/images/icons-index/iconExport";
+import { Utensils } from "lucide-react";
 
 export default function FoodCatalog({ allFoods, initialSubCategories }: any) {
     const [displayFoods, setDisplayFoods] = useState(allFoods);
@@ -38,12 +39,12 @@ export default function FoodCatalog({ allFoods, initialSubCategories }: any) {
 
     return (
         <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-                <h2 className="text-xl ml-2 font-normal text-gray-600">Platos</h2>
-                <Image src={icons.burga} alt="burga" width={24} height={24} className="w-6 h-6" />
+            <div className="flex ml-2 items-center gap-2 text-gray-600">
+                <h2 className="text-xl font-normal">Platos</h2>
+                <Utensils className="w-5 h-5" />
             </div>
 
-            <div className="flex justify-between items-end mb-4">
+            <div className="flex justify-between items-end mb-1">
                 <Categories
                     categories={subCategories}
                     selectCategory={(sub: string) => {
@@ -60,8 +61,8 @@ export default function FoodCatalog({ allFoods, initialSubCategories }: any) {
                 <CardsFoodsByCategories arrayFoods={displayFoods} />
 
                 <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                        <h2 className="text-xl ml-2 font-normal text-gray-600">Bebidas</h2>
+                    <div className="flex ml-2 items-center gap-2 text-gray-600">
+                        <h2 className="text-xl font-normal">Bebidas</h2>
                         <Image src={icons.copa} alt="copa" width={24} height={24} className="w-6 h-6" />
                     </div>
                     <RenderCardsOptions foods={allFoods} />
