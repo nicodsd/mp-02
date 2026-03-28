@@ -32,7 +32,7 @@ export default function GroupsFoodsByCategories({ arrayFoods }: { arrayFoods: an
                                 </span>
                             </summary>
                             <div className="flex flex-col gap-4 mt-4">
-                                {Array.isArray(foods) && foods.map((food: any, index: number) => (
+                                {/*   {Array.isArray(foods) && foods.map((food: any, index: number) => (
                                     <FoodsCardsExample
                                         key={food.id || index}
                                         name={food.name}
@@ -41,7 +41,7 @@ export default function GroupsFoodsByCategories({ arrayFoods }: { arrayFoods: an
                                         price={food.price}
                                         context={false}
                                     />
-                                ))}
+                                ))} */}
                             </div>
                         </details>
                     ))}
