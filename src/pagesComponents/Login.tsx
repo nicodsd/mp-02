@@ -8,8 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/images/logo/logo-rojo.png";
 import BttnBack from "@/src/components/buttons/BttnBack";
-
-const URI = process.env.NEXT_PUBLIC_API_URL;
+import { URI } from "@/src/lib/const";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -62,8 +61,8 @@ export default function LoginPage() {
         <BttnBack />
       </div>
 
-      <main className="flex-1 flex flex-col items-end justify-start mt-18 px-3 w-full">
-        <div className="w-full py-8 rounded-3xl border border-gray-500 pt-10 relative mt-2">
+      <main className="flex-1 flex flex-col items-end justify-start mt-15 px-3 w-full md:px-[30vw]">
+        <div className="w-full py-8 rounded-3xl border border-gray-500 pt-14 relative mt-2">
           <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
             <div className="w-24 h-24 rounded-full bg-primary ring-1 border-7 border-white ring-gray-500 flex items-center justify-center">
               <div className="w-full h-full rounded-full flex items-center justify-center">
@@ -77,10 +76,13 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          <div className="text-start mb-8 ml-8">
-            <h1 className="text-card-dark text-4xl font-extrabold leading-7 tracking-tight">
-              ¡Hola <br /> de nuevo!
+          <div className="text-start mb-5 px-5">
+            <h1 className="text-card-dark/90 text-3xl leading-none font-extrabold tracking-tight">
+              Bienvenido/a <br />de nuevo a QMenú
             </h1>
+            <p className="text-gray-600 text-sm font-semibold">
+              Inicia sesión para comenzar
+            </p>
           </div>
 
           <form onSubmit={formik.handleSubmit} className="space-y-8">
@@ -140,7 +142,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={formik.isSubmitting}
-                className={`w-full bg-primary text-white font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting
+                className={`w-full bg-primary text-white cursor-pointer font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting
                   ? "opacity-50"
                   : "hover:bg-[#d00000] active:scale-[0.98]"
                   }`}
@@ -154,7 +156,7 @@ export default function LoginPage() {
               </p>
 
               <Link
-                className="block text-blue-600 font-bold hover:underline"
+                className="block text-blue-600 font-bold hover:underline cursor-pointer"
                 href="/registro-de-usuario"
               >
                 Registrarse
@@ -163,14 +165,14 @@ export default function LoginPage() {
           </form>
         </div>
       </main>
-      {/*      <footer className="w-full h-fit flex flex-col items-center justify-between bg-primary space-y-5 py-3">
+      <footer className="w-full h-fit flex flex-col items-center justify-between bg-primary space-y-5 py-3">
         <div className="flex items-center justify-center space-x-6">
           <h3 className="text-white text-sm font-semibold">
             ¿Ya viste las novedades?
           </h3>
           <button
             type="button"
-            className="text-white text-xs uppercase font-black p-3 w-35 bg-black rounded-lg"
+            className="text-white text-xs uppercase font-black p-3 w-35 bg-black rounded-lg cursor-pointer"
           >
             Haste premium
           </button>
@@ -182,7 +184,7 @@ export default function LoginPage() {
           <p>
             Por{" "}
             <a
-              className="font-bold"
+              className="font-bold cursor-pointer"
               href="https://github.com/nicobarrera"
               target="_blank"
               rel="noopener noreferrer"
@@ -191,7 +193,7 @@ export default function LoginPage() {
             </a>
           </p>
         </div>
-      </footer> */}
+      </footer>
     </div>
   );
 }

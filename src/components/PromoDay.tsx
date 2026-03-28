@@ -7,9 +7,8 @@ export default function PromoDayCard({ foods }: { foods: any }) {
     currency: "ARS",
     minimumFractionDigits: 0,
   });
-
   return (
-    <div key={foods._id} className="animate__animated animate__bounceIn shadow-lg p-2 gap-2 w-full md:px-[2vw] rounded-xl h-48 relative overflow-hidden flex hover:-translate-y-1 transition-all duration-300 ease-in-out"
+    <div key={foods._id} className="animate__animated animate__bounceIn shadow-lg p-2 gap-2 w-full rounded-xl h-48 relative overflow-hidden flex hover:-translate-y-1 transition-all duration-300 ease-in-out"
       style={{
         backgroundImage: `url("${foods.photo}")`,
         backgroundSize: "cover",

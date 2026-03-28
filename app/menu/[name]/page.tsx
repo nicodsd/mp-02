@@ -13,7 +13,7 @@ export default async function Page({
   const { name } = await params;
   const user = await userGet(name);
   if (!user?.data) {
-    return <PageNotFound name={name} />;
+    return <PageNotFound />;
   }
   return (
     <>

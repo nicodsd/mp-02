@@ -163,7 +163,8 @@ export default function Menu({ data }: { data: any }) {
             <>
               <div className="flex justify-between items-end">
                 <Categories
-                  categories={subCategories}
+                  foods={arrayFoods}
+                  categoriesFoods={subCategories}
                   selectCategory={handleSubCategoryClick}
                 />
                 <SortPriceButton onSortChange={setSortOrder} />

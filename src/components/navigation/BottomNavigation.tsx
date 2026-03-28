@@ -82,7 +82,7 @@ export default function BottomNavigation({
             <button
               key={index}
               onClick={item.action}
-              className="flex flex-col items-center justify-center flex-1 h-full gap-1 group active:scale-95 transition-transform"
+              className="flex flex-col cursor-pointer items-center justify-center flex-1 h-full gap-1 group active:scale-95 transition-transform"
             >
               <div className="text-gray-500 group-hover:text-primary group-active:text-primary transition-colors">
                 {item.icon}
