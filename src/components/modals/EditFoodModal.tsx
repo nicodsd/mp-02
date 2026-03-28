@@ -3,8 +3,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { URI } from '@/src/lib/const';
 import {
   Dialog,
   DialogPanel,
@@ -27,7 +26,7 @@ export default function EditFoodModal({
   food,
   onUpdate,
 }: EditFoodModalProps) {
-  const URI = process.env.NEXT_PUBLIC_API_URL;
+
   const [loading, setLoading] = useState(false);
   const updateFoodInStore = useFoodStore((state) => state.updateFood); // HOOK AFUERA
 
@@ -37,7 +36,6 @@ export default function EditFoodModal({
     name: "",
     description: "",
     price: "",
-    category: "",
   });
 
   useEffect(() => {
@@ -45,8 +43,7 @@ export default function EditFoodModal({
       setFormData({
         name: food.name || "",
         description: food.description || "",
-        price: food.price || "",
-        category: food.category || "",
+        price: food.price || ""
       });
       setPreview(food.photo || null);
     }
@@ -64,7 +61,7 @@ export default function EditFoodModal({
 
     try {
       const res = await fetch(
-        `${URI}foods/update/${food._id}/${food.user_id}`,
+        `${URI}foods/update/${food._id}`,
         {
           method: "PUT",
           body: dataToSend,
@@ -75,7 +72,6 @@ export default function EditFoodModal({
       if (res.ok) {
         const data = await res.json();
 
-        // Sincronizamos localmente para cambio instantáneo
         const updatedObj = data.food || {
           ...food,
           ...formData,
@@ -83,7 +79,7 @@ export default function EditFoodModal({
         };
         updateFoodInStore(updatedObj);
 
-        await refreshPage(); // Invalida caché de servidor
+        await refreshPage();
         onClose();
       }
     } catch (error) {

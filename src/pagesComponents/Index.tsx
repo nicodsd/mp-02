@@ -10,6 +10,7 @@ import SearchModal from "@/src/components/modals/SearchModal";
 export default function Inicio() {
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(foodsData);
+  const user = {}
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {
@@ -21,7 +22,7 @@ export default function Inicio() {
   };
 
   return (
-    <main className="w-full relative p-3 md:p-0 md:px-10 md:py-6 h-full">
+    <main className="w-full relative p-3 md:p-0 md:py-6 h-full">
       <SearchModal
         arrayFoods={filteredFoods}
         setSearch={handleSearch}
@@ -29,7 +30,7 @@ export default function Inicio() {
         showModal={showModal}
       />
 
-      <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10">
+      <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 sm:px-[10vw] md:px-[20vw] lg:px-[30vw] md:pb-8 md:pt-3 -translate-y-10">
 
         <FilterHeader
           foods={filteredFoods}
@@ -37,12 +38,13 @@ export default function Inicio() {
           onOpenModal={() => setShowModal(true)}
         />
 
-        <section className="flex h-fit flex-col gap-8 pt-4">
+        <section aria-label="Filtros e información" className="flex h-fit flex-col gap-8 pt-4">
           <OffersSection foods={foodsData} />
 
           <FoodCatalog
             allFoods={foodsData}
             initialSubCategories={subCategoriesData}
+            user={user}
           />
         </section>
 

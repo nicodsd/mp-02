@@ -59,22 +59,21 @@ export default function DiscountSlider({
       </div>
 
       <p
-        className={`text-lg text-end font-bold ${
-          value <= 20
-            ? "text-yellow-600"
-            : value <= 50
-              ? "text-orange-600"
-              : value <= 70
-                ? "text-red-600"
-                : "text-red-600"
-        }`}
+        className={`text-lg text-end font-bold ${value <= 20
+          ? "text-yellow-600"
+          : value <= 50
+            ? "text-orange-600"
+            : value <= 70
+              ? "text-red-600"
+              : "text-red-600"
+          }`}
       >
         Descuento: {value}%
       </p>
 
       {showModal && (
         <div className="fixed inset-0 bg-gray-400/60 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-80">
+          <div className="bg-white rounded-lg p-6 w-80">
             <h2 className="text-lg font-bold mb-4 text-red-600">⚠ Atención</h2>
             <p className="text-gray-700 mb-4">
               Estás intentando poner este plato con un descuento del 100%, lo

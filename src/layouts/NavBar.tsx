@@ -11,7 +11,8 @@ import {
 } from "react-icons/fa";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
-import { logotipo, logo_w, logotipoColor } from "@/src/lib/const";
+import logo from "@/public/images/logo/logo.png"
+import { logotipo, logo_w } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
@@ -84,7 +85,7 @@ export default function NavBar({
   };
 
   return (
-    <header className="flex flex-col w-full bg-primary/80">
+    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-linear-to-b from-primary/80 to-primary/40"}`}>
       {!isSpecialState && (
         <div className={`flex w-full z-50 ${!user ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-primary/30 to-primary/10 h-14 p-2 text-white" : "absolute top-2 text-gray-300 italic"} items-center justify-between`}>
           {user && <Link
@@ -117,8 +118,8 @@ export default function NavBar({
             )}
           </Link>}
           {!user && (
-            <div className="flex w-full justify-around items-center">
-              <span className="text-md font-bold">Crea tu Menú ¡GRATIS!</span>
+            <div className="flex w-full justify-around items-center md:justify-center md:gap-10">
+              <span className="text-md md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
               <Link
                 href="/registro-de-usuario"
                 className="bg-white shadow-xl shadow-white/60 hover:bg-gray-100 transition-all duration-100 hover:scale-95 hover:shadow-lg hover:shadow-white/60 ease-in-out text-gray-800 px-2.5 py-1 rounded-md font-black"
@@ -166,7 +167,7 @@ function DefaultNavUser({ user, photo, isLight, cookie }: any) {
         <div className={`rounded-full p-1 ${isLight ? "bg-white" : "bg-black"}`}>
           <Image
             priority
-            src={optimizedPhoto || logotipoColor}
+            src={optimizedPhoto || logo}
             width={135}
             height={135}
             className="rounded-full object-cover"
@@ -202,34 +203,30 @@ function DefaultNavUser({ user, photo, isLight, cookie }: any) {
           </span>
         )}
 
-        <div className="flex items-center gap-1 flex-wrap justify-center">
+        <div className="flex items-center gap-x-2 flex-wrap justify-center">
+
           {(displayData?.phone || !user) && (
-            <span className="flex items-center pr-1 gap-1">
+            <span className="flex items-center gap-1">
               <FaWhatsapp />
               {displayData?.phone || "385 123 4567"}
             </span>
           )}
 
-          {displayData?.instagram && (
-            <span className="border-x border-white px-2 flex items-center gap-1">
-              <FaInstagram />
-              {displayData.instagram}
-            </span>
-          )}
-
-          {displayData?.facebook && (
-            <span className="border-r border-white pr-2 flex items-center gap-1">
-              <FaFacebook />
-              {displayData.facebook}
-            </span>
-          )}
-
-          {displayData?.tiktok && (
-            <span className="flex items-center gap-1 pl-1">
-              <FaTiktok />
-              {displayData.tiktok}
-            </span>
-          )}
+          {[
+            { id: 'ig', val: displayData?.instagram, icon: <FaInstagram /> },
+            { id: 'fb', val: displayData?.facebook, icon: <FaFacebook /> },
+            { id: 'tk', val: displayData?.tiktok, icon: <FaTiktok /> }
+          ]
+            .filter(social => social.val)
+            .map((social) => (
+              <span
+                key={social.id}
+                className="flex items-center gap-1 border-l border-white/50 pl-2 ml-0"
+              >
+                {social.icon}
+                {social.val}
+              </span>
+            ))}
         </div>
       </div>
     </div>

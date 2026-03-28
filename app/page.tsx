@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { URI, logotipo } from "@/src/lib/const";
+import { URI } from "@/src/lib/const";
 import { getFoodsByUser } from "@/src/lib/getFoodsByUser";
 import { getCategoriesByUser } from "@/src/lib/getCategoriesByUser";
 import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
@@ -8,20 +8,33 @@ import Index from "@/src/pagesComponents/Index";
 import UserIndex from "@/src/pagesComponents/UserIndex";
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
+
 export default async function Page() {
-  let foodsByUser;
-  let categoriesByUser;
-  let subCategoriesByUser;
-  let user;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
   const userCookie = cookieStore.get("user")?.value;
 
+  let user = null;
+  let foodsByUser = [];
+  let categoriesByUser = [];
+  let subCategoriesByUser = [];
+
   if (userCookie) {
-    user = JSON.parse(userCookie);
-    categoriesByUser = await getCategoriesByUser(URI, user.id!);
-    foodsByUser = await getFoodsByUser(URI, user.id!);
-    subCategoriesByUser = await getSubCategoriesByUser(URI, user.id!);
+    try {
+      user = JSON.parse(userCookie);
+
+      const [foods, categories, subCategories] = await Promise.all([
+        getFoodsByUser(URI, user.id),
+        getCategoriesByUser(URI, user.id),
+        getSubCategoriesByUser(URI, user.id),
+      ]);
+
+      foodsByUser = foods;
+      categoriesByUser = categories;
+      subCategoriesByUser = subCategories;
+    } catch (error) {
+      console.error("Error cargando datos del usuario:", error);
+    }
   }
 
   const userNameFormatted = user?.name
@@ -33,31 +46,32 @@ export default async function Page() {
       <NavBar
         state={0}
         bttn={true}
-        cookie={token!}
-        photo={user?.photo!}
-        user={user!}
+        cookie={token}
+        photo={user?.photo}
+        user={user}
       />
+
       {user ? (
-        <UserIndex
-          categories={categoriesByUser!}
-          foods={foodsByUser!}
-          initialSubCategories={subCategoriesByUser!}
-          user={user!}
-          token={token!}
-        />
+        <>
+          <UserIndex
+            categories={categoriesByUser}
+            foods={foodsByUser}
+            initialSubCategories={subCategoriesByUser}
+            user={user}
+            token={token || ""}
+          />
+          <BottomNavigation
+            name={userNameFormatted}
+            foods={foodsByUser}
+            logoUrl={user?.photo}
+          />
+        </>
       ) : (
         <>
           <Index />
           <Footer />
         </>
       )}
-      {user ? (
-        <BottomNavigation
-          name={userNameFormatted}
-          foods={foodsByUser!}
-          logoUrl={user?.photo}
-        />
-      ) : null}
     </div>
   );
 }
