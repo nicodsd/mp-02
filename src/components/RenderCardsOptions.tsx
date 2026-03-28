@@ -11,13 +11,12 @@ export default function RenderCardsOptions({
   count,
   context,
 }: RenderCardsProps) {
-  const foodsFilteredByDrinks = foods.filter((food) => food.category === "Bebidas");
   return (
-    <div className="w-full flex justify-start overflow-x-scroll bg-background-2 p-1 py-2 rounded-xl">
-      {foodsFilteredByDrinks.length === 0 ? (
+    <div className={`w-full flex justify-start overflow-x-scroll p-1 py-2 rounded-xl ${foods.length > 1 ? "bg-background-2" : ""}`}>
+      {foods.length === 0 ? (
         <Loading count={count ?? 6} />
       ) : (
-        foodsFilteredByDrinks.map((food) => (
+        foods.map((food) => (
           <div
             key={food._id}
             className={`${context ? "bg-background-2 rounded-xl" : ""}`}

@@ -48,7 +48,7 @@ export default function FoodsCardsExample({
         <div className="flex flex-col justify-between pl-2 w-full h-full">
           <div className="menu-card__content text-left">
             <h2
-              className={`font-semibold text-gray-700 text-[18px] md:h-fit ${context ? "leading-4" : "h-4 md:text-[1.2vw]"}`}
+              className={`font-semibold text-gray-700 text-lg md:h-fit ${context ? "leading-4" : "h-4 md:text-2xl"}`}
             >
               {name}
             </h2>

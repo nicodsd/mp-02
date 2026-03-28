@@ -41,7 +41,7 @@ export default function UserIndex({ foods, initialSubCategories, user }: any) {
           <AdminOffers foods={foods} />
         </section>
 
-        <section className="flex h-fit flex-col gap-8 pt-4">
+        <section className="flex h-fit flex-col gap-2 pt-4 pb-10">
 
           <AdminFoodCatalog
             foods={foods}

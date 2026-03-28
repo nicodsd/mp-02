@@ -23,17 +23,18 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {foods.length > 0 && foods.filter((f: any) => f.sub_category === "bebidas" && f.sub_category === "postres").length > 0 &&
+                {foods.filter((f: any) => f.sub_category === "bebidas").length > 0 &&
                     <div className="flex flex-col gap-2">
                         <div className="flex ml-2 items-center gap-1 text-gray-600">
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
                         <RenderCardsOptions foods={foods} />
-                    </div>}
+                    </div>
+                }
 
-                <div className="flex flex-col gap-2">
-                    <div className="flex ml-2 items-center gap-2 text-gray-600">
+                <div className="flex flex-col gap-1">
+                    <div className="flex ml-2 items-center gap-2 text-gray-600 mb-1">
                         <h2 className="text-xl font-normal">Platos</h2>
                         <Utensils className="w-5 h-5" />
                     </div>
@@ -57,6 +58,15 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                         <p className="text-center text-gray-400 py-10">No hay platos que coincidan.</p>
                     )}
                 </div>
+                {foods.filter((f: any) => f.sub_category === "postres").length > 0 &&
+                    <div className="flex flex-col gap-2">
+                        <div className="flex ml-2 items-center gap-1 text-gray-600">
+                            <h2 className="text-xl font-normal">Postres</h2>
+                            <Martini className="w-5 h-5" />
+                        </div>
+                        <RenderCardsOptions foods={foods} />
+                    </div>
+                }
             </div>
         </section>
     );

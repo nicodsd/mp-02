@@ -54,7 +54,6 @@ export default function CategoriesForm({
     onChange?.(updatedSelected);
 
     try {
-      // 2. Enviamos como JSON (Solución al body undefined)
       const res = await fetch(`${apiUrl}categories/sub/${user.id}`, {
         method: "POST",
         headers: {
@@ -112,7 +111,7 @@ export default function CategoriesForm({
       )}
 
       {/* Contenedor para nuevas categorías */}
-      <section className="flex w-full shadow-sm flex-col gap-y-4 bg-white border border-gray-300 min-h-[170px] rounded-xl p-5">
+      <section className="flex w-full shadow-sm flex-col gap-y-4 bg-white border border-gray-300 min-h-[100px] rounded-xl p-3 py-5">
         <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider">
           Nuevas categorías personalizadas
         </h3>

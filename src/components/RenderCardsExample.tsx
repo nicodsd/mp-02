@@ -76,7 +76,6 @@ export default function RenderCards({ foods: initialFoods, count, context }: Ren
             <div className="w-full h-full">
               <FoodsCardsExample {...food} context={context} />
             </div>
-
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">
                 <button

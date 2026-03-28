@@ -83,10 +83,10 @@ export default function FormFoods({
     <form
       encType="multipart/form-data"
       onSubmit={postFood}
-      className="min-h-screen flex flex-col bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
+      className="min-h-screen flex flex-col w-full bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
     >
-      <div className="px-5 md:w-[25vw] mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
-        {/* Sección de Imagen */}
+      <div className="px-5 md:w-[25vw] w-full mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
+
         <div className="flex flex-col items-center gap-4 relative">
           <div className="w-48 h-48 rounded-3xl flex items-center justify-center shadow-inner border border-gray-400 relative overflow-hidden group">
             {preview ? (
