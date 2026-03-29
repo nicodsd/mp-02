@@ -1,3 +1,5 @@
+![banner](/public/images/mask-group.png "This is a sample image.")
+
 # QMenú - Solución inteligente de menús digitales.
 
 **QMenú** es una plataforma web Fullstack diseñada para que locales gastronómicos autogestionen sus catálogos de platos de manera eficiente, moderna y personalizada. La aplicación permite a los comercios digitalizar su oferta, mejorar la experiencia del cliente y escalar sus ventas mediante herramientas tecnológicas de vanguardia.
