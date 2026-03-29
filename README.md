@@ -1,4 +1,4 @@
-![banner](/public/images/mask-group.png "This is a sample image.")
+![banner](/public/images/mask-group.png "Banner con presentación del logo")
 
 # QMenú - Solución inteligente de menús digitales.
 
@@ -45,7 +45,7 @@ QMenú implementa una arquitectura de seguridad multi-nivel para proteger la int
 ## ⚙️ Especificaciones Técnicas Detalladas
 
 ### Backend & Core / Repositorio "m-01back"
-* **Rutas Asíncronas:** Uso de las últimas capacidades de **Express 5.x** para un manejo eficiente de peticiones.
+* **Rutas Asíncronas:** Uso de las últimas capacidades de **Express** para un manejo eficiente de peticiones.
 * **Estrategia de Identidad:** Validación mediante **JSON Web Tokens (JWT)** integrada con `Passport.js` y `jsonwebtoken`.
 * **Integridad de Datos:** Doble capa de validación para garantizar la consistencia absoluta en el esquema de MongoDB.
 
