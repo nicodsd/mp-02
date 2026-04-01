@@ -8,6 +8,7 @@ import AddDishButton from "@/src/components/user_index/AddDishButton";
 
 export default function UserIndex({ foods, initialSubCategories, user }: any) {
   const [filteredFoods, setFilteredFoods] = useState(foods);
+  const color = user?.background_color || "";
   const [showModal, setShowModal] = useState(false);
 
   const handleSearch = (query: string) => {
@@ -22,7 +23,7 @@ export default function UserIndex({ foods, initialSubCategories, user }: any) {
   };
 
   return (
-    <main className="w-full relative p-3 md:p-0 md:py-6 h-full">
+    <main style={{ backgroundColor: color }} className="w-full relative p-3 md:p-0 md:py-6 h-full">
       <SearchModal
         arrayFoods={filteredFoods}
         setSearch={handleSearch}

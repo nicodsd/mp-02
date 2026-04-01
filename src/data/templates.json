@@ -1,0 +1,32 @@
+[
+    {
+        "template_id": "default",
+        "name": "Original",
+        "primaryColor": "bg-gray-100",
+        "accentColors": ["bg-gray-300", "bg-white", "bg-gray-200"]
+    },
+    {
+        "template_id": "forest",
+        "name": "Bosque",
+        "primaryColor": "bg-[#3B4E3A]",
+        "accentColors": ["bg-[#5D7B5E]", "bg-[#EAE4CC]", "bg-[#5D7B5E]"]
+    },
+    {
+        "template_id": "sakura",
+        "name": "Sakura",
+        "primaryColor": "bg-[#FFE6E7]",
+        "accentColors": ["bg-[#FFA2A3]", "bg-[#FFFAF3]", "bg-[#FFFAF3]"]
+    },
+    {
+        "template_id": "lavender",
+        "name": "Lavanda",
+        "primaryColor": "bg-[#BEADFB]",
+        "accentColors": ["bg-[#D0C0FF]", "bg-[#FEF9C1]", "bg-[#D0C0FF]"]
+    },
+    {
+        "template_id": "night",
+        "name": "Noche",
+        "primaryColor": "bg-[#1B1B1B]",
+        "accentColors": ["bg-[#868686]", "bg-white", "bg-[#262626]"]
+    }
+]

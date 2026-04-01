@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import FoodsCardsExample from "@/src/components/foods_cards/FoodsCardsExample";
+import FoodsCardsExample from "@/src/components/Index/foods_cards/FoodsCardsExample";
 import Loading from "@/src/skeleton/Loading";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { URI } from "@/src/lib/const";

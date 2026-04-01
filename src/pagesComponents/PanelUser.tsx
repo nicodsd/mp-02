@@ -187,7 +187,7 @@ export default function PanelUser({
                     <MenuItems dataFoods={foods} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
-                    <ConfigureMenu />
+                    <ConfigureMenu user={user.id} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
                     <PromoPanel />
