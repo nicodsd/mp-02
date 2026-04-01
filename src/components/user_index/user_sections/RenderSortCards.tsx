@@ -1,13 +1,11 @@
 "use client";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Loading from "@/src/skeleton/Loading";
 import { FaEdit, FaTrash, FaCheckSquare, FaRegSquare, FaTimes } from "react-icons/fa";
 import { URI } from "@/src/lib/const";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
 import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
-
-// DND Kit Imports
 import {
     DndContext,
     closestCenter,
@@ -28,7 +26,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 import { GripVertical } from "lucide-react";
 
-// --- Sub-componente de Fila ---
 function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect }: any) {
     const {
         attributes,
@@ -40,8 +37,9 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
     } = useSortable({ id: food._id });
 
     const style = {
-        // Cambiamos Translate por Transform para mayor suavidad en el renderizado
-        transform: CSS.Transform.toString(transform),
+        transform: isDragging
+            ? CSS.Transform.toString(transform)
+            : CSS.Translate.toString(transform),
         transition,
         zIndex: isDragging ? 50 : 1,
     };
@@ -56,34 +54,30 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
                 ${isDragging ? "shadow-xl opacity-80 rotate-1 scale-[1.02] z-50" : ""}`}
         >
             <div className="w-full h-full flex items-center">
-                {/* 1. CHECKBOX O GRIP */}
                 {isSelectionMode ? (
                     <div
                         onClick={() => onToggleSelect(food._id)}
-                        className="pl-4 pr-2 cursor-pointer text-blue-600 active:scale-90 transition-transform"
+                        className="px-1 cursor-pointer text-blue-600 active:scale-90 transition-transform"
                     >
-                        {isSelected ? <FaCheckSquare size={22} /> : <FaRegSquare size={22} className="text-gray-300" />}
+                        {isSelected ? <FaCheckSquare size={20} /> : <FaRegSquare size={20} className="text-gray-300" />}
                     </div>
                 ) : (
-                    /* MANIJA DE ARRASTRE: Solo habilitada si no hay selección */
-                    <GripVertical className="w-6 h-6 mr-1 touch-none cursor-grab active:cursor-grabbing" {...attributes} {...listeners} />
+                    <GripVertical size={24} className="mx-1 touch-none cursor-grab active:cursor-grabbing" {...attributes} {...listeners} />
                 )}
-
-                {/* 2. CARD (Contenido visual) */}
                 <SortableFoodCard
                     food={food}
                     context={!!context}
                 />
+
             </div>
 
-            {/* 3. ACCIONES */}
             {context && !isSelectionMode && (
-                <div className="flex items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/30 min-w-[80px]">
+                <div className="flex items-center justify-center h-full border-l border-gray-100 bg-gray-50/30 min-w-[60px]">
                     <button
                         onClick={() => onEdit(food)}
                         className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-900 hover:text-white transition-all shadow-sm active:scale-90"
                     >
-                        <FaEdit size={16} />
+                        <FaEdit size={20} />
                     </button>
                 </div>
             )}
@@ -92,7 +86,7 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
 }
 
 export default function RenderSortCards({ foods: initialFoods, count, context }: any) {
-    const { foods, setFoods, removeFoodLocal } = useFoodStore();
+    const { foods, setFoods, removeFoodLocal, reorderFoods } = useFoodStore();
 
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -132,11 +126,9 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
         const confirmDelete = confirm(`¿Estás seguro de eliminar ${selectedIds.length} ítems?`);
         if (!confirmDelete) return;
 
-        // Eliminación local optimista
         selectedIds.forEach(id => removeFoodLocal(id));
 
         try {
-            // Aquí deberías tener un endpoint en tu backend que acepte un array de IDs
             await fetch(`${URI}foods/delete-multiple`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -144,7 +136,6 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                 credentials: "include",
             });
 
-            // Limpiar estados
             setSelectedIds([]);
             setIsSelectionMode(false);
         } catch (error) {
@@ -152,12 +143,45 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
         }
     };
 
-    const handleDragEnd = (event: DragEndEvent) => {
+    useEffect(() => {
+        if (initialFoods && foods.length === 0) {
+            setFoods(initialFoods);
+        }
+    }, [initialFoods, setFoods, foods.length]);
+
+    const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
+
         if (over && active.id !== over.id) {
             const oldIndex = foods.findIndex((f) => f._id === active.id);
             const newIndex = foods.findIndex((f) => f._id === over.id);
-            setFoods(arrayMove(foods, oldIndex, newIndex));
+
+            const updatedFoods = arrayMove(foods, oldIndex, newIndex);
+            setFoods(updatedFoods);
+
+            const orderPayload = updatedFoods.map((f, index) => ({
+                _id: f._id,
+                order: index
+            }));
+
+            try {
+                const response = await fetch(`${URI}foods/update-order`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ order: orderPayload }),
+                    credentials: "include",
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error en servidor: ${response.status}`);
+                }
+
+                console.log("Orden guardado correctamente");
+            } catch (error) {
+                console.error("Error crítico en la petición:", error);
+            }
         }
     };
 
@@ -168,13 +192,13 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
     return (
         <div className="w-full flex flex-col h-full relative">
             {context && (
-                <div className="flex items-center justify-between p-2 sticky top-0 bg-white/80 backdrop-blur-md z-20 mb-2 rounded-xl border border-gray-100 shadow-sm">
+                <div className="flex items-center justify-end p-2 sticky top-0 backdrop-blur-md z-20 mb-2 rounded-xl">
                     {!isSelectionMode ? (
                         <button
                             onClick={() => setIsSelectionMode(true)}
-                            className="text-xs font-bold flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all"
+                            className="text-xs font- flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
                         >
-                            <FaCheckSquare className="text-gray-500" /> Seleccionar platos
+                            <FaCheckSquare className="text-gray-500 text-base" /> Seleccionar
                         </button>
                     ) : (
                         <div className="flex items-center justify-between w-full">
@@ -183,7 +207,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                                     onClick={() => { setIsSelectionMode(false); setSelectedIds([]); }}
                                     className="p-2 text-gray-500 hover:bg-gray-100 rounded-full"
                                 >
-                                    <FaTimes size={18} />
+                                    <FaTimes size={16} />
                                 </button>
                                 <span className="text-sm font-black text-blue-600">
                                     {selectedIds.length} seleccionados
