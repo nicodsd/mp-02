@@ -3,8 +3,9 @@ import { FaSortAmountUpAlt, FaSortAmountDownAlt, FaDollarSign } from 'react-icon
 interface SortPriceButtonProps {
     onSortChange: (order: 'asc' | 'desc') => void;
     initialSortOrder?: 'asc' | 'desc';
+    color?: string;
 }
-const SortPriceButton = ({ onSortChange }: SortPriceButtonProps) => {
+const SortPriceButton = ({ onSortChange, color }: SortPriceButtonProps) => {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const toggleSortOrder = () => {
         const newOrder = sortOrder === 'asc' ? 'desc' : 'asc';

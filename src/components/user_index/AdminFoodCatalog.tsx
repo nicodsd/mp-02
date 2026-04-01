@@ -1,8 +1,8 @@
 import React, { useState, useTransition } from "react";
 import Categories from "@/src/components/Categories";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
-import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
+import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
 import { Martini, Utensils } from "lucide-react";
 
 export default function AdminFoodCatalog({ foods, initialSubCategories, user }: any) {
@@ -29,7 +29,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} />
+                        <RenderCardsOptions foods={foods} color={user?.card_color} />
                     </div>
                 }
 
@@ -41,6 +41,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                     {foods.length > 0 && isPremium && (
                         <div className="flex justify-between items-end mb-1">
                             <Categories
+                                color={user?.button_color}
                                 foods={foods}
                                 categoriesFoods={initialSubCategories}
                                 selectCategory={(sub: string) => {
@@ -48,12 +49,12 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                                     setDisplayFoods(res);
                                 }}
                             />
-                            <SortPriceButton onSortChange={handleSort} />
+                            <SortPriceButton onSortChange={handleSort} color={user?.button_color} />
                         </div>
                     )}
 
                     {displayFoods.length > 0 ? (
-                        <CardsFoodsByCategories arrayFoods={displayFoods} />
+                        <SortableContext arrayFoods={displayFoods} />
                     ) : (
                         <p className="text-center text-gray-400 py-10">No hay platos que coincidan.</p>
                     )}
@@ -64,7 +65,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} />
+                        <RenderCardsOptions foods={foods} color={user?.card_color} />
                     </div>
                 }
             </div>

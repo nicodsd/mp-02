@@ -37,7 +37,7 @@ const NotFound = () => {
 
       <button
         onClick={() => router.push("/")}
-        className="px-8 py-3 bg-primary hover:bg-red-700 text-white font-bold rounded-2xl text-lg transition-all active:scale-95 transform"
+        className="px-8 py-3 bg-primary cursor-pointer hover:bg-red-700 text-white font-bold rounded-2xl text-lg transition-all active:scale-95 transform"
       >
         Volver al Menú Principal
       </button>

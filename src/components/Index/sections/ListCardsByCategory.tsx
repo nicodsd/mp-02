@@ -1,4 +1,4 @@
-import FoodsCardsExample from "@/src/components/foods_cards/FoodsCardsExample";
+import FoodsCardsExample from "@/src/components/Index/foods_cards/FoodsCardsExample";
 import FoodsData from "@/src/data/foods-1.json"
 import { useMemo } from "react";
 

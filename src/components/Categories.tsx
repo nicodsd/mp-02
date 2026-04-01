@@ -10,8 +10,10 @@ export function Categories({
   foods,
   categoriesFoods,
   selectCategory,
+  color,
 }: {
   foods: any[];
+  color?: string;
   categoriesFoods: Category[];
   selectCategory: (name: string) => void;
 }) {

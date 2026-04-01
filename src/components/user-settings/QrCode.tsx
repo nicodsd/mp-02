@@ -1,15 +1,13 @@
 "use client";
 import { useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import { URL_PROD } from "@/src/lib/const";
+import { URL } from "@/src/lib/const";
 import { Download, Check } from "lucide-react";
 
 interface QrButtonProps {
   name: string;
   logoUrl?: string;
 }
-
-const URI = process.env.NEXT_PUBLIC_API_URL;
 
 const TEMPLATES = [
   { id: 1, name: "Clásico", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
@@ -23,7 +21,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${URI}menu/${encodeURIComponent(name.replace(" ", "-")).toLowerCase()}`;
+  const url = `${URL}menu/${encodeURIComponent(name.replace(" ", "-")).toLowerCase()}`;
 
   const handleCopyUrl = async () => {
     try {
