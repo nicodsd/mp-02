@@ -6,11 +6,13 @@ interface FoodStore {
     updateFood: (updatedFood: any) => void;
     removeFoodLocal: (foodId: string) => void; // Para ocultarlo de la lista
     updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number) => void;
+    reorderFoods: (newOrder: any[]) => void;
 }
 
 export const useFoodStore = create<FoodStore>((set) => ({
     foods: [],
     setFoods: (foods) => set({ foods }),
+    reorderFoods: (newOrder: any[]) => set({ foods: newOrder }),
     updateFood: (updatedFood) =>
         set((state) => ({
             foods: state.foods.map((f) => (f._id === updatedFood._id ? updatedFood : f)),
