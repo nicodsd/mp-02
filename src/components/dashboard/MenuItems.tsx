@@ -17,26 +17,26 @@ export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
   }
   const activePromos = useMemo(() => dataFoods.filter((f) => f.is_promo), [dataFoods]);
   return (
-    <div className="flex flex-col gap-3 relative">
+    <div className="flex flex-col gap-2 relative">
       <header className="p-3 flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Platos</h1>
         <p className="text-gray-500 text-sm">Gestiona tus platos.</p>
       </header>
-      <div className="grid grid-cols-2 gap-2 px-2">
 
-        <div className="flex flex-col items-start p-4 rounded-xl bg-orange-100 border justify-between border-orange-300">
-          <span className="text-lg text-orange-400 mb-1 font-semibold">Platos</span>
-          <span className="text-[3rem] font-bold text-orange-700">{arrayFoods.length}</span>
-          <span className="text-xs font-medium text-gray-600">Platos Activos</span>
+      <div className="grid grid-cols-2 gap-1 px-2">
+        <div className="flex flex-col items-start p-3 rounded-xl bg-orange-400 justify-between">
+          <span className="text-lg text-white mb-1 font-semibold">Platos</span>
+          <span className="text-[4rem] font-bold text-white">{arrayFoods.length}</span>
+          <span className="text-xs font-medium text-white/80">Platos Activos</span>
         </div>
-        <div className="flex flex-col items-start p-4 rounded-xl bg-[#E0F7FA] border justify-between border-teal-300/70">
-          <span className="text-lg text-[#00796B] mb-1 font-semibold leading-tight">Promociones</span>
-          <span className="text-[3rem] font-bold text-[#00796B]">{activePromos.length}</span>
-          <span className="text-xs font-medium text-gray-600">Promociones</span>
+        <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
+          <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
+          <span className="text-[4rem] font-bold text-white">{activePromos.length}</span>
+          <span className="text-xs font-medium text-white/80">Promociones</span>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 w-full pt-6">
+      <div className="flex flex-col gap-2 w-full pt-3">
         <div className="flex items-center gap-2 w-full">
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />

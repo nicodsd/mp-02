@@ -26,7 +26,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 import { GripVertical } from "lucide-react";
 
-function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect }: any) {
+function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect, color }: any) {
     const {
         attributes,
         listeners,
@@ -43,12 +43,13 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
         transition,
         zIndex: isDragging ? 50 : 1,
     };
+    console.log(color)
 
     return (
         <div
             ref={setNodeRef}
             style={style}
-            className={`flex justify-between items-center rounded-xl transition-all border bg-white
+            className={`flex justify-between items-center rounded-xl transition-all border bg-background}
                 ${context ? "mb-1" : ""} 
                 ${isSelected ? "border-blue-500 bg-blue-50/50" : "border-gray-200"} 
                 ${isDragging ? "shadow-xl opacity-80 rotate-1 scale-[1.02] z-50" : ""}`}
@@ -62,11 +63,12 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
                         {isSelected ? <FaCheckSquare size={20} /> : <FaRegSquare size={20} className="text-gray-300" />}
                     </div>
                 ) : (
-                    <GripVertical size={24} className="mx-1 touch-none cursor-grab active:cursor-grabbing" {...attributes} {...listeners} />
+                    <GripVertical size={24} className={`mx-1 touch-none cursor-grab active:cursor-grabbing ${color?.name === "Night" ? "text-white" : "text-gray-300"}`} {...attributes} {...listeners} />
                 )}
                 <SortableFoodCard
                     food={food}
                     context={!!context}
+                    color={color}
                 />
 
             </div>
@@ -192,13 +194,13 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
     return (
         <div className="w-full flex flex-col h-full relative">
             {context && (
-                <div className="flex items-center justify-end p-2 sticky top-0 backdrop-blur-md z-20 mb-2 rounded-xl">
+                <div className="flex items-center justify-start py-2 sticky top-0 backdrop-blur-md z-20 mb-2 rounded-xl">
                     {!isSelectionMode ? (
                         <button
                             onClick={() => setIsSelectionMode(true)}
-                            className="text-xs font- flex items-center gap-2 px-4 py-2 rounded-lg transition-all"
+                            className="text-xs flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
                         >
-                            <FaCheckSquare className="text-gray-500 text-base" /> Seleccionar
+                            <FaRegSquare className="text-gray-500 text-base" /> Seleccionar Platos
                         </button>
                     ) : (
                         <div className="flex items-center justify-between w-full">

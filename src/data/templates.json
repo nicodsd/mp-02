@@ -5,28 +5,87 @@
         "primaryColor": "bg-gray-100",
         "accentColors": ["bg-gray-300", "bg-white", "bg-gray-200"]
     },
-    {
+        {
+        "template_id": "night",
+        "name": "Noche",
+        "primaryColor": "bg-[#0F0F0F]",
+        "accentColors": ["bg-[#868686]", "bg-white", "bg-[#262626]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#0F0F0F]"
+    },
+        {
         "template_id": "forest",
         "name": "Bosque",
         "primaryColor": "bg-[#3B4E3A]",
-        "accentColors": ["bg-[#5D7B5E]", "bg-[#EAE4CC]", "bg-[#5D7B5E]"]
+        "accentColors": ["bg-[#5D7B5E]", "bg-[#EAE4CC]", "bg-[#5D7B5E]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#3B4E3A]"
     },
     {
-        "template_id": "sakura",
-        "name": "Sakura",
-        "primaryColor": "bg-[#FFE6E7]",
-        "accentColors": ["bg-[#FFA2A3]", "bg-[#FFFAF3]", "bg-[#FFFAF3]"]
+        "template_id": "ocean",
+        "name": "Oceano",
+        "primaryColor": "bg-[#004D40]",
+        "accentColors": ["bg-[#00796B]", "bg-[#E0F2F1]", "bg-[#004D40]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#004D40]"
     },
+
+    {
+        "template_id": "sunset",
+        "name": "Sunset",
+        "primaryColor": "bg-[#FF6B35]",
+        "accentColors": ["bg-[#FF8E53]", "bg-[#FFE1A8]", "bg-[#FF6B35]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#FF6B35]"
+    },
+        {
+        "template_id": "gold",
+        "name": "Gold",
+        "primaryColor": "bg-[#FFD700]",
+        "accentColors": ["bg-[#FF8C00]", "bg-[#FFD700]", "bg-[#FF8C00]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#FF8C00]"
+    },
+    {
+        "template_id": "lemon",
+        "name": "Lemon",
+        "primaryColor": "bg-[#FFF9C4]",
+        "accentColors": ["bg-[#FFF176]", "bg-[#FFC107]", "bg-[#FFF9C4]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#FFF9C4]"
+    },
+    {
+        "template_id": "cherry",
+        "name": "Cherry",
+        "primaryColor": "bg-[#FF6B6B]",
+        "accentColors": ["bg-[#FF8E53]", "bg-[#FFE1A8]", "bg-[#FF6B6B]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#FF6B6B]"
+    },
+    {
+        "template_id": "mint",
+        "name": "Mint",
+        "primaryColor": "bg-[#E8F5E9]",
+        "accentColors": ["bg-[#A5D6A7]", "bg-[#81C784]", "bg-[#E8F5E9]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#E8F5E9]"
+    },
+
     {
         "template_id": "lavender",
         "name": "Lavanda",
         "primaryColor": "bg-[#BEADFB]",
-        "accentColors": ["bg-[#D0C0FF]", "bg-[#FEF9C1]", "bg-[#D0C0FF]"]
+        "accentColors": ["bg-[#D0C0FF]", "bg-[#FEF9C1]", "bg-[#D0C0FF]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#BEADFB]"
     },
+
     {
-        "template_id": "night",
-        "name": "Noche",
-        "primaryColor": "bg-[#1B1B1B]",
-        "accentColors": ["bg-[#868686]", "bg-white", "bg-[#262626]"]
+        "template_id": "sakura",
+        "name": "Sakura",
+        "primaryColor": "bg-[#FFE6E7]",
+        "accentColors": ["bg-[#FFA2A3]", "bg-[#FFFAF3]", "bg-[#FFFAF3]"],
+        "textColor": "text-white",
+        "textColor2": "text-[#FFE6E7]"
     }
 ]

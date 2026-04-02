@@ -160,8 +160,8 @@ const UserSettings = ({ user }: { user: any }) => {
         onSubmit={userUpdate}
         className="flex w-full mt-4 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
-        <div className="w-full px-6 flex flex-col">
-          <div className="flex justify-center gap-8 mb-4 pb-6">
+        <div className="w-full px-3 flex flex-col">
+          <div className="flex justify-center gap-4 mb-4 pb-6">
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
               <div className="w-30 h-30 relative rounded-full overflow-hidden">
@@ -532,9 +532,14 @@ const UserSettings = ({ user }: { user: any }) => {
           </div>
         )}
       </form>
-      <div className="w-full mt-7 px-7">
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Tu código QR</h2>
-        <QrCode name={name} logoUrl={previewPhoto} />
+      <div className="w-full mt-7 px-3 flex flex-col gap-1">
+        <h2 className="text-xl font-bold text-gray-800">Tu código QR</h2>
+        <span className="text-gray-500 text-sm">
+          Escanea el código QR para acceder a tu perfil
+        </span>
+        <div className="w-full flex mt-5 justify-center">
+          <QrCode name={name} logoUrl={previewPhoto} />
+        </div>
       </div>
     </>
   );

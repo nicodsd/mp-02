@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-export function SortableFoodCard({ food, context }: { food: any, context: boolean }) {
+export function SortableFoodCard({ food, context, color }: { food: any, context: boolean, color?: any }) {
 
     function formatearPrecio(precio: number | string) {
         const value = typeof precio === "string" ? Number(precio) : precio;
@@ -14,10 +14,10 @@ export function SortableFoodCard({ food, context }: { food: any, context: boolea
 
     return (
         <div
-            className={`flex w-full overflow-hidden bg-background
+            className={`flex w-full overflow-hidden ${color?.name === "Night" ? "" : `${color?.accentColors[0]}`}
       ${context
                     ? "border-r border-gray-300 md:pr-6 px-2 py-2 h-full items-center"
-                    : "border h-27 border-gray-300/60 rounded-lg p-2 items-center"
+                    : `border h-27 border-gray-300/60 rounded-lg p-2 items-center}`
                 }`}
         >
             <Image
