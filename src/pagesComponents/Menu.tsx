@@ -5,11 +5,9 @@ import subCategoriesData from "@/src/data/sub_categories.json";
 import Categories from "@/src/components/Categories";
 import FoodsOptions from "@/src/components/Index/filters/FoodsOptions";
 import SearchModal from "@/src/components/modals/SearchModal";
-import PromoDay from "@/src/components/PromoDay";
 import Search from "@/src/components/Index/filters/Search";
 import SortPriceButton from "../components/Index/filters/SortPrice";
 import RenderCards from "../components/RenderCardsExample";
-import promoday from "@/src/data/promoday"; //test
 type Food = {
   _id: string | number;
   photo: string;
@@ -122,9 +120,9 @@ export default function Menu({ data }: { data: any }) {
 
   return (
     <main className="w-full relative p-3 md:p-0 md:px-10 md:py-6 h-full">
-      <SearchModal arrayFoods={arrayFoods} setSearch={setSearch} setShowModal={setShowModal} showModal={showModal} />
+      <SearchModal template={data.template} arrayFoods={arrayFoods} setSearch={setSearch} setShowModal={setShowModal} showModal={showModal} />
       <section
-        className={`flex min-h-[calc(90vh-100px)] flex-col ${arrayFoods.length >= 2 && promoday ? "gap-5" : "gap-4"} md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10`}
+        className={`flex min-h-[calc(90vh-100px)] flex-col ${arrayFoods.length >= 2 ? "gap-5" : "gap-4"} md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw] -translate-y-10`}
       >
         <div className="bg-background rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20">
           <Search arrayFoods={arrayFoods} setSearch={setSearch} setShowModal={setShowModal} />

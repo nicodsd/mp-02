@@ -185,7 +185,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           </p>
           <button
             onClick={handleCopyUrl}
-            className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${copied
+            className={`px-3 py-1.5 min-w-16 rounded-md text-[10px] font-bold transition-colors ${copied
               ? "bg-green-500 text-white"
               : "bg-blue-600 text-white hover:bg-blue-700"
               }`}

@@ -15,6 +15,7 @@ import logo from "@/public/images/logo/logo.png"
 import { logotipo, logo_w } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
 import UserPlan from "@/src/components/user-plan/UserPlan";
+import BotonAccion from "../components/buttons/index/BotonAction";
 
 interface NavBarProps {
   user?: any;
@@ -41,7 +42,7 @@ export default function NavBar({
   const canShowCover = user && user.plan !== "free" && user.cover;
   const backgroundImage = canShowCover
     ? user.cover
-    : "/images/placeholders/back-qmenu.png";
+    : "/images/placeholders/back-qmenu.webp";
   const optimizedBackground = getBannerImage(backgroundImage);
   const inlineStyle =
     isMounted && !isSpecialState
@@ -85,7 +86,7 @@ export default function NavBar({
   };
 
   return (
-    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-linear-to-b from-primary/80 to-primary/40"}`}>
+    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-linear-to-b from-primary to-primary-700"}`}>
       {!isSpecialState && (
         <div className={`flex w-full z-50 ${!user ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-primary/30 to-primary/10 h-14 p-2 text-white" : "absolute top-2 text-gray-300 italic"} items-center justify-between`}>
           {user && <Link
@@ -119,20 +120,15 @@ export default function NavBar({
           </Link>}
           {!user && (
             <div className="flex w-full justify-around items-center md:justify-center md:gap-10">
-              <span className="text-md md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
-              <Link
-                href="/registro-de-usuario"
-                className="bg-white shadow-xl shadow-white/60 hover:bg-gray-100 transition-all duration-100 hover:scale-95 hover:shadow-lg hover:shadow-white/60 ease-in-out text-gray-800 px-2.5 py-1 rounded-md font-black"
-              >
-                ¡Prueba ahora!
-              </Link>
+              <span className="text-lg md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
+              <BotonAccion color="white" textColor="primary" />
             </div>
           )}
         </div>
       )}
 
       <div
-        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-110 bg-linear-to-t from-black/50 via-transparent to-transparent"} flex items-center bg-center bg-cover bg-no-repeat`}
+        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-100 bg-linear-to-t from-black/50 via-transparent to-transparent"} flex items-center bg-center bg-cover bg-no-repeat`}
         style={inlineStyle}
       >
         {!isSpecialState && (

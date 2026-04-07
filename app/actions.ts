@@ -4,13 +4,13 @@ import { revalidateTag, revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 
 export async function refreshPage() {
-// Marcamos los tags como "stale" usando el perfil recomendado
+    // Marcamos los tags como "stale" usando el perfil recomendado
     revalidateTag('foods', 'max');
     revalidateTag('categories', 'max');
-    
+
     // Forzamos la revalidación del path del dashboard para que el 
     // Server Component vuelva a ejecutarse y mande la data nueva al cliente
-   revalidatePath('/dashboard', 'page'); 
+    revalidatePath('/dashboard', 'page');
     revalidatePath('/', 'layout');
 }
 
@@ -70,4 +70,31 @@ export async function logout() {
     cookieStore.delete("token");
     cookieStore.delete("user");
     redirect("/");
+}
+
+export async function activateRestaurantSubscription(data: { status: string, qMenuId?: string, email?: string, transactionId?: number | string }) {
+    // Al no tener Prisma u ORM aquí (porque separas Front y Back), mandamos una petición a tu backend de datos.
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';
+    console.log("🚀 Enviando activación de suscripción al Backend:", data);
+
+    try {
+        const response = await fetch(`${apiUrl}auth/subscription/webhook`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // IMPORTANTE: Si tu backend necesita validación de que esta petición viene de tu front de confianza, manda un header aquí, por ejemplo:
+                // 'x-webhook-secret': process.env.INTERNAL_WEBHOOK_SECRET || '',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            console.error(`❌ Error actualizando la DB en el Backend: ${response.status}`);
+        } else {
+            console.log('✅ Base de datos actualizada con éxito en el Backend.');
+        }
+
+    } catch (error) {
+        console.error("❌ Error de comunicación con la API del Backend:", error);
+    }
 }

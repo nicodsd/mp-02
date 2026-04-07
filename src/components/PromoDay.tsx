@@ -7,41 +7,38 @@ export default function PromoDayCard({ foods }: { foods: any }) {
     currency: "ARS",
     minimumFractionDigits: 0,
   });
-  return (
-    <div key={foods._id} className="animate__animated animate__bounceIn shadow-lg p-2 gap-2 w-full rounded-xl h-48 relative overflow-hidden flex hover:-translate-y-1 transition-all duration-300 ease-in-out"
-      style={{
-        backgroundImage: `url("${foods.photo}")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="absolute inset-0 bg-linear-to-r from-red-800/50 to-red-800/15 to-100% backdrop-blur-lg z-10 rounded-xl"></div>
 
-      <div className="relative z-20 w-[45%] h-full shrink-0">
+  return (
+    <div className="relative flex h-44 w-full gap-2 overflow-hidden rounded-xl p-2 shadow-lg md:h-52 md:p-3 md:gap-4">
+      <Image src={foods.photo} alt={foods.name} width={200} height={200} className="absolute inset-0 z-10 rounded-xl object-cover w-full" />
+      <div className="absolute inset-0 z-10 rounded-xl bg-linear-to-r from-red-900/90 via-red-800/70 to-red-800/40 backdrop-blur-md"></div>
+
+      <div className="relative z-20 h-full shrink-0">
         <Image
           loading="eager"
           src={foods.photo}
           alt={foods.name}
-          fill
-          className="object-cover rounded-lg shadow-xl border border-white/30"
+          width={200}
+          height={200}
+          className="h-full w-32 rounded-lg border border-white/20 object-cover shadow-xl md:w-44"
         />
       </div>
 
-      <div className="relative z-20 flex flex-col justify-between w-full h-full py-1 text-white">
+      <div className="relative z-20 flex flex-1 flex-col justify-between py-1 pb-2 text-white min-w-0 w-0">
         <div className="flex flex-col gap-0.5">
-          <h3 className="leading-none text-xl md:text-3xl font-black line-clamp-2 uppercase">
+          <h3 className="line-clamp-2 text-2xl font-black uppercase leading-tight md:text-2xl">
             {foods.name}
           </h3>
-          <p className="text-xs md:text-sm leading-tight text-gray-50 line-clamp-2">
+          <p className="line-clamp-2 text-sm opacity-90 leading-tight md:text-sm">
             {foods.description}
           </p>
         </div>
 
-        <div className="flex flex-col items-end border-t border-yellow-200/30 pt-1">
-          <span className="text-[13px] md:text-sm text-gray-300 line-through decoration-red-500">
+        <div className="mt-auto flex flex-col items-end border-t border-yellow-200/20 pt-1">
+          <span className="text-[10px] text-gray-300 line-through md:text-sm">
             Antes {priceFormatter.format(foods.price)}
           </span>
-          <span className="text-xl md:text-2xl font-black text-[#fff2cc] drop-shadow-md">
+          <span className="text-2xl font-extrabold text-yellow-100 drop-shadow-md leading-none md:text-2xl">
             ¡Hoy {priceFormatter.format(foods.promo_price)}!
           </span>
         </div>

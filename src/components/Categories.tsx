@@ -13,7 +13,7 @@ export function Categories({
   color,
 }: {
   foods: any[];
-  color?: string;
+  color?: any;
   categoriesFoods: Category[];
   selectCategory: (name: string) => void;
 }) {
@@ -37,7 +37,7 @@ export function Categories({
   return (
     <section className="w-[82%] h-fit text-[17px] font-medium">
       <div
-        className="flex gap-1 pl-2 overflow-x-auto text-gray-700"
+        className={`flex gap-1 pl-2 overflow-x-auto ${color?.textColor}`}
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -53,8 +53,8 @@ export function Categories({
             }}
             className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
               ${activeCategory === "0"
-                ? "bg-gray-900 text-white border"
-                : "text-gray-800 border border-gray-300"
+                ? `${color?.accentColors[1]} ${color?.textColor2} border`
+                : `${color?.accentColors[2]} ${color?.textColor} border`
               }`}
           >
             Todo
@@ -71,8 +71,8 @@ export function Categories({
             }}
             className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
                 ${activeCategory === category.name
-                ? "bg-gray-900 text-white border"
-                : "text-gray-800 border border-gray-300"
+                ? `${color?.accentColors[1]} ${color?.textColor2} border`
+                : `${color?.accentColors[2]} ${color?.textColor} border`
               }`}
           >
             {category.name}

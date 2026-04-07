@@ -47,58 +47,59 @@ export default function TemplateSelector({ user }: { user: any }) {
     };
 
     return (
-        <div className="flex flex-col items-start justify-start gap-4 min-h-screen font-sans pb-10">
+        <div className="flex flex-col items-start justify-center gap-4 min-h-screen pb-10">
             <header className="p-3 flex flex-col gap-1">
                 <h1 className="text-2xl font-bold text-gray-800">Personaliza tu menú</h1>
-                <p className="text-gray-500 text-sm">Selecciona una plantilla o vuelve a la original.</p>
+                <p className="text-gray-500 text-sm">Selecciona una plantilla.</p>
             </header>
 
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="space-y-6 w-full flex flex-col items-center max-w-md p-4"
+                className="gap-6 flex flex-wrap justify-center w-full"
             >
                 {templates.map((template) => (
                     <label
                         key={template.template_id}
-                        className="flex items-center gap-6 cursor-pointer group w-full"
+                        className={`flex flex-col items-center space-y-2 cursor-pointer group w-fit bg-background-2 border transition-all duration-300 border-gray-200 px-2 py-3  
+                            ${selected === template.template_id
+                                ? 'ring-2 ring-gray-800 z-10 rounded-2xl'
+                                : 'hover:scale-[1.02] opacity-80'
+                            }`}
                     >
-                        {/* Selector Circular */}
-                        <div className="relative flex items-center justify-center">
-                            <input
-                                type="radio"
-                                name="template"
-                                value={template.template_id}
-                                checked={selected === template.template_id}
-                                onChange={() => handleSelect(template.template_id)}
-                                className="peer sr-only"
-                            />
-                            <div className="w-8 h-8 border-4 border-gray-300 rounded-full peer-checked:border-gray-800 transition-all"></div>
-                            <div className="absolute w-4 h-4 bg-gray-800 rounded-full scale-0 peer-checked:scale-100 transition-transform"></div>
-                        </div>
-
                         {/* Vista Previa de la Tarjeta */}
-                        <div className="flex items-center w-full gap-4 flex-1">
+                        <div className="flex items-center w-full gap-2 flex-1">
+                            {/* Selector Circular */}
+                            <div className="relative flex items-center justify-center">
+                                <input
+                                    type="radio"
+                                    name="template"
+                                    value={template.template_id}
+                                    checked={selected === template.template_id}
+                                    onChange={() => handleSelect(template.template_id)}
+                                    className="peer sr-only"
+                                />
+                                <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-gray-800 transition-all"></div>
+                                <div className="absolute w-3 h-3 bg-gray-800 rounded-full scale-0 peer-checked:scale-100 transition-transform"></div>
+                            </div>
                             <div
-                                className={`relative w-40 aspect-square rounded-2xl p-4 shadow-xl transition-all duration-300 ${selected === template.template_id
-                                    ? 'ring-3 ring-gray-800 scale-[1.05] z-10'
-                                    : 'hover:scale-[1.02] opacity-80'
-                                    } ${template.primaryColor}`}
+                                className={`relative w-20 h-fit rounded-lg p-2 shadow-md shadow-gray-800/20 transition-all duration-300 ${template.primaryColor}`}
                             >
                                 {/* Miniatura de Perfil */}
-                                <div className="bg-white/80 backdrop-blur-sm rounded-lg w-full h-2/3 mb-3 flex items-center justify-center shadow-sm">
-                                    <div className="space-y-2">
-                                        <div className="w-10 h-10 bg-gray-700 rounded-full mx-auto"></div>
-                                        <div className="w-14 h-1 bg-gray-400 rounded mx-auto"></div>
+                                <div className="bg-white/80 backdrop-blur-sm rounded w-full h-2/3 mb-3 flex items-center justify-center shadow-sm">
+                                    <div className="space-y-1 p-1">
+                                        <div className="w-6 h-6 bg-gray-700 rounded-full mx-auto"></div>
+                                        <div className="w-14 h-1 bg-gray-700 rounded mx-auto"></div>
                                     </div>
                                 </div>
+
                                 {/* Detalles de Color Inferiores */}
                                 <div className="space-y-2">
                                     <div className="flex gap-1">
                                         <div className={`h-2 w-6 ${template.accentColors[0]} rounded-full`}></div>
                                         <div className={`h-2 w-6 ${template.accentColors[1]} rounded-full`}></div>
                                     </div>
-                                    <div className={`h-4 w-full ${template.accentColors[2]} rounded-md`}></div>
+                                    <div className={`h-3 w-full ${template.accentColors[2]} rounded-md`}></div>
                                 </div>
                             </div>
 
@@ -110,6 +111,7 @@ export default function TemplateSelector({ user }: { user: any }) {
                                 ))}
                             </div>
                         </div>
+                        <span className="text-gray-700 text-sm">{template.name}</span>
                     </label>
                 ))}
 
@@ -123,6 +125,6 @@ export default function TemplateSelector({ user }: { user: any }) {
                     {loading ? 'Sincronizando...' : 'Guardar Preferencias'}
                 </button>
             </motion.div>
-        </div>
+        </div >
     );
 }

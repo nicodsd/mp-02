@@ -8,7 +8,7 @@
         "promo_price": 8000,
         "is_promo": true,
         "sub_category": "Pizzas",
-        "photo": "/images/foods/pizzas/R.jpeg",
+        "photo": "/images/foods/pizzas/R.webp",
         "allergens" : "gluten, dairy"
     },
     {
@@ -32,7 +32,7 @@
         "promo_price": 10000,
         "is_promo": true,
         "sub_category": "Pizzas",
-        "photo": "/images/foods/pizzas/pizza.jpeg",
+        "photo": "/images/foods/pizzas/pizza.webp",
         "allergens" : "gluten, dairy"
     },
     {
@@ -104,7 +104,7 @@
         "promo_price": 0,
         "is_promo": false,
         "sub_category": "Bebidas",
-        "photo": "/images/foods/bebidas/batidos/jugo-de-limon-con-menta.jpg",
+        "photo": "/images/foods/bebidas/infusiones/jugo-de-limon-con-menta.webp",
         "allergens" : "dairy"
     },
     {

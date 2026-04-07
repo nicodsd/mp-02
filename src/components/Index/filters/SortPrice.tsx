@@ -3,7 +3,7 @@ import { FaSortAmountUpAlt, FaSortAmountDownAlt, FaDollarSign } from 'react-icon
 interface SortPriceButtonProps {
     onSortChange: (order: 'asc' | 'desc') => void;
     initialSortOrder?: 'asc' | 'desc';
-    color?: string;
+    color?: any;
 }
 const SortPriceButton = ({ onSortChange, color }: SortPriceButtonProps) => {
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -15,10 +15,10 @@ const SortPriceButton = ({ onSortChange, color }: SortPriceButtonProps) => {
     return (
         <button
             onClick={toggleSortOrder}
-            className="w-[15%] h-8 border cursor-pointer border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors duration-200 focus:outline-none flex items-center justify-center"
+            className={`w-[15%] h-8 border ${color?.accentColors[3]} cursor-pointer border-gray-300 rounded-md text-sm font-medium hover:bg-gray-50 transition-colors duration-200 focus:outline-none flex items-center justify-center`}
         >
-            <FaDollarSign className="h-4 text-red-700 w-4" />
-            {sortOrder === 'desc' ? <FaSortAmountUpAlt className="h-4 text-gray-600 w-4" /> : <FaSortAmountDownAlt className="h-4 text-gray-600 w-4" />}
+            <FaDollarSign className={`h-4 ${color?.textColor} w-4`} />
+            {sortOrder === 'desc' ? <FaSortAmountUpAlt className={`h-4 ${color?.textColor} w-4`} /> : <FaSortAmountDownAlt className={`h-4 ${color?.textColor} w-4`} />}
         </button>
     );
 };

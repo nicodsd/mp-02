@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 import { URI } from "@/src/lib/const";
 export async function userGet(name: string) {
-    if (name === "QMENU") { return redirect("/"); }
+    if (name === "QMENU") { return redirect("/ejemplo"); }
     try {
         const response = await fetch(`${URI}menu/${name}`);
         const dataDB = await response.json();

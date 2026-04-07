@@ -5,7 +5,7 @@ import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
 import { Martini, Utensils } from "lucide-react";
 
-export default function AdminFoodCatalog({ foods, initialSubCategories, user }: any) {
+export default function AdminFoodCatalog({ foods, initialSubCategories, user, template }: any) {
     const [displayFoods, setDisplayFoods] = useState(foods);
     const [isPending, startTransition] = useTransition();
 
@@ -25,23 +25,23 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
             <div className="flex flex-col gap-10">
                 {foods.filter((f: any) => f.sub_category === "bebidas").length > 0 &&
                     <div className="flex flex-col gap-2">
-                        <div className="flex ml-2 items-center gap-1 text-gray-600">
+                        <div className={`flex ml-2 items-center gap-1 ${template?.textColor}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} color={user?.card_color} />
+                        <RenderCardsOptions foods={foods} color={template} />
                     </div>
                 }
 
                 <div className="flex flex-col gap-1">
-                    <div className="flex ml-2 items-center gap-2 text-gray-600 mb-1">
+                    <div className={`flex ml-2 items-center gap-2 ${template?.textColor} mb-1`}>
                         <h2 className="text-xl font-normal">Platos</h2>
                         <Utensils className="w-5 h-5" />
                     </div>
                     {foods.length > 0 && isPremium && (
                         <div className="flex justify-between items-end mb-1">
                             <Categories
-                                color={user?.button_color}
+                                color={template}
                                 foods={foods}
                                 categoriesFoods={initialSubCategories}
                                 selectCategory={(sub: string) => {
@@ -49,7 +49,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                                     setDisplayFoods(res);
                                 }}
                             />
-                            <SortPriceButton onSortChange={handleSort} color={user?.button_color} />
+                            <SortPriceButton onSortChange={handleSort} color={template} />
                         </div>
                     )}
 
@@ -61,11 +61,11 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user }: 
                 </div>
                 {foods.filter((f: any) => f.sub_category === "postres").length > 0 &&
                     <div className="flex flex-col gap-2">
-                        <div className="flex ml-2 items-center gap-1 text-gray-600">
+                        <div className={`flex ml-2 items-center gap-1 ${template?.textColor}`}>
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} color={user?.card_color} />
+                        <RenderCardsOptions foods={foods} color={template} />
                     </div>
                 }
             </div>
