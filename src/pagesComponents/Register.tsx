@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Formik, Form, Field, ErrorMessage, isInteger } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { setAuthCookie, setUserCookie } from "@/app/actions";
 import * as Yup from "yup";
 import logo from "@/public/images/logo/logo-rojo.png";
@@ -25,7 +25,6 @@ type FormValues = {
   instagram: string;
   facebook: string;
   tiktok: string;
-  themeColor: string;
 };
 
 const validationSchemas = [
@@ -48,7 +47,6 @@ const validationSchemas = [
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
-    themeColor: Yup.string().optional(),
   }),
 ];
 
@@ -89,7 +87,6 @@ export default function Register() {
     body.append("instagram", values.instagram || "");
     body.append("facebook", values.facebook || "");
     body.append("tiktok", values.tiktok || "");
-    body.append("themeColor", values.themeColor || "default");
     if (values.logo instanceof File) {
       body.append("photo", values.logo);
     }
@@ -112,7 +109,7 @@ export default function Register() {
         setApiError(data.error || "Ocurrió un error al registrarse.");
         return;
       }
-      router.push("/");
+      router.push("/ejemplo");
     } catch (err) {
       setApiError("Error de conexión. Intente nuevamente.");
     }
@@ -199,7 +196,6 @@ export default function Register() {
             instagram: "",
             facebook: "",
             tiktok: "",
-            themeColor: "default",
           }}
           validationSchema={validationSchemas[step]}
           onSubmit={async (values, { setSubmitting }) => {
@@ -578,41 +574,6 @@ export default function Register() {
                       </div>
                     </div>
 
-                    <div>
-                      <label className="block text-md font-medium text-gray-700 mt-4 mb-2">
-                        Plantilla de color
-                      </label>
-                      <div className="flex flex-wrap items-center gap-4">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field type="radio" name="themeColor" value="default" className="w-4 h-4 accent-black" />
-                          <div className="flex items-center gap-1">
-                            <span className="w-4 h-4 rounded-full bg-red-600"></span>
-                            <span className="text-sm">Rojo</span>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field type="radio" name="themeColor" value="blue" className="w-4 h-4 accent-black" />
-                          <div className="flex items-center gap-1">
-                            <span className="w-4 h-4 rounded-full bg-blue-600"></span>
-                            <span className="text-sm">Azul</span>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field type="radio" name="themeColor" value="green" className="w-4 h-4 accent-black" />
-                          <div className="flex items-center gap-1">
-                            <span className="w-4 h-4 rounded-full bg-green-600"></span>
-                            <span className="text-sm">Verde</span>
-                          </div>
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field type="radio" name="themeColor" value="dark" className="w-4 h-4 accent-black" />
-                          <div className="flex items-center gap-1">
-                            <span className="w-4 h-4 rounded-full bg-gray-900"></span>
-                            <span className="text-sm">Oscuro</span>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
                   </div>
                 </div>
               )}

@@ -61,7 +61,7 @@ export default function Footer() {
     </div> */}
 
       {/* Línea inferior */}
-      <div className=" text-center pt-10 pb-35 text-xs bg-primary text-white">
+      <div className=" text-center pt-10 pb-35 text-xs bg-background-2">
         <p className="text-sm mb-10">
           Creá tu menú con QMenu.{" "}
           <a

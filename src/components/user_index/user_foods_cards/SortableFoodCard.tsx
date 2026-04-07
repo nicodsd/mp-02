@@ -14,8 +14,11 @@ export function SortableFoodCard({ food, context, color }: { food: any, context:
 
     return (
         <div
-            className={`flex w-full overflow-hidden ${color?.name === "Night" ? "" : `${color?.accentColors[0]}`}
-      ${context
+            className={`flex w-full overflow-hidden 
+                ${color?.name === "Night" ? ""
+                    :
+                    `${color?.accentColors[0]}`}
+                ${context
                     ? "border-r border-gray-300 md:pr-6 px-2 py-2 h-full items-center"
                     : `border h-27 border-gray-300/60 rounded-lg p-2 items-center}`
                 }`}

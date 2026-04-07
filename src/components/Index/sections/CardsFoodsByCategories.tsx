@@ -1,7 +1,7 @@
 import RenderCardsExample from "@/src/components/RenderCardsExample";
 export default function CardsFoodsByCategories({ arrayFoods }: { arrayFoods: any }) {
     return (
-        <section className="flex h-auto min-h-85 max-h-145 flex-col p-1 py-2 bg-gray-200 rounded-xl">
+        <section className="flex h-auto min-h-85 max-h-145 flex-col p-1 py-2 bg-background-2  rounded-xl">
             {
                 arrayFoods.length === 1 ? (
                     <div className="w-full h-full flex flex-col overflow-y-auto">

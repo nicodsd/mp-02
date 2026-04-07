@@ -71,11 +71,13 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
         platos.map((food: any) => (
           <div
             key={food._id}
-            className={`flex justify-between items-center rounded-xl ${template?.primaryColor} transition-shadow ${context ? "border border-gray-200 overflow-hidden min-h-34 h-fit" : ""
+            className={`flex justify-between items-center rounded-xl transition-shadow
+              ${template?.primaryColor} 
+              ${context ? "border border-gray-200 overflow-hidden min-h-34 h-fit" : ""
               }`}
           >
             <div className="w-full h-full">
-              <FoodsCardsExample {...food} context={context} />
+              <FoodsCardsExample {...food} />
             </div>
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">

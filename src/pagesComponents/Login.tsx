@@ -22,6 +22,7 @@ const validationSchema = Yup.object({
 export default function LoginPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [alreadyLoggedIn, setAlreadyLoggedIn] = useState<boolean>(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -33,7 +34,6 @@ export default function LoginPage() {
       const formData = new FormData();
       formData.append("email", values.email);
       formData.append("password", values.password);
-
       try {
         const response = await fetch(`${URI}auth/signin`, {
           method: "POST",
@@ -45,8 +45,9 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
-          router.push("/");
+          router.push("/ejemplo");
         } else {
+          setAlreadyLoggedIn(data.alreadyLoggedIn);
           setServerError(data.message || "Error de credenciales");
         }
       } catch (error) {
@@ -54,6 +55,26 @@ export default function LoginPage() {
       }
     },
   });
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch(`${URI}auth/update/is_online/${formik.values.email}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ is_online: true }),
+      });
+      if (res.status === 200) {
+        setServerError(null);
+        router.refresh();
+      }
+    } catch (error) {
+      console.log(error);
+      setServerError("Error de conexión");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative">
@@ -89,7 +110,11 @@ export default function LoginPage() {
             <div className="px-5">
               {serverError && (
                 <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
-                  {serverError}
+                  {serverError} {
+                    alreadyLoggedIn && (
+                      <span onClick={() => { handleLogin() }} className="text-blue-600 font-bold hover:underline cursor-pointer">Iniciar Sesión</span>
+                    )
+                  }
                 </div>
               )}
 

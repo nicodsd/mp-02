@@ -17,7 +17,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Busca tu comid
         filterQuery?.(e.target.value);
         setSearch?.(e.target.value);
     };
-    console.log(template?.accentColors[0])
     return (
         <>
             <div className={`relative flex items-center w-full`}>
@@ -27,9 +26,9 @@ const SearchInput: React.FC<SearchInputProps> = ({ placeholder = 'Busca tu comid
                     placeholder={placeholder}
                     value={query}
                     onChange={handleSearch}
-                    className={`pl-10 pr-2 py-3 border ${template?.accentColors[0]} border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full`}
+                    className={`pl-10 pr-2 py-3 border ${template?.name === "default" ? template?.accentColors[0] : "border-gray-300"} rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full`}
                 />
-                <FaSearch className={`absolute left-3 ${template?.textColor}`} />
+                <FaSearch className={`absolute left-3 ${template?.name === "default" ? template?.textColor : "text-primary"}`} />
             </div>
         </>
     );

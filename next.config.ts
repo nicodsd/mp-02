@@ -15,6 +15,8 @@ const nextConfig: NextConfig = {
     '192.168.*.*',
     'qmenu.com.ar',
     '*.qmenu.com.ar',
+    'michel-digit-marijuana-islamic.trycloudflare.com',
+    '*.trycloudflare.com'
   ],
   crossOrigin: 'anonymous',
 

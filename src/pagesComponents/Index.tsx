@@ -24,6 +24,7 @@ export default function Inicio() {
   return (
     <main className="w-full relative p-3 md:p-0 md:py-6 h-full">
       <SearchModal
+        template="default"
         arrayFoods={filteredFoods}
         setSearch={handleSearch}
         setShowModal={setShowModal}
