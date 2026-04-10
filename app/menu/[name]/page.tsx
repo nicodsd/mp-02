@@ -4,6 +4,7 @@ import NavBar from "@/src/layouts/NavBar";
 import Menu from "@/src/pagesComponents/Menu";
 import PageNotFound from "@/app/not-found";
 import { userGet } from "@/app/api/menu/userGet";
+import Bell from "@/src/components/buttons/Bell";
 
 export default async function Page({
   params,
@@ -24,6 +25,7 @@ export default async function Page({
         photo={user?.data.photo}
         user={user?.data}
       />
+      <Bell />
       <Menu data={user?.data} />
       <Footer />
     </>

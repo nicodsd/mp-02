@@ -7,6 +7,7 @@ import { URI } from "@/src/lib/const";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
 import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
+import { useCartStore } from "@/src/lib/useCartStore";
 
 type RenderCardsProps = {
   foods: any[];
@@ -24,11 +25,13 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const platos = foods.filter(f => f.category !== "Bebidas" && f.category !== "Postres");
+  //const platos = foods.filter(f => f.category !== "Bebidas" && f.category !== "Postres");
 
   useEffect(() => {
     if (initialFoods) setFoods(initialFoods);
   }, [initialFoods, setFoods]);
+
+  useCartStore();
 
   const handleEditClick = (food: any) => {
     setSelectedFood(food);
@@ -68,7 +71,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
       {foods.length === 0 ? (
         <Loading count={count ?? 4} />
       ) : (
-        platos.map((food: any) => (
+        foods.map((food: any) => (
           <div
             key={food._id}
             className={`flex justify-between items-center rounded-xl transition-shadow

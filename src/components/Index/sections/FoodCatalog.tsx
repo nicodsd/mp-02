@@ -1,32 +1,12 @@
-import React, { useState, useTransition } from "react";
+import React, { useState } from "react";
 import Categories from "@/src/components/Categories";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import { Utensils, Martini, Dessert } from "lucide-react";
 
-export default function FoodCatalog({ allFoods, initialSubCategories, user }: any) {
+export default function FoodCatalog({ allFoods, initialSubCategories, user, template }: any) {
     const [displayFoods, setDisplayFoods] = useState(allFoods);
-    const [isPending, startTransition] = useTransition();
-    //const [selectedCategory, setSelectedCategory] = useState("");
-
-    /*   const handleCategoryClick = (category: string) => {
-          if (selectedCategory === category || category === "0") {
-              setSelectedCategory("0");
-              setDisplayFoods(allFoods);
-              setSubCategories(initialSubCategories);
-              return;
-          }
-  
-          setSelectedCategory(category);
-          const filtered = allFoods.filter((f: any) => f.category === category);
-          setDisplayFoods(filtered);
-  
-          const nextSubCats = initialSubCategories.filter((sub: any) =>
-              filtered.some((f: any) => f.sub_category === sub.name)
-          );
-          setSubCategories(nextSubCats);
-      }; */
 
     const handleSort = (order: "asc" | "desc") => {
         const sorted = [...displayFoods].sort((a, b) =>
@@ -44,7 +24,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user }: an
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={allFoods.filter((f: any) => f.category === "Bebidas")} />
+                        <RenderCardsOptions template={template} foods={allFoods.filter((f: any) => f.category === "Bebidas")} />
                     </div>
                 }
 
@@ -56,6 +36,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user }: an
 
                     <div className="flex justify-between items-end mb-1">
                         <Categories
+                            template={template}
                             foods={allFoods}
                             categoriesFoods={initialSubCategories}
                             selectCategory={(sub: string) => {
@@ -66,7 +47,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user }: an
                         <SortPriceButton onSortChange={handleSort} />
                     </div>
 
-                    <CardsFoodsByCategories arrayFoods={displayFoods} />
+                    <CardsFoodsByCategories template={template} arrayFoods={displayFoods} />
                 </div>
                 {allFoods.filter((f: any) => f.category === "Postres").length > 0 &&
                     <div className="flex flex-col gap-2">
@@ -74,7 +55,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user }: an
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Dessert className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={allFoods.filter((f: any) => f.category === "Postres")} />
+                        <RenderCardsOptions template={template} foods={allFoods.filter((f: any) => f.category === "Postres")} />
                     </div>
                 }
             </div>

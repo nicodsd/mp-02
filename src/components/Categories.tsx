@@ -11,11 +11,13 @@ export function Categories({
   categoriesFoods,
   selectCategory,
   color,
+  template,
 }: {
   foods: any[];
   color?: any;
   categoriesFoods: Category[];
   selectCategory: (name: string) => void;
+  template?: any;
 }) {
   const [activeCategory, setActiveCategory] = useState<string>("0");
 

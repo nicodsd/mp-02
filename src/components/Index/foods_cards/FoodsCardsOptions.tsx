@@ -6,12 +6,14 @@ export default function Cards({
   description,
   price,
   context,
+  template,
 }: {
   name: string;
   photo: string;
   description: string;
   price: number | string;
   context?: boolean;
+  template?: any;
 }) {
   function formatearPrecio(precio: number | string) {
     const value = typeof precio === "string" ? Number(precio) : precio;
