@@ -130,7 +130,7 @@ input[type="range"]::-webkit-slider-thumb {
     /* Cubrimos el alto y un ancho extendido para el recorrido */
     top: 0;
     height: 100%;
-    width: 200%;
+    width: 100%;
     /* El doble de ancho para que el barrido "entre" y "salga" */
     left: 150%;
     /* Posición inicial fuera a la izquierda (para barrer hacia la derecha) 

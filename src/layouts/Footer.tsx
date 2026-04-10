@@ -1,4 +1,5 @@
 import { FaInstagram, FaFacebookF, FaWhatsapp } from "react-icons/fa";
+import BotonAccion from "@/src/components/buttons/index/BotonAction";
 
 export default function Footer() {
   return (
@@ -61,19 +62,13 @@ export default function Footer() {
     </div> */}
 
       {/* Línea inferior */}
-      <div className=" text-center pt-10 pb-35 text-xs bg-background-2">
-        <p className="text-sm mb-10">
-          Creá tu menú con QMenu.{" "}
-          <a
-            className="font-bold px-3 py-2 ml-2 text-base bg-white shadow-black shadow-xs text-black rounded-md transition"
-            href="/registro-de-usuario"
-            target="_blank"
-          >
-            ¡Prueba ahora!
-          </a>
-        </p>
-        <br />
-        <p>
+      <div className="flex flex-col items-center justify-center text-center min-h-[200px] text-xs bg-background-2">
+        <div className="flex justify-center flex-col items-center gap-2">
+          <p className="text-sm mb-2">Creá tu menú con QMenu.</p>
+          <BotonAccion color="primary" textColor="white" />
+        </div>
+
+        <p className="mt-10">
           © {new Date().getFullYear()} QMenu. Todos los derechos reservados.
         </p>
         <p>

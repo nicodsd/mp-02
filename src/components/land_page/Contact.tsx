@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
+import emailjs from 'emailjs-com';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -10,14 +11,18 @@ export default function Contact() {
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
 
-    // Simulate API call
     setTimeout(() => {
       if (formData.name && formData.email) {
+        emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          formData,
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        );
         setStatus('success');
         setFormData({ name: '', email: '', restaurant: '', message: '' });
       } else {
@@ -53,7 +58,7 @@ export default function Contact() {
                 </div>
                 <div className="overflow-hidden">
                   <h4 className="text-stone-900 font-semibold text-sm md:text-base">Ventas y Soporte</h4>
-                  <p className="text-stone-500 text-sm truncate">{process.env.NEXT_PUBLIC_EMAIL}</p>
+                  <span className="text-stone-500 text-sm truncate">qmenuofi@gmail.com</span>
                 </div>
               </div>
 

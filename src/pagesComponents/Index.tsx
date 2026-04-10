@@ -6,6 +6,7 @@ import FilterHeader from "@/src/components/Index/sections/FilterHeader";
 import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
 import SearchModal from "@/src/components/modals/SearchModal";
+import template from "@/src/data/templates.json";
 
 export default function Inicio() {
   const [showModal, setShowModal] = useState(false);
@@ -21,10 +22,11 @@ export default function Inicio() {
     }
   };
 
+  console.log(template)
   return (
     <main className="w-full relative p-3 md:p-0 md:py-6 h-full">
       <SearchModal
-        template="default"
+        template={template}
         arrayFoods={filteredFoods}
         setSearch={handleSearch}
         setShowModal={setShowModal}
@@ -35,6 +37,7 @@ export default function Inicio() {
 
         <FilterHeader
           foods={filteredFoods}
+          template={template}
           onSearch={handleSearch}
           onOpenModal={() => setShowModal(true)}
         />
@@ -43,6 +46,7 @@ export default function Inicio() {
           <OffersSection foods={foodsData} />
 
           <FoodCatalog
+            template={template}
             allFoods={foodsData}
             initialSubCategories={subCategoriesData}
             user={user}

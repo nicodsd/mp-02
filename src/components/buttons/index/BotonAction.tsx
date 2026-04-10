@@ -14,9 +14,7 @@ export default function BotonAccion({ color, textColor }: { color: any, textColo
           font-black 
           rounded-lg
           uppercase
-
           transition-all duration-300
-          hover:border-red-500
         `}
     >
       ¡Probar Ahora!

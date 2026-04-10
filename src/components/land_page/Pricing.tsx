@@ -79,13 +79,13 @@ export default function Pricing() {
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 space-y-4 gap-3 items-start px-2 md:px-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 space-y-4 gap-3 items-start px-2">
           {plans.map((plan, index) => (
             <div
               key={index}
               className={`relative flex flex-col p-6 md:p-8 rounded-2xl border
-                ${!plan.premium && !plan.recommended && 'bg-background border-bone-200'}
-                ${plan.premium && 'bg-background-2 border border-black'}
+                ${!plan.premium && !plan.recommended && 'border-bone-200'}
+                ${plan.premium && 'bg-background-2 border-2 border-black'}
                 ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
             >
               {plan.recommended && (

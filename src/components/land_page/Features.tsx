@@ -1,4 +1,4 @@
-import { Camera, QrCode, Smartphone, CloudLightning, Globe, ShieldCheck, PieChart, Printer } from 'lucide-react';
+import { Camera, QrCode, Smartphone, CloudLightning, Globe, ShieldCheck, PieChart, Zap } from 'lucide-react';
 
 const featuresList = [
   {
@@ -7,29 +7,29 @@ const featuresList = [
     description: "Genera QRs únicos para cada mesa o local. Descárgalos en alta resolución listos para imprimir."
   },
   {
+    icon: <Zap className="h-6 w-6" />,
+    title: "Ultra rápido",
+    description: "Tu menú cargará en segundos, garantizando una experiencia fluida para tus clientes."
+  },
+  {
     icon: <CloudLightning className="h-6 w-6" />,
     title: "Actualizaciones en Tiempo Real",
-    description: "Modifica precios, oculta platos agotados o cambia descripciones instantáneamente sin reimprimir."
+    description: "Modifica precios, oculta platos agotados o cambia descripciones al instante."
   },
   {
     icon: <Camera className="h-6 w-6" />,
     title: "Galería de Fotos HD",
-    description: "Sube fotos apetitosas de tus platos. La comida entra por los ojos y aumenta el ticket promedio."
+    description: "Sube fotos de tus platos en alta calidad. La comida entra por los ojos y aumenta el ticket promedio."
   },
   {
     icon: <Smartphone className="h-6 w-6" />,
     title: "100% Responsive",
-    description: "Diseño optimizado para cargar rápido en cualquier smartphone, sin necesidad de instalar apps."
+    description: "Diseño optimizado para usarse en cualquier dispositivo, fluidez sin necesidad de instalar apps."
   },
   {
     icon: <PieChart className="h-6 w-6" />,
-    title: "Analíticas de Visitas",
-    description: "Conoce qué platos son los más vistos y en qué horarios tienes más tráfico en tu menú digital."
-  },
-  {
-    icon: <Printer className="h-6 w-6" />,
-    title: "Soporte para Impresión",
-    description: "¿Necesitas una carta física? Exporta tu menú digital a PDF con un diseño elegante en un clic."
+    title: "Analíticas",
+    description: "Lleva la cuenta de tus platos cargados, tu gestión de promociones y también los pedidos que recibas."
   }
 ];
 
@@ -48,14 +48,16 @@ export default function Features() {
         {/* Grid: 1 col móvil, 2 cols tablet, 4 cols desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
           {featuresList.map((feature, index) => (
-            <div key={index} className="py-4 px-6 md:p-6 rounded-3xl border border-bone-300 hover:shadow-lg transition-all duration-100 group">
-              <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+            <div key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-3xl border border-gray-300 items-start group">
+              <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                 {feature.icon}
               </div>
-              <h4 className="text-lg font-bold text-stone-900 mb-2">{feature.title}</h4>
-              <p className="text-stone-600 text-sm leading-relaxed">
-                {feature.description}
-              </p>
+              <div className="flex flex-col">
+                <h4 className="text-lg font-bold text-stone-900 mb-2">{feature.title}</h4>
+                <p className="text-stone-600 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
             </div>
           ))}
         </div>

@@ -637,7 +637,7 @@ export default function Register() {
                   </p>
                   <Link
                     className="text-blue-600 font-bold hover:underline"
-                    href="/iniciar-sesion"
+                    href="/login"
                   >
                     Iniciar sesión
                   </Link>
