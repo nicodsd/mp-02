@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     'local-origin.dev',
     '*.local-origin.dev',
     '192.168.*.*',
+    '192.168.0.10',
     'qmenu.com.ar',
     '*.qmenu.com.ar',
     'michel-digit-marijuana-islamic.trycloudflare.com',

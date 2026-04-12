@@ -179,7 +179,7 @@ export default function PanelUser({
 
             <main className="flex-1">
               <TabPanels className="min-h-full overflow-hidden">
-                <div className="pb-13 md:p-10">
+                <div className="pb-13">
                   <TabPanel className="focus:outline-none">
                     <UserSettings user={user} />
                   </TabPanel>

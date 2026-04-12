@@ -39,7 +39,7 @@ export function Categories({
   return (
     <section className="w-[82%] h-fit text-[17px] font-medium">
       <div
-        className={`flex gap-1 pl-2 overflow-x-auto ${color?.textColor}`}
+        className={`flex gap-1 pl-2 overflow-x-auto`}
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -55,8 +55,8 @@ export function Categories({
             }}
             className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
               ${activeCategory === "0"
-                ? `${color?.accentColors[1]} ${color?.textColor2} border`
-                : `${color?.accentColors[2]} ${color?.textColor} border`
+                ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
+                : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
               }`}
           >
             Todo
@@ -73,8 +73,8 @@ export function Categories({
             }}
             className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
                 ${activeCategory === category.name
-                ? `${color?.accentColors[1]} ${color?.textColor2} border`
-                : `${color?.accentColors[2]} ${color?.textColor} border`
+                ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
+                : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
               }`}
           >
             {category.name}

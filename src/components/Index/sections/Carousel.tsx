@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import PromoDayCard from '@/src/components/PromoDay'
 
-function Carousel({ foods }: { foods: any[] }) {
+function Carousel({ foods, template }: { foods: any[]; template: any }) {
     const slides = foods.filter((f) => f.is_promo)
     const [current, setCurrent] = useState(0)
     const [touchStart, setTouchStart] = useState<number | null>(null)
@@ -58,28 +58,20 @@ function Carousel({ foods }: { foods: any[] }) {
             </div>
 
             {slides.length > 1 && (
-                <div className="flex items-center gap-4 mt-6">
-                    <button onClick={prevSlide} className="hidden md:block text-gray-400 hover:text-red-600 transition-colors">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
-                    </button>
-
-                    <div className="flex gap-2">
+                <div className="flex items-center gap-4 mt-4">
+                    <div className="flex gap-1">
                         {slides.map((_, index) => (
                             <button
                                 key={index}
                                 onClick={() => setCurrent(index)}
-                                className={`h-2.5 rounded-full transition-all duration-500 ${index === current
-                                    ? "bg-red-600 w-8 shadow-sm shadow-red-200"
-                                    : "bg-gray-300 w-2.5 hover:bg-gray-400"
+                                className={`h-2 rounded-full transition-all duration-500 ${index === current
+                                    ? `bg-${template?.accentColors?.[0] || "primary"} w-8`
+                                    : `bg-${template?.accentColors?.[0] || "gray-300"} w-2`
                                     }`}
                                 aria-label={`Ir al slide ${index + 1}`}
                             />
                         ))}
                     </div>
-
-                    <button onClick={nextSlide} className="hidden md:block text-gray-400 hover:text-red-600 transition-colors">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
-                    </button>
                 </div>
             )}
         </section>

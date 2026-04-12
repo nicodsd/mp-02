@@ -8,6 +8,7 @@ import Index from "@/src/pagesComponents/Index";
 import UserIndex from "@/src/pagesComponents/UserIndex";
 import Footer from "@/src/layouts/Footer";
 import NavBar from "@/src/layouts/NavBar";
+import templates from "@/src/data/templates.json"
 
 export default async function Page() {
     const cookieStore = await cookies();
@@ -18,7 +19,6 @@ export default async function Page() {
     let foodsByUser = [];
     let categoriesByUser = [];
     let subCategoriesByUser = [];
-
     if (userCookie) {
         try {
             user = JSON.parse(userCookie);
@@ -40,6 +40,7 @@ export default async function Page() {
     const userNameFormatted = user?.name
         ? user.name.toLowerCase().replace(/\s/g, "-")
         : "qmenu";
+    const template = templates.find((t) => t.template_id === user?.template_id);
 
     return (
         <div className="flex relative flex-col min-h-screen">
@@ -50,7 +51,6 @@ export default async function Page() {
                 photo={user?.photo}
                 user={user}
             />
-
             {user ? (
                 <>
                     <UserIndex
@@ -58,18 +58,20 @@ export default async function Page() {
                         foods={foodsByUser}
                         initialSubCategories={subCategoriesByUser}
                         user={user}
+                        template={template}
                         token={token || ""}
                     />
                     <BottomNavigation
                         name={userNameFormatted}
                         foods={foodsByUser}
                         logoUrl={user?.photo}
+                        template={template}
                     />
                 </>
             ) : (
                 <>
                     <Index />
-                    <Footer />
+                    <Footer template={template} />
                 </>
             )}
         </div>

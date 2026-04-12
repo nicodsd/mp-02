@@ -72,6 +72,35 @@ export async function logout() {
     redirect("/");
 }
 
+export async function updateTemplate(templateId: string) {
+    const cookieStore = await cookies();
+    const currentUserCookie = cookieStore.get("user");
+
+    if (currentUserCookie) {
+        try {
+            const currentUser = JSON.parse(currentUserCookie.value);
+
+            const updatedUser = {
+                ...currentUser,
+                template_id: templateId
+            };
+
+            cookieStore.set({
+                name: "user",
+                value: JSON.stringify(updatedUser),
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+            });
+
+            revalidatePath('/', 'layout');
+        } catch (error) {
+            console.error("Error al parsear la cookie de usuario:", error);
+        }
+    }
+}
+
 export async function activateRestaurantSubscription(data: { status: string, qMenuId?: string, email?: string, transactionId?: number | string }) {
     // Al no tener Prisma u ORM aquí (porque separas Front y Back), mandamos una petición a tu backend de datos.
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';

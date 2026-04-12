@@ -122,8 +122,8 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="rounded-2xl border-[0.1px] bg-white border-gray-200 p-4 text-center w-full animate-in fade-in zoom-in duration-200">
+    <div className="flex items-center w-full justify-center">
+      <div className="rounded-2xl border-[0.1px] bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-6 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
           style={{ backgroundColor: selectedTemplate.bg }}
@@ -197,7 +197,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
         <div className="flex flex-col gap-3">
           <button
             onClick={handleDownload}
-            className="w-full flex justify-center items-center py-3.5 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
+            className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
           >
             <Download className="w-5 h-5 mr-2" />
             Descargar tu QR {selectedTemplate.name}

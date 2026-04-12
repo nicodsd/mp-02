@@ -2,90 +2,133 @@
     {
         "template_id": "default",
         "name": "Original",
-        "primaryColor": "bg-gray-100",
-        "accentColors": ["bg-gray-300", "bg-white", "bg-gray-200"]
+        "backgroundColor": "bg-[#fffbf8]",
+        "backgroundColor2": "bg-[#ededed]",
+        "accentColors": ["primary", "gray-900", "gray-200", "[#fffbf8]"],
+        "textColor": "text-gray-700",
+        "textColorOpacity": "text-gray-700/50",
+        "textColor2": "text-white",
+        "icons": "text-primary",
+        "border": "border-gray-200"
     },
-        {
+    {
         "template_id": "night",
         "name": "Noche",
-        "primaryColor": "bg-[#0F0F0F]",
-        "accentColors": ["bg-[#868686]", "bg-white", "bg-[#262626]"],
+        "backgroundColor": "bg-[#0F0F0F]",
+        "backgroundColor2": "bg-[#1A1A1A]",
+        "accentColors": ["[#333333]", "white", "[#262626]", "[#0F0F0F]"],
         "textColor": "text-white",
-        "textColor2": "text-[#0F0F0F]"
+        "textColorOpacity": "text-white/60",
+        "textColor2": "text-[#0F0F0F]",
+        "icons": "text-white",
+        "border": "border-[#363636]"
     },
-        {
+    {
         "template_id": "forest",
         "name": "Bosque",
-        "primaryColor": "bg-[#3B4E3A]",
-        "accentColors": ["bg-[#5D7B5E]", "bg-[#EAE4CC]", "bg-[#5D7B5E]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#3B4E3A]"
+        "backgroundColor": "bg-[#1B261A]",
+        "backgroundColor2": "bg-[#2D3E2C]",
+        "accentColors": ["[#5D7B5E]", "[#EAE4CC]", "[#3B4E3A]", "[#1B261A]"],
+        "textColor": "text-[#EAE4CC]",
+        "textColorOpacity": "text-[#EAE4CC]/60",
+        "textColor2": "text-[#1B261A]",
+        "icons": "text-[#5D7B5E]",
+        "border": "border-[#2D3E2C]"
     },
     {
         "template_id": "ocean",
         "name": "Oceano",
-        "primaryColor": "bg-[#004D40]",
-        "accentColors": ["bg-[#00796B]", "bg-[#E0F2F1]", "bg-[#004D40]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#004D40]"
+        "backgroundColor": "bg-[#002D26]",
+        "backgroundColor2": "bg-[#004D40]",
+        "accentColors": ["[#00796B]", "[#e0fffd]", "[#58baaa]", "[#002D26]"],
+        "textColor": "text-[#e0fffd]",
+        "textColorOpacity": "text-[#e0fffd]/60",
+        "textColor2": "text-[#002D26]",
+        "icons": "text-[#00796B]",
+        "border": "border-[#276e62]"
     },
-
     {
         "template_id": "sunset",
         "name": "Sunset",
-        "primaryColor": "bg-[#FF6B35]",
-        "accentColors": ["bg-[#FF8E53]", "bg-[#FFE1A8]", "bg-[#FF6B35]"],
+        "backgroundColor": "bg-[#FF6B35]",
+        "backgroundColor2": "bg-[#FF8E53]",
+        "accentColors": ["[#590D22]", "[#FFE1A8]", "[#b53f00]", "[#FF6B35]"],
         "textColor": "text-white",
-        "textColor2": "text-[#FF6B35]"
+        "textColorOpacity": "text-white/70",
+        "textColor2": "text-[#FF6B35]",
+        "icons": "text-[#590D22]",
+        "border": "border-[#590D22]/40"
     },
-        {
+    {
         "template_id": "gold",
         "name": "Gold",
-        "primaryColor": "bg-[#FFD700]",
-        "accentColors": ["bg-[#FF8C00]", "bg-[#FFD700]", "bg-[#FF8C00]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#FF8C00]"
+        "backgroundColor": "bg-[#fffaf0]",
+        "backgroundColor2": "bg-[#fff8dc]",
+        "accentColors": ["[#d8a116]", "[#495057]", "[#FFD700]", "[#F9F5E7]"],
+        "textColor": "text-[#495057]",
+        "textColorOpacity": "text-[#495057]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#edab11]",
+        "border": "border-[#d8a116]/20"
     },
     {
         "template_id": "lemon",
         "name": "Lemon",
-        "primaryColor": "bg-[#FFF9C4]",
-        "accentColors": ["bg-[#FFF176]", "bg-[#FFC107]", "bg-[#FFF9C4]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#FFF9C4]"
+        "backgroundColor": "bg-[#FFFDE7]",
+        "backgroundColor2": "bg-[#FFF9C4]",
+        "accentColors": ["[#FBC02D]", "[#33691E]", "[#FFF176]", "[#FFFDE7]"],
+        "textColor": "text-[#33691E]",
+        "textColorOpacity": "text-[#33691E]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#FBC02D]",
+        "border": "border-[#FFF176]"
     },
     {
         "template_id": "cherry",
         "name": "Cherry",
-        "primaryColor": "bg-[#FF6B6B]",
-        "accentColors": ["bg-[#FF8E53]", "bg-[#FFE1A8]", "bg-[#FF6B6B]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#FF6B6B]"
+        "backgroundColor": "bg-[#FFF5F5]",
+        "backgroundColor2": "bg-[#ffeeee]",
+        "accentColors": ["[#C92A2A]", "[#495057]", "[#FFA8A8]", "[#FFF5F5]"],
+        "textColor": "text-[#3b1721]",
+        "textColorOpacity": "text-[#3b1721]/70",
+        "textColor2": "text-white",
+        "icons": "text-[#C92A2A]",
+        "border": "border-[#FFA8A8]/40"
     },
     {
         "template_id": "mint",
         "name": "Mint",
-        "primaryColor": "bg-[#E8F5E9]",
-        "accentColors": ["bg-[#A5D6A7]", "bg-[#81C784]", "bg-[#E8F5E9]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#E8F5E9]"
+        "backgroundColor": "bg-[#E8F5E9]",
+        "backgroundColor2": "bg-[#C8E6C9]",
+        "accentColors": ["[#2E7D32]", "[#1B5E20]", "[#A5D6A7]", "[#E8F5E9]"],
+        "textColor": "text-[#1B5E20]",
+        "textColorOpacity": "text-[#1B5E20]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#2E7D32]",
+        "border": "border-[#A5D6A7]"
     },
-
     {
         "template_id": "lavender",
         "name": "Lavanda",
-        "primaryColor": "bg-[#BEADFB]",
-        "accentColors": ["bg-[#D0C0FF]", "bg-[#FEF9C1]", "bg-[#D0C0FF]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#BEADFB]"
+        "backgroundColor": "bg-[#F3E5F5]",
+        "backgroundColor2": "bg-[#E1BEE7]",
+        "accentColors": ["[#7B1FA2]", "[#4A148C]", "[#CE93D8]", "[#F3E5F5]"],
+        "textColor": "text-[#4A148C]",
+        "textColorOpacity": "text-[#4A148C]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#7B1FA2]",
+        "border": "border-[#CE93D8]"
     },
-
     {
         "template_id": "sakura",
         "name": "Sakura",
-        "primaryColor": "bg-[#FFE6E7]",
-        "accentColors": ["bg-[#FFA2A3]", "bg-[#FFFAF3]", "bg-[#FFFAF3]"],
-        "textColor": "text-white",
-        "textColor2": "text-[#FFE6E7]"
+        "backgroundColor": "bg-[#FFF0F3]",
+        "backgroundColor2": "bg-[#FFD1DC]",
+        "accentColors": ["[#590D22]", "[#590D22]", "[#FF8FA3]", "[#FFF0F3]"],
+        "textColor": "text-[#590D22]",
+        "textColorOpacity": "text-[#590D22]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#FF4D6D]",
+        "border": "border-[#FFB3C1]"
     }
 ]

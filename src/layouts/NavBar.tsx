@@ -23,6 +23,7 @@ interface NavBarProps {
   state: number;
   cookie?: string;
   bttn: boolean;
+  template?: any;
 }
 
 export default function NavBar({
@@ -31,6 +32,7 @@ export default function NavBar({
   photo,
   user,
   bttn,
+  template
 }: NavBarProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -142,7 +144,7 @@ export default function NavBar({
   );
 }
 
-function DefaultNavUser({ user, photo, isLight, cookie }: any) {
+function DefaultNavUser({ user, photo, template, cookie }: any) {
   const displayData = {
     name: user?.name,
     description: user?.description,
@@ -160,7 +162,7 @@ function DefaultNavUser({ user, photo, isLight, cookie }: any) {
   return (
     <div className="flex flex-col items-center justify-center drop-shadow drop-shadow-gray-900/30 text-white w-full">
       <div className="relative">
-        <div className={`rounded-full p-1 ${isLight ? "bg-white" : "bg-black"}`}>
+        <div className={`rounded-full p-1 ${template?.backgroundColor}`}>
           <Image
             priority
             src={optimizedPhoto || logo}
@@ -185,22 +187,17 @@ function DefaultNavUser({ user, photo, isLight, cookie }: any) {
       <h1 className="text-2xl font-bold mt-3 uppercase">
         {displayData?.name || (!user ? "QMENÚ" : "")}
       </h1>
-
+      {(displayData?.address || !user) && (
+        <span className="flex text-xs items-center gap-1">
+          <FaMapMarkerAlt />
+          {displayData?.address || "Santiago del Estero, Argentina"}
+        </span>
+      )}
       <p className="">
         {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
       </p>
-
-      <div className="flex flex-col items-center gap-1 text-xs mt-0.5">
-
-        {(displayData?.address || !user) && (
-          <span className="flex items-center gap-1">
-            <FaMapMarkerAlt />
-            {displayData?.address || "Santiago del Estero, Argentina"}
-          </span>
-        )}
-
-        <div className="flex items-center gap-x-2 flex-wrap justify-center">
-
+      <div className="flex flex-col items-center gap-1 mt-0.5">
+        <div className="flex items-center gap-x-2 text-xs flex-wrap justify-center">
           {(displayData?.phone || !user) && (
             <span className="flex items-center gap-1">
               <FaWhatsapp />
@@ -224,6 +221,7 @@ function DefaultNavUser({ user, photo, isLight, cookie }: any) {
               </span>
             ))}
         </div>
+
       </div>
     </div>
   );

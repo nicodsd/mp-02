@@ -158,10 +158,10 @@ const UserSettings = ({ user }: { user: any }) => {
       </header>
       <form
         onSubmit={userUpdate}
-        className="flex w-full mt-4 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
+        className="flex w-full mt-3 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
         <div className="w-full px-3 flex flex-col">
-          <div className="flex justify-center gap-4 mb-4 pb-6">
+          <div className="flex justify-center md:justify-start gap-6 mb-4 pb-6">
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
               <div className="w-30 h-30 relative rounded-full overflow-hidden">

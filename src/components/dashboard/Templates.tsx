@@ -1,130 +1,130 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { URI } from '@/src/lib/const';
 import templates from '@/src/data/templates.json';
-
-interface Template {
-    template_id: string;
-    name: string;
-    primaryColor: string;
-    accentColors: string[];
-}
+import { useRouter } from 'next/navigation';
+import { updateTemplate } from "@/app/actions";
 
 export default function TemplateSelector({ user }: { user: any }) {
-
     const [selected, setSelected] = useState<string>('default');
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const currentTemplate = templates.find(t => t.template_id === selected) || templates[0];
 
     const handleSelect = (templateId: string) => {
         setSelected(templateId);
     };
 
-    const handleUpdateTemplate = async () => {
+    const handleUpdateTemplate = async (e: React.FormEvent) => {
+        e.preventDefault();
         setLoading(true);
-
         try {
             const response = await fetch(`${URI}auth/update/template/${user}`, {
                 method: 'PUT',
                 credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    template_id: selected
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ template_id: selected }),
             });
-
-            if (response.ok) {
-                console.log('Template actualizado a:', selected);
-            } else {
-                throw new Error('Error en la respuesta del servidor');
+            if (!response.ok) throw new Error('Error al actualizar');
+            const data = await response.json();
+            if (data.success) {
+                await updateTemplate(selected);
+                console.log(data.user);
+                router.refresh();
             }
         } catch (error) {
-            console.error("Error al actualizar el template:", error);
+            console.error(error);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex flex-col items-start justify-center gap-4 min-h-screen pb-10">
-            <header className="p-3 flex flex-col gap-1">
-                <h1 className="text-2xl font-bold text-gray-800">Personaliza tu menú</h1>
-                <p className="text-gray-500 text-sm">Selecciona una plantilla.</p>
+        <div className="flex flex-col items-start justify-center gap-4 min-h-screen pb-32 md:pb-0 px-4 max-w-4xl mx-auto">
+            <header className="py-6 flex flex-col gap-1">
+                <h1 className="text-3xl font-extrabold text-gray-900">Personalizar menú</h1>
+                <p className="text-gray-500 text-base">1. Selecciona la identidad visual de tu negocio.
+                    <br />2. Dale en <span className="font-bold uppercase">"Aplicar Tema"</span> para verlos reflejados en tu menú.</p>
             </header>
 
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="gap-6 flex flex-wrap justify-center w-full"
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full relative"
             >
-                {templates.map((template) => (
-                    <label
-                        key={template.template_id}
-                        className={`flex flex-col items-center space-y-2 cursor-pointer group w-fit bg-background-2 border transition-all duration-300 border-gray-200 px-2 py-3  
-                            ${selected === template.template_id
-                                ? 'ring-2 ring-gray-800 z-10 rounded-2xl'
-                                : 'hover:scale-[1.02] opacity-80'
-                            }`}
-                    >
-                        {/* Vista Previa de la Tarjeta */}
-                        <div className="flex items-center w-full gap-2 flex-1">
-                            {/* Selector Circular */}
-                            <div className="relative flex items-center justify-center">
-                                <input
-                                    type="radio"
-                                    name="template"
-                                    value={template.template_id}
-                                    checked={selected === template.template_id}
-                                    onChange={() => handleSelect(template.template_id)}
-                                    className="peer sr-only"
-                                />
-                                <div className="w-5 h-5 border-2 border-gray-300 rounded-full peer-checked:border-gray-800 transition-all"></div>
-                                <div className="absolute w-3 h-3 bg-gray-800 rounded-full scale-0 peer-checked:scale-100 transition-transform"></div>
-                            </div>
-                            <div
-                                className={`relative w-20 h-fit rounded-lg p-2 shadow-md shadow-gray-800/20 transition-all duration-300 ${template.primaryColor}`}
-                            >
-                                {/* Miniatura de Perfil */}
-                                <div className="bg-white/80 backdrop-blur-sm rounded w-full h-2/3 mb-3 flex items-center justify-center shadow-sm">
-                                    <div className="space-y-1 p-1">
-                                        <div className="w-6 h-6 bg-gray-700 rounded-full mx-auto"></div>
-                                        <div className="w-14 h-1 bg-gray-700 rounded mx-auto"></div>
-                                    </div>
+                {templates.map((template) => {
+                    const isSelected = selected === template.template_id;
+
+                    return (
+                        <label
+                            key={template.template_id}
+                            onClick={() => handleSelect(template.template_id)}
+                            className={`relative flex flex-col items-center p-4 cursor-pointer rounded-3xl border-2 transition-all duration-300 
+                                ${isSelected
+                                    ? `${template.border} bg-gray-50 shadow-lg scale-105 z-10`
+                                    : 'border-gray-200 bg-white hover:bg-gray-50 opacity-90'
+                                }`}
+                        >
+                            {/* Card Preview Miniatúra */}
+                            <div className={`w-full aspect-3/4 rounded-2xl border ${template.border} p-3 mb-3 shadow-inner ${template.backgroundColor} transition-colors overflow-hidden`}>
+                                {/* Header de la mini-card */}
+                                <div className="flex flex-col items-center gap-1 mb-4">
+                                    <div className={`w-8 h-8 rounded-full bg-black ${template.accentColors[0]} shadow-sm`} />
+                                    <div className={`h-1.5 w-12 rounded-full ${template.textColor} opacity-40`} />
                                 </div>
 
-                                {/* Detalles de Color Inferiores */}
+                                {/* Cuerpo de la mini-card (Simulando Items) */}
                                 <div className="space-y-2">
-                                    <div className="flex gap-1">
-                                        <div className={`h-2 w-6 ${template.accentColors[0]} rounded-full`}></div>
-                                        <div className={`h-2 w-6 ${template.accentColors[1]} rounded-full`}></div>
+                                    <div className={`h-8 w-full rounded-lg ${template.backgroundColor2} flex items-center px-2`}>
+                                        <div className={`h-1 w-2/3 rounded-full ${template.accentColors[1]} opacity-30`} />
                                     </div>
-                                    <div className={`h-3 w-full ${template.accentColors[2]} rounded-md`}></div>
+                                    <div className={`h-8 w-full rounded-lg ${template.backgroundColor2} flex items-center px-2`}>
+                                        <div className={`h-1 w-1/2 rounded-full ${template.accentColors[1]} opacity-30`} />
+                                    </div>
+                                </div>
+
+                                {/* Botón flotante simulado */}
+                                <div className={`mt-4 h-6 w-full rounded-xl ${template.accentColors[0]} flex items-center justify-center`}>
+                                    <div className={`h-1 w-6 rounded-full ${template.textColor2} opacity-80`} />
                                 </div>
                             </div>
 
-                            {/* Paleta de Colores Lateral */}
-                            <div className="flex flex-col gap-1">
-                                <div className={`w-5 h-5 rounded-full border border-gray-200 shadow-sm ${template.primaryColor}`}></div>
-                                {template.accentColors.map((color, idx) => (
-                                    <div key={idx} className={`w-5 h-5 rounded-full border border-gray-200 shadow-sm ${color}`}></div>
-                                ))}
+                            {/* Nombre y Dots de Paleta */}
+                            <div className="flex flex-col items-center gap-2">
+                                <span className={`font-bold text-sm ${isSelected ? 'text-gray-900' : 'text-gray-500'}`}>
+                                    {template.name}
+                                </span>
+                                <div className="flex -space-x-1">
+                                    {template.accentColors.slice(0, 3).map((color, i) => (
+                                        <div key={i} className={`w-3 h-3 rounded-full border border-white ${color}`} />
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        <span className="text-gray-700 text-sm">{template.name}</span>
-                    </label>
-                ))}
 
-                {/* Botón de Acción */}
+                            {/* Input Radio oculto pero funcional */}
+                            <input
+                                type="radio"
+                                name="template"
+                                checked={isSelected}
+                                onChange={() => { }}
+                                className="sr-only"
+                            />
+                        </label>
+                    );
+                })}
+            </motion.div>
+            <div className="fixed md:relative w-full z-100 bottom-0 left-0 right-0 p-6 pb-6 bg-background/80 backdrop-blur-lg border-t border-gray-200 flex flex-col items-center gap-2">
                 <button
                     onClick={handleUpdateTemplate}
-                    disabled={loading}
-                    className={`mt-10 w-full py-4 px-6 rounded-2xl font-bold text-white transition-all shadow-lg ${loading ? 'bg-gray-400 cursor-wait' : 'bg-gray-900 hover:bg-black active:scale-95'
-                        }`}
+                    disabled={loading && selected === currentTemplate.template_id}
+                    className={`w-full py-4 px-2 enabled:cursor-pointer disabled:cursor-not-allowed rounded-2xl font-black text-lg transition-all shadow-md uppercase tracking-wider
+                    ${loading ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : `border-4 ${currentTemplate.backgroundColor} ${currentTemplate.border} ${currentTemplate.textColor} active:scale-[0.98]`}`}
                 >
-                    {loading ? 'Sincronizando...' : 'Guardar Preferencias'}
+                    {loading ? 'Guardando cambios...' : `Aplicar tema ${currentTemplate.name}`}
                 </button>
-            </motion.div>
-        </div >
+                <span className='text-xs text-center px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
+            </div>
+        </div>
     );
 }

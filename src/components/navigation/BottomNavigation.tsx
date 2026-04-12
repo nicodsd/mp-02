@@ -15,12 +15,14 @@ interface BottomNavigationProps {
   name: string;
   logoUrl?: string;
   foods?: any;
+  template?: any;
 }
 
 export default function BottomNavigation({
   name,
   logoUrl,
   foods,
+  template,
 }: BottomNavigationProps) {
   const [openDiscount, setOpenDiscount] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -76,7 +78,7 @@ export default function BottomNavigation({
         isOpen={isOpen}
         openModal={() => setIsOpen(false)}
       />
-      <div className="fixed bottom-0 inset-x-0 bg-background border-t border-gray-200 pb-2 z-50">
+      <div className={`fixed bottom-0 inset-x-0 ${template?.backgroundColor2} border-t border-${template?.border} pb-2 z-50`}>
         <div className="flex justify-around items-center h-16 max-w-md mx-auto">
           {navItems.map((item, index) => (
             <button
@@ -84,10 +86,10 @@ export default function BottomNavigation({
               onClick={item.action}
               className="flex flex-col cursor-pointer items-center justify-center flex-1 h-full gap-1 group active:scale-95 transition-transform"
             >
-              <div className="text-gray-500 group-hover:text-primary group-active:text-primary transition-colors">
+              <div className={`${template?.textColor} group-hover:${template?.textColor2} group-active:${template?.textColor2} transition-colors`}>
                 {item.icon}
               </div>
-              <span className="text-[10px] font-bold text-gray-500 group-hover:text-black uppercase tracking-tighter leading-none">
+              <span className={`text-[10px] font-bold ${template?.textColor} group-hover:${template?.textColor2} uppercase tracking-tighter leading-none`}>
                 {item.label}
               </span>
             </button>

@@ -5,15 +5,15 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <div id="inicio" className="relative border-b border-bone-300 w-full pt-26 pb-16 md:pt-50 lg:pb-20 overflow-hidden">
+    <div id="inicio" className="relative border-b border-gray-300 w-full pt-32 pb-16 md:pt-50 lg:pb-20 overflow-hidden">
       <div className="relative flex flex-col md:flex-row md:grid md:grid-cols-2 items-center md:items-end justify-between z-10">
         {/* Alineación central en móvil, izquierda en desktop */}
-        <div className="text-start w-full flex md:pb-5 flex-col items-start md:items-start">
+        <div className="text-start w-full z-10 flex md:pb-5 flex-col items-start md:items-start">
           <div className='w-full flex items-center justify-center'>
             <Image
               src={HeroImage}
               alt="Hero Image"
-              className="w-100 h-auto mb-10 drop-shadow-sm md:hidden"
+              className="w-100 h-auto mb-12 drop-shadow-sm md:hidden"
               width={1920}
               height={1080}
               priority
@@ -51,15 +51,21 @@ export default function Hero() {
             </a>
           </div>
         </div>
-        <div className="h-full w-full flex items-center justify-end">
+        <div className="h-full relative w-full flex items-center justify-end">
           <Image
             src={HeroImage}
             alt="Hero Image"
-            className="w-auto h-auto hidden md:block"
+            className="w-auto h-auto hidden md:block z-10"
             width={1920}
             height={1080}
             priority
           />
+          <div className='absolute bottom-0 -right-60 w-200 h-200 z-0 rounded-full border-10 border-red-900/5'></div>
+          <div className='absolute -bottom-10 -right-50 w-170 h-170 z-0 rounded-full border-10 border-red-900/5'></div>
+          <div className='absolute -bottom-20 -right-40 w-130 h-130 z-0 rounded-full border-10 border-red-900/5'></div>
+          <div className='absolute -bottom-30 -right-30 w-100 h-100 z-0 rounded-full border-10 border-red-900/5'></div>
+          <div className='absolute -bottom-40 -right-20 w-70 h-70 z-0 rounded-full border-10 border-red-900/5'></div>
+          <div className='absolute -bottom-50 -right-10 w-40 h-40 z-0 rounded-full border-10 border-red-900/5'></div>
         </div>
       </div>
     </div>
