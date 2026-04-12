@@ -18,17 +18,22 @@ export default function SearchModal({ arrayFoods, setSearch, setShowModal, showM
         );
     }, [query, arrayFoods]);
 
+    const BtnCancel = () => {
+        setShowModal(false)
+        setQuery('')
+    }
+
     if (!showModal) return null;
 
     return (
         <div
             onClick={() => setShowModal(false)}
-            className="fixed inset-0 z-100 bg-white overflow-hidden"
+            className={`fixed inset-0 z-100 ${template?.backgroundColor || "bg-background"} overflow-hidden`}
         >
             <div onClick={(e) => e.stopPropagation()} className="flex flex-col h-full w-full px-3 pt-4">
-                <div className='flex justify-between text-gray-700 mx-1 items-center mb-4'>
+                <div className={`flex justify-between ${template?.textColor || "text-gray-700"} mx-1 items-center mb-4`}>
                     <h3 className='text-2xl font-bold'>Buscar</h3>
-                    <button onClick={() => setShowModal(false)} className='p-2'>Cancelar</button>
+                    <button onClick={() => BtnCancel()} className='p-2'>Cancelar</button>
                 </div>
 
                 <div className='w-full'>

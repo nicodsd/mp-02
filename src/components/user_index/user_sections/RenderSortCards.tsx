@@ -26,7 +26,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 import { GripVertical } from "lucide-react";
 
-function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect, color }: any) {
+function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect, template }: any) {
     const {
         attributes,
         listeners,
@@ -43,7 +43,7 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
         transition,
         zIndex: isDragging ? 50 : 1,
     };
-    console.log(color)
+
 
     return (
         <div
@@ -51,7 +51,7 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
             style={style}
             className={`flex justify-between items-center rounded-xl transition-all border bg-background}
                 ${context ? "mb-1" : ""} 
-                ${isSelected ? "border-blue-500 bg-blue-50/50" : "border-gray-200"} 
+                ${isSelected ? `border-${template?.accentColors[0]} bg-blue-50/50` : `${template?.border}`} 
                 ${isDragging ? "shadow-xl opacity-80 rotate-1 scale-[1.02] z-50" : ""}`}
         >
             <div className="w-full h-full flex items-center">
@@ -60,24 +60,24 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
                         onClick={() => onToggleSelect(food._id)}
                         className="px-1 cursor-pointer text-blue-600 active:scale-90 transition-transform"
                     >
-                        {isSelected ? <FaCheckSquare size={20} /> : <FaRegSquare size={20} className="text-gray-300" />}
+                        {isSelected ? <FaCheckSquare size={20} /> : <FaRegSquare size={20} className={`${template?.textColor}`} />}
                     </div>
                 ) : (
-                    <GripVertical size={24} className={`mx-1 touch-none cursor-grab active:cursor-grabbing ${color?.name === "Night" ? "text-white" : "text-gray-300"}`} {...attributes} {...listeners} />
+                    <GripVertical size={24} className={`mx-1 touch-none cursor-grab active:cursor-grabbing ${template?.textColor}`} {...attributes} {...listeners} />
                 )}
                 <SortableFoodCard
                     food={food}
                     context={!!context}
-                    color={color}
+                    template={template}
                 />
 
             </div>
 
             {context && !isSelectionMode && (
-                <div className="flex items-center justify-center h-full border-l border-gray-100 bg-gray-50/30 min-w-[60px]">
+                <div className={`flex items-center justify-center h-full border-l ${template?.border} bg-gray-50/30 min-w-[60px]`}>
                     <button
                         onClick={() => onEdit(food)}
-                        className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-900 hover:text-white transition-all shadow-sm active:scale-90"
+                        className={`p-3 ${template?.backgroundColor} border ${template?.border} rounded-full hover:bg-gray-900 hover:text-white transition-all shadow-sm active:scale-90`}
                     >
                         <FaEdit size={20} />
                     </button>
@@ -87,9 +87,9 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
     );
 }
 
-export default function RenderSortCards({ foods: initialFoods, count, context }: any) {
+export default function RenderSortCards({ foods: initialFoods, count, context, template }: any) {
     const { foods, setFoods, removeFoodLocal, reorderFoods } = useFoodStore();
-
+    console.log(template)
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
@@ -200,18 +200,18 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                             onClick={() => setIsSelectionMode(true)}
                             className="text-xs flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
                         >
-                            <FaRegSquare className="text-gray-500 text-base" /> Seleccionar Platos
+                            <FaRegSquare className={`${template?.textColor} text-base`} /> Seleccionar Platos
                         </button>
                     ) : (
                         <div className="flex items-center justify-between w-full">
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={() => { setIsSelectionMode(false); setSelectedIds([]); }}
-                                    className="p-2 text-gray-500 hover:bg-gray-100 rounded-full"
+                                    className={`p-2 ${template?.textColor} hover:bg-gray-100 rounded-full`}
                                 >
                                     <FaTimes size={16} />
                                 </button>
-                                <span className="text-sm font-black text-blue-600">
+                                <span className={`text-sm font-black ${template?.textColor}`}>
                                     {selectedIds.length} seleccionados
                                 </span>
                             </div>
@@ -220,8 +220,8 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                                 onClick={handleBulkDelete}
                                 disabled={selectedIds.length === 0}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all ${selectedIds.length > 0
-                                    ? "bg-red-500 text-white shadow-lg shadow-red-200"
-                                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                    ? `bg-${template?.accentColors[0]} ${template?.textColor} shadow-lg shadow-${template?.accentColors[0]}-200`
+                                    : `bg-gray-200 text-gray-400 cursor-not-allowed`
                                     }`}
                             >
                                 <FaTrash /> Eliminar seleccionados
@@ -247,6 +247,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                             {platos.map((food: any) => (
                                 <SortableRow
                                     key={food._id}
+                                    template={template}
                                     food={food}
                                     context={context}
                                     isSelectionMode={isSelectionMode}
@@ -269,6 +270,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context }:
                     onClose={() => setIsEditOpen(false)}
                     food={selectedFood}
                     onUpdate={() => refreshPage()}
+                    template={template}
                 />
             )}
         </div>

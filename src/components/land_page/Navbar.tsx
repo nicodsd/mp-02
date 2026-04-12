@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 px-4 ${scrolled
-      ? 'bg-background-2 backdrop-blur-sm border-b border-gray-300 py-2'
+      ? 'md:bg-background-2 bg-background md:backdrop-blur-sm border-b border-gray-300 py-2'
       : 'border-b bg-background border-gray-300 py-5'
       }`}>
       {/* Contenedor con Padding Lateral de seguridad (px-4) */}
@@ -92,7 +92,7 @@ export default function Navbar() {
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                onClick={() => setIsOpen(false)}
+                onClick={() => scrollToSection(link.href)}
                 className="text-stone-600 hover:text-primary block px-4 py-3 rounded-xl text-base font-bold transition-all"
               >
                 {link.name}

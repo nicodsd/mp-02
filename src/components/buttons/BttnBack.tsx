@@ -7,7 +7,7 @@ const BttnBack = () => {
     <button
       type="button"
       onClick={() => router.back()}
-      className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 ml-2 transition-opacity"
+      className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
     >
       <MdChevronLeft className="text-xl mr-1" />
       Volver

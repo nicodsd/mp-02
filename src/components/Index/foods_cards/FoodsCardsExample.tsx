@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import { FaPlus } from "react-icons/fa";
-import { useCartStore } from "@/src/lib/useCartStore";
+import AddFood from "@/src/components/buttons/AddFood";
+import AddFoodExample from "@/src/components/buttons/AddFoodExample";
 
 export default function FoodsCardsExample({
   name,
@@ -10,15 +10,19 @@ export default function FoodsCardsExample({
   price,
   is_promo,
   _id,
+  example,
   promo_price,
+  template
 }: {
   name: string;
   photo: string;
+  _id: string;
   description: string;
   price: number | string;
   is_promo: boolean;
-  _id: string;
   promo_price: number | string;
+  template: any;
+  example: boolean;
 }) {
 
   function formatearPrecio(precio: number | string) {
@@ -32,7 +36,7 @@ export default function FoodsCardsExample({
 
   return (
     <div
-      className={`flex w-full overflow-hidden bg-background border h-26 border-gray-300/60 rounded-lg p-2 items-center`}
+      className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-2 items-center`}
     >
       <Image
         quality={75}
@@ -47,32 +51,36 @@ export default function FoodsCardsExample({
         <div className="flex text-left">
           <div className="w-full">
             <h2
-              className={`font-semibold text-gray-700 text-lg md:h-fit leading-4`}
+              className={`font-semibold ${template?.textColor || "text-gray-700"} text-lg md:h-fit leading-4`}
             >
               {name}
             </h2>
             <p
-              className={`text-[#555] text-sm line-clamp-2 text-pretty leading-4 mt-1 md:mt-0`}
+              className={`${template?.textColorOpacity || "text-gray-700/50"} text-sm line-clamp-2 text-pretty leading-4 mt-1 md:mt-0`}
             >
               {description}
             </p>
           </div>
-          <button className="w-fit h-fit p-3 ml-2 border bg-green-500 border-black rounded-full flex items-center justify-center" >
-            <FaPlus className="text-white" />
-          </button>
+          {
+            example ? (
+              <AddFoodExample _id={_id} />
+            ) : (
+              <AddFood _id={_id} />
+            )
+          }
         </div>
 
         <div
           className={`flex flex-col relative h-full items-end gap-1 justify-end`}
         >
           {is_promo && (
-            <div className="flex flex-col items-end">
-              <span className="font-bold text-gray-700 oldstyle-nums text-xs md:text-sm line-through decoration-red-600 decoration leading-1">
+            <div className={`flex flex-col ${template?.textColor || "text-gray-700"} items-end`}>
+              <span className={`font-bold oldstyle-nums text-xs md:text-sm line-through decoration-red-600 decoration leading-1`}>
                 {formatearPrecio(price)}
               </span>
 
               <div className="flex items-center">
-                <span className="font-black text-red-600 oldstyle-nums text-xl md:text-2xl">
+                <span className={`font-black text-${template?.accentColors?.[1] || "primary"} oldstyle-nums text-xl md:text-2xl`}>
                   {formatearPrecio(promo_price)}
                 </span>
               </div>
@@ -80,7 +88,7 @@ export default function FoodsCardsExample({
           )}
           {!is_promo && (
             <div className="flex items-center">
-              <span className="font-bold text-gray-700 oldstyle-nums text-xl md:text-2xl">
+              <span className={`font-bold ${template?.textColor || "text-gray-700"} oldstyle-nums text-xl md:text-2xl`}>
                 {formatearPrecio(price)}
               </span>
             </div>

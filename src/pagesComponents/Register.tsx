@@ -43,7 +43,7 @@ const validationSchemas = [
     cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
     description: Yup.string().test("len", "Mínimo 10 caracteres", (val) => !val || val.length >= 10).optional(),
-    phone: Yup.string().test("len", "Mínimo 10 dígitos", (val) => !val || val.length >= 10).optional(),
+    phone: Yup.string().test("len", "Mínimo 7 dígitos", (val) => !val || val.length >= 7).optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
@@ -116,12 +116,12 @@ export default function Register() {
   };
 
   return (
-    <div className="relative h-full md:mx-[12vw] lg:mx-[27vw] flex flex-col items-center">
+    <div className="relative h-full px-3 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
       <div className="w-full py-3 z-10">
         <BttnBack />
       </div>
 
-      <div className="h-full w-[80%] pb-50">
+      <div className="h-full w-full pb-50">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <h1 className="text-3xl font-black text-gray-900 text-start">
@@ -372,8 +372,8 @@ export default function Register() {
                         className="mt-1 text-sm text-red-500 font-medium"
                       />
                     </div>
-                    <div className="grid grid-cols-2 w-full mb-3">
-                      <div>
+                    <div className="grid grid-cols-2 gap-1 w-full mb-1">
+                      <div className="flex flex-col pb-4 rounded-lg bg-gray-300/20 w-full justify-center items-center">
                         <label
                           htmlFor="logo"
                           className="block text-md font-medium text-gray-700 mb-1"
@@ -434,16 +434,16 @@ export default function Register() {
                         />
                       </div>
                       {values.plan !== "free" && (
-                        <div className="">
+                        <div className="flex flex-col pb-4 rounded-lg bg-gray-300/20 w-full justify-center items-center">
                           <label
                             htmlFor="cover"
                             className="block text-md font-medium text-gray-700 mb-1"
                           >
                             Foto de portada
                           </label>
-                          <div className="flex items-center space-x-4 relative">
-                            <label className="cursor-pointer absolute z-10 -bottom-2 left-0 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
-                              <span>Activar con Premium</span>
+                          <div className="flex justify-center items-center space-x-4 relative">
+                            <label className="cursor-pointer mx-auto absolute z-10 -bottom-2 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
+                              <span>Subir fondo</span>
                               <input
                                 id="cover"
                                 name="cover"
@@ -503,22 +503,27 @@ export default function Register() {
                         className="block w-[70%] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                       />
                     </div>
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-center justify-between">
                       <label
                         htmlFor="phone"
-                        className="block text-md font-medium text-gray-700 mt-3"
+                        className="block text-md font-medium text-gray-700"
                       >
                         Teléfono
                       </label>
-                      <div className="flex flex-col w-[70%]">
-                        <Field
-                          id="phone"
-                          name="phone"
-                          type="tel"
-                          placeholder="+54 9 385 ..."
-                          className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                        />
-                        <ErrorMessage name="phone" component="div" className="mt-1 text-sm text-red-500 font-medium" />
+                      <div className="flex items-center relative">
+                        <div className="flex flex-col w-full">
+                          <div className="flex items-center relative w-full">
+                            <span className="text-gray-500 text-lg bg-gray-100 h-full mr-2 px-2 py-2 rounded-lg flex items-center">385</span>
+                            <Field
+                              id="phone"
+                              name="phone"
+                              type="tel"
+                              placeholder="5349557"
+                              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                            />
+                            <ErrorMessage name="phone" component="div" className="-bottom-6 absolute text-sm text-red-500 font-medium" />
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -578,7 +583,7 @@ export default function Register() {
                 </div>
               )}
 
-              <div className="h-fit fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
+              <div className="h-fit w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
                 <div className="flex items-center mb-3 w-[80%] justify-between">
                   <button
                     type="button"

@@ -1,17 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ConciergeBell } from "lucide-react";
-import { useCartStore } from "@/src/lib/useCartStore";
-import CartModal from "@/src/components/modals/CartModal";
+import CartModalExample from "@/src/components/modals/CartModalExample";
+import { useCartStoreExample } from "@/src/lib/useCartStoreExample";
 
-export default function Bell({ phone, template }: { phone: string, template: any }) {
+export default function BellExample({ template }: { template: any }) {
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const { selectedIds } = useCartStore();
+    const { selectedIds } = useCartStoreExample();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
     const count = selectedIds?.length;
 
     return (
@@ -29,7 +30,7 @@ export default function Bell({ phone, template }: { phone: string, template: any
                     )}
                 </div>
             </button>
-            <CartModal phone={phone} isOpen={isCartOpen} template={template} onClose={() => setIsCartOpen(false)} />
+            <CartModalExample isOpen={isCartOpen} template={template} onClose={() => setIsCartOpen(false)} />
         </>
     );
 }

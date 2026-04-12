@@ -48,7 +48,7 @@ export default function Contact() {
           <div className="text-start mb-12 md:mb-16 px-2">
             <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">¿Listo para modernizar tu local?</h2>
             <p className="text-stone-600 text-base md:text-lg mb-8 lg:mx-0">
-              Únete a miles de restaurantes que ya usan GastroQR. Si tienes dudas o necesitas un plan personalizado, escríbenos.
+              Únete a miles de restaurantes que ya usan QMenú. Si tienes dudas o necesitas un plan personalizado, escríbenos.
             </p>
 
             <div className="space-y-3 max-w-md mx-auto lg:mx-0">

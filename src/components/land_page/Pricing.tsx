@@ -5,6 +5,7 @@ import { Check, Link } from 'lucide-react';
 interface PricingPlan {
   name: string;
   price: string;
+  before?: string;
   period: string;
   description: string;
   features: string[];
@@ -27,11 +28,12 @@ const plans: PricingPlan[] = [
       "Actualización en tiempo real"
     ],
     cta: "Crear Menú Gratis",
-    href: "/registro-de-usuario"
+    href: "/registro-de-usuario?plan=free"
   },
   {
     name: "Plus",
     price: "$19.900",
+    before: "$24.900",
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
@@ -44,11 +46,13 @@ const plans: PricingPlan[] = [
       "Gestión de promociones"
     ],
     cta: "Elegir Plan Plus",
+    href: "/registro-de-usuario?plan=plus",
     recommended: true
   },
   {
     name: "Premium",
     price: "$39.900",
+    before: "$49.900",
     period: "/mes",
     description: "Para locales con gran variedad de platos y que quieren destacar su marca.",
     features: [
@@ -63,6 +67,7 @@ const plans: PricingPlan[] = [
       "Soporte prioritario"
     ],
     cta: "Elegir Plan Premium",
+    href: "/registro-de-usuario?plan=premium",
     premium: true
   }
 ];
@@ -84,8 +89,8 @@ export default function Pricing() {
             <div
               key={index}
               className={`relative flex flex-col p-6 md:p-8 rounded-2xl border
-                ${!plan.premium && !plan.recommended && 'border-bone-200'}
-                ${plan.premium && 'bg-background-2 border-2 border-black'}
+                ${!plan.premium && !plan.recommended && 'border-gray-200'}
+                ${plan.premium && 'bg-linear-to-br from-white via-gray-300/80 to-white hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
                 ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
             >
               {plan.recommended && (
@@ -101,6 +106,9 @@ export default function Pricing() {
 
               <div className="mb-6 flex items-baseline">
                 <span className="text-4xl font-extrabold text-black">{plan.price}</span>
+                {plan.before && (
+                  <span className="text-stone-500 ml-2 text-md line-through decoration-red-500">{plan.before}</span>
+                )}
                 <span className="text-stone-500 ml-2 text-sm">{plan.period}</span>
               </div>
 
@@ -131,18 +139,18 @@ export default function Pricing() {
                     className={`w-full text-center py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all 
                   ${plan.recommended
                         ? 'bg-primary btn-god-rays hover:bg-primary-500 hover:shadow-md text-white'
-                        : 'hover:bg-bone-100 text-stone-700 border border-bone-300'
+                        : 'hover:bg-gray-100 text-stone-700 border border-gray-300'
                       }
                  `}
                   >
                     {plan.cta}
                   </a>
                   :
-                  <button
-                    className={`w-full btn-god-rays py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all bg-black hover:shadow-md text-white`}
+                  <a href={plan.href}
+                    className={`w-full text-center btn-god-rays py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all bg-black hover:bg-gray-800 hover:shadow-md text-white`}
                   >
                     {plan.cta}
-                  </button>
+                  </a>
               }
             </div>
           ))}

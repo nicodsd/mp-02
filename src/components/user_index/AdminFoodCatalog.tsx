@@ -29,7 +29,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} color={template} />
+                        <RenderCardsOptions foods={foods} template={template} />
                     </div>
                 }
 
@@ -41,7 +41,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                     {foods.length > 0 && isPremium && (
                         <div className="flex justify-between items-end mb-1">
                             <Categories
-                                color={template}
+                                template={template}
                                 foods={foods}
                                 categoriesFoods={initialSubCategories}
                                 selectCategory={(sub: string) => {
@@ -49,14 +49,14 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                                     setDisplayFoods(res);
                                 }}
                             />
-                            <SortPriceButton onSortChange={handleSort} color={template} />
+                            <SortPriceButton onSortChange={handleSort} template={template} />
                         </div>
                     )}
 
                     {displayFoods.length > 0 ? (
-                        <SortableContext arrayFoods={displayFoods} />
+                        <SortableContext arrayFoods={displayFoods} template={template} />
                     ) : (
-                        <p className="text-center text-gray-400 py-10">No hay platos que coincidan.</p>
+                        <p className={`text-center ${template?.textColor} py-10`}>No hay platos que coincidan.</p>
                     )}
                 </div>
                 {foods.filter((f: any) => f.sub_category === "postres").length > 0 &&
@@ -65,7 +65,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods} color={template} />
+                        <RenderCardsOptions foods={foods} template={template} />
                     </div>
                 }
             </div>

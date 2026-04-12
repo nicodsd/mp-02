@@ -10,9 +10,9 @@ import Footer from "@/src/components/land_page/Footer";
 export default function Page() {
   return (
     <>
-      <div className="flex bg-dots relative bg-background-2 flex-col items-center w-full min-h-screen">
+      <div className="flex relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar />
-        <main className="grow rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-6 md:px-14 shadow">
+        <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-6 border-b border-gray-300 md:px-14 md:shadow">
           <Hero />
           <Features />
           <Showcase />
@@ -23,4 +23,4 @@ export default function Page() {
       <Footer />
     </>
   );
-}
+} 

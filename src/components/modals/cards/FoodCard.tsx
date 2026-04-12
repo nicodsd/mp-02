@@ -2,9 +2,11 @@
 import Image from "next/image";
 
 export default function FoodCard({
-    food
+    food,
+    template
 }: {
     food: any;
+    template: any;
 }) {
     function formatearPrecio(precio: number | string) {
         const value = typeof precio === "string" ? Number(precio) : precio;
@@ -17,7 +19,7 @@ export default function FoodCard({
 
     return (
         <div
-            className={`flex w-full overflow-hidden bg-white border border-gray-300 h-20 shadow-sm rounded-lg p-2 items-end`}
+            className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border ${template?.border || "border-gray-200"} h-20 shadow-sm rounded-lg p-2 items-end`}
         >
             <div className="h-full">
                 <Image
@@ -32,7 +34,7 @@ export default function FoodCard({
             </div>
             <div className="flex flex-col relative justify-between items-start pl-2 pt-0.5 w-full h-full">
                 <h2
-                    className={`font-semibold text-gray-700 leading-none`}
+                    className={`font-semibold ${template?.textColor || "text-gray-700"} leading-none`}
                 >
                     {food.name}
                 </h2>
@@ -42,12 +44,12 @@ export default function FoodCard({
                 >
                     {food.is_promo && (
                         <div className="flex flex-col items-end">
-                            <span className="font-bold text-gray-700 oldstyle-nums text-xs md:text-sm line-through decoration-red-600 decoration leading-1">
+                            <span className={`font-bold ${template?.textColor || "text-gray-700"} oldstyle-nums text-xs md:text-sm line-through decoration-red-600 decoration leading-1`}>
                                 {formatearPrecio(food.price)}
                             </span>
 
                             <div className="flex items-center">
-                                <span className="font-black text-red-600 oldstyle-nums text-xl md:text-2xl">
+                                <span className="font-black text-primary oldstyle-nums text-xl md:text-2xl">
                                     {formatearPrecio(food.promo_price)}
                                 </span>
                             </div>
@@ -55,7 +57,7 @@ export default function FoodCard({
                     )}
                     {!food.is_promo && (
                         <div className="flex items-center">
-                            <span className="font-bold text-gray-700 oldstyle-nums text-xl md:text-2xl">
+                            <span className={`font-bold ${template?.textColor || "text-gray-700"} oldstyle-nums text-xl md:text-2xl`}>
                                 {formatearPrecio(food.price)}
                             </span>
                         </div>

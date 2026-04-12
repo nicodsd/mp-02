@@ -4,7 +4,7 @@ const featuresList = [
   {
     icon: <QrCode className="h-6 w-6" />,
     title: "Códigos QR Personalizables",
-    description: "Genera QRs únicos para cada mesa o local. Descárgalos en alta resolución listos para imprimir."
+    description: "Genera QRs únicos. Descárgalos en alta resolución listos para imprimir."
   },
   {
     icon: <Zap className="h-6 w-6" />,

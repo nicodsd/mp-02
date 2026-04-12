@@ -5,33 +5,31 @@ type RenderCardsProps = {
   foods: any[];
   count?: number;
   context?: boolean;
-  color?: string;
   template?: any;
+  example?: boolean;
 };
 export default function RenderCardsOptions({
   foods,
   count,
   context,
-  color,
   template,
+  example,
 }: RenderCardsProps) {
   return (
-    <div className={`w-full flex justify-start overflow-x-scroll p-1 py-2 rounded-xl ${foods.length > 1 ? "bg-background-2" : ""}`}>
+    <div className={`w-full flex justify-start overflow-x-scroll p-1 py-2 rounded-xl ${foods.length > 1 ? `${template?.backgroundColor2 || "bg-background-2"}` : ""}`}>
       {foods.length === 0 ? (
         <Loading count={count ?? 6} />
       ) : (
         foods.map((food) => (
           <div
             key={food._id}
-            className={`${context ? "bg-background-2 rounded-xl" : ""}`}
+            className={`${context ? `${template?.backgroundColor2 || "bg-background-2"} rounded-xl` : ""}`}
           >
             <FoodsCardsOptions
               template={template}
-              name={food.name}
-              photo={food.photo}
-              description={food.description}
-              price={food.price}
+              food={food}
               context={context}
+              example={example}
             />
           </div>
         ))

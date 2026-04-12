@@ -3,10 +3,10 @@ import { useFoodStore } from '@/src/lib/useFoodStore';
 import FoodCard from '@/src/components/modals/cards/FoodCard';
 import { FaWhatsapp, FaPlus, FaMinus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { useCartStore } from '@/src/lib/useCartStore';
+import { useCartStoreExample } from '@/src/lib/useCartStoreExample';
 
-export default function CartModal({ phone, isOpen, onClose, template }: { phone: string, isOpen: boolean; onClose: () => void, template: any }) {
-    const { selectedIds, quantities, removeId, incrementQuantity, decrementQuantity, clearCart } = useCartStore();
+export default function CartModalExample({ isOpen, onClose, template }: { isOpen: boolean; onClose: () => void, template: any }) {
+    const { selectedIds, quantities, removeId, incrementQuantity, decrementQuantity, clearCart } = useCartStoreExample();
     const { foods } = useFoodStore();
 
     function formatearPrecio(precio: number | string) {
@@ -24,7 +24,7 @@ export default function CartModal({ phone, isOpen, onClose, template }: { phone:
     const handleEncargar = (ids: string[]) => {
         if (selectedFoods.length === 0) return;
         const message = `Hola! Quisiera pedirte:\n${selectedFoods.map((food: any) => `${quantities[food._id] || 1}x ${food.name}`).join("\n")} \nMuchas Gracias!`;
-        window.open(`https://wa.me/549${phone}?text=${encodeURIComponent(message)}`, "_blank");
+        window.open(`https://wa.me/5493855349557?text=${encodeURIComponent(message)}`, "_blank");
     }
 
     return (

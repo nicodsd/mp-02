@@ -14,9 +14,10 @@ type RenderCardsProps = {
   count?: number;
   context?: boolean;
   template?: any;
+  example?: boolean;
 };
 
-export default function RenderCards({ foods: initialFoods, count, context, template }: RenderCardsProps) {
+export default function RenderCards({ foods: initialFoods, count, context, template, example }: RenderCardsProps) {
   const { foods, setFoods, removeFoodLocal } = useFoodStore();
 
   const [selectedFood, setSelectedFood] = useState<any>(null);
@@ -74,13 +75,12 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
         foods.map((food: any) => (
           <div
             key={food._id}
-            className={`flex justify-between items-center rounded-xl transition-shadow
-              ${template?.primaryColor} 
-              ${context ? "border border-gray-200 overflow-hidden min-h-34 h-fit" : ""
+            className={`flex justify-between items-center rounded-xl transition-shadow ${template?.backgroundColor || "bg-background"} 
+              ${context ? `border ${template?.border || "border-gray-200"} overflow-hidden min-h-34 h-fit` : ""
               }`}
           >
             <div className="w-full h-full">
-              <FoodsCardsExample {...food} />
+              <FoodsCardsExample example={example} {...food} template={template} />
             </div>
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">
@@ -123,6 +123,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
 
       {selectedFood && (
         <EditFoodModal
+          template={template}
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           food={selectedFood}

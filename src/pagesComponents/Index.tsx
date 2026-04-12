@@ -7,6 +7,7 @@ import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
 import SearchModal from "@/src/components/modals/SearchModal";
 import template from "@/src/data/templates.json";
+import BellExample from "@/src/components/buttons/BellExample";
 
 export default function Inicio() {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +23,6 @@ export default function Inicio() {
     }
   };
 
-  console.log(template)
   return (
     <main className="w-full relative p-3 md:p-0 md:py-6 h-full">
       <SearchModal
@@ -43,9 +43,10 @@ export default function Inicio() {
         />
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-8 pt-4">
-          <OffersSection foods={foodsData} />
+          <OffersSection template={template} foods={foodsData} />
 
           <FoodCatalog
+            example={true}
             template={template}
             allFoods={foodsData}
             initialSubCategories={subCategoriesData}
@@ -54,6 +55,7 @@ export default function Inicio() {
         </section>
 
       </article>
+      <BellExample template={template} />
     </main>
   );
 }

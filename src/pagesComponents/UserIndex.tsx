@@ -5,9 +5,8 @@ import SearchModal from "@/src/components/modals/SearchModal";
 import AdminOffers from "@/src/components/user_index/AdminOffers";
 import AdminFoodCatalog from "@/src/components/user_index/AdminFoodCatalog";
 import AddDishButton from "@/src/components/user_index/AddDishButton";
-import templates from "@/src/data/templates.json";
 
-export default function UserIndex({ foods, initialSubCategories, user }: any) {
+export default function UserIndex({ foods, initialSubCategories, user, template }: any) {
   const [filteredFoods, setFilteredFoods] = useState(foods);
 
   const [showModal, setShowModal] = useState(false);
@@ -23,13 +22,8 @@ export default function UserIndex({ foods, initialSubCategories, user }: any) {
     }
   };
 
-  const template = templates.find((t) => t.template_id === user.template_id);
-  const backgroundColor = template?.primaryColor || ""
-  const accentColor1 = template?.accentColors[0] || ""
-  const accentColor2 = template?.accentColors[1] || ""
-  const accentColor3 = template?.accentColors[2] || ""
   return (
-    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${backgroundColor}`}>
+    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.backgroundColor}`}>
       <SearchModal
         arrayFoods={filteredFoods}
         setSearch={handleSearch}
@@ -47,7 +41,7 @@ export default function UserIndex({ foods, initialSubCategories, user }: any) {
         />
 
         <section className="flex flex-col gap-3">
-          <AdminOffers foods={foods} />
+          <AdminOffers foods={foods} template={template} />
         </section>
 
         <section className="flex h-fit flex-col gap-2 pt-4 pb-10">
@@ -58,7 +52,7 @@ export default function UserIndex({ foods, initialSubCategories, user }: any) {
             user={user}
             template={template}
           />
-          <AddDishButton />
+          <AddDishButton template={template} />
         </section>
       </article>
     </main>
