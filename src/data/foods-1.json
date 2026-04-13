@@ -9,7 +9,7 @@
         "is_promo": true,
         "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/R.webp",
-        "allergens" : "gluten, dairy"
+        "allergens": "gluten, dairy"
     },
     {
         "_id": 2,
@@ -21,7 +21,7 @@
         "is_promo": false,
         "sub_category": "Hamburguesas",
         "photo": "/images/foods/burguers/OIP.webp",
-        "allergens" : "gluten, dairy, egg"
+        "allergens": "gluten, dairy, egg"
     },
     {
         "_id": 3,
@@ -33,7 +33,7 @@
         "is_promo": true,
         "sub_category": "Pizzas",
         "photo": "/images/foods/pizzas/pizza.webp",
-        "allergens" : "gluten, dairy"
+        "allergens": "gluten, dairy"
     },
     {
         "_id": 4,
@@ -45,19 +45,19 @@
         "is_promo": false,
         "sub_category": "Picadas",
         "photo": "/images/foods/picadas/5e997e650c7b6.jpeg",
-        "allergens" : "dairy, fish, egg"
+        "allergens": "dairy, fish, egg"
     },
     {
         "_id": 5,
         "name": "Sushi Roll",
         "description": "Rollos de sushi rellenos de salmón y aguacate.",
         "price": 9500,
-        "category": "Entradas",    
+        "category": "Entradas",
         "promo_price": 8000,
         "is_promo": true,
         "sub_category": "Sushi",
         "photo": "/images/foods/picadas/R.jpeg",
-        "allergens" : "fish, soy, sesame"
+        "allergens": "fish, soy, sesame"
     },
     {
         "_id": 6,
@@ -69,7 +69,7 @@
         "is_promo": false,
         "sub_category": "Tacos",
         "photo": "/images/foods/tacos/OIP.webp",
-        "allergens" : "gluten"
+        "allergens": "gluten"
     },
     {
         "_id": 7,
@@ -81,7 +81,7 @@
         "is_promo": false,
         "sub_category": "Picadas",
         "photo": "/images/foods/picadas/1571779987281.jpeg",
-        "allergens" : "dairy, fish, egg"
+        "allergens": "dairy, fish, egg"
     },
     {
         "_id": 8,
@@ -93,7 +93,7 @@
         "is_promo": false,
         "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/batidos/OIP.webp",
-        "allergens" : "dairy"
+        "allergens": "dairy"
     },
     {
         "_id": 9,
@@ -105,7 +105,7 @@
         "is_promo": false,
         "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/infusiones/jugo-de-limon-con-menta.webp",
-        "allergens" : "dairy"
+        "allergens": "dairy"
     },
     {
         "_id": 10,
@@ -117,7 +117,7 @@
         "is_promo": false,
         "sub_category": "Postres",
         "photo": "/images/foods/postres/R.jpeg",
-        "allergens" : "dairy"
+        "allergens": "dairy"
     },
     {
         "_id": 11,
@@ -129,7 +129,7 @@
         "is_promo": false,
         "sub_category": "Gaseosas",
         "photo": "/images/foods/bebidas/gaseosas/vaso-cola.avif",
-        "allergens" : "dairy"
+        "allergens": "dairy"
     },
     {
         "_id": 12,
@@ -141,6 +141,42 @@
         "category": "Bebidas",
         "sub_category": "Bebidas",
         "photo": "/images/foods/bebidas/vaso-de-agua-mineral.webp",
-        "allergens" : "dairy"
+        "allergens": "dairy"
+    },
+    {
+        "_id": 13,
+        "name": "Helado de vainilla",
+        "description": "Postre helado con tres bochas de vainilla y jarabe a elección.",
+        "price": 2000,
+        "category": "Postres",
+        "promo_price": 0,
+        "is_promo": false,
+        "sub_category": "Postres",
+        "photo": "/images/foods/postres/helado-de-vainilla.webp",
+        "allergens": "dairy"
+    },
+    {
+        "_id": 14,
+        "name": "Flan con dulce de leche",
+        "description": "Postre de flan con agregado de dulce de leche",
+        "price": 3000,
+        "category": "Postres",
+        "promo_price": 0,
+        "is_promo": false,
+        "sub_category": "Postres",
+        "photo": "/images/foods/postres/fl.webp",
+        "allergens": "dairy"
+    },
+    {
+        "_id": 15,
+        "name": "Tarta de banana y dulce de leche",
+        "description": "Postre italiano con queso y café.",
+        "price": 5000,
+        "category": "Postres",
+        "promo_price": 0,
+        "is_promo": false,
+        "sub_category": "Postres",
+        "photo": "/images/foods/postres/tarta-de-banana.webp",
+        "allergens": "dairy"
     }
 ]

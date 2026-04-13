@@ -45,7 +45,7 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
-          router.push("/ejemplo");
+          router.push("/mi-menu");
         } else {
           setAlreadyLoggedIn(data.alreadyLoggedIn);
           setServerError(data.message || "Error de credenciales");

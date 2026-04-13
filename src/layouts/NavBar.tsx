@@ -217,7 +217,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
                 className="flex items-center gap-1 border-l border-white/50 pl-2 ml-0"
               >
                 {social.icon}
-                {social.val}
+                {social.val || (!user && "@QMENU")}
               </span>
             ))}
         </div>

@@ -62,26 +62,28 @@ export default function Footer({ template }: { template: any }) {
     </div> */}
 
       {/* Línea inferior */}
-      <div className={`flex flex-col items-center justify-center text-center ${template?.textColor || "text-gray-700"} min-h-[200px] text-xs ${template?.backgroundColor2 || "bg-background-2"}`}>
-        <div className={`flex justify-center flex-col items-center gap-2 ${template?.textColor || "text-gray-700"}`}>
-          <p className="text-sm mb-2">Creá tu menú con QMenu.</p>
-          <BotonAccion color="primary" textColor="white" />
+      <div className={`flex flex-col items-start justify-end pb-4 border ${template?.border || "border-gray-200"}  text-start ${template?.textColor || "text-gray-700"} min-h-[160px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs ${template?.backgroundColor2 || "bg-background"}`}>
+        <div className="flex items-center text-black gap-2">
+          <span>Crea tu cuenta gratis.</span>
+          <a href="https://qmenu.digital/registro-de-usuario" target="_blank" rel="noopener noreferrer" className={`flex font-bold justify-center flex-col items-center ${template?.backgroundColor || "bg-transparent"} ${template?.backgroundColorHover || "hover:bg-primary-hover"}  rounded-md ${template?.textColor || "text-black"}`}>
+            ¡Probar Ahora!
+          </a>
         </div>
 
-        <p className={`mt-10 ${template?.textColor || "text-gray-700"}`}>
-          © {new Date().getFullYear()} QMenu. Todos los derechos reservados.
-        </p>
-        <p>
+        <div className={`mt-4 ${template?.textColor || "text-gray-500"}`}>
+          <p>
+            © {new Date().getFullYear()} QMenú. Todos los derechos reservados.
+          </p>
           Por{" "}
           <a
-            className="font-bold"
-            href="https://github.com/yourusername"
+            className="font-semibold"
+            href="https://github.com/nicodsd"
             target="_blank"
             rel="noopener noreferrer"
           >
             Nico Barrera
           </a>
-        </p>
+        </div>
       </div>
     </footer>
   );

@@ -24,7 +24,7 @@ const SearchInput = ({ placeholder = 'Busca tu comida...', setSearch, setShowMod
                 placeholder={placeholder}
                 value={localQuery}
                 onChange={handleChange}
-                className={`pl-10 pr-2 py-3 border ${template?.border || "border-gray-300"} placeholder:text-${template?.accentColors[0]} ${template?.textColor} rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full`}
+                className={`pl-10 pr-2 py-3 border ${template?.border || "border-gray-300"} placeholder:text-${template?.accentColors?.[0]} ${template?.textColor} rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full`}
             />
             <FaSearch className={`absolute left-3 ${template?.icons || "text-gray-700"}`} />
         </div>

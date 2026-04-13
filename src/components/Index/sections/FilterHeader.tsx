@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 
 export default function FilterHeader({ foods, onSearch, onOpenModal, template }: any) {
     return (
-        <header className={`${template?.backgroundColor || "bg-background"} rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20`}>
+        <div className={`${template?.backgroundColor || "bg-background"} rounded-2xl px-2 py-2 w-full shadow-md sticky top-13 z-20`}>
             <div onClick={() => onOpenModal(true)} className="relative flex items-center w-full">
                 <input
                     type="search"
@@ -11,6 +11,6 @@ export default function FilterHeader({ foods, onSearch, onOpenModal, template }:
                 />
                 <FaSearch className={`absolute left-3 ${template?.icons || "text-primary"}`} />
             </div>
-        </header>
+        </div>
     );
 }
