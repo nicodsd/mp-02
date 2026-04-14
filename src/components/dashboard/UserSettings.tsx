@@ -17,8 +17,7 @@ import {
   FaSpinner,
 } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
-
-const URI = process.env.NEXT_PUBLIC_API_URL;
+import { URI } from "@/src/lib/const";
 
 const UserSettings = ({ user }: { user: any }) => {
   const router = useRouter();
@@ -161,7 +160,7 @@ const UserSettings = ({ user }: { user: any }) => {
         className="flex w-full mt-3 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
         <div className="w-full px-3 flex flex-col">
-          <div className="flex justify-center md:justify-start gap-6 mb-4 pb-6">
+          <div className="flex justify-around md:justify-start gap-3 mb-4 pb-6">
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
               <div className="w-30 h-30 relative rounded-full overflow-hidden">
@@ -174,7 +173,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"
@@ -201,7 +200,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000070] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"

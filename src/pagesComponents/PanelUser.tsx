@@ -2,6 +2,7 @@
 import { useState, Fragment } from "react";
 import Image from "next/image";
 import { logotipo } from "@/src/lib/const";
+import { URI } from "@/src/lib/const";
 import {
   Tab,
   TabPanel,
@@ -29,15 +30,16 @@ import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
-const URI = process.env.NEXT_PUBLIC_API_URL;
 export default function PanelUser({
   user,
   token,
   foods,
+  template,
 }: {
   user: any;
   token: string;
   foods: any[];
+  template: any;
 }) {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -184,7 +186,7 @@ export default function PanelUser({
                     <UserSettings user={user} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
-                    <MenuItems dataFoods={foods} />
+                    <MenuItems dataFoods={foods} template={template} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
                     <ConfigureMenu user={user.id} />
