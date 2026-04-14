@@ -109,7 +109,7 @@ export default function Register() {
         setApiError(data.error || "Ocurrió un error al registrarse.");
         return;
       }
-      router.push("/ejemplo");
+      router.push("/mi-menu");
     } catch (err) {
       setApiError("Error de conexión. Intente nuevamente.");
     }

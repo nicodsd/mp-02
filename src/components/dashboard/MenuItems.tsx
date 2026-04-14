@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import SearchInput from "@/src/components/Index/filters/Search";
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 import RenderSortCards from "../user_index/user_sections/RenderSortCards";
-export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
+export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template: any }) {
   const [arrayFoods, setarrayFoods] = useState(dataFoods);
   function setSearch(query: string) {
     if (query.length > 1) {
@@ -42,7 +42,7 @@ export function MenuItems({ dataFoods }: { dataFoods: any[] }) {
           <AddFoodBttn state={false} />
         </div>
         <div className="flex w-full">
-          <RenderSortCards foods={arrayFoods} count={4} context={true} />
+          <RenderSortCards template={template} foods={arrayFoods} count={4} context={true} />
         </div>
       </div>
     </div>

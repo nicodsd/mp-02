@@ -89,7 +89,6 @@ function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onTog
 
 export default function RenderSortCards({ foods: initialFoods, count, context, template }: any) {
     const { foods, setFoods, removeFoodLocal, reorderFoods } = useFoodStore();
-    console.log(template)
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 

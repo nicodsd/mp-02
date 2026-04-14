@@ -39,7 +39,7 @@ export default function Inicio() {
           foods={filteredFoods}
           template={template}
           onSearch={handleSearch}
-          onOpenModal={() => setShowModal(true)}
+          onOpenModal={setShowModal}
         />
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-8 pt-4">

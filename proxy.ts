@@ -36,7 +36,7 @@ export function proxy(req: NextRequest) {
         const token = req.cookies.get("token")?.value;
         const user = req.cookies.get("user")?.value;
         if (token || user) {
-            return NextResponse.redirect(new URL("/ejemplo", req.url));
+            return NextResponse.redirect(new URL("/mi-menu", req.url));
         }
     }
 

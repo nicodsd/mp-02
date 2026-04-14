@@ -5,9 +5,8 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <div id="inicio" className="relative border-b border-gray-300 w-full pt-32 pb-16 md:pt-50 lg:pb-20 overflow-hidden">
+    <div id="inicio" className="relative border-b border-gray-300 w-full pt-32 pb-16 overflow-hidden">
       <div className="relative flex flex-col md:flex-row md:grid md:grid-cols-2 items-center md:items-end justify-between z-10">
-        {/* Alineación central en móvil, izquierda en desktop */}
         <div className="text-start w-full z-10 flex md:pb-5 flex-col items-start md:items-start">
           <div className='w-full flex items-center justify-center'>
             <Image
@@ -19,15 +18,14 @@ export default function Hero() {
               priority
             />
           </div>
-          {/* Tamaño de fuente fluido: text-4xl en móvil, 7xl en desktop */}
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-[#B10000] tracking-tight leading-none mb-6 md:mb-8">
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-primary leading-none mb-6 md:mb-8">
             tu menú
             <br className="block" />
             en el móvil
             <br className="block" />
             <span className='text-5xl sm:text-6xl leading-none md:text-6xl font-black' style={{
               lineHeight: "1.1",
-              background: "linear-gradient(90deg, #BE0000 0%, #FF2020 50%, #FF8800 100%)",
+              background: "linear-gradient(90deg, #FF1E00 0%, #FF2020 50%, #FF8800 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}>
@@ -35,7 +33,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <p className="max-w-2xl sm:w-[60%] text-base md:text-lg text-stone-600 leading-relaxed font-medium mb-8 md:mb-10">
+          <p className="max-w-2xl sm:w-[60%] text-base md:text-lg text-gray-700 leading-relaxed font-medium mb-8 md:mb-10">
             Sube tus platos, actualiza precios en tiempo real y genera tu código QR en minutos. Moderniza la experiencia de tu restaurante.
           </p>
 
@@ -45,8 +43,8 @@ export default function Hero() {
               Crea tu Menú
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="/ejemplo" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white hover:bg-bone-50 text-stone-700 px-4 py-3 rounded-lg font-semibold text-md tracking-tight border border-bone-300 transition-all hover:-translate-y-1">
-              <Smartphone className="h-5 w-5 text-stone-500" />
+            <a href="/ejemplo" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white px-4 py-3 rounded-lg font-semibold text-md tracking-tight border border-gray-300 transition-all hover:-translate-y-1">
+              <Smartphone className="h-5 w-5 text-white" />
               Ver Ejemplo
             </a>
           </div>
@@ -60,12 +58,6 @@ export default function Hero() {
             height={1080}
             priority
           />
-          <div className='absolute bottom-0 -right-60 w-200 h-200 z-0 rounded-full border-10 border-red-900/5'></div>
-          <div className='absolute -bottom-10 -right-50 w-170 h-170 z-0 rounded-full border-10 border-red-900/5'></div>
-          <div className='absolute -bottom-20 -right-40 w-130 h-130 z-0 rounded-full border-10 border-red-900/5'></div>
-          <div className='absolute -bottom-30 -right-30 w-100 h-100 z-0 rounded-full border-10 border-red-900/5'></div>
-          <div className='absolute -bottom-40 -right-20 w-70 h-70 z-0 rounded-full border-10 border-red-900/5'></div>
-          <div className='absolute -bottom-50 -right-10 w-40 h-40 z-0 rounded-full border-10 border-red-900/5'></div>
         </div>
       </div>
     </div>

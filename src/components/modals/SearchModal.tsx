@@ -43,7 +43,7 @@ export default function SearchModal({ arrayFoods, setSearch, setShowModal, showM
                     />
                 </div>
 
-                {query.length > 0 && (
+                {query?.length > 0 && (
                     <div className='flex-1 mt-4 overflow-y-auto pb-20'>
                         <RenderCards
                             foods={filteredFoods}

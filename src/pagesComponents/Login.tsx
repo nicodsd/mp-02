@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
 
 export default function LoginPage() {
   const router = useRouter();
-  const [serverError, setServerError] = useState<string | null>(null);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [alreadyLoggedIn, setAlreadyLoggedIn] = useState<boolean>(false);
   const formik = useFormik({
     initialValues: {
@@ -30,7 +30,7 @@ export default function LoginPage() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setServerError(null);
+      setServerMessage(null);
       const formData = new FormData();
       formData.append("email", values.email);
       formData.append("password", values.password);
@@ -45,16 +45,33 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
-          router.push("/ejemplo");
+          router.push("/mi-menu");
         } else {
-          setAlreadyLoggedIn(data.alreadyLoggedIn);
-          setServerError(data.message || "Error de credenciales");
+          if (data.alreadyLoggedIn) {
+            setAlreadyLoggedIn(true);
+            setServerMessage(data.message || "Error de credenciales");
+          } else {
+            setServerMessage(data.message || "Error de credenciales");
+          }
         }
       } catch (error) {
-        setServerError("Error de conexión");
+        setServerMessage("Error de conexión");
       }
     },
   });
+
+  useEffect(() => {
+    if (serverMessage) {
+      outNotification();
+    }
+  }, [serverMessage]);
+
+  const outNotification = () => {
+    setTimeout(() => {
+      setServerMessage(null);
+      setAlreadyLoggedIn(false);
+    }, 8000);
+  }
 
   const handleLogin = async () => {
     try {
@@ -66,13 +83,15 @@ export default function LoginPage() {
         credentials: "include",
         body: JSON.stringify({ is_online: true }),
       });
+      const data = await res.json();
       if (res.status === 200) {
-        setServerError(null);
+        setServerMessage(data.message);
+        setAlreadyLoggedIn(false);
         router.refresh();
       }
     } catch (error) {
       console.log(error);
-      setServerError("Error de conexión");
+      setServerMessage("Error de conexión");
     }
   };
 
@@ -82,16 +101,16 @@ export default function LoginPage() {
         <div className="w-full py-3 z-10">
           <BttnBack />
         </div>
-        {serverError && (
-          <div className="p-4 fixed top-10 z-100 left-0 right-0 w-full text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
-            {serverError} {
+        {serverMessage && (
+          <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${serverMessage === "Error de conexión" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "border-red-500" : "border-green-500"} ${serverMessage === "Error de conexión" ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 ${alreadyLoggedIn && "text-orange-600"} ${alreadyLoggedIn && "bg-orange-50"} ${alreadyLoggedIn && "border-orange-300"} rounded-xl`}>
+            {serverMessage} {
               alreadyLoggedIn && (
-                <button onClick={() => { handleLogin() }} className="text-blue-600 font-bold hover:underline cursor-pointer">Iniciar Sesión</button>
+                <button onClick={() => { handleLogin() }} className="text-blue-600 font-bold hover:underline ml-1 cursor-pointer uppercase">Cerrar Sesión</button>
               )
             }
           </div>
         )}
-        <main className="flex-1 flex flex-col items-end justify-start mt-15">
+        <main className="flex-1 flex flex-col items-end justify-start mt-20">
           <div className="w-full py-8 rounded-3xl border border-gray-300 pt-14 relative mt-2">
             <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
               <div className="w-24 h-24 rounded-full bg-primary ring-1 border-7 border-white ring-gray-300 flex items-center justify-center">
@@ -107,7 +126,7 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="text-start mb-5 px-5">
-              <h1 className="text-card-700 text-3xl leading-none font-extrabold tracking-tight">
+              <h1 className="text-gray-700 text-3xl leading-none font-extrabold tracking-tight">
                 ¡Hola! <br />
               </h1>
               <p className="text-gray-600 text-sm font-semibold">
@@ -116,7 +135,7 @@ export default function LoginPage() {
             </div>
 
             <form onSubmit={formik.handleSubmit} className="space-y-8">
-              <div className="px-5">
+              <div className="px-3">
 
                 <div className="relative">
                   <input
@@ -166,9 +185,9 @@ export default function LoginPage() {
               <div className="border-t border-gray-300 pt-4 px-5">
                 <button
                   type="submit"
-                  disabled={formik.isSubmitting}
-                  className={`w-full bg-primary text-white cursor-pointer font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting
-                    ? "opacity-50"
+                  disabled={formik.isSubmitting || alreadyLoggedIn}
+                  className={`w-full bg-primary text-white cursor-pointer font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting || alreadyLoggedIn
+                    ? "opacity-50 disabled:cursor-not-allowed"
                     : "hover:bg-[#d00000] active:scale-[0.98]"
                     }`}
                 >
