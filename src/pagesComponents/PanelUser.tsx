@@ -48,9 +48,16 @@ export default function PanelUser({
   const handleLogout = async () => {
     await fetch(`${URI}auth/signout`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
+      body: JSON.stringify({ user_id: user._id }),
     })
-      .then((res) => res.ok && router.push("/"))
+      .then((res) => {
+        console.log(res);
+        res.ok && router.push("/")
+      })
       .catch((err) => console.error("Error", err));
   };
 

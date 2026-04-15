@@ -40,7 +40,7 @@ export function proxy(req: NextRequest) {
         }
     }
 
-    const protectedRoutes = ["/panel-de-usuario", "/nuevo-plato"];
+    const protectedRoutes = ["/panel-de-usuario", "/nuevo-plato", "/mi-menu"];
     if (protectedRoutes.some((path) => req.nextUrl.pathname.startsWith(path))) {
         const token = req.cookies.get("token")?.value;
         const user = req.cookies.get("user")?.value;
@@ -51,5 +51,5 @@ export function proxy(req: NextRequest) {
     return res;
 }
 export const config = {
-    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*", "/iniciar-sesion", "/"],
+    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*", "/iniciar-sesion", "/", "/mi-menu"],
 };

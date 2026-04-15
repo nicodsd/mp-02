@@ -50,8 +50,9 @@ export default function LoginPage() {
           if (data.alreadyLoggedIn) {
             setAlreadyLoggedIn(true);
             setServerMessage(data.message || "Error de credenciales");
-          } else {
-            setServerMessage(data.message || "Error de credenciales");
+          }
+          if (data.success === false) {
+            setServerMessage(data.message);
           }
         }
       } catch (error) {
