@@ -12,6 +12,7 @@ export async function refreshPage() {
     // Server Component vuelva a ejecutarse y mande la data nueva al cliente
     revalidatePath('/dashboard', 'page');
     revalidatePath('/', 'layout');
+    revalidatePath('/panel-de-usuario', 'page');
 }
 
 export async function setAuthCookie(token: string) {
@@ -69,7 +70,7 @@ export async function logout() {
     const cookieStore = await cookies();
     cookieStore.delete("token");
     cookieStore.delete("user");
-    redirect("/");
+    return { success: true };
 }
 
 export async function updateTemplate(templateId: string) {
