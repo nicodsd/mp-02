@@ -160,10 +160,10 @@ const UserSettings = ({ user }: { user: any }) => {
         className="flex w-full mt-3 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
         <div className="w-full px-3 flex flex-col">
-          <div className="flex justify-around md:justify-start gap-3 mb-4 pb-6">
+          <div className="flex justify-around md:justify-start gap-2 md:gap-4 mb-4 pb-6">
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
-              <div className="w-30 h-30 relative rounded-full overflow-hidden">
+              <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
                 <Image
                   src={previewPhoto}
                   alt="Profile"
@@ -173,7 +173,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"
@@ -190,7 +190,7 @@ const UserSettings = ({ user }: { user: any }) => {
 
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Fondo</h3>
-              <div className="w-50 h-30 relative rounded-lg overflow-hidden">
+              <div className="w-45 md:w-60 h-30 md:h-40 relative rounded-lg overflow-hidden">
                 <Image
                   src={previewBackground || placeholder}
                   alt="background"
@@ -200,7 +200,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   loading="eager"
                   className="object-cover w-full h-full"
                 />
-                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                   <input
                     type="file"
                     accept="image/*"
@@ -249,7 +249,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("name")}
-                    className="text-xs font-bold text-blue-500"
+                    className="text-xs font-bold active:text-gray-900 transition-all text-gray-500"
                   >
                     Editar
                   </button>
@@ -288,7 +288,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("description")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.description ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.description ? "Agregar" : "Editar"}
                   </button>
@@ -328,7 +328,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("location")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.location ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.location ? "Agregar" : "Editar"}
                   </button>
@@ -367,7 +367,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("phone")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.phone ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.phone ? "Agregar" : "Editar"}
                   </button>
@@ -406,7 +406,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("instagram")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.instagram ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.instagram ? "Agregar" : "Editar"}
                   </button>
@@ -445,7 +445,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("facebook")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.facebook ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.facebook ? "Agregar" : "Editar"}
                   </button>
@@ -484,7 +484,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <button
                     type="button"
                     onClick={() => toggleEdit("tiktok")}
-                    className="text-xs font-bold text-blue-500"
+                    className={`text-xs font-bold ${!user.tiktok ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user.tiktok ? "Agregar" : "Editar"}
                   </button>
@@ -532,9 +532,9 @@ const UserSettings = ({ user }: { user: any }) => {
         )}
       </form>
       <div className="w-full mt-7 px-3 flex flex-col gap-1">
-        <h2 className="text-xl font-bold text-gray-800">Tu código QR</h2>
+        <h2 className="text-xl font-bold text-gray-800">Personaliza y Comparte</h2>
         <span className="text-gray-500 text-sm">
-          Escanea el código QR para acceder a tu perfil
+          Comparte el código QR para acceder a tu menú, o tambien puedes copiar el enlace para compartir en tus redes sociales.
         </span>
         <div className="w-full flex mt-5 justify-center">
           <QrCode name={name} logoUrl={previewPhoto} />

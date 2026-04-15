@@ -185,7 +185,7 @@ export default function PanelUser({
                   ))}
                   <button
                     onClick={handleLogout}
-                    className="mt-10 flex items-center gap-3 w-full text-red-500 border border-red-200 hover:bg-red-50 p-3.5 rounded-xl transition-colors font-bold"
+                    className="mt-10 flex items-center active:bg-red-500 active:text-white active:scale-90 gap-3 w-full text-red-500 border border-red-200 hover:bg-red-50 p-3.5 rounded-xl transition-colors font-bold"
                   >
                     <HiOutlineLogout size={20} /> Cerrar Sesión
                   </button>

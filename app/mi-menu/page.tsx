@@ -36,7 +36,7 @@ export default async function Page() {
     }
 
     const userNameFormatted = user?.name
-        ? user.name.toLowerCase().replace(/\s/g, "-")
+        ? user.name.replace(/\s/g, "-")
         : "qmenu";
     const template = templates.find((t) => t.template_id === user?.template_id);
 

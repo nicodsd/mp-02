@@ -40,9 +40,7 @@ export default function UserIndex({ foods, initialSubCategories, user, template 
           template={template}
         />
 
-        <section className="flex flex-col gap-3">
-          <AdminOffers foods={foods} template={template} />
-        </section>
+        <AdminOffers foods={foods} template={template} />
 
         <section className="flex h-fit flex-col gap-2 pt-4 pb-10">
 
