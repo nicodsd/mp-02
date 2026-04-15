@@ -75,21 +75,22 @@ export default function BottomNavigation({
       <QrModalsGenerator
         name={name}
         logoUrl={logoUrl}
+        template={template}
         isOpen={isOpen}
         openModal={() => setIsOpen(false)}
       />
-      <div className={`fixed bottom-0 inset-x-0 ${template?.backgroundColor2} border-t border-${template?.border} pb-2 z-50`}>
+      <div className={`fixed bottom-0 inset-x-0 ${template?.backgroundColor2} pb-2 z-50`}>
         <div className="flex justify-around items-center h-16 max-w-md mx-auto">
           {navItems.map((item, index) => (
             <button
               key={index}
               onClick={item.action}
-              className="flex flex-col cursor-pointer items-center justify-center flex-1 h-full gap-1 group active:scale-95 transition-transform"
+              className="flex flex-col cursor-pointer items-center justify-center flex-1 h-full gap-1.5 group active:scale-95 transition-transform"
             >
               <div className={`${template?.textColor} group-hover:${template?.textColor2} group-active:${template?.textColor2} transition-colors`}>
                 {item.icon}
               </div>
-              <span className={`text-[10px] font-bold ${template?.textColor} group-hover:${template?.textColor2} uppercase tracking-tighter leading-none`}>
+              <span className={`text-[10px] font-semibold ${template?.textColor} group-hover:${template?.textColor2} uppercase tracking-tighter leading-none`}>
                 {item.label}
               </span>
             </button>

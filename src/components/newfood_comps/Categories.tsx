@@ -91,7 +91,7 @@ export default function CategoriesForm({
           {allCategories.map((item) => (
             <label
               key={item._id}
-              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-semibold transition flex items-center
+              className={`cursor-pointer px-3 py-1.5 rounded-full border text-sm font-semibold transition flex items-center
               ${selected.includes(item.name)
                   ? "bg-indigo-600 text-white border-indigo-600 shadow-md"
                   : "bg-gray-100 text-gray-500 border-gray-300 hover:border-gray-400"
@@ -111,8 +111,8 @@ export default function CategoriesForm({
       )}
 
       {/* Contenedor para nuevas categorías */}
-      <section className="flex w-full shadow-sm flex-col gap-y-4 bg-white border border-gray-300 min-h-[100px] rounded-xl p-3 py-5">
-        <h3 className="font-bold text-xs text-gray-400 uppercase tracking-wider">
+      <section className="flex w-full flex-col gap-y-4 bg-white border border-gray-300 min-h-[100px] rounded-xl px-3 py-3">
+        <h3 className="font-bold text-xs text-gray-500 uppercase tracking-wider">
           Nuevas categorías personalizadas
         </h3>
 
@@ -135,21 +135,21 @@ export default function CategoriesForm({
           ))}
         </div>
 
-        {/* Input con mejor semántica */}
         <div className="mt-auto pt-4 border-t border-gray-100">
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-1 items-center">
             <input
               type="text"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddCategory(e as any))}
-              placeholder="Ej: Pizza a la piedra"
-              className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+              placeholder="Ej: Bebidas"
+              className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
             />
             <button
               type="button"
+              disabled={!newCategory.trim()}
               onClick={handleAddCategory}
-              className="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 active:scale-95 transition-all"
+              className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 active:scale-95 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Agregar
             </button>

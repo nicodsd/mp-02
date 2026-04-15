@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { NEXT_PUBLIC_URL } from "@/src/lib/const";
-import { Download, Check } from "lucide-react";
+import { Download, Check, ExternalLink, Copy } from "lucide-react";
 
 interface QrButtonProps {
   name: string;
@@ -10,7 +10,7 @@ interface QrButtonProps {
 }
 
 const TEMPLATES = [
-  { id: 1, name: "Clásico", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
+  { id: 1, name: "", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
   { id: 2, name: "Noche", bg: "#1a1a1a", fg: "#ffffff", accent: "#333333" },
   { id: 3, name: "Sunset", bg: "#ff5f6d", fg: "#ffffff", accent: "#ffc371" },
   { id: 4, name: "Bosque", bg: "#004d40", fg: "#e0f2f1", accent: "#00695c" },
@@ -21,7 +21,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(name.replace(" ", "-")).toLowerCase()}`;
+  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(name.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -123,7 +123,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
 
   return (
     <div className="flex items-center w-full justify-center">
-      <div className="rounded-2xl border-[0.1px] bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
+      <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-6 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
           style={{ backgroundColor: selectedTemplate.bg }}
@@ -179,25 +179,32 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           ))}
         </div>
 
-        <div className="bg-slate-50 p-2 rounded-lg flex items-center gap-2 mb-4 border border-slate-200">
+        <span className="text-[11px] w-full text-right text-slate-700 mb-1">Copiar Enlace</span>
+        <div className="gap-2 rounded-lg p-2 w-full flex items-center mb-4 bg-white border border-slate-200">
           <p className="text-[11px] text-slate-700 truncate text-left flex-1 font-mono">
             {url}
           </p>
           <button
             onClick={handleCopyUrl}
-            className={`px-3 py-1.5 min-w-16 rounded-md text-[10px] font-bold transition-colors ${copied
+            className={`px-3 py-2 rounded-md w-fit justify-center text-[10px] min-h-9 font-bold transition-colors ${copied
               ? "bg-green-500 text-white"
               : "bg-blue-600 text-white hover:bg-blue-700"
               }`}
           >
-            {copied ? "¡Listo!" : "Copiar"}
+            {copied ? <Check size={20} /> : <Copy size={20} />}
           </button>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
+          <a
+            href={url}
+            className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all active:scale-95 shadow-lg"
+          >
+            <ExternalLink className="w-5 h-5 mr-2" /> Visitar
+          </a>
           <button
             onClick={handleDownload}
-            className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
+            className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
           >
             <Download className="w-5 h-5 mr-2" />
             Descargar tu QR {selectedTemplate.name}

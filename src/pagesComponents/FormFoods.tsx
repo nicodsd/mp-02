@@ -83,9 +83,9 @@ export default function FormFoods({
     <form
       encType="multipart/form-data"
       onSubmit={postFood}
-      className="min-h-screen flex flex-col w-full bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 font-sans antialiased"
+      className="min-h-screen flex flex-col w-full bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 antialiased"
     >
-      <div className="px-5 md:w-[25vw] w-full mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
+      <div className="px-3 md:w-[25vw] w-full mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
 
         <div className="flex flex-col items-center gap-4 relative">
           <div className="w-48 h-48 rounded-3xl flex items-center justify-center shadow-inner border border-gray-400 relative overflow-hidden group">
@@ -147,14 +147,14 @@ export default function FormFoods({
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1">
             <label
-              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
               htmlFor="name"
             >
               Nombre
             </label>
             <input
               id="name"
-              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
               placeholder="Ej: Milanesa con papas"
               type="text"
               value={name}
@@ -165,14 +165,14 @@ export default function FormFoods({
 
           <div className="flex flex-col gap-1">
             <label
-              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
               htmlFor="description"
             >
               Descripción
             </label>
             <textarea
               id="description"
-              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm resize-none"
+              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
               placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
               rows={3}
               value={description}
@@ -183,7 +183,7 @@ export default function FormFoods({
 
           <div className="flex flex-col gap-1">
             <label
-              className="font-semibold text-gray-600 dark:text-gray-800 ml-1"
+              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
               htmlFor="price"
             >
               Precio
@@ -194,7 +194,7 @@ export default function FormFoods({
               </span>
               <input
                 id="price"
-                className="w-full bg-white border border-gray-300 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow shadow-sm"
+                className="w-full bg-white border border-gray-300 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
                 placeholder="10.000"
                 type="number"
                 min="0"
@@ -209,7 +209,7 @@ export default function FormFoods({
 
           {/* Categorías */}
           <div className="flex flex-col w-full gap-1 min-h-[10vh]">
-            <label className="font-semibold text-gray-600 dark:text-gray-800 ml-1">
+            <label className="font-semibold text-gray-600 dark:text-gray-700 ml-1">
               Categorías
             </label>
             <div className="w-full rounded-2xl">
@@ -230,7 +230,7 @@ export default function FormFoods({
       </div>
 
       {/* Botón Flotante de Acción */}
-      <div className="w-full flex justify-center px-5 pb-15 pt-5 border-t border-gray-300">
+      <div className="w-full flex justify-center px-3 pb-15 pt-5 border-t border-gray-300">
         <button
           type="submit"
           className="w-full md:w-[25vw] bg-primary hover:bg-primary/80 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl transform active:scale-[0.98] transition-all"

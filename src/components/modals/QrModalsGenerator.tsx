@@ -2,18 +2,18 @@
 import { useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { NEXT_PUBLIC_URL } from "@/src/lib/const";
-import { Download, Check } from "lucide-react";
+import { Download, Check, Copy, ExternalLink } from "lucide-react";
 
 interface QrButtonProps {
   name: string;
   logoUrl?: string;
   isOpen: boolean;
+  template?: any;
   openModal: () => void;
 }
-
 // 1. Definimos las plantillas con colores de alto contraste
 const TEMPLATES = [
-  { id: 1, name: "Clásico", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
+  { id: 1, name: "", bg: "#ffffff", fg: "#000000", accent: "#f3f4f6" },
   { id: 2, name: "Noche", bg: "#1a1a1a", fg: "#ffffff", accent: "#333333" },
   { id: 3, name: "Sunset", bg: "#ff5f6d", fg: "#ffffff", accent: "#ffc371" },
   { id: 4, name: "Bosque", bg: "#004d40", fg: "#e0f2f1", accent: "#00695c" },
@@ -22,6 +22,7 @@ const TEMPLATES = [
 export default function QrModalsGenerator({
   name,
   logoUrl,
+  template,
   isOpen,
   openModal,
 }: QrButtonProps) {
@@ -128,7 +129,7 @@ export default function QrModalsGenerator({
     ctx.fillText(text, 350 / 2, 350);
 
     const link = document.createElement("a");
-    link.download = `${text}-QR-${selectedTemplate.name}.png`;
+    link.download = `${text}-QR-${selectedTemplate.name.replace(/-/g, " ")}.png`;
     link.href = ctx.canvas.toDataURL("image/png");
     link.click();
   };
@@ -136,15 +137,14 @@ export default function QrModalsGenerator({
   return (
     <div>
       {isOpen && (
-        <div className="fixed inset-0 backdrop-blur bg-gray-700/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 text-center w-[95%] max-w-96 animate-in fade-in zoom-in duration-200">
-            <h3 className="text-2xl mb-4 text-gray-800">
-              Personaliza y Comparte <br />
-              <span className="font-bold">{name}</span>
+        <div className={`fixed ${template?.backgroundColor2} backdrop-blur-sm inset-0 flex items-center justify-center z-100`}>
+          <div className={`p-6 text-center w-[95%] max-w-96 animate-in fade-in zoom-in duration-200`}>
+            <h3 className={`text-2xl mb-4 ${template?.textColor}`}>
+              Personaliza y Comparte
             </h3>
 
             <div
-              className="relative flex justify-center mb-6 p-6 rounded-2xl border border-gray-300 transition-colors duration-300"
+              className={`relative flex justify-center mb-6 p-6 rounded-2xl border ${template?.border} transition-colors duration-300`}
               style={{ backgroundColor: selectedTemplate.bg }}
             >
               <QRCodeCanvas
@@ -198,32 +198,38 @@ export default function QrModalsGenerator({
               ))}
             </div>
 
-            <div className="bg-slate-50 p-2 rounded-lg flex items-center gap-2 mb-4 border border-slate-200">
-              <p className="text-[11px] text-slate-700 truncate text-left flex-1 font-mono">
+            <div className={`gap-2 rounded-lg p-2 w-full flex items-center mb-4 ${template?.backgroundColor} border ${template?.border}`}>
+              <p className={`text-[11px] truncate text-left flex-1 font-mono ${template?.textColor}`}>
                 {url}
               </p>
               <button
                 onClick={handleCopyUrl}
-                className={`px-3 py-1.5 rounded-md text-[10px] font-bold transition-colors ${copied
+                className={`px-3 py-2 rounded-md w-fit justify-center text-[10px] min-h-9 font-bold transition-colors ${copied
                   ? "bg-green-500 text-white"
                   : "bg-blue-600 text-white hover:bg-blue-700"
                   }`}
               >
-                {copied ? "¡Listo!" : "Copiar"}
+                {copied ? <Check size={20} /> : <Copy size={20} />}
               </button>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
+              <a
+                href={url}
+                className={`w-full flex cursor-pointer justify-center items-center py-3.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all active:scale-95 shadow-lg`}
+              >
+                <ExternalLink className="w-5 h-5 mr-2" /> Visitar
+              </a>
               <button
                 onClick={handleDownload}
-                className="w-full flex justify-center items-center py-3.5 bg-black text-white font-bold rounded-xl hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
+                className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition-all active:scale-95 shadow-lg"
               >
                 <Download className="w-5 h-5 mr-2" />
                 Descargar tu QR {selectedTemplate.name}
               </button>
               <button
                 onClick={() => openModal()}
-                className="w-full py-2 text-gray-500 text-sm font-medium hover:text-gray-800"
+                className={`w-full py-2 mt-1 ${template?.textColorOpacity} text-sm font-medium hover:text-gray-800`}
               >
                 Volver
               </button>
