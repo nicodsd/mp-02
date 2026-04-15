@@ -45,6 +45,8 @@ export default function PanelUser({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  console.log(user)
+
   const handleLogout = async () => {
     await fetch(`${URI}auth/signout`, {
       method: "POST",
@@ -52,7 +54,7 @@ export default function PanelUser({
         "Content-Type": "application/json",
       },
       credentials: "include",
-      body: JSON.stringify({ user_id: user._id }),
+      body: JSON.stringify({ user_id: user.id }),
     })
       .then((res) => {
         console.log(res);
