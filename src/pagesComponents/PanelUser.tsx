@@ -3,6 +3,7 @@ import { useState, Fragment } from "react";
 import Image from "next/image";
 import { logotipo } from "@/src/lib/const";
 import { URI } from "@/src/lib/const";
+import { logout } from "@/app/actions"
 import {
   Tab,
   TabPanel,
@@ -45,31 +46,25 @@ export default function PanelUser({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  console.log(user)
-
   const handleLogout = async () => {
     try {
-      // 1. Avisar al backend de Render (para base de datos)
-      await fetch(`${URI}auth/signout`, {
+      const res = await fetch(`${URI}auth/signout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ user_id: user._id }),
+        body: JSON.stringify({ user_id: user.id }),
       });
 
-      // 2. Forzar borrado de cookies en el dominio de Vercel
-      const resClear = await fetch("/api/auth/clear-cookies", {
-        method: "POST",
-      });
+      if (res.status === 200) {
+        const result = await logout();
 
-      if (resClear.ok) {
-        // 3. Limpiar estado local y redirigir
-        console.log("Sesión cerrada y cookies limpias");
-        router.push("/");
-        router.refresh(); // Opcional: para forzar re-render de layouts
+        if (result.success) {
+          router.push("/");
+          router.refresh();
+        }
       }
     } catch (err) {
-      console.error("Error en el proceso de logout:", err);
+      console.error("Error en logout:", err);
     }
   };
 
