@@ -48,19 +48,29 @@ export default function PanelUser({
   console.log(user)
 
   const handleLogout = async () => {
-    await fetch(`${URI}auth/signout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ user_id: user.id }),
-    })
-      .then((res) => {
-        console.log(res);
-        res.ok && router.push("/")
-      })
-      .catch((err) => console.error("Error", err));
+    try {
+      // 1. Avisar al backend de Render (para base de datos)
+      await fetch(`${URI}auth/signout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ user_id: user._id }),
+      });
+
+      // 2. Forzar borrado de cookies en el dominio de Vercel
+      const resClear = await fetch("/api/auth/clear-cookies", {
+        method: "POST",
+      });
+
+      if (resClear.ok) {
+        // 3. Limpiar estado local y redirigir
+        console.log("Sesión cerrada y cookies limpias");
+        router.push("/");
+        router.refresh(); // Opcional: para forzar re-render de layouts
+      }
+    } catch (err) {
+      console.error("Error en el proceso de logout:", err);
+    }
   };
 
   const tabClass = (selected: boolean) =>
