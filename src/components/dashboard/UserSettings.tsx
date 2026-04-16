@@ -5,6 +5,8 @@ import { updateUserCookie } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import QrCode from "@/src/components/user-settings/QrCode";
 import { placeholder } from "@/src/lib/const";
+import { HiOutlineLogout } from "react-icons/hi";
+import { OctagonX } from "lucide-react";
 import {
   FaCamera,
   FaInstagram,
@@ -19,7 +21,7 @@ import {
 import { TbNotes } from "react-icons/tb";
 import { URI } from "@/src/lib/const";
 
-const UserSettings = ({ user }: { user: any }) => {
+const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -160,7 +162,7 @@ const UserSettings = ({ user }: { user: any }) => {
         className="flex w-full mt-3 relative flex-col items-center justify-center gap-3 border-b border-gray-200 pb-6"
       >
         <div className="w-full px-3 flex flex-col">
-          <div className="flex justify-around md:justify-start gap-2 md:gap-4 mb-4 pb-6">
+          <div className={`flex justify-around md:justify-start gap-2 md:gap-4 mb-4 pb-6`}>
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
               <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
@@ -188,7 +190,7 @@ const UserSettings = ({ user }: { user: any }) => {
               </div>
             </div>
 
-            <div className="relative flex items-center justify-center gap-2 flex-col">
+            {user.plan !== "free" ? <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Fondo</h3>
               <div className="w-45 md:w-60 h-30 md:h-40 relative rounded-lg overflow-hidden">
                 <Image
@@ -214,6 +216,15 @@ const UserSettings = ({ user }: { user: any }) => {
                 </label>
               </div>
             </div>
+              :
+              <div className="flex items-center justify-center gap-2 flex-col">
+                <h3 className="text-lg text-gray-700">Fondo</h3>
+                <div className="w-45 px-5 flex flex-col items-center border-2 border-gray-300 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                  <OctagonX size={50} className="text-gray-300" />
+                  <p className="text-gray-500 text-sm text-center">Función disponible en plan de pago</p>
+                </div>
+              </div>
+            }
           </div>
           <div className="w-full flex flex-col gap-5">
             <h2 className="text-lg text-text">Tus datos:</h2>
@@ -537,8 +548,14 @@ const UserSettings = ({ user }: { user: any }) => {
           Comparte el código QR para acceder a tu menú, o tambien puedes copiar el enlace para compartir en tus redes sociales.
         </span>
         <div className="w-full flex mt-5 justify-center">
-          <QrCode name={name} logoUrl={previewPhoto} />
+          <QrCode user={user} logoUrl={previewPhoto} />
         </div>
+        <button
+          onClick={() => { logout() }}
+          className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
+        >
+          <HiOutlineLogout size={20} /> Cerrar Sesión
+        </button>
       </div>
     </>
   );

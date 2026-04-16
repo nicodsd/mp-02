@@ -1,0 +1,63 @@
+"use client";
+import React from "react";
+import { FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
+
+interface SelectionToolbarProps {
+    isSelectionMode: boolean;
+    selectedCount: number;
+    setIsSelectionMode: (mode: boolean) => void;
+    onCancelSelection: () => void;
+    onBulkDelete: () => void;
+    template: any;
+}
+
+export const SelectionToolbar = ({
+    isSelectionMode,
+    selectedCount,
+    setIsSelectionMode,
+    onCancelSelection,
+    onBulkDelete,
+    template
+}: SelectionToolbarProps) => {
+    if (!isSelectionMode) {
+        return (
+            <div className="flex items-center justify-start py-1 sticky top-0 backdrop-blur-md z-20 mb-1 rounded-xl">
+                <button
+                    onClick={() => setIsSelectionMode(true)}
+                    className="text-xs flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
+                >
+                    <FaRegSquare className={`${template?.textColor} text-base`} /> Seleccionar Platos
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex items-center justify-start py-1 sticky top-0 backdrop-blur-md z-20 mb-1 rounded-xl">
+            <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={onCancelSelection}
+                        className={`p-2 ${template?.textColor} hover:bg-gray-100 rounded-full`}
+                    >
+                        <FaTimes size={16} />
+                    </button>
+                    <span className={`text-sm ${template?.textColor}`}>
+                        {selectedCount} seleccionados
+                    </span>
+                </div>
+
+                <button
+                    onClick={onBulkDelete}
+                    disabled={selectedCount === 0}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs transition-all ${selectedCount > 0
+                        ? `bg-primary text-white shadow`
+                        : `bg-gray-200 text-gray-400 cursor-not-allowed`
+                        }`}
+                >
+                    <FaTrash /> Eliminar seleccionados
+                </button>
+            </div>
+        </div>
+    );
+};

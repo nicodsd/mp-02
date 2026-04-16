@@ -5,7 +5,7 @@ import { NEXT_PUBLIC_URL } from "@/src/lib/const";
 import { Download, Check, ExternalLink, Copy } from "lucide-react";
 
 interface QrButtonProps {
-  name: string;
+  user: any;
   logoUrl?: string;
 }
 
@@ -16,12 +16,12 @@ const TEMPLATES = [
   { id: 4, name: "Bosque", bg: "#004d40", fg: "#e0f2f1", accent: "#00695c" },
 ];
 
-export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
+export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
   const [copied, setCopied] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(name.replace(" ", "-"))}`;
+  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user.name.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -101,11 +101,11 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           drawH,
         );
         ctx.restore();
-        finalizeDownload(ctx, name);
+        finalizeDownload(ctx, user.name);
       };
-      img.onerror = () => finalizeDownload(ctx, name);
+      img.onerror = () => finalizeDownload(ctx, user.name);
     } else {
-      finalizeDownload(ctx, name);
+      finalizeDownload(ctx, user.name);
     }
   };
 
@@ -122,7 +122,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
   };
 
   return (
-    <div className="flex items-center w-full justify-center">
+    <div className="flex relative items-center w-full md:w-1/2 justify-center">
       <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-6 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
@@ -154,7 +154,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           )}
         </div>
 
-        <div className="flex justify-center gap-5 mb-6">
+        {user?.plan !== "free" && <div className="flex justify-center gap-5 mb-6">
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
@@ -177,7 +177,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
               )}
             </button>
           ))}
-        </div>
+        </div>}
 
         <span className="text-[11px] w-full text-right text-slate-700 mb-1">Copiar Enlace</span>
         <div className="gap-2 rounded-lg p-2 w-full flex items-center mb-4 bg-white border border-slate-200">
@@ -186,7 +186,7 @@ export default function QrModalsGenerator({ name, logoUrl }: QrButtonProps) {
           </p>
           <button
             onClick={handleCopyUrl}
-            className={`px-3 py-2 rounded-md w-fit justify-center text-[10px] min-h-9 font-bold transition-colors ${copied
+            className={`px-3 py-2 rounded-md cursor-pointer w-fit justify-center text-[10px] min-h-9 font-bold transition-colors ${copied
               ? "bg-green-500 text-white"
               : "bg-blue-600 text-white hover:bg-blue-700"
               }`}
