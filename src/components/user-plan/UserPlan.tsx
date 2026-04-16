@@ -3,10 +3,10 @@ interface UserPlanProps {
   plan: string;
 }
 export default function UserPlan({ plan }: UserPlanProps) {
-  if (plan === "Gratuito")
+  if (plan === "free")
     return (
-      <div className="w-fit h-fit py-1 px-4 rounded-full bg-gray-300 border-gray-600 border font-medium flex items-center justify-center">
-        <p className="text-white text-xs">{plan}</p>
+      <div className="w-fit h-fit py-1 px-4 rounded-full bg-gray-200 border-gray-400 border font-medium flex items-center justify-center">
+        <p className="text-gray-600 text-xs">Gratuito</p>
       </div>
     );
   if (plan === "plus") {

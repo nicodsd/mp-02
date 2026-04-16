@@ -27,7 +27,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                     </div>
                 }
 
-                <div className="flex flex-col gap-2">
+                {allFoods.length > 0 ? <div className="flex flex-col gap-2">
                     <div className={`flex ml-2 items-center gap-2 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                         <h2 className="text-xl font-normal">Platos</h2>
                         <Utensils className="w-5 h-5" />
@@ -47,7 +47,16 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                     </div>
 
                     <CardsFoodsByCategories example={example} template={template} arrayFoods={displayFoods} />
-                </div>
+                </div> :
+                    <>
+                        <div className="flex w-full items-center pt-20 justify-center h-full">
+                            <div className="text-center flex flex-col gap-y-2 h-fit opacity-40">
+                                <span className="text-[8rem]">🍳</span>
+                                <p className={`text-lg font-medium ${template?.textColor || "text-gray-700"}`}>Aún se está cocinando...</p>
+                            </div>
+                        </div>
+                    </>
+                }
                 {allFoods.filter((f: any) => f.category === "Postres").length > 0 &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>

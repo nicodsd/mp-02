@@ -4,6 +4,7 @@ import Image from "next/image";
 import { logotipo } from "@/src/lib/const";
 import { URI } from "@/src/lib/const";
 import { logout } from "@/app/actions"
+import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   Tab,
   TabPanel,
@@ -82,6 +83,11 @@ export default function PanelUser({
     { name: "Promociones", icon: <HiOutlineTicket size={20} /> },
   ];
 
+  if (user.plan === "free") {
+    menuItems.pop();
+    menuItems.pop();
+  }
+
   return (
     <div className="h-screen relative">
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
@@ -127,8 +133,9 @@ export default function PanelUser({
                         height={40}
                         priority
                       />
+                      <span className="text-xs text-gray-500">Panel de usuario</span>
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg ml-2 text-gray-800 uppercase">
+                        <h3 className="text-lg text-gray-800 uppercase">
                           {user?.name}
                         </h3>
                         <UserPlan plan={user?.plan} />
@@ -158,8 +165,8 @@ export default function PanelUser({
                       ))}
                     </div>
                     <button
-                      onClick={handleLogout}
-                      className="flex items-center gap-3 w-full text-red-500 font-bold px-4 py-3 rounded-lg bg-red-50 border border-red-100"
+                      onClick={() => { logout() }}
+                      className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
                     >
                       <HiOutlineLogout size={20} /> Cerrar Sesión
                     </button>
@@ -170,11 +177,12 @@ export default function PanelUser({
           </Dialog>
         </Transition>
 
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2">
-          <div className="flex flex-col md:flex-row gap-8">
-            <aside className="hidden md:block w-72 shrink-0">
+        <div className="max-w-7xl h-screen mx-auto px-3 sm:px-6 lg:px-8 py-2">
+          <div className="flex h-full flex-col md:flex-row gap-8">
+            <aside className="hidden h-full md:block w-72 shrink-0">
               <div className="sticky top-10">
-                <TabList className="flex flex-col gap-y-2">
+                <BttnBack />
+                <TabList className="flex flex-col mt-10 gap-y-2">
                   {menuItems.map((item, index) => (
                     <Tab
                       key={item.name}
@@ -183,21 +191,24 @@ export default function PanelUser({
                       {item.icon} {item.name}
                     </Tab>
                   ))}
-                  <button
-                    onClick={handleLogout}
-                    className="mt-10 flex items-center active:bg-red-500 active:text-white active:scale-90 gap-3 w-full text-red-500 border border-red-200 hover:bg-red-50 p-3.5 rounded-xl transition-colors font-bold"
-                  >
-                    <HiOutlineLogout size={20} /> Cerrar Sesión
-                  </button>
                 </TabList>
+                <button
+                  onClick={() => { logout() }}
+                  className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
+                >
+                  <HiOutlineLogout size={20} /> Cerrar Sesión
+                </button>
               </div>
             </aside>
 
             <main className="flex-1">
               <TabPanels className="min-h-full overflow-hidden">
-                <div className="pb-13">
+                <div className="md:hidden">
+                  <BttnBack />
+                </div>
+                <div className="pb-13 pt-8 md:pt-6">
                   <TabPanel className="focus:outline-none">
-                    <UserSettings user={user} />
+                    <UserSettings user={user} logout={handleLogout} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none">
                     <MenuItems dataFoods={foods} template={template} />

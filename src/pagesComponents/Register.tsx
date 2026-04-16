@@ -48,7 +48,7 @@ const validationSchemas = [
     logo: Yup.mixed().nullable().optional(),
     cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
-    description: Yup.string().test("len", "Mínimo 10 caracteres", (val) => !val || val.length >= 10).optional(),
+    description: Yup.string().test("len", "Mínimo 10 caracteres", (val) => !val || val.length >= 10).max(30, "Máximo 30 caracteres").optional(),
     phone: Yup.string().test("len", "Mínimo 7 dígitos", (val) => !val || val.length >= 7).optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
@@ -483,7 +483,8 @@ export default function Register() {
                               id="phone"
                               name="phone"
                               type="tel"
-                              placeholder="5349557"
+                              placeholder="1234567"
+                              maxLength={7}
                               className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                             />
                             <ErrorMessage name="phone" component="div" className="-bottom-6 absolute text-sm text-red-500 font-medium" />

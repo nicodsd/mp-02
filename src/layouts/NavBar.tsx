@@ -46,10 +46,13 @@ export default function NavBar({
     ? user.cover
     : "/images/placeholders/back-qmenu.webp";
   const optimizedBackground = getBannerImage(backgroundImage);
-  const inlineStyle =
-    isMounted && !isSpecialState
-      ? { backgroundImage: `url("${optimizedBackground}")` }
-      : {};
+  let inlineStyle = {};
+  if (user?.plan !== "free") {
+    inlineStyle =
+      isMounted && !isSpecialState
+        ? { backgroundImage: `url("${optimizedBackground}")` }
+        : {};
+  }
 
   const renderNavContent = () => {
     switch (state) {
@@ -88,14 +91,17 @@ export default function NavBar({
   };
 
   return (
-    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-linear-to-b from-primary to-primary-700"}`}>
+    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-background"}`}>
       {!isSpecialState && (
-        <div className={`flex w-full z-50 ${!user ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-primary/30 to-primary/10 h-14 p-2 text-white" : "absolute top-2 text-gray-300 italic"} items-center justify-between`}>
+        <div className={`flex w-full z-50 
+        ${!user
+            ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-primary/30 to-primary/10 h-14 p-2 text-white"
+            : "absolute top-2 italic"
+          } items-center justify-between`}>
           {user && <Link
             className="flex w-full justify-center gap-2 items-center text-xs"
             href="/"
           >
-            Por:
             {user?.plan === "free" && (
               <Image
                 priority
@@ -103,7 +109,7 @@ export default function NavBar({
                 width={60}
                 height={60}
                 alt="Logo"
-                className="w-13 h-13 md:w-24 md:h-16 object-contain"
+                className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain"
               />
             )}
             {user?.plan !== "free" && (
@@ -130,7 +136,7 @@ export default function NavBar({
       )}
 
       <div
-        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-100 bg-linear-to-t from-black/50 via-transparent to-transparent"} flex items-center bg-center bg-cover bg-no-repeat`}
+        className={`relative w-full to-background transition-all ${isSpecialState ? "h-14" : "h-100 bg-linear-to-b from-white to-gray-100"} flex items-center bg-center bg-cover bg-no-repeat`}
         style={inlineStyle}
       >
         {!isSpecialState && (
@@ -158,11 +164,11 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
     facebook: user?.facebook,
     tiktok: user?.tiktok,
   };
-  const optimizedPhoto = getOptimizedImage(photo, 108, 108);
+  const optimizedPhoto = getOptimizedImage(photo, 200, 200);
   return (
-    <div className="flex flex-col items-center justify-center drop-shadow drop-shadow-gray-900/30 text-white w-full">
+    <div className={`flex flex-col items-center justify-center ${user.plan === "free" ? "text-gray-700" : "text-white drop-shadow drop-shadow-gray-900/30"} w-full`}>
       <div className="relative">
-        <div className={`rounded-full p-1 ${template?.backgroundColor}`}>
+        <div className={`rounded-full p-1 ${user.plan !== "free" ? "bg-white" : "bg-gray-700"}`}>
           <Image
             priority
             src={optimizedPhoto || logo}
@@ -175,7 +181,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         {
           user && cookie && (
             <Link
-              className="flex items-center absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 bg-white text-sm text-black px-3 py-2 rounded-full"
+              className={`flex items-center absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 ${user.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full`}
               href="/panel-de-usuario"
             >
               <FaEdit size={14} /> Perfil
@@ -184,7 +190,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         }
       </div>
 
-      <h1 className="text-2xl font-bold mt-3 uppercase">
+      <h1 className={`text-2xl ${user.plan === "free" ? "text-gray-700" : "text-white"} font-bold mt-2 uppercase`}>
         {displayData?.name || (!user ? "QMENÚ" : "")}
       </h1>
       {(displayData?.address || !user) && (
