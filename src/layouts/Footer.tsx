@@ -62,10 +62,10 @@ export default function Footer({ template }: { template: any }) {
     </div> */}
 
       {/* Línea inferior */}
-      <div className={`flex flex-col items-start justify-end pb-4 border ${template?.border || "border-gray-200"}  text-start ${template?.textColor || "text-gray-700"} min-h-[160px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs ${template?.backgroundColor2 || "bg-background"}`}>
-        <div className="flex items-center text-black gap-2">
+      <div className={`flex flex-col items-start justify-end pb-4 border ${template?.border || "border-gray-200"} text-start ${template?.textColor || "text-gray-700"} min-h-[160px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs ${template?.backgroundColor2 || "bg-background"}`}>
+        <div className={`flex items-center ${template?.textColor || "text-gray-700"} gap-2`}>
           <span>Crea tu cuenta gratis.</span>
-          <a href="https://qmenu.digital/registro-de-usuario" target="_blank" rel="noopener noreferrer" className={`flex font-bold justify-center flex-col items-center ${template?.backgroundColor || "bg-transparent"} ${template?.backgroundColorHover || "hover:bg-primary-hover"}  rounded-md ${template?.textColor || "text-black"}`}>
+          <a href="https://qmenu.digital" target="_blank" rel="noopener noreferrer" className={`flex font-bold justify-center flex-col items-center rounded-md ${template?.textColor || "text-black"}`}>
             ¡Probar Ahora!
           </a>
         </div>
