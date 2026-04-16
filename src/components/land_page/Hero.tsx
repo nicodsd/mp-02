@@ -5,20 +5,20 @@ import Image from 'next/image';
 
 export default function Hero() {
   return (
-    <div id="inicio" className="relative border-b border-gray-300 w-full pt-32 pb-16 overflow-hidden">
+    <div id="inicio" className="relative border-b border-gray-300 w-full pt-28 md:pt-32 pb-16 overflow-hidden">
       <div className="relative flex flex-col md:flex-row md:grid md:grid-cols-2 items-center md:items-end justify-between z-10">
         <div className="text-start w-full z-10 flex md:pb-5 flex-col items-start md:items-start">
           <div className='w-full flex items-center justify-center'>
             <Image
               src={HeroImage}
               alt="Hero Image"
-              className="w-100 h-auto mb-12 drop-shadow-sm md:hidden"
+              className="w-80 h-auto mb-10 drop-shadow-sm md:hidden"
               width={1920}
               height={1080}
               priority
             />
           </div>
-          <h1 className="text-5xl sm:text-6xl font-extrabold text-primary leading-none mb-6 md:mb-8">
+          <h1 className="text-5xl sm:text-6xl font-extrabold text-primary leading-none mb-3 md:mb-8">
             tu menú
             <br className="block" />
             en el móvil

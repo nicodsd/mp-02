@@ -9,6 +9,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaTiktok,
+  FaCamera,
+} from "react-icons/fa";
 
 type FormValues = {
   email: string;
@@ -116,7 +122,7 @@ export default function Register() {
   };
 
   return (
-    <div className="relative h-full px-3 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
+    <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
       <div className="w-full py-3 z-10">
         <BttnBack />
       </div>
@@ -131,16 +137,14 @@ export default function Register() {
               Completa los pasos para configurar tu perfil.
             </p>
           </div>
-          <div className="w-10 h-10 flex items-center justify-center">
-            <div className="w-full h-full flex items-center justify-center">
-              <Image
-                src={logo}
-                alt="logo-app"
-                width={100}
-                height={100}
-                className="w-full h-full"
-              />
-            </div>
+          <div className="w-12 h-12 flex items-center justify-center">
+            <Image
+              src={logo}
+              alt="logo-app"
+              width={100}
+              height={100}
+              className="w-full h-full"
+            />
           </div>
         </div>
 
@@ -372,20 +376,20 @@ export default function Register() {
                         className="mt-1 text-sm text-red-500 font-medium"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-1 w-full mb-1">
-                      <div className="flex flex-col pb-4 rounded-lg bg-gray-300/20 w-full justify-center items-center">
-                        <label
-                          htmlFor="logo"
-                          className="block text-md font-medium text-gray-700 mb-1"
-                        >
-                          Logo (PNG/JPG)
-                        </label>
-                        <div className="flex items-center space-x-4 relative">
-                          <label
-                            htmlFor="logo"
-                            className="cursor-pointer absolute -bottom-2 left-0 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors"
-                          >
-                            <span>Elegir Logo</span>
+                    <div className={`flex ${values.plan === "free" ? "justify-start" : "justify-around"} w-full mb-1`}>
+                      <div className="relative flex items-center justify-center gap-2 flex-col">
+                        <h3 className="text-lg text-gray-700">Logo</h3>
+                        <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
+                          {logoPreview && <Image
+                            src={logoPreview}
+                            alt="Profile"
+                            width={200}
+                            height={200}
+                            quality={75}
+                            loading="eager"
+                            className="object-cover w-full h-full"
+                          />}
+                          <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
                             <input
                               id="logo"
                               name="logo"
@@ -403,88 +407,49 @@ export default function Register() {
                                 }
                               }}
                             />
+                            <FaCamera /> Agregar
                           </label>
-                          {(logoPreview && (
-                            <div className="rounded-full w-20 h-20">
-                              <Image
-                                src={logoPreview}
-                                alt="Logo preview"
-                                width={80}
-                                height={80}
-                                className="rounded-full border w-20 h-20 bg-black border-gray-200 object-cover"
-                              />
-                            </div>
-                          )) || (
-                              <div className="rounded-full w-20 h-20">
-                                <div className="rounded-full w-20 h-20 border-2 border-black object-cover">
-                                  {/* <Image
-                                                        src="/placeholder.png"
-                                                        alt="Logo preview"
-                                                        fill
-                                                        className="rounded-full border border-gray-200 object-cover"
-                                                    /> */}
-                                </div>
-                              </div>
-                            )}
                         </div>
-                        <ErrorMessage
-                          name="logo"
-                          component="div"
-                          className="mt-1 text-sm text-red-500 font-medium"
-                        />
                       </div>
+
                       {values.plan !== "free" && (
-                        <div className="flex flex-col pb-4 rounded-lg bg-gray-300/20 w-full justify-center items-center">
-                          <label
-                            htmlFor="cover"
-                            className="block text-md font-medium text-gray-700 mb-1"
-                          >
-                            Foto de portada
-                          </label>
-                          <div className="flex justify-center items-center space-x-4 relative">
-                            <label className="cursor-pointer mx-auto absolute z-10 -bottom-2 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
-                              <span>Subir fondo</span>
-                              <input
-                                id="cover"
-                                name="cover"
-                                type="file"
-                                accept="image/*"
-                                className="sr-only"
-                                onChange={(e) => {
-                                  const file =
-                                    e.currentTarget.files?.[0] || null;
-                                  setFieldValue("cover", file);
-                                  if (file) {
-                                    const url = URL.createObjectURL(file);
-                                    setCoverPhotoPreview(url);
-                                  } else {
-                                    setCoverPhotoPreview(null);
-                                  }
-                                }}
-                              />
-                            </label>
-                            {(coverPhotoPreview && (
-                              <div className="relative z-0 w-full h-20">
-                                <Image
-                                  src={coverPhotoPreview}
-                                  alt="Cover photo preview"
-                                  width={100}
-                                  height={60}
-                                  className="rounded-lg border w-30 h-20 border-gray-200 object-cover"
+                        <div className="flex flex-col pb-4 rounded-lg w-fit justify-center items-center">
+                          <div className="relative flex items-center justify-center gap-2 flex-col">
+                            <h3 className="text-lg text-gray-700">Fondo</h3>
+                            <div className="w-45 md:w-60 h-30 md:h-40 relative rounded-lg overflow-hidden">
+                              {coverPhotoPreview && <Image
+                                src={coverPhotoPreview}
+                                alt="background"
+                                width={200}
+                                height={200}
+                                quality={75}
+                                loading="eager"
+                                className="object-cover w-full h-full"
+                              />}
+                              <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                                <input
+                                  id="cover"
+                                  name="cover"
+                                  type="file"
+                                  accept="image/*"
+                                  className="sr-only"
+                                  onChange={(e) => {
+                                    const file =
+                                      e.currentTarget.files?.[0] || null;
+                                    setFieldValue("cover", file);
+                                    if (file) {
+                                      const url = URL.createObjectURL(file);
+                                      setCoverPhotoPreview(url);
+                                    } else {
+                                      setCoverPhotoPreview(null);
+                                    }
+                                  }}
                                 />
-                              </div>
-                            )) || (
-                                <div className="">
-                                  <div className="rounded-2xl w-40 h-20 border-2 border-black object-cover"></div>
-                                  {/* <Image
-                                                        src="/placeholder.png"
-                                                        alt="Logo preview"
-                                                        fill
-                                                        className="rounded-full border border-gray-200 object-cover"
-                                                    /> */}
-                                </div>
-                              )}
+                                <FaCamera /> Editar
+                              </label>
+                            </div>
                           </div>
+
                         </div>
                       )}
                     </div>
@@ -546,11 +511,11 @@ export default function Register() {
 
                     <div>
                       <label className="block text-md font-medium text-gray-700 mt-2 mb-2">
-                        Redes Sociales (opcional)
+                        Redes
                       </label>
                       <div className="flex flex-col gap-3">
                         <div className="flex items-center gap-3">
-                          <span className="w-20 text-sm text-gray-600">Instagram</span>
+                          <span className="w-8 text-xl text-gray-700"><FaInstagram /></span>
                           <Field
                             name="instagram"
                             type="text"
@@ -559,16 +524,16 @@ export default function Register() {
                           />
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="w-20 text-sm text-gray-600">Facebook</span>
+                          <span className="w-8 text-xl text-gray-700"><FaFacebook /></span>
                           <Field
                             name="facebook"
                             type="text"
-                            placeholder="Enlace o usuario"
+                            placeholder="Nombre de usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="w-20 text-sm text-gray-600">TikTok</span>
+                          <span className="w-8 text-xl text-gray-700"><FaTiktok /></span>
                           <Field
                             name="tiktok"
                             type="text"
@@ -677,3 +642,117 @@ export default function Register() {
     </div>
   );
 }
+
+{/*  <div className="flex flex-col pb-4 rounded-lg w-fit justify-center items-center">
+                        <label
+                          htmlFor="logo"
+                          className="block text-md font-medium text-gray-700 mb-1"
+                        >
+                          Logo
+                        </label>
+                        <div className="flex justify-center items-center relative">
+                          <FaCamera className="absolute z-30 flex items-center justify-center text-2xl hover:bg-gray-50 transition-colors" />
+                          <label
+                            htmlFor="logo"
+                            className="cursor-pointer mx-auto absolute z-10 -bottom-3 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors"
+                          >
+                            <span>Elegir Logo</span>
+                            <input
+                              id="logo"
+                              name="logo"
+                              type="file"
+                              accept="image/*"
+                              className="sr-only"
+                              onChange={(e) => {
+                                const file = e.currentTarget.files?.[0] || null;
+                                setFieldValue("logo", file);
+                                if (file) {
+                                  const url = URL.createObjectURL(file);
+                                  setLogoPreview(url);
+                                } else {
+                                  setLogoPreview(null);
+                                }
+                              }}
+                            />
+                          </label>
+                          {(logoPreview && (
+                            <div className="rounded-full w-28 h-28">
+                              <Image
+                                src={logoPreview}
+                                alt="Logo preview"
+                                width={80}
+                                height={80}
+                                className="rounded-full border w-28 h-28 bg-black border-gray-200 object-cover"
+                              />
+                            </div>
+                          )) || (
+                              <div className="rounded-full w-28 h-28">
+                                <div className="rounded-full w-28 h-28 border-2 border-black object-cover">
+                                  {/* <Image
+                                                        src="/placeholder.png"
+                                                        alt="Logo preview"
+                                                        fill
+                                                        className="rounded-full border border-gray-200 object-cover"
+                                                    /> 
+                                </div>
+                              </div>
+                            )}
+                        </div>
+                        <ErrorMessage
+                          name="logo"
+                          component="div"
+                          className="mt-1 text-sm text-red-500 font-medium"
+                        />
+                      </div> */}
+
+{/*                           <label
+                            htmlFor="cover"
+                            className="block text-md font-medium text-gray-700 mb-1"
+                          >
+                            Foto de portada
+                          </label>
+                          <FaCamera className="absolute z-30 flex mt-5 items-center justify-center text-2xl hover:bg-gray-50 transition-colors" />
+                          <div className="flex justify-center items-center space-x-4 relative">
+                            <label className="cursor-pointer mx-auto absolute z-10 -bottom-3 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
+                              <span>Subir fondo</span>
+                              <input
+                                id="cover"
+                                name="cover"
+                                type="file"
+                                accept="image/*"
+                                className="sr-only"
+                                onChange={(e) => {
+                                  const file =
+                                    e.currentTarget.files?.[0] || null;
+                                  setFieldValue("cover", file);
+                                  if (file) {
+                                    const url = URL.createObjectURL(file);
+                                    setCoverPhotoPreview(url);
+                                  } else {
+                                    setCoverPhotoPreview(null);
+                                  }
+                                }}
+                              />
+                            </label>
+                            {(coverPhotoPreview && (
+                              <div className="relative z-0 w-full h-20">
+                                <Image
+                                  src={coverPhotoPreview}
+                                  alt="Cover photo preview"
+                                  width={100}
+                                  height={60}
+                                  className="rounded-lg border w-40 h-22 border-gray-200 object-cover"
+                                />
+                              </div>
+                            )) || (
+                                <div className="">
+                                  <div className="rounded-2xl w-44 h-28 border-2 border-black object-cover"></div>
+                                  {/* <Image
+                                                        src="/placeholder.png"
+                                                        alt="Logo preview"
+                                                        fill
+                                                        className="rounded-full border border-gray-200 object-cover"
+                                                    />
+                                </div>
+                              )}
+                          </div> */}

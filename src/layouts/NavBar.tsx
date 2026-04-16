@@ -95,7 +95,7 @@ export default function NavBar({
             className="flex w-full justify-center gap-2 items-center text-xs"
             href="/"
           >
-            By:
+            Por:
             {user?.plan === "free" && (
               <Image
                 priority
@@ -122,7 +122,7 @@ export default function NavBar({
           </Link>}
           {!user && (
             <div className="flex w-full justify-around items-center md:justify-center md:gap-10">
-              <span className="text-lg md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
+              <span className="text-md tracking-tight md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
               <BotonAccion color="white" textColor="primary" />
             </div>
           )}
@@ -193,7 +193,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
           {displayData?.address || "Santiago del Estero, Argentina"}
         </span>
       )}
-      <p className="">
+      <p className="mt-2">
         {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
       </p>
       <div className="flex flex-col items-center gap-1 mt-0.5">
