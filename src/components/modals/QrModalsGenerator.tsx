@@ -5,7 +5,7 @@ import { NEXT_PUBLIC_URL } from "@/src/lib/const";
 import { Download, Check, Copy, ExternalLink } from "lucide-react";
 
 interface QrButtonProps {
-  name: string;
+  user: any;
   logoUrl?: string;
   isOpen: boolean;
   template?: any;
@@ -20,7 +20,7 @@ const TEMPLATES = [
 ];
 
 export default function QrModalsGenerator({
-  name,
+  user,
   logoUrl,
   template,
   isOpen,
@@ -30,7 +30,7 @@ export default function QrModalsGenerator({
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(name)}`;
+  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user.name.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -113,11 +113,11 @@ export default function QrModalsGenerator({
           drawH,
         );
         ctx.restore();
-        finalizeDownload(ctx, name);
+        finalizeDownload(ctx, user.name);
       };
-      img.onerror = () => finalizeDownload(ctx, name);
+      img.onerror = () => finalizeDownload(ctx, user.name);
     } else {
-      finalizeDownload(ctx, name);
+      finalizeDownload(ctx, user.name);
     }
   };
 
@@ -173,7 +173,7 @@ export default function QrModalsGenerator({
               )}
             </div>
 
-            <div className="flex justify-center gap-5 mb-6">
+            {user?.plan !== "free" && <div className="flex justify-center gap-5 mb-6">
               {TEMPLATES.map((t) => (
                 <button
                   key={t.id}
@@ -196,7 +196,7 @@ export default function QrModalsGenerator({
                   )}
                 </button>
               ))}
-            </div>
+            </div>}
 
             <div className={`gap-2 rounded-lg p-2 w-full flex items-center mb-4 ${template?.backgroundColor} border ${template?.border}`}>
               <p className={`text-[11px] truncate text-left flex-1 font-mono ${template?.textColor}`}>

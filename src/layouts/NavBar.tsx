@@ -13,7 +13,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
 import logo from "@/public/images/logo/logo.png"
 import { logotipo, logo_w } from "@/src/lib/const";
-import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinary";
+import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinaryOptimizeImage";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 import BotonAccion from "../components/buttons/index/BotonAction";
 
@@ -181,7 +181,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         {
           user && cookie && (
             <Link
-              className={`flex items-center absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 ${user.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full`}
+              className={`flex items-center absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full`}
               href="/panel-de-usuario"
             >
               <FaEdit size={14} /> Perfil
@@ -190,31 +190,25 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         }
       </div>
 
-      <h1 className={`text-2xl ${user.plan === "free" ? "text-gray-700" : "text-white"} font-bold mt-2 uppercase`}>
+      <h2 className={`text-2xl leading-none ${user.plan === "free" ? "text-gray-700" : "text-white"} font-bold mt-3 uppercase`}>
         {displayData?.name || (!user ? "QMENÚ" : "")}
-      </h1>
-      {(displayData?.address || !user) && (
-        <span className="flex text-xs items-center gap-1">
-          <FaMapMarkerAlt />
-          {displayData?.address || "Santiago del Estero, Argentina"}
-        </span>
-      )}
-      <p className="mt-2">
+      </h2>
+      <p className="my-1">
         {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
       </p>
       <div className="flex flex-col items-center gap-1 mt-0.5">
         <div className="flex items-center gap-x-2 text-xs flex-wrap justify-center">
           {(displayData?.phone || !user) && (
             <span className="flex items-center gap-1">
-              <FaWhatsapp />
+              <FaWhatsapp size={17} />
               {displayData?.phone || "385 123 4567"}
             </span>
           )}
 
           {[
-            { id: 'ig', val: displayData?.instagram, icon: <FaInstagram /> },
-            { id: 'fb', val: displayData?.facebook, icon: <FaFacebook /> },
-            { id: 'tk', val: displayData?.tiktok, icon: <FaTiktok /> }
+            { id: 'ig', val: displayData?.instagram, icon: <FaInstagram size={17} /> },
+            { id: 'fb', val: displayData?.facebook, icon: <FaFacebook size={17} /> },
+            { id: 'tk', val: displayData?.tiktok, icon: <FaTiktok size={17} /> }
           ]
             .filter(social => social.val)
             .map((social) => (
@@ -227,7 +221,12 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
               </span>
             ))}
         </div>
-
+        {(displayData?.address || !user) && (
+          <span className="flex text-xs items-center gap-1">
+            <FaMapMarkerAlt size={17} />
+            {displayData?.address || "Santiago del Estero, Argentina"}
+          </span>
+        )}
       </div>
     </div>
   );

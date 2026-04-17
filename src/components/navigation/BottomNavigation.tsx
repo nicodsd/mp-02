@@ -12,14 +12,14 @@ import {
 } from "react-icons/fa";
 
 interface BottomNavigationProps {
-  name: string;
+  user: any;
   logoUrl?: string;
   foods?: any;
   template?: any;
 }
 
 export default function BottomNavigation({
-  name,
+  user,
   logoUrl,
   foods,
   template,
@@ -39,17 +39,17 @@ export default function BottomNavigation({
         }
       },
     },
-    {
-      label: "Promociones",
-      icon: <FaTag size={20} />,
-      action: () => {
-        if (openDiscount === true) {
-          setOpenDiscount(false);
-        } else {
-          setOpenDiscount(true);
-        }
-      },
-    },
+    /*     {
+          label: "Promociones",
+          icon: <FaTag size={20} />,
+          action: () => {
+            if (openDiscount === true) {
+              setOpenDiscount(false);
+            } else {
+              setOpenDiscount(true);
+            }
+          },
+        }, */
     {
       label: "Agregar Plato",
       icon: <FaPlusCircle size={22} />,
@@ -73,7 +73,7 @@ export default function BottomNavigation({
         <PromoDayModal openModal={() => setOpenDiscount(false)} foods={foods} />
       )}
       <QrModalsGenerator
-        name={name}
+        user={user}
         logoUrl={logoUrl}
         template={template}
         isOpen={isOpen}
@@ -85,7 +85,8 @@ export default function BottomNavigation({
             <button
               key={index}
               onClick={item.action}
-              className="flex flex-col cursor-pointer items-center justify-center flex-1 h-full gap-1.5 group active:scale-95 transition-transform"
+              /* disabled={item.label === "Promociones"} */
+              className="flex flex-col cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center flex-1 h-full gap-1.5 group active:scale-95 transition-transform"
             >
               <div className={`${template?.textColor} group-hover:${template?.textColor2} group-active:${template?.textColor2} transition-colors`}>
                 {item.icon}

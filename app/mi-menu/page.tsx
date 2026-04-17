@@ -1,8 +1,6 @@
 import { cookies } from "next/headers";
 import { URI } from "@/src/lib/const";
 import { getFoodsByUser } from "@/src/lib/getFoodsByUser";
-import { getCategoriesByUser } from "@/src/lib/getCategoriesByUser";
-import { getSubCategoriesByUser } from "@/src/lib/getSubCategoriesByUser";
 import BottomNavigation from "@/src/components/navigation/BottomNavigation";
 import UserIndex from "@/src/pagesComponents/UserIndex";
 import NavBar from "@/src/layouts/NavBar";
@@ -15,29 +13,20 @@ export default async function Page() {
 
     let user = null;
     let foodsByUser = [];
-    let categoriesByUser = [];
-    let subCategoriesByUser = [];
     if (userCookie) {
         try {
             user = JSON.parse(userCookie);
 
-            const [foods, categories, subCategories] = await Promise.all([
+            const [foods] = await Promise.all([
                 getFoodsByUser(URI, user.id),
-                getCategoriesByUser(URI, user.id),
-                getSubCategoriesByUser(URI, user.id),
             ]);
 
             foodsByUser = foods;
-            categoriesByUser = categories;
-            subCategoriesByUser = subCategories;
         } catch (error) {
             console.error("Error cargando datos del usuario:", error);
         }
     }
 
-    const userNameFormatted = user?.name
-        ? user.name.replace(/\s/g, "-")
-        : "qmenu";
     const template = templates.find((t) => t.template_id === user?.template_id);
 
     return (
@@ -50,15 +39,13 @@ export default async function Page() {
                 user={user}
             />
             <UserIndex
-                categories={categoriesByUser}
                 foods={foodsByUser}
-                initialSubCategories={subCategoriesByUser}
                 user={user}
                 template={template}
                 token={token || ""}
             />
             <BottomNavigation
-                name={userNameFormatted}
+                user={user}
                 foods={foodsByUser}
                 logoUrl={user?.photo}
                 template={template}

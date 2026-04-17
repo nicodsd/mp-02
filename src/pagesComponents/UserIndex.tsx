@@ -6,8 +6,10 @@ import AdminOffers from "@/src/components/user_index/AdminOffers";
 import AdminFoodCatalog from "@/src/components/user_index/AdminFoodCatalog";
 import AddDishButton from "@/src/components/user_index/AddDishButton";
 
-export default function UserIndex({ foods, initialSubCategories, user, template }: any) {
+export default function UserIndex({ foods, user, template }: any) {
   const [filteredFoods, setFilteredFoods] = useState(foods);
+
+  const initialSubCategories = user?.subCategories || [];
 
   const [showModal, setShowModal] = useState(false);
 

@@ -33,32 +33,31 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                     </div>
                 }
 
-                <div className="flex flex-col gap-1">
-                    <div className={`flex ml-2 items-center gap-2 ${template?.textColor} mb-1`}>
-                        <h2 className="text-xl font-normal">Platos</h2>
-                        <Utensils className="w-5 h-5" />
-                    </div>
-                    {foods.length > 0 && isPremium && (
-                        <div className="flex justify-between items-end mb-1">
-                            <Categories
-                                template={template}
-                                foods={foods}
-                                categoriesFoods={initialSubCategories}
-                                selectCategory={(sub: string) => {
-                                    const res = sub === "0" ? foods : foods.filter((f: any) => f.sub_category === sub);
-                                    setDisplayFoods(res);
-                                }}
-                            />
-                            <SortPriceButton onSortChange={handleSort} template={template} />
+                {displayFoods.length > 0 ? (
+                    <div className="flex flex-col gap-1">
+                        <div className={`flex ml-2 items-center gap-2 ${template?.textColor} mb-1`}>
+                            <h2 className="text-xl font-normal">Platos</h2>
+                            <Utensils className="w-5 h-5" />
                         </div>
-                    )}
-
-                    {displayFoods.length > 0 ? (
+                        {foods.length > 0 && isPremium && (
+                            <div className="flex justify-between items-end mb-1">
+                                <Categories
+                                    template={template}
+                                    foods={foods}
+                                    categoriesFoods={initialSubCategories}
+                                    selectCategory={(sub: string) => {
+                                        const res = sub === "0" ? foods : foods.filter((f: any) => f.sub_category === sub);
+                                        setDisplayFoods(res);
+                                    }}
+                                />
+                                <SortPriceButton onSortChange={handleSort} template={template} />
+                            </div>
+                        )}
                         <SortableContext arrayFoods={displayFoods} template={template} />
-                    ) : (
-                        <p className={`text-center ${template?.textColor} py-10`}>No hay platos que coincidan.</p>
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    null
+                )}
                 {foods.filter((f: any) => f.sub_category === "postres").length > 0 &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColor}`}>

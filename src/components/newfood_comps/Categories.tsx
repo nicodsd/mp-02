@@ -41,36 +41,14 @@ export default function CategoriesForm({
   };
 
   const handleAddCategory = async (e: React.MouseEvent) => {
-    e.preventDefault(); // Evitamos cualquier acción del form padre
+    e.preventDefault();
     if (!newCategory.trim()) return;
-
     const categoryName = newCategory.trim();
-
-    // 1. Actualización optimista de la UI
     const updatedSelected = [...selected, categoryName];
     setSelected(updatedSelected);
     setArrayNewCategory([...arrayNewCategory, categoryName]);
     setNewCategory("");
     onChange?.(updatedSelected);
-
-    try {
-      const res = await fetch(`${apiUrl}categories/sub/${user.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: categoryName,
-          user_id: user.id,
-        }),
-        credentials: "include",
-      });
-
-      if (!res.ok) throw new Error("Error en la petición");
-      const data = await res.json();
-    } catch (error) {
-      console.error("Error al guardar:", error);
-    }
   };
 
   const deleteNewCategory = (category: string) => {
@@ -139,6 +117,7 @@ export default function CategoriesForm({
           <div className="flex gap-1 items-center">
             <input
               type="text"
+              disabled={arrayNewCategory.length >= 1}
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), handleAddCategory(e as any))}

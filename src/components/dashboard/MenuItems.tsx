@@ -17,27 +17,27 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
   }
   const activePromos = useMemo(() => dataFoods.filter((f) => f.is_promo), [dataFoods]);
   return (
-    <div className="flex flex-col gap-2 relative">
-      <header className="p-3 flex flex-col gap-1">
+    <div className="flex p-3 flex-col gap-8 relative">
+      <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Platos</h1>
         <p className="text-gray-500 text-sm">Gestiona tus platos.</p>
       </header>
 
-      <div className="grid grid-cols-2 gap-1 px-2">
+      <div className="grid grid-cols-2 gap-1">
         <div className="flex flex-col items-start p-3 rounded-xl bg-orange-400 justify-between">
-          <span className="text-lg text-white mb-1 font-semibold">Platos</span>
-          <span className="text-[4rem] font-bold text-white">{arrayFoods.length}</span>
+          <span className="text-lg text-white mb-1 font-semibold leading-tight">Platos</span>
+          <span className="text-[5rem] font-bold text-white">{arrayFoods.length}</span>
           <span className="text-xs font-medium text-white/80">Platos Activos</span>
         </div>
         <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
           <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
-          <span className="text-[4rem] font-bold text-white">{activePromos.length}</span>
+          <span className="text-[5rem] font-bold text-white">{activePromos.length}</span>
           <span className="text-xs font-medium text-white/80">Promociones</span>
         </div>
       </div>
 
       <div className="flex flex-col gap-2 w-full pt-3">
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-1 w-full">
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />
         </div>
