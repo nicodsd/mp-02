@@ -23,7 +23,7 @@ export function SortableFoodCard({ food, context, template }: { food: any, conte
         >
             <Image
                 quality={75}
-                loading="lazy"
+                loading="eager"
                 src={food.photo}
                 alt={food.name}
                 className={`md:max-w-25 md:max-h-36 object-cover rounded-[7px] ${!context ? "md:h-full md:w-full h-23 w-20" : "h-20 w-20"}`}

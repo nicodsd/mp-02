@@ -14,10 +14,11 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
         );
         setDisplayFoods(sorted);
     };
+    const isPremium = user?.plan === "premium" || user?.plan === "plus";
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
-                {allFoods.filter((f: any) => f.category === "Bebidas").length > 0 &&
+                {allFoods?.filter((f: any) => f.category === "Bebidas").length > 0 && isPremium &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
@@ -33,19 +34,20 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                         <Utensils className="w-5 h-5" />
                     </div>
 
-                    <div className="flex justify-between items-end mb-1">
-                        <Categories
-                            template={template}
-                            foods={allFoods}
-                            categoriesFoods={initialSubCategories}
-                            selectCategory={(sub: string) => {
-                                const res = sub === "0" ? allFoods : allFoods.filter((f: any) => f.sub_category === sub);
-                                setDisplayFoods(res);
-                            }}
-                        />
-                        <SortPriceButton onSortChange={handleSort} template={template} />
-                    </div>
-
+                    {allFoods?.length > 0 && isPremium && (
+                        <div className="flex justify-between items-end mb-1">
+                            <Categories
+                                template={template}
+                                foods={allFoods}
+                                categoriesFoods={initialSubCategories}
+                                selectCategory={(sub: string) => {
+                                    const res = sub === "0" ? allFoods : allFoods.filter((f: any) => f.sub_category === sub);
+                                    setDisplayFoods(res);
+                                }}
+                            />
+                            <SortPriceButton onSortChange={handleSort} template={template} />
+                        </div>
+                    )}
                     <CardsFoodsByCategories example={example} template={template} arrayFoods={displayFoods} />
                 </div> :
                     <>
@@ -57,7 +59,7 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                         </div>
                     </>
                 }
-                {allFoods.filter((f: any) => f.category === "Postres").length > 0 &&
+                {allFoods?.filter((f: any) => f.category === "Postres").length > 0 && isPremium &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Postres</h2>

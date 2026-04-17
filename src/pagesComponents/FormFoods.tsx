@@ -1,57 +1,37 @@
 "use client";
-import Allergens from "@/src/components/newfood_comps/Allergens";
-import Categories from "@/src/components/newfood_comps/Categories";
-import Image from "next/image";
-import { PhotoCamera, CloudUpload, DeleteOutline } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { URI } from "@/src/lib/const";
+import Categories from "@/src/components/newfood_comps/Categories";
+import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload"; // El componente anterior
+import { refreshPage } from "@/app/actions";
 
 const imgPlaceholder = "/images/placeholders/image_placeholder.png";
 
-export default function FormFoods({
-  initialCategories,
-  user,
-}: {
-  initialCategories: any;
-  user: any;
-}) {
+export default function FormFoods({ initialCategories, user }: any) {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string>(imgPlaceholder);
   const [file, setFile] = useState<File | null>(null);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [subCategories, setSubCategories] = useState<string[]>([]);
-  const [category, setCategory] = useState<string>("Comidas");
-  const [price, setPrice] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [price, setPrice] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    return () => {
-      if (preview !== imgPlaceholder) {
-        URL.revokeObjectURL(preview);
-      }
-    };
+    return () => { if (preview !== imgPlaceholder) URL.revokeObjectURL(preview); };
   }, [preview]);
 
-  const imageCapture = (selectedFile: File) => {
-    if (!selectedFile) return;
+  const handleImage = (selectedFile: File) => {
     setFile(selectedFile);
-    const imageUrl = URL.createObjectURL(selectedFile);
-    setPreview(imageUrl);
+    setPreview(URL.createObjectURL(selectedFile));
     setError("");
-  };
-
-  const deleteImage = () => {
-    if (preview !== imgPlaceholder) {
-      URL.revokeObjectURL(preview);
-    }
-    setFile(null);
-    setPreview(imgPlaceholder);
   };
 
   const postFood = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     if (file) formData.append("photo", file);
@@ -59,185 +39,87 @@ export default function FormFoods({
     formData.append("description", description);
     formData.append("price", price);
     formData.append("sub_category", subCategories.join(","));
-    formData.append("category", category);
-    try {
-      const userId = user?.id || user?._id;
-      if (!userId) throw new Error("No se encontró el ID del usuario.");
+    formData.append("category", "Comidas");
+    formData.append("promo_price", "0");
+    formData.append("is_promo", "false");
 
-      const res = await fetch(URI + `foods/postfood/${userId}`, {
+    try {
+      const res = await fetch(`${URI}foods/postfood/${user?.id}`, {
         method: "POST",
         body: formData,
         credentials: "include",
       });
       if (!res.ok) {
-        throw new Error("Network response was not ok");
+        const data = await res.json();
+        throw new Error(data.message);
       }
-      const data = await res.json();
+      refreshPage();
       router.push("/");
-    } catch (error) {
-      setError("No se pudo crear el plato.");
+    } catch (err: any) {
+      setError(err.message);
+      setLoading(false);
     }
   };
 
   return (
-    <form
-      encType="multipart/form-data"
-      onSubmit={postFood}
-      className="min-h-screen flex flex-col w-full bg-background-light relative dark:bg-background-dark text-gray-900 dark:text-gray-100 antialiased"
-    >
-      <div className="px-3 md:w-[25vw] w-full mx-auto space-y-8 flex flex-col justify-center flex-1 py-10">
-
-        <div className="flex flex-col items-center gap-4 relative">
-          <div className="w-48 h-48 rounded-3xl flex items-center justify-center shadow-inner border border-gray-400 relative overflow-hidden group">
-            {preview ? (
-              <Image
-                src={preview}
-                fill
-                alt="Vista previa"
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <PhotoCamera className="text-6xl text-gray-400 dark:text-gray-500" />
-            )}
-
-            {file && (
-              <button
-                type="button"
-                onClick={deleteImage}
-                className="absolute top-2 right-2 z-10 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
-              >
-                <DeleteOutline fontSize="small" />
-              </button>
-            )}
-          </div>
-
-          <div className="flex flex-row gap-3 w-full justify-center">
-            <label className="flex items-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:opacity-90 transition-opacity shadow-sm cursor-pointer">
-              <PhotoCamera sx={{ fontSize: 16 }} />
-              Subir Imagen
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) imageCapture(f);
-                }}
-              />
-            </label>
-
-            <label className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2.5 rounded-lg text-[10px] font-bold uppercase tracking-wide hover:bg-blue-700 transition-colors shadow-sm cursor-pointer">
-              <CloudUpload sx={{ fontSize: 16 }} />
-              Galería
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) imageCapture(f);
-                }}
-              />
-            </label>
-          </div>
-          {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
+    <form onSubmit={postFood} className="min-h-screen items-center relative flex flex-col w-full">
+      {error &&
+        <div className="flex w-[90%] mx-auto fixed top-10 z-100 bg-red-50 p-3 rounded-lg border border-red-100 justify-around items-center">
+          <p className="text-center text-red-500 text-xs font-bold">{error}</p>
+          <button onClick={() => setError("")}>Cerrar</button>
         </div>
+      }
+      <div className="px-5 md:w-[400px] w-full relative mx-auto space-y-10 py-5 flex-1">
 
-        {/* Inputs de Texto */}
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <label
-              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
-              htmlFor="name"
-            >
-              Nombre
-            </label>
-            <input
-              id="name"
-              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow"
-              placeholder="Ej: Milanesa con papas"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
+        <ImageUpload
+          preview={preview}
+          file={file}
+          imgPlaceholder={imgPlaceholder}
+          onImageChange={handleImage}
+          onDelete={() => { setFile(null); setPreview(imgPlaceholder); }}
+        />
 
-          <div className="flex flex-col gap-1">
-            <label
-              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
-              htmlFor="description"
-            >
-              Descripción
-            </label>
-            <textarea
-              id="description"
-              className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none"
-              placeholder="Ej: Milanesa de carne vacuna acompañada de papas fritas caseras."
-              rows={3}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
+        {/* Inputs con mejor feedback visual */}
+        <div className="space-y-7">
+          <InputGroup label="Nombre del Plato" id="name" value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
+          <InputGroup label="Descripción" id="description" value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
+          <InputGroup label="Precio" id="price" value={price} onChange={setPrice} placeholder="0.00" type="number" isPrice />
 
-          <div className="flex flex-col gap-1">
-            <label
-              className="font-semibold text-gray-600 dark:text-gray-700 ml-1"
-              htmlFor="price"
-            >
-              Precio
-            </label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
-                $
-              </span>
-              <input
-                id="price"
-                className="w-full bg-white border border-gray-300 rounded-lg pl-8 pr-4 py-3 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                placeholder="10.000"
-                type="number"
-                min="0"
-                max="9999999"
-                step="0.01"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-
-          {/* Categorías */}
-          <div className="flex flex-col w-full gap-1 min-h-[10vh]">
-            <label className="font-semibold text-gray-600 dark:text-gray-700 ml-1">
-              Categorías
-            </label>
-            <div className="w-full rounded-2xl">
-              {initialCategories?.length > 0 ? (
-                <Categories
-                  categoriesList={initialCategories}
-                  onChange={setSubCategories}
-                  user={user}
-                />
-              ) : (
-                <p className="text-sm text-gray-400 italic p-2">
-                  Cargando categorías...
-                </p>
-              )}
+          {/* Categorías con mejor contenedor */}
+          <div className="flex flex-col gap-2">
+            <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Categorías</label>
+            <div className="p-2 rounded-2xl border border-gray-200">
+              <Categories categoriesList={initialCategories} onChange={setSubCategories} user={user} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Botón Flotante de Acción */}
-      <div className="w-full flex justify-center px-3 pb-15 pt-5 border-t border-gray-300">
+      {/* Botón de Acción Fijo/Sticky para Mobile */}
+      <div className="sticky bottom-0 flex items-center h-16 w-full border-t bg-background border-gray-300 py-1 px-5">
         <button
           type="submit"
-          className="w-full md:w-[25vw] bg-primary hover:bg-primary/80 text-gray-900 dark:text-white font-bold text-lg py-3.5 rounded-xl transform active:scale-[0.98] transition-all"
+          disabled={loading}
+          className={`w-full max-w-[400px] mx-auto block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800 shadow-lg shadow-gray-200"
+            }`}
         >
-          Agregar Plato
+          {loading ? "Guardando..." : "Crear Plato"}
         </button>
       </div>
     </form>
   );
 }
+
+const InputGroup = ({ label, id, isTextArea, isPrice, onChange, ...props }: any) => (
+  <div className="flex flex-col gap-1.5">
+    <label htmlFor={id} className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">{label}</label>
+    <div className="relative">
+      {isPrice && <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>}
+      {isTextArea ? (
+        <textarea id={id} onChange={(e) => onChange(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none" rows={3} {...props} />
+      ) : (
+        <input id={id} onChange={(e) => onChange(e.target.value)} className={`w-full border border-gray-300 rounded-lg ${isPrice ? "pl-8" : "px-4"} py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`} {...props} />
+      )}
+    </div>
+  </div>
+);

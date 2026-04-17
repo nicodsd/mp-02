@@ -36,7 +36,7 @@ export default function FoodsCardsExample({
 
   return (
     <div
-      className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-2 items-center`}
+      className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
     >
       <Image
         quality={75}
@@ -47,7 +47,7 @@ export default function FoodsCardsExample({
         width={100}
         height={100}
       />
-      <div className="flex flex-col relative justify-between pl-2 w-full h-full">
+      <div className="flex flex-col relative py-1 justify-between pl-2 w-full h-full">
         <div className="flex text-left">
           <div className="w-full">
             <h2

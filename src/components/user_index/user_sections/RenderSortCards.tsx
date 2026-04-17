@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
+import { refreshPage } from "@/app/actions";
 import Loading from "@/src/skeleton/Loading";
 import { URI } from "@/src/lib/const";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
-import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
@@ -43,13 +43,15 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
         if (selectedIds.length === 0 || !confirm(`¿Eliminar ${selectedIds.length} ítems?`)) return;
 
         selectedIds.forEach(id => removeFoodLocal(id));
+        console.log(selectedIds)
         try {
             await fetch(`${URI}foods/delete-multiple`, {
-                method: "POST",
+                method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ids: selectedIds }),
                 credentials: "include",
             });
+            refreshPage();
             setSelectedIds([]);
             setIsSelectionMode(false);
         } catch (error) {
@@ -80,7 +82,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
 
     return (
         <div className="w-full flex flex-col h-full relative">
-            {context && (
+            {context && foods.length > 0 && (
                 <SelectionToolbar
                     isSelectionMode={isSelectionMode}
                     selectedCount={selectedIds.length}
@@ -91,9 +93,11 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
                 />
             )}
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden">
                 {foods.length === 0 ? (
-                    <Loading count={count ?? 4} />
+                    <div className="flex justify-center items-center h-full">
+                        <span className={`text-center ${template?.textColor} py-20`}>No hay platos que mostrar</span>
+                    </div>
                 ) : (
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                         <SortableContext items={platos.map(f => f._id)} strategy={verticalListSortingStrategy}>
