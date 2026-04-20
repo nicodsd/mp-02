@@ -14,10 +14,9 @@ export function Categories({
 }) {
   const [activeCategory, setActiveCategory] = useState<string>("0");
   const platos = foods.filter((f: any) => f.category !== "Bebidas" && f.category !== "Postres");
-
   const orderedCats = useMemo(() => {
-    const activeSubCatNames = platos.map((f) => f.sub_category);
-    return activeSubCatNames
+    const activeSubCatNames = platos.map((f: any) => f.sub_category);
+    return [...new Set(activeSubCatNames)]
   }, [foods]);
 
   const handleClick = (name: string) => {

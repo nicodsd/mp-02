@@ -24,7 +24,7 @@ export default function CartModalExample({ isOpen, onClose, template }: { isOpen
     const handleEncargar = (ids: string[]) => {
         if (selectedFoods.length === 0) return;
         const message = `Hola! Quisiera pedirte:\n${selectedFoods.map((food: any) => `${quantities[food._id] || 1}x ${food.name}`).join("\n")} \nMuchas Gracias!`;
-        window.open(`https://wa.me/5493855349557?text=${encodeURIComponent(message)}`, "_blank");
+        window.open(`https://wa.me/5493851234567?text=${encodeURIComponent(message)}`, "_blank");
     }
 
     return (
