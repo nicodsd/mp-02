@@ -28,9 +28,9 @@ export default function CartModal({ phone, isOpen, onClose, template }: { phone:
     }
 
     return (
-        <div className={`fixed inset-0 z-1000 flex items-end justify-center ${template?.backgroundColor || "bg-background"} sm:items-center transition-all duration-300 bg-black/50 backdrop-blur-sm`} onClick={onClose}>
+        <div className={`fixed inset-0 z-100 flex items-end justify-center ${template?.backgroundColor || "bg-background"} transition-all duration-300 bg-black/50 backdrop-blur-sm`} onClick={onClose}>
             <div
-                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-[500px] h-[80vh] sm:h-[600px] p-1 rounded-t-2xl pb-2 flex flex-col shadow-2xl relative`}
+                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-1/3 h-[80vh] p-1 rounded-t-2xl pb-2 flex flex-col shadow-2xl relative`}
                 onClick={e => e.stopPropagation()}
             >
                 <div className={`flex justify-between items-center ${template?.textColor || "text-gray-700"} p-2`}>
@@ -99,7 +99,7 @@ export default function CartModal({ phone, isOpen, onClose, template }: { phone:
                     <button disabled={selectedFoods.length === 0} onClick={() => { handleEncargar(selectedIds) }} className={`w-fit px-14 mx-auto h-14 flex items-center justify-center gap-2 text-lg enabled:cursor-pointer disabled:bg-gray-400 bg-green-500 border-2 ${template?.border || "border-black"} text-white font-bold rounded-lg`}>
                         <FaWhatsapp size={26} color="white" /> Encargar comida
                     </button>
-                    <span className={`text-center text-sm ${template?.textColorOpacity || "text-gray-700/50"}`}> 1. Al presionar "Encargar comida" te enviaremos a la aplicación de WhatsApp para tomar tu pedido.
+                    <span className={`text-center sm:px-10 text-sm ${template?.textColorOpacity || "text-gray-700/50"}`}> 1. Al presionar "Encargar comida" te enviaremos a la aplicación de WhatsApp para tomar tu pedido.
                         <br />
                         2. Una vez en WhatsApp, solo debes presionar el botón de enviar para confirmar tu pedido.
                     </span>

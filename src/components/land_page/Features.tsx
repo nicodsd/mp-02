@@ -39,10 +39,10 @@ export default function Features() {
   return (
     <section id="caracteristicas" className="py-16 md:py-24 lg:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
-        <div className="text-start mb-12 md:mb-16 px-2">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-3xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Todo lo que tu restaurante necesita</motion.h2>
+        <div className="text-center md:text-start mb-12 md:mb-16 px-2">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Todo lo que tu negocio necesita</motion.h2>
           <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-stone-600 text-base md:text-lg">
-            Una herramienta potente y fácil de usar para digitalizar tu negocio gastronómico.
+            Una herramienta potente y fácil de usar para digitalizar tu local gastronómico.
           </motion.p>
         </div>
 

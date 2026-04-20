@@ -8,6 +8,9 @@ import { Utensils, Martini, Dessert } from "lucide-react";
 export default function FoodCatalog({ allFoods, initialSubCategories, user, template, example }: any) {
     const [displayFoods, setDisplayFoods] = useState(allFoods);
 
+    initialSubCategories = allFoods.map((f: any) => f.sub_category);
+    console.log(initialSubCategories)
+
     const handleSort = (order: "asc" | "desc") => {
         const sorted = [...displayFoods].sort((a, b) =>
             order === "asc" ? a.price - b.price : b.price - a.price
@@ -39,7 +42,6 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                             <Categories
                                 template={template}
                                 foods={allFoods}
-                                categoriesFoods={initialSubCategories}
                                 selectCategory={(sub: string) => {
                                     const res = sub === "0" ? allFoods : allFoods.filter((f: any) => f.sub_category === sub);
                                     setDisplayFoods(res);

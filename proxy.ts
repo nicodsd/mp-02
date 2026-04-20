@@ -45,11 +45,11 @@ export function proxy(req: NextRequest) {
         const token = req.cookies.get("token")?.value;
         const user = req.cookies.get("user")?.value;
         if (!token || !user) {
-            return NextResponse.redirect(new URL("/registro-de-usuario", req.url));
+            return NextResponse.redirect(new URL("/", req.url));
         }
     }
     return res;
 }
 export const config = {
-    matcher: ["/panel-de-usuario/:path*", "/nuevo-plato/:path*", "/iniciar-sesion", "/", "/mi-menu"],
+    matcher: ["/panel-de-usuario", "/nuevo-plato", "/iniciar-sesion", "/", "/mi-menu"],
 };

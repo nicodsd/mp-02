@@ -17,7 +17,7 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
   }
   const activePromos = useMemo(() => dataFoods.filter((f) => f.is_promo), [dataFoods]);
   return (
-    <div className="flex p-3 flex-col gap-8 relative">
+    <div className="flex p-3 w-full flex-col gap-8 relative">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Platos</h1>
         <p className="text-gray-500 text-sm">Gestiona tus platos.</p>

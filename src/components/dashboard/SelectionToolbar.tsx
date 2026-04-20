@@ -26,7 +26,7 @@ export const SelectionToolbar = ({
                     onClick={() => setIsSelectionMode(true)}
                     className="text-xs flex items-center gap-2 px-3 py-2 rounded-lg transition-all"
                 >
-                    <FaRegSquare className={`${template?.textColor} text-base`} /> Seleccionar Platos
+                    <FaRegSquare className={`text-base`} /> Seleccionar Platos
                 </button>
             </div>
         );
@@ -38,11 +38,11 @@ export const SelectionToolbar = ({
                 <div className="flex items-center gap-3">
                     <button
                         onClick={onCancelSelection}
-                        className={`p-2 ${template?.textColor} hover:bg-gray-100 rounded-full`}
+                        className={`p-2 hover:bg-gray-100 rounded-full`}
                     >
                         <FaTimes size={16} />
                     </button>
-                    <span className={`text-sm ${template?.textColor}`}>
+                    <span className={`text-sm`}>
                         {selectedCount} seleccionados
                     </span>
                 </div>
@@ -51,11 +51,10 @@ export const SelectionToolbar = ({
                     onClick={onBulkDelete}
                     disabled={selectedCount === 0}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs transition-all ${selectedCount > 0
-                        ? `bg-primary text-white shadow`
+                        ? `bg-primary text-white font-semibold cursor-pointer shadow`
                         : `bg-gray-200 text-gray-400 cursor-not-allowed`
                         }`}
-                >
-                    <FaTrash /> Eliminar seleccionados
+                > Eliminar seleccionados
                 </button>
             </div>
         </div>

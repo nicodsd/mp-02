@@ -98,7 +98,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between">
-      <div className="flex flex-col relative px-3 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto">
+      <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
         <div className="w-full py-3 z-10">
           <BttnBack />
         </div>
@@ -111,10 +111,10 @@ export default function LoginPage() {
             }
           </div>
         )}
-        <main className="flex-1 flex flex-col items-end justify-start mt-20">
+        <main className="flex-1 w-full flex flex-col items-end justify-start mt-18">
           <div className="w-full py-8 rounded-3xl border border-gray-300 pt-14 relative mt-2">
             <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-              <div className="w-24 h-24 rounded-full bg-primary ring-1 border-7 border-white ring-gray-300 flex items-center justify-center">
+              <div className="w-24 h-24 rounded-full ring-1 bg-background border-white ring-gray-300 flex items-center justify-center">
                 <div className="w-full h-full rounded-full flex items-center justify-center">
                   <Image
                     src={logo}
@@ -187,7 +187,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={formik.isSubmitting || alreadyLoggedIn}
-                  className={`w-full bg-primary text-white cursor-pointer font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting || alreadyLoggedIn
+                  className={`w-full bg-primary active:scale-90 text-white cursor-pointer font-bold py-4 px-3 rounded-lg uppercase tracking-wide transition-all ${formik.isSubmitting || alreadyLoggedIn
                     ? "opacity-50 disabled:cursor-not-allowed"
                     : "hover:bg-[#d00000] active:scale-[0.98]"
                     }`}
@@ -211,32 +211,11 @@ export default function LoginPage() {
           </div>
         </main>
       </div>
-      <footer className="w-full h-fit flex flex-col items-center justify-between bg-primary space-y-5 py-3">
-        <div className="flex items-center justify-center space-x-6">
-          <h3 className="text-white text-sm font-semibold">
-            ¿Ya viste las novedades?
-          </h3>
-          <a
-            href="/pagos"
-            className="text-white text-center text-xs uppercase font-black p-3 w-35 bg-black rounded-lg cursor-pointer"
-          >
-            Haste premium
-          </a>
-        </div>
-        <div className="text-center text-xs text-white">
+      <footer className="w-full h-fit flex flex-col items-center justify-between bg-background space-y-5 py-2">
+        <div className="text-center py-2 text-xs">
           <p>
-            © {new Date().getFullYear()} QMenu. Todos los derechos reservados.
-          </p>
-          <p>
-            Por{" "}
-            <a
-              className="font-bold cursor-pointer"
-              href="https://github.com/nicobarrera"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Nico Barrera
-            </a>
+            © {new Date().getFullYear()} QMenu. Todos los derechos
+            reservados.
           </p>
         </div>
       </footer>

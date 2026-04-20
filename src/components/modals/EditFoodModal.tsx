@@ -18,15 +18,13 @@ interface EditFoodModalProps {
   onClose: () => void;
   food: any;
   onUpdate: () => void;
-  template: any;
 }
 
 export default function EditFoodModal({
   isOpen,
   onClose,
   food,
-  onUpdate,
-  template
+  onUpdate
 }: EditFoodModalProps) {
 
   const [loading, setLoading] = useState(false);
@@ -112,7 +110,7 @@ export default function EditFoodModal({
             enterTo="opacity-100 scale-100"
             leave="ease-in duration-200"
           >
-            <DialogPanel className={`${template?.backgroundColor} w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden ${template?.border}`}>
+            <DialogPanel className={`w-full bg-white max-w-2xl rounded-xl shadow-2xl overflow-hidden`}>
               <form
                 onSubmit={handleUpdate}
                 className="flex flex-col md:flex-row h-full"
@@ -125,7 +123,7 @@ export default function EditFoodModal({
                     alt="Preview"
                     className="w-full h-60 object-cover"
                   />
-                  <label className={`absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer ${template?.textColor}`}>
+                  <label className={`absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white`}>
                     <FaCloudUploadAlt size={30} />
                     <span className="font-bold text-xs mt-2 text-center px-4">
                       Click para cambiar imagen
@@ -152,11 +150,11 @@ export default function EditFoodModal({
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className={`text-[12px] font-bold ${template?.textColor} uppercase tracking-widest ml-1`}>
+                    <label className={`text-[12px] font-bold text-gray-900 uppercase tracking-widest ml-1`}>
                       Nombre
                     </label>
                     <input
-                      className={`border ${template?.border} p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-800`}
+                      className={`border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-800`}
                       placeholder="Ej: Hamburguesa Triple"
                       value={formData.name}
                       onChange={(e) =>

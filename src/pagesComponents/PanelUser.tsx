@@ -52,7 +52,6 @@ export default function PanelUser({
       const res = await fetch(`${URI}auth/signout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ user_id: user.id }),
       });
 
@@ -83,7 +82,7 @@ export default function PanelUser({
     { name: "Promociones", icon: <HiOutlineTicket size={20} /> },
   ];
 
-  if (user.plan === "free") {
+  if (user?.plan === "free") {
     menuItems.pop();
     menuItems.pop();
   }
@@ -151,22 +150,22 @@ export default function PanelUser({
 
                   <nav className="mt-6 px-4 space-y-2 flex flex-col justify-between h-full">
                     <div>
-                      {menuItems.map((item, index) => (
+                      {menuItems?.map((item, index) => (
                         <button
-                          key={item.name}
+                          key={item?.name}
                           onClick={() => {
                             setSelectedIndex(index);
                             setIsSidebarOpen(false);
                           }}
                           className={tabClass(selectedIndex === index)}
                         >
-                          {item.icon} {item.name}
+                          {item?.icon} {item?.name}
                         </button>
                       ))}
                     </div>
                     <button
-                      onClick={() => { logout() }}
-                      className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
+                      onClick={() => { handleLogout() }}
+                      className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden  transition-colors font-bold"
                     >
                       <HiOutlineLogout size={20} /> Cerrar Sesión
                     </button>
@@ -177,24 +176,42 @@ export default function PanelUser({
           </Dialog>
         </Transition>
 
-        <div className="max-w-7xl h-screen mx-auto px-3 sm:px-6 lg:px-8 py-2">
-          <div className="flex h-full flex-col md:flex-row gap-8">
-            <aside className="hidden h-full md:block w-72 shrink-0">
+        <div className="w-full h-screen mx-auto px-3 sm:px-4 lg:px-8 py-2">
+          <div className="flex h-full w-full justify-between items-start flex-col md:flex-row gap-8">
+            <aside className="hidden h-full md:block w-80 shrink-0">
               <div className="sticky top-10">
                 <BttnBack />
+                <div className="flex ml-2 flex-col gap-2 mt-8">
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={logotipo}
+                      alt="Logo"
+                      width={70}
+                      height={40}
+                      priority
+                    />
+                    <span className="text-xs text-gray-500">/ Panel de usuario</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg text-gray-800 uppercase">
+                      {user?.name}
+                    </h3>
+                    <UserPlan plan={user?.plan} />
+                  </div>
+                </div>
                 <TabList className="flex flex-col mt-10 gap-y-2">
-                  {menuItems.map((item, index) => (
+                  {menuItems?.map((item, index) => (
                     <Tab
-                      key={item.name}
+                      key={item?.name}
                       className={({ selected }) => tabClass(selected)}
                     >
-                      {item.icon} {item.name}
+                      {item?.icon} {item?.name}
                     </Tab>
                   ))}
                 </TabList>
                 <button
-                  onClick={() => { logout() }}
-                  className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
+                  onClick={() => { handleLogout() }}
+                  className="mt-30 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900  transition-colors font-bold cursor-pointer"
                 >
                   <HiOutlineLogout size={20} /> Cerrar Sesión
                 </button>
@@ -202,21 +219,21 @@ export default function PanelUser({
             </aside>
 
             <main className="flex-1">
-              <TabPanels className="min-h-full overflow-hidden">
-                <div className="md:hidden">
+              <TabPanels className="min-h-full md:w-full lg:w-[70%] overflow-hidden">
+                <div className="md:hidden py-1">
                   <BttnBack />
                 </div>
-                <div className="pb-13 pt-8 md:pt-6">
-                  <TabPanel className="focus:outline-none">
+                <div className="pb-13 pt-8 md:pt-6 w-full">
+                  <TabPanel className="focus:outline-none w-full">
                     <UserSettings user={user} logout={handleLogout} />
                   </TabPanel>
-                  <TabPanel className="focus:outline-none">
+                  <TabPanel className="focus:outline-none w-full">
                     <MenuItems dataFoods={foods} template={template} />
                   </TabPanel>
-                  <TabPanel className="focus:outline-none">
-                    <ConfigureMenu user={user.id} />
+                  <TabPanel className="focus:outline-none w-full">
+                    <ConfigureMenu user={user?.id} />
                   </TabPanel>
-                  <TabPanel className="focus:outline-none">
+                  <TabPanel className="focus:outline-none w-full">
                     <PromoPanel />
                   </TabPanel>
                 </div>

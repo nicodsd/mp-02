@@ -91,14 +91,14 @@ export default function PromoPanel() {
   };
 
   return (
-    <div className="p-3 flex h-full flex-col gap-6 pb-24">
+    <div className="p-3 flex h-full w-full flex-col gap-6 pb-24">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Promociones</h1>
         <p className="text-gray-500 text-sm">Gestiona los descuentos destacados de hoy.</p>
       </header>
 
       {activePromos.length > 0 ? (
-        <section className="flex flex-col gap-3 max-h-120 overflow-y-auto">
+        <section className="flex flex-col w-full gap-3 max-h-120 overflow-y-auto">
           <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
             Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
           </h3>
