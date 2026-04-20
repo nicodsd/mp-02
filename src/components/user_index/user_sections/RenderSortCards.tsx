@@ -124,7 +124,6 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
                     onClose={() => setIsEditOpen(false)}
                     food={selectedFood}
                     onUpdate={() => refreshPage()}
-                    template={template}
                 />
             )}
         </div>

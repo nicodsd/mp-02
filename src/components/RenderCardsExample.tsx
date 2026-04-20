@@ -123,7 +123,6 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
 
       {selectedFood && (
         <EditFoodModal
-          template={template}
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           food={selectedFood}

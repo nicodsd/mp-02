@@ -45,8 +45,8 @@ export default function Contact() {
         {/* Layout: Stack en móvil, 2 columnas en LG */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
 
-          <div className="text-start mb-12 md:mb-16 px-2">
-            <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">¿Listo para modernizar tu local?</h2>
+          <div className="text-center md:text-start mb-12 md:mb-16 px-2">
+            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">¿Listo para modernizar tu local?</h2>
             <p className="text-stone-600 text-base md:text-lg mb-8 lg:mx-0">
               Únete a miles de restaurantes que ya usan QMenú. Si tienes dudas o necesitas un plan personalizado, escríbenos.
             </p>

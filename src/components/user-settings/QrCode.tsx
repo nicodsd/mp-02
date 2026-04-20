@@ -21,7 +21,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user.name.replace(" ", "-"))}`;
+  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user?.name?.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -122,7 +122,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
   };
 
   return (
-    <div className="flex relative items-center w-full md:w-1/2 justify-center">
+    <div className="flex relative items-center w-full lg:w-3/4 xl:w-1/2 justify-center md:justify-start">
       <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-6 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
@@ -154,12 +154,13 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
           )}
         </div>
 
-        {user?.plan !== "free" && <div className="flex justify-center gap-5 mb-6">
+        {user?.plan !== "free" && <div className="flex justify-center relative gap-5 mb-6">
+          <span className="text-[11px] absolute top-2 left-2 text-slate-700 mb-1">Elige un color</span>
           {TEMPLATES.map((t) => (
             <button
               key={t.id}
               onClick={() => setSelectedTemplate(t)}
-              className={`group relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
+              className={`group cursor-pointer relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
                 ? "border-blue-600 scale-110"
                 : "border-transparent"
                 }`}

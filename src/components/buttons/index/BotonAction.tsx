@@ -22,4 +22,4 @@ export default function BotonAccion({ color, textColor }: { color: any, textColo
       ¡Probar Ahora!
     </Link>
   )
-}  
+}

@@ -181,7 +181,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         {
           user && cookie && (
             <Link
-              className={`flex items-center absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full`}
+              className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full`}
               href="/panel-de-usuario"
             >
               <FaEdit size={14} /> Perfil
@@ -193,11 +193,17 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
       <h2 className={`text-2xl leading-none ${user.plan === "free" ? "text-gray-700" : "text-white"} font-bold mt-3 uppercase`}>
         {displayData?.name || (!user ? "QMENÚ" : "")}
       </h2>
-      <p className="my-1">
+      <p className="my-1 text-wrap">
         {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
       </p>
       <div className="flex flex-col items-center gap-1 mt-0.5">
-        <div className="flex items-center gap-x-2 text-xs flex-wrap justify-center">
+        {(displayData?.address || !user) && (
+          <span className="flex text-xs items-center gap-1">
+            <FaMapMarkerAlt size={17} />
+            {displayData?.address || "Santiago del Estero, Argentina"}
+          </span>
+        )}
+        <div className="flex items-center gap-x-2 mt-1 text-xs flex-wrap justify-center">
           {(displayData?.phone || !user) && (
             <span className="flex items-center gap-1">
               <FaWhatsapp size={17} />
@@ -221,12 +227,6 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
               </span>
             ))}
         </div>
-        {(displayData?.address || !user) && (
-          <span className="flex text-xs items-center gap-1">
-            <FaMapMarkerAlt size={17} />
-            {displayData?.address || "Santiago del Estero, Argentina"}
-          </span>
-        )}
       </div>
     </div>
   );

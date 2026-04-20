@@ -41,7 +41,7 @@ export default function TemplateSelector({ user }: { user: any }) {
     };
 
     return (
-        <div className="flex flex-col items-start justify-center gap-4 min-h-screen pb-32 md:pb-0 px-2 max-w-4xl mx-auto">
+        <div className="flex flex-col w-full items-start justify-start gap-4 min-h-screen pb-32 md:pb-20 px-3">
             <header className="py-3 flex flex-col gap-1">
                 <h1 className="text-2xl font-bold text-gray-800">Personalizar menú</h1>
                 <p className="text-gray-500 text-sm">1. Selecciona la identidad visual de tu negocio.
@@ -51,7 +51,7 @@ export default function TemplateSelector({ user }: { user: any }) {
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full relative"
+                className="grid grid-cols-2 md:flex flex-wrap gap-2 w-full relative"
             >
                 {templates.map((template) => {
                     const isSelected = selected === template.template_id;
@@ -60,16 +60,16 @@ export default function TemplateSelector({ user }: { user: any }) {
                         <label
                             key={template.template_id}
                             onClick={() => handleSelect(template.template_id)}
-                            className={`relative flex flex-col items-center p-2 cursor-pointer rounded-3xl border-2 transition-all duration-300 
+                            className={`relative w-full md:w-fit flex flex-col items-center p-2 cursor-pointer rounded-3xl border-2 transition-all duration-300 
                                 ${isSelected
                                     ? `${template.border} bg-gray-50 shadow-lg scale-105 z-10`
                                     : 'border-gray-200 bg-white hover:bg-gray-50 opacity-90'
                                 }`}
                         >
                             {/* Card Preview Miniatúra */}
-                            <div className={`w-full h-40 rounded-2xl border ${template.border} p-3 mb-3 shadow-inner ${template.backgroundColor} transition-colors overflow-hidden`}>
+                            <div className={`w-full md:w-32 h-36 rounded-2xl border ${template.border} p-3 mb-2 shadow-inner ${template.backgroundColor} transition-colors overflow-hidden`}>
                                 {/* Header de la mini-card */}
-                                <div className="flex flex-col items-center gap-1 mb-4">
+                                <div className="flex flex-col items-center gap-1 mb-2">
                                     <div className={`w-8 h-8 rounded-full bg-black ${template.accentColors[0]} shadow-sm`} />
                                     <div className={`h-1.5 w-12 rounded-full ${template.textColor} opacity-40`} />
                                 </div>
@@ -114,17 +114,49 @@ export default function TemplateSelector({ user }: { user: any }) {
                     );
                 })}
             </motion.div>
-            <div className="fixed md:relative w-full z-100 bottom-0 left-0 right-0 px-6 pt-4 pb-7 bg-background/90 backdrop-blur-lg border-t border-gray-200 flex flex-col items-center gap-2">
-                <button
-                    onClick={handleUpdateTemplate}
-                    disabled={loading && selected === currentTemplate.template_id}
-                    className={`w-full py-3 px-2 enabled:cursor-pointer disabled:cursor-not-allowed rounded-xl font-black text-lg transition-all shadow-md uppercase tracking-wider
+            <div className="w-full flex-col md:flex-row items-start h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
+                <div className="flex items-center gap-2">
+                    <span className='text-xs hidden md:block text-end px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
+                    <button
+                        onClick={handleUpdateTemplate}
+                        disabled={loading && selected === currentTemplate.template_id}
+                        className={`w-full py-3 px-2 enabled:cursor-pointer disabled:cursor-not-allowed rounded-xl font-black text-lg transition-all shadow-md uppercase tracking-wider
                     ${loading ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : `border-4 ${currentTemplate.backgroundColor} ${currentTemplate.border} ${currentTemplate.textColor} active:scale-[0.98]`}`}
-                >
-                    {loading ? 'Guardando cambios...' : `Aplicar tema ${currentTemplate.name}`}
-                </button>
-                <span className='text-xs text-center px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
+                    >
+                        {loading ? 'Guardando cambios...' : `Aplicar tema ${currentTemplate.name}`}
+                    </button>
+                </div>
+                <span className='text-xs md:hidden text-center px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
             </div>
         </div>
     );
 }
+
+{/* <div className="w-full flex-col md:flex-row items-start md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
+    <span className="text-gray-700 md:mr-4 text-md">¿Deseas guardar los cambios?</span>
+    <div className="flex gap-2 w-full md:w-auto">
+        <button
+            type="button"
+            onClick={() =>
+                isEditing &&
+                cancelChanges()
+            }
+            className="px-6 py-3 border cursor-pointer rounded-xl"
+        >
+            Cancelar
+        </button>
+        <button
+            type="submit"
+            disabled={loading}
+            className="w-full active:scale-90 transition-all disabled:opacity-50 min-w-50 md:w-auto px-6 bg-black text-white py-3 rounded-xl flex justify-center cursor-pointer items-center gap-2"
+        >
+            {loading ? (
+                <>
+                    <FaSpinner className="animate-spin" /> Guardando...
+                </>
+            ) : (
+                "Guardar Cambios"
+            )}
+        </button>
+    </div>
+</div> */}

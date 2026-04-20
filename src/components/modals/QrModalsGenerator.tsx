@@ -173,12 +173,13 @@ export default function QrModalsGenerator({
               )}
             </div>
 
-            {user?.plan !== "free" && <div className="flex justify-center gap-5 mb-6">
+            {user?.plan !== "free" && <div className="flex justify-center relative gap-5 mb-6">
+              <span className="text-[11px] absolute top-2 left-2 text-slate-700 mb-1">Elige un color</span>
               {TEMPLATES.map((t) => (
                 <button
                   key={t.id}
                   onClick={() => setSelectedTemplate(t)}
-                  className={`group relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
+                  className={`group cursor-pointer relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
                     ? "border-blue-600 scale-110"
                     : "border-transparent"
                     }`}

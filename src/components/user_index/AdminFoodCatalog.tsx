@@ -44,7 +44,6 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                                 <Categories
                                     template={template}
                                     foods={foods}
-                                    categoriesFoods={initialSubCategories}
                                     selectCategory={(sub: string) => {
                                         const res = sub === "0" ? foods : foods.filter((f: any) => f.sub_category === sub);
                                         setDisplayFoods(res);

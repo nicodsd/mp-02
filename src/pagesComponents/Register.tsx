@@ -3,18 +3,21 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { setAuthCookie, setUserCookie } from "@/app/actions";
 import * as Yup from "yup";
-import logo from "@/public/images/logo/logo-rojo.png";
+import logo from "@/public/images/logo/LOGOTIPO.svg";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
+import PlanSelector from "@/src/components/AcordeonPlanRegister";
 import {
   FaInstagram,
   FaFacebook,
   FaTiktok,
   FaCamera,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
 
 type FormValues = {
   email: string;
@@ -26,6 +29,7 @@ type FormValues = {
   description: string;
   cover: File | null;
   phone: string;
+  phonePrefix: string;
   plan: string;
   location: string;
   instagram: string;
@@ -44,15 +48,24 @@ const validationSchemas = [
     plan: Yup.string().required("Seleccione un plan"),
   }),
   Yup.object({
-    name: Yup.string().required("Ingrese un nombre"),
+    name: Yup.string()
+      .test("len", "Mínimo 3 caracteres", (val) => !val || val.length >= 3)
+      .test("len", "Máximo 20 caracteres", (val) => !val || val.length <= 20)
+      .required("Ingrese un nombre"),
     logo: Yup.mixed().nullable().optional(),
     cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
-    description: Yup.string().test("len", "Mínimo 10 caracteres", (val) => !val || val.length >= 10).max(30, "Máximo 30 caracteres").optional(),
-    phone: Yup.string().test("len", "Mínimo 7 dígitos", (val) => !val || val.length >= 7).optional(),
+    description: Yup.string()
+      .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
+      .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
+      .optional(),
+    phone: Yup.number()
+      .test("len", "Mínimo 7 dígitos", (val) => !val || val.toString().length >= 7)
+      .optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
+    phonePrefix: Yup.number().optional(),
   }),
 ];
 
@@ -85,7 +98,7 @@ export default function Register() {
     body.append("password", values.password);
     body.append("name", values.name);
     body.append("description", values.description || "");
-    body.append("phone", String(values.phone || ""));
+    body.append("phone", String(values.phonePrefix + values.phone || ""));
     body.append("location", values.location || "");
     body.append("is_active", values.is_active ? "1" : "0");
     body.append("is_online", values.is_online ? "1" : "0");
@@ -115,7 +128,7 @@ export default function Register() {
         setApiError(data.error || "Ocurrió un error al registrarse.");
         return;
       }
-      router.push("/mi-menu");
+      router.push("/");
     } catch (err) {
       setApiError("Error de conexión. Intente nuevamente.");
     }
@@ -127,10 +140,10 @@ export default function Register() {
         <BttnBack />
       </div>
 
-      <div className="h-full w-full pb-50">
+      <div className="h-full w-full pb-40">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
-            <h1 className="text-3xl font-black text-gray-900 text-start">
+            <h1 className="text-3xl font-black text-stone-800 text-start">
               Regístrate
             </h1>
             <p className="text-xs mt-1 text-gray-500 text-start">
@@ -148,7 +161,7 @@ export default function Register() {
           </div>
         </div>
 
-        <ol className="flex w-full h-20 mb-5 justify-center">
+        <ol className="flex w-full h-20 justify-center">
           {steps.map((s, idx) => {
             const active = idx <= step;
             const completed = idx < step;
@@ -192,6 +205,7 @@ export default function Register() {
             cover: null,
             name: "",
             description: "",
+            phonePrefix: "",
             phone: "",
             plan: "",
             location: "",
@@ -273,74 +287,17 @@ export default function Register() {
               )}
 
               {step === 1 && (
-                <div className="animate-in fade-in space-y-2 slide-in-from-right-4 duration-300">
-                  <h3 className="text-gray-600 font-semibold h-5 text-lg">
-                    Elige tu plan{" "}
-                    <span className="text-xs font-light text-gray-500">
-                      (es opcional)
-                    </span>
-                  </h3>
-                  <p className="text-xs font-light text-gray-500">
-                    Tu email nos sirve para restablecer tu contraseña por si te
-                    olvidas o la pierdes.
-                  </p>
-                  <div className="flex flex-col justify-start h-fit mt-7">
-                    <div className="flex flex-col w-full mb-4">
-                      <div
-                        role="group"
-                        aria-labelledby="checkbox-group"
-                        className="flex flex-col space-y-2"
-                      >
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field
-                            className="w-4 h-4 accent-black"
-                            type="radio"
-                            name="plan"
-                            value="free"
-                          />
-                          Plan Gratuito
-                        </label>
-                        <div className="flex flex-col space-y-0.5 text-xs font-light text-gray-500 ml-6">
-                          <p>Todo lo que necesitas para comenzar</p>
-                          <p>1 usuario</p>
-                          <p>1 local</p>
-                          <p>1 menu</p>
-                          <p>15 platos</p>
-                        </div>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field
-                            className="w-4 h-4 accent-black"
-                            type="radio"
-                            name="plan"
-                            value="plus"
-                          />
-                          Plan Plus+
-                        </label>
-                        <div className="flex flex-col space-y-0.5 text-xs font-light text-gray-500 ml-6">
-                          <p>Todo lo que necesitas para comenzar</p>
-                          <p>1 usuario</p>
-                          <p>1 local</p>
-                          <p>1 menu</p>
-                          <p>15 platos</p>
-                        </div>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <Field
-                            className="w-4 h-4 accent-black"
-                            type="radio"
-                            name="plan"
-                            value="premium"
-                          />
-                          Plan Premium
-                        </label>
-                        <div className="flex flex-col space-y-0.5 text-xs font-light text-gray-500 ml-6">
-                          <p>Todo lo que necesitas para comenzar</p>
-                          <p>1 usuario</p>
-                          <p>1 local</p>
-                          <p>1 menu</p>
-                          <p>15 platos</p>
-                        </div>
-                      </div>
-                    </div>
+                <div className="space-y-4">
+                  <div className="animate-in space-y-2 fade-in slide-in-from-right-4 duration-300">
+                    <h3 className="text-gray-600 font-semibold h-5 text-lg">
+                      Elige tu plan
+                    </h3>
+                    <p className="text-xs font-light text-gray-500">
+                      Selecciona el plan que mejor se adapte a tus necesidades.
+                    </p>
+                  </div>
+                  <div className="flex flex-col justify-start h-fit mt-3">
+                    <PlanSelector values={values} setFieldValue={setFieldValue} />
                   </div>
                 </div>
               )}
@@ -351,35 +308,14 @@ export default function Register() {
                     Crea tu marca
                   </h3>
                   <p className="text-xs font-light text-gray-500">
-                    ¿Cómo se llama tu local? Agrega un nombre, una foto y un
-                    fondo para personalizar tu QMenú.
+                    Agrega información de tu negocio para tu QMenú.
                   </p>
-                  <div className="flex flex-col gap-6 mt-7">
-                    <div>
-                      <label
-                        htmlFor="name"
-                        className="block text-md font-medium text-gray-700 mb-1"
-                      >
-                        Nombre*
-                      </label>
-                      <Field
-                        id="name"
-                        value={values.name}
-                        name="name"
-                        type="text"
-                        placeholder="Mi Tienda"
-                        className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                      />
-                      <ErrorMessage
-                        name="name"
-                        component="div"
-                        className="mt-1 text-sm text-red-500 font-medium"
-                      />
-                    </div>
-                    <div className={`flex ${values.plan === "free" ? "justify-start" : "justify-around"} w-full mb-1`}>
+                  <div className="flex flex-col gap-6 mt-4">
+
+                    <div className={`flex ${values.plan === "free" ? "justify-start" : "justify-around"} w-full mb-3`}>
                       <div className="relative flex items-center justify-center gap-2 flex-col">
                         <h3 className="text-lg text-gray-700">Logo</h3>
-                        <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
+                        <div className={`w-30 md:w-40 h-30 md:h-40 relative ${logoPreview ? "border-gray-200" : "border-transparent"} border rounded-full overflow-hidden`}>
                           {logoPreview && <Image
                             src={logoPreview}
                             alt="Profile"
@@ -389,7 +325,7 @@ export default function Register() {
                             loading="eager"
                             className="object-cover w-full h-full"
                           />}
-                          <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                          <label className={`absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black/50 ${!logoPreview ? "bg-[#00000040]" : "bg-transparent"} py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition`}>
                             <input
                               id="logo"
                               name="logo"
@@ -407,16 +343,17 @@ export default function Register() {
                                 }
                               }}
                             />
-                            <FaCamera /> Agregar
+                            {!logoPreview && <FaCamera />}
+                            {!logoPreview && "Agregar"}
                           </label>
                         </div>
                       </div>
 
                       {values.plan !== "free" && (
-                        <div className="flex flex-col pb-4 rounded-lg w-fit justify-center items-center">
+                        <div className="flex flex-col rounded-lg w-fit justify-center items-center">
                           <div className="relative flex items-center justify-center gap-2 flex-col">
                             <h3 className="text-lg text-gray-700">Fondo</h3>
-                            <div className="w-45 md:w-60 h-30 md:h-40 relative rounded-lg overflow-hidden">
+                            <div className={`w-45 md:w-60 h-30 md:h-40 relative ${coverPhotoPreview ? "border-gray-200" : "border-transparent"} border rounded-lg overflow-hidden`}>
                               {coverPhotoPreview && <Image
                                 src={coverPhotoPreview}
                                 alt="background"
@@ -426,7 +363,7 @@ export default function Register() {
                                 loading="eager"
                                 className="object-cover w-full h-full"
                               />}
-                              <label className="absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black bg-[#00000040] py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition">
+                              <label className={`absolute top-0 w-full h-full right-1/2 text-center -translate-x-1/2 left-1/2 font-semibold text-white/70 text-xl gap-1 flex flex-col items-center justify-center active:bg-black ${!coverPhotoPreview ? "bg-[#00000040]" : "bg-transparent"} py-2.5 px-2 rounded-lg cursor-pointer hover:scale-110 transition`}>
                                 <input
                                   id="cover"
                                   name="cover"
@@ -445,7 +382,8 @@ export default function Register() {
                                     }
                                   }}
                                 />
-                                <FaCamera /> Editar
+                                {!coverPhotoPreview && <FaCamera />}
+                                {!coverPhotoPreview && "Agregar"}
                               </label>
                             </div>
                           </div>
@@ -453,45 +391,84 @@ export default function Register() {
                         </div>
                       )}
                     </div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="location"
-                        className="block text-md font-medium text-gray-700 mb-1"
-                      >
-                        Ubicación
-                      </label>
-                      <Field
-                        id="location"
-                        name="location"
-                        type="text"
-                        placeholder="Av. Alvear 123"
-                        className="block w-[70%] px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                      />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="phone"
-                        className="block text-md font-medium text-gray-700"
-                      >
-                        Teléfono
-                      </label>
-                      <div className="flex items-center relative">
-                        <div className="flex flex-col w-full">
-                          <div className="flex items-center relative w-full">
-                            <span className="text-gray-500 text-lg bg-gray-100 h-full mr-2 px-2 py-2 rounded-lg flex items-center">385</span>
-                            <Field
-                              id="phone"
-                              name="phone"
-                              type="tel"
-                              placeholder="1234567"
-                              maxLength={7}
-                              className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                            />
-                            <ErrorMessage name="phone" component="div" className="-bottom-6 absolute text-sm text-red-500 font-medium" />
+
+                    <div className="flex w-full space-x-5 justify-between">
+                      <div className="flex flex-col items-start justify-around">
+                        <label
+                          htmlFor="name"
+                          className="block text-md font-medium text-gray-700"
+                        >
+                          Nombre*
+                        </label>
+                        <label
+                          htmlFor="location"
+                          className="block text-md font-medium text-gray-700"
+                        >
+                          Ubicación
+                        </label>
+                        <label
+                          htmlFor="phone"
+                          className="block text-md font-medium text-gray-700"
+                        >
+                          WhatsApp
+                        </label>
+                      </div>
+
+                      <div className="flex gap-3 w-full flex-col items-center justify-between">
+                        <div className="flex items-center justify-end relative w-full">
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <FaShop />
                           </div>
+                          <Field
+                            id="name"
+                            value={values.name}
+                            name="name"
+                            maxLength={15}
+                            type="text"
+                            placeholder="Mi Tienda"
+                            className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                          />
+                          <ErrorMessage
+                            name="name"
+                            component="div"
+                            className="text-xs mr-1 text-red-500 font-medium absolute"
+                          />
+                        </div>
+                        <div className="flex items-center justify-end relative w-full">
+                          <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
+                          <Field
+                            id="location"
+                            name="location"
+                            maxLength={20}
+                            type="text"
+                            placeholder="Av. Alvear 123"
+                            className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                          />
+                          <ErrorMessage name="location" component="div" className="text-xs mr-1 text-red-500 font-medium absolute" />
+                        </div>
+                        <div className="flex items-center justify-end relative w-full">
+                          <Field
+                            id="phone"
+                            name="phonePrefix"
+                            maxLength={3}
+                            type="tel"
+                            inputMode="numeric"
+                            placeholder="385"
+                            className="text-gray-700 appearance-none overflow-hidden w-12 text-lg bg-stone-100 border border-gray-300 h-full mr-2 font-bold px-2 py-2 rounded-lg flex items-center"
+                          />
+                          <Field
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            placeholder="1234567"
+                            maxLength={7}
+                            className="text-gray-700 appearance-none overflow-hidden w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                          />
+                          <ErrorMessage name="phone" component="div" className="text-xs mr-1 text-red-500 font-medium absolute" />
                         </div>
                       </div>
                     </div>
+
                     <div>
                       <label
                         htmlFor="description"
@@ -503,14 +480,15 @@ export default function Register() {
                         id="description"
                         name="description"
                         as="textarea"
-                        rows={3}
+                        rows={2}
+                        maxLength={30}
                         placeholder="Cuenta en pocas líneas qué ofreces y tu propuesta de valor."
                         className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
-                      <ErrorMessage name="description" component="div" className="mt-1 text-sm text-red-500 font-medium" />
+                      <ErrorMessage name="description" component="div" className="mt-0.5 text-sm text-red-500 font-medium absolute" />
                     </div>
 
-                    <div>
+                    <div className="border-t border-gray-300 pt-2">
                       <label className="block text-md font-medium text-gray-700 mt-2 mb-2">
                         Redes
                       </label>
@@ -520,6 +498,7 @@ export default function Register() {
                           <Field
                             name="instagram"
                             type="text"
+                            maxLength={15}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -529,6 +508,7 @@ export default function Register() {
                           <Field
                             name="facebook"
                             type="text"
+                            maxLength={15}
                             placeholder="Nombre de usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -538,6 +518,7 @@ export default function Register() {
                           <Field
                             name="tiktok"
                             type="text"
+                            maxLength={15}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -550,7 +531,7 @@ export default function Register() {
               )}
 
               <div className="h-fit w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
-                <div className="flex items-center mb-3 w-[80%] justify-between">
+                <div className="flex items-center mb-2 w-[80%] justify-between">
                   <button
                     type="button"
                     onClick={() => {
@@ -558,7 +539,7 @@ export default function Register() {
                       setApiError(null);
                     }}
                     disabled={step === 0 || isSubmitting}
-                    className={`inline-flex items-center px-6 py-3 text-sm font-bold rounded-lg transition-all ${step === 0
+                    className={`inline-flex items-center px-6 py-4 text-md font-bold rounded-lg transition-all ${step === 0
                       ? "text-gray-300 cursor-not-allowed"
                       : "text-white bg-black"
                       }`}
@@ -569,7 +550,7 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center justify-center px-8 py-3 text-sm font-bold text-white transition-all transform hover:scale-[1.02] active:scale-[0.98] bg-primary hover:bg-[#d00000] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center active:scale-90 min-w-40 justify-center px-8 py-4 text-md font-bold text-white transition-all transform hover:scale-[1.02] bg-primary hover:bg-[#d00000] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
@@ -602,7 +583,7 @@ export default function Register() {
                     )}
                   </button>
                 </div>
-                <div className="flex flex-col items-center justify-center text-center">
+                <div className="flex items-center justify-center gap-3 pt-2 w-full text-center">
                   <p className="text-sm h-4 font-semibold text-gray-600">
                     ¿Ya tienes cuenta?
                   </p>
@@ -618,21 +599,10 @@ export default function Register() {
                     {apiError}
                   </div>
                 )}
-                <div className="text-center py-6 text-xs">
+                <div className="text-center py-2 text-xs">
                   <p>
                     © {new Date().getFullYear()} QMenu. Todos los derechos
                     reservados.
-                  </p>
-                  <p>
-                    Por{" "}
-                    <a
-                      className="font-bold"
-                      href="https://www.linkedin.com/in/nicobarreraj"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Nico Barrera
-                    </a>
                   </p>
                 </div>
               </div>

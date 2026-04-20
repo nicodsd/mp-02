@@ -34,15 +34,15 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="w-full py-16 md:py-14 md:mt-10 relative overflow-hidden flex flex-col items-center justify-center bg-background">
+    <section id="faq" className="w-full py-5 md:py-14 md:mt-10 relative overflow-hidden flex flex-col items-center justify-center bg-background">
 
       <div className="text-start w-full mx-auto relative z-10 px-2">
-        <div className="text-start mb-16">
+        <div className="text-center md:text-start mb-10 md:mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold text-stone-900 mb-4"
+            className="text-4xl md:text-5xl font-bold text-stone-900 mb-4"
           >
             Preguntas Frecuentes
           </motion.h2>
@@ -71,7 +71,7 @@ export default function FAQ() {
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center p-5 text-left focus:outline-none"
               >
-                <span className="font-bold text-lg text-gray-700 pr-4">{faq.question}</span>
+                <span className="font-bold text-lg text-stone-700 pr-4">{faq.question}</span>
                 <span
                   className={`shrink-0 flex border border-gray-300 items-center justify-center w-10 h-10 rounded-full transition-transform duration-300 ${activeIndex === index ? 'bg-black text-white rotate-180' : 'border-gray-500 text-gray-600'}`}
                 >

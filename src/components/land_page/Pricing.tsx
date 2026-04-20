@@ -1,6 +1,7 @@
 "use client"
 import React from 'react';
 import { Check, Link } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface PricingPlan {
   name: string;
@@ -17,23 +18,24 @@ interface PricingPlan {
 
 const plans: PricingPlan[] = [
   {
-    name: "Starter",
+    name: "Gratuito",
     price: "$0",
     period: "/mes",
     description: "Para pequeños locales o food trucks que inician.",
     features: [
       "Hasta 10 platos",
-      "1 Código QR con tu logo",
+      "Código QR con tu logo",
       "Fotos básicas",
-      "Actualización en tiempo real"
+      "Actualización en tiempo real",
+      "Los pedidos te llegan al WhatsApp"
     ],
     cta: "Crear Menú Gratis",
     href: "/registro-de-usuario?plan=free"
   },
   {
     name: "Plus",
-    price: "$19.900",
-    before: "$24.900",
+    price: "$14.900",
+    before: "$19.900",
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
@@ -51,18 +53,21 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Premium",
-    price: "$39.900",
-    before: "$49.900",
+    price: "$19.900",
+    before: "$24.900",
     period: "/mes",
-    description: "Para locales con gran variedad de platos y que quieren destacar su marca.",
+    description: "El plan más completo para locales con gran variedad de platos y que quieren destacar su marca.",
     features: [
       "Platos ilimitados",
       "Códigos QR personalizables con tu logo",
       "Fotos de alta calidad",
       "Analíticas de visitas",
-      "Menú personalizable según estética",
+      "Menú altamente personalizable, diferenciate de la competencia",
       "Compras por WhatsApp",
-      "Gestión de promociones",
+      "Seccion para gestión de pedidos",
+      "Multi sucursal",
+      "Botón de 'Descanso' para vacaciones",
+      "Agrega promociones a tus productos",
       "Menús diferenciados por zona",
       "Soporte prioritario"
     ],
@@ -74,13 +79,13 @@ const plans: PricingPlan[] = [
 
 export default function Pricing() {
   return (
-    <section id="planes" className="py-16 md:py-14 md:mt-10 w-full">
+    <section id="planes" className="py-16 md:py-14 md:mt-20 w-full">
       <div className="w-full">
-        <div className="text-start mb-12 md:mb-16 px-2">
-          <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">Planes Transparentes</h2>
-          <p className="text-stone-600 text-base md:text-lg">
-            Elige la opción que mejor se adapte a tu negocio. Sin comisiones ocultas por pedido.
-          </p>
+        <div className="text-center md:text-start mb-12 md:mb-16 px-2">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
+            Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
+          </motion.p>
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}
@@ -94,7 +99,7 @@ export default function Pricing() {
                 ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
             >
               {plan.recommended && (
-                <div className="absolute btn-god-rays -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-2 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-2 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
                   Recomendado
                 </div>
               )}
@@ -138,7 +143,7 @@ export default function Pricing() {
                   <a href={plan.href}
                     className={`w-full text-center py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all 
                   ${plan.recommended
-                        ? 'bg-primary btn-god-rays hover:bg-primary-500 hover:shadow-md text-white'
+                        ? 'bg-primary hover:bg-primary-500 hover:shadow-md text-white'
                         : 'hover:bg-gray-100 text-stone-700 border border-gray-300'
                       }
                  `}
