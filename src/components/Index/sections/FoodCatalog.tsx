@@ -8,8 +8,7 @@ import { Utensils, Martini, Dessert } from "lucide-react";
 export default function FoodCatalog({ allFoods, initialSubCategories, user, template, example }: any) {
     const [displayFoods, setDisplayFoods] = useState(allFoods);
 
-    initialSubCategories = allFoods.map((f: any) => f.sub_category);
-    console.log(initialSubCategories)
+    initialSubCategories = displayFoods.map((f: any) => f.sub_category);
 
     const handleSort = (order: "asc" | "desc") => {
         const sorted = [...displayFoods].sort((a, b) =>
@@ -17,33 +16,33 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
         );
         setDisplayFoods(sorted);
     };
-    const isPremium = user?.plan === "premium" || user?.plan === "plus";
+    //const isPremium = user?.plan === "premium" || user?.plan === "plus" || !user;
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
-                {allFoods?.filter((f: any) => f.category === "Bebidas").length > 0 && isPremium &&
+                {displayFoods?.filter((f: any) => f.category === "Bebidas").length > 0 &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions example={example} template={template} foods={allFoods.filter((f: any) => f.category === "Bebidas")} />
+                        <RenderCardsOptions example={example} template={template} foods={displayFoods.filter((f: any) => f.category === "Bebidas")} />
                     </div>
                 }
 
-                {allFoods.length > 0 ? <div className="flex flex-col gap-2">
+                {displayFoods.length > 0 ? <div className="flex flex-col gap-2">
                     <div className={`flex ml-2 items-center gap-2 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                         <h2 className="text-xl font-normal">Platos</h2>
                         <Utensils className="w-5 h-5" />
                     </div>
 
-                    {allFoods?.length > 0 && isPremium && (
+                    {displayFoods?.length > 0 && (
                         <div className="flex justify-between items-end mb-1">
                             <Categories
                                 template={template}
-                                foods={allFoods}
+                                foods={displayFoods}
                                 selectCategory={(sub: string) => {
-                                    const res = sub === "0" ? allFoods : allFoods.filter((f: any) => f.sub_category === sub);
+                                    const res = sub === "0" ? displayFoods : displayFoods.filter((f: any) => f.sub_category === sub);
                                     setDisplayFoods(res);
                                 }}
                             />
@@ -61,13 +60,13 @@ export default function FoodCatalog({ allFoods, initialSubCategories, user, temp
                         </div>
                     </>
                 }
-                {allFoods?.filter((f: any) => f.category === "Postres").length > 0 && isPremium &&
+                {displayFoods?.filter((f: any) => f.category === "Postres").length > 0 &&
                     <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Dessert className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions example={example} template={template} foods={allFoods.filter((f: any) => f.category === "Postres")} />
+                        <RenderCardsOptions example={example} template={template} foods={displayFoods.filter((f: any) => f.category === "Postres")} />
                     </div>
                 }
             </div>
