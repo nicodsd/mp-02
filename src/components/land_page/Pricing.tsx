@@ -79,7 +79,7 @@ const plans: PricingPlan[] = [
 
 export default function Pricing() {
   return (
-    <section id="planes" className="py-16 md:py-14 md:mt-10 w-full">
+    <section id="planes" className="py-16 md:py-14 md:mt-20 w-full">
       <div className="w-full">
         <div className="text-center md:text-start mb-12 md:mb-16 px-2">
           <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>

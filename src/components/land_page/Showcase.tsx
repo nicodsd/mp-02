@@ -38,7 +38,7 @@ export default function Showcase() {
     const [activeTheme, setActiveTheme] = useState(templates.naranja);
 
     return (
-        <div id="demo" className="mb-5 pb-20 md:pb-10 overflow-hidden md:rounded-4xl w-full relative">
+        <div id="demo" className="my-10 pb-20 md:pb-10 overflow-hidden md:rounded-4xl w-full relative">
             <div style={{ backgroundColor: activeTheme.primary }} className="w-[130vw] rotate-12 rounded-full translate-y-full translate-x-[-5%] h-full absolute top-0 left-0 z-0"></div>
             <div className="w-[180vw] hidden md:block bg-background-2 -rotate-30 rounded-full translate-y-[50%] md:translate-y-[80%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></div>
             <div style={{ backgroundColor: activeTheme.primary }} className="w-[130vw] rotate-12 md:opacity-20 rounded-full translate-y-[50%] md:translate-y-[80%] md:translate-x-[-2%] h-full absolute top-0 left-0 z-0"></div>
@@ -54,11 +54,15 @@ export default function Showcase() {
                         </p>
                     </div>
                 </div>
-                <AnimatePresence mode="wait">
-                    <div className="flex justify-center flex-col items-center gap-4">
+                <AnimatePresence>
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex justify-center flex-col items-center gap-4">
 
                         {/* Mobile Preview Mockup */}
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex justify-center lg:justify-end relative">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }} className="flex justify-center lg:justify-end relative">
                             <div className="relative no-scrollbar w-[255px] h-[500px] md:w-[280px] md:h-[560px] bg-stone-900 rounded-4xl border-5 border-stone-800 overflow-hidden transition-all">
 
                                 {/* SCREEN CONTENT - EL FONDO DE LA APP CAMBIA AQUÍ */}
@@ -117,7 +121,11 @@ export default function Showcase() {
                         </motion.div>
 
                         {/* SELECTOR DE PLANTILLAS */}
-                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="flex gap-5 flex-col items-center absolute md:-bottom-12 md:-right-5 bg-background w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 rounded-t-3xl border border-stone-200">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4 }} className="flex gap-5 flex-col items-center absolute md:-bottom-12 md:-right-5 bg-background w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 rounded-t-3xl border border-stone-200">
 
                             <div className="flex gap-5">
                                 {Object.values(templates).map((t) => (
@@ -135,7 +143,7 @@ export default function Showcase() {
                                 ))}
                             </div>
                         </motion.div>
-                    </div>
+                    </motion.div>
                 </AnimatePresence>
             </div>
         </div>

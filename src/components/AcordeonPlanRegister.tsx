@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Field } from 'formik';
 import { ChevronDown, Check } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 
 const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: any }) => {
     // Estado para controlar qué acordeón está abierto manualmente, 
@@ -60,7 +60,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         }
     ];
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -71,7 +71,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
     };
 
     // 2. Definimos las variantes para cada plan
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: {
             opacity: 1,
