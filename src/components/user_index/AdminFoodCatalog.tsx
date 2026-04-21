@@ -5,7 +5,7 @@ import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
 import { Martini, Utensils } from "lucide-react";
 
-export default function AdminFoodCatalog({ foods, initialSubCategories, user, template }: any) {
+export default function AdminFoodCatalog({ foods, user, template }: any) {
     const [displayFoods, setDisplayFoods] = useState(foods);
     const [isPending, startTransition] = useTransition();
 
@@ -34,7 +34,7 @@ export default function AdminFoodCatalog({ foods, initialSubCategories, user, te
                 }
 
                 {displayFoods.length > 0 ? (
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-2">
                         <div className={`flex ml-2 items-center gap-2 ${template?.textColor} mb-1`}>
                             <h2 className="text-xl font-normal">Platos</h2>
                             <Utensils className="w-5 h-5" />

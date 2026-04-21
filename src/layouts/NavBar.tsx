@@ -160,9 +160,9 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
       !user || user.plan === "free"
         ? "/images/placeholders/back-qmenu.png"
         : user.cover,
-    instagram: user?.instagram,
-    facebook: user?.facebook,
-    tiktok: user?.tiktok,
+    instagram: user?.instagram || !user && "QMENU",
+    facebook: user?.facebook || !user && "QMENU",
+    tiktok: user?.tiktok || !user && "QMENU",
   };
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
   return (
@@ -194,7 +194,7 @@ function DefaultNavUser({ user, photo, template, cookie }: any) {
         {displayData?.name || (!user ? "QMENÚ" : "")}
       </h2>
       <p className="my-1 text-wrap">
-        {displayData?.description || (!user ? "Crea tu menú con QMenu." : "")}
+        {displayData?.description || (!user ? "Crea tu menú GRATIS con QMenú." : "")}
       </p>
       <div className="flex flex-col items-center gap-1 mt-0.5">
         {(displayData?.address || !user) && (

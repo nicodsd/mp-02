@@ -4,13 +4,15 @@ import { URI } from '@/src/lib/const';
 import templates from '@/src/data/templates.json';
 import { useRouter } from 'next/navigation';
 import { updateTemplate } from "@/app/actions";
+import { FaCircle } from 'react-icons/fa';
 
 export default function TemplateSelector({ user }: { user: any }) {
-    const [selected, setSelected] = useState<string>('default');
+    const [selected, setSelected] = useState<string>(user?.template_id || 'default');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const currentTemplate = templates.find(t => t.template_id === selected) || templates[0];
+    const userTemplate = templates.find(t => t.template_id === user.template_id) || templates[0];
 
     const handleSelect = (templateId: string) => {
         setSelected(templateId);
@@ -20,7 +22,7 @@ export default function TemplateSelector({ user }: { user: any }) {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(`${URI}auth/update/template/${user}`, {
+            const response = await fetch(`${URI}auth/update/template/${user?.id}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -41,7 +43,7 @@ export default function TemplateSelector({ user }: { user: any }) {
     };
 
     return (
-        <div className="flex flex-col w-full items-start justify-start gap-4 min-h-screen pb-32 md:pb-20 px-3">
+        <div className="flex flex-col w-full items-start justify-start gap-4 min-h-screen pb-28 md:pb-20 px-3">
             <header className="py-3 flex flex-col gap-1">
                 <h1 className="text-2xl font-bold text-gray-800">Personalizar menú</h1>
                 <p className="text-gray-500 text-sm">1. Selecciona la identidad visual de tu negocio.
@@ -51,7 +53,7 @@ export default function TemplateSelector({ user }: { user: any }) {
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-2 md:flex flex-wrap gap-2 w-full relative"
+                className="flex justify-center md:justify-start flex-wrap gap-3 w-full relative"
             >
                 {templates.map((template) => {
                     const isSelected = selected === template.template_id;
@@ -60,7 +62,7 @@ export default function TemplateSelector({ user }: { user: any }) {
                         <label
                             key={template.template_id}
                             onClick={() => handleSelect(template.template_id)}
-                            className={`relative w-full md:w-fit flex flex-col items-center p-2 cursor-pointer rounded-3xl border-2 transition-all duration-300 
+                            className={`relative w-36 md:w-fit flex flex-col items-center p-2 cursor-pointer rounded-3xl border-2 transition-all duration-300 
                                 ${isSelected
                                     ? `${template.border} bg-gray-50 shadow-lg scale-105 z-10`
                                     : 'border-gray-200 bg-white hover:bg-gray-50 opacity-90'
@@ -114,20 +116,21 @@ export default function TemplateSelector({ user }: { user: any }) {
                     );
                 })}
             </motion.div>
-            <div className="w-full flex-col md:flex-row items-start h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
-                <div className="flex items-center gap-2">
-                    <span className='text-xs hidden md:block text-end px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
-                    <button
-                        onClick={handleUpdateTemplate}
-                        disabled={loading && selected === currentTemplate.template_id}
-                        className={`w-full py-3 px-2 enabled:cursor-pointer disabled:cursor-not-allowed rounded-xl font-black text-lg transition-all shadow-md uppercase tracking-wider
-                    ${loading ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : `border-4 ${currentTemplate.backgroundColor} ${currentTemplate.border} ${currentTemplate.textColor} active:scale-[0.98]`}`}
-                    >
-                        {loading ? 'Guardando cambios...' : `Aplicar tema ${currentTemplate.name}`}
-                    </button>
-                </div>
-                <span className='text-xs md:hidden text-center px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
-            </div>
+            {
+                selected !== userTemplate.template_id && <div className="w-full flex-col md:flex-row items-center h-fit md:h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
+                    <div className="flex items-center gap-2">
+                        <span className='text-xs hidden md:block text-end px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
+                        <button
+                            onClick={handleUpdateTemplate}
+                            disabled={loading && selected === userTemplate.template_id}
+                            className={`min-w-70 md:py-3 px-6 py-3 enabled:cursor-pointer disabled:cursor-not-allowed border-3 rounded-xl font-black md:text-lg text-sm transition-all shadow-md uppercase tracking-wider
+                    ${loading ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : ` ${currentTemplate.backgroundColor} ${currentTemplate.border} ${currentTemplate.textColor} active:scale-[0.98]`}`}
+                        >
+                            {loading ? 'Guardando cambios...' : `Aplicar tema ${currentTemplate.name}`}
+                        </button>
+                    </div>
+                    <span className='text-xs md:hidden text-center px-10 text-gray-600'>*Los cambios se reflejarán en tu menú, solo debe recargar la página para verlos.</span>
+                </div>}
         </div>
     );
 }

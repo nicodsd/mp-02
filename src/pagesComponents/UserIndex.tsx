@@ -48,7 +48,6 @@ export default function UserIndex({ foods, user, template }: any) {
 
           <AdminFoodCatalog
             foods={foods}
-            initialSubCategories={initialSubCategories}
             user={user}
             template={template}
           />

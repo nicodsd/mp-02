@@ -18,7 +18,7 @@ export default function RenderCardsOptions({
   return (
     <div className={`w-full flex justify-start overflow-x-scroll p-1 py-2 rounded-xl ${foods.length > 1 ? `${template?.backgroundColor2 || "bg-background-2"}` : ""}`}>
       {foods.length === 0 ? (
-        <Loading count={count ?? 6} />
+        <Loading count={count ?? 6} template={template} />
       ) : (
         foods.map((food) => (
           <div

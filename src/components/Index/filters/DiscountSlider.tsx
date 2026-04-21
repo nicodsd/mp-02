@@ -23,7 +23,7 @@ export default function DiscountSlider({
 
   return (
     <div className="flex flex-col gap-1 mt-2 w-full border border-gray-400 rounded-xl py-2 px-4">
-      <label className="text-sm">Selecciona descuento:</label>
+      <label className="text-sm">Desliza para aplicar descuento:</label>
 
       <div className="relative w-full">
         <input
@@ -33,7 +33,7 @@ export default function DiscountSlider({
           step={10}
           value={value}
           onChange={handleChange}
-          className="w-full appearance-none bg-transparent cursor-pointer"
+          className="w-full appearance-none transition-all duration-200 ease-in-out bg-transparent cursor-pointer"
           style={{
             background: "black",
             color: "white",
@@ -85,7 +85,7 @@ export default function DiscountSlider({
                   setShowModal(false);
                   setValue(90);
                 }}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                className="px-4 py-2 bg-gray-200 cursor-pointer transition-all duration-200 ease-in-out rounded hover:bg-gray-300"
               >
                 Cancelar
               </button>
@@ -95,7 +95,7 @@ export default function DiscountSlider({
                   setValue(100);
                   onChange(100);
                 }}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                className="px-4 py-2 bg-red-600 cursor-pointer transition-all duration-200 ease-in-out text-white rounded hover:bg-red-700"
               >
                 Confirmar
               </button>

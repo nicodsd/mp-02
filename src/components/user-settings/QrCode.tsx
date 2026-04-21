@@ -155,7 +155,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
         </div>
 
         {user?.plan !== "free" && <div className="flex justify-center relative gap-5 mb-6">
-          <span className="text-[11px] absolute top-2 left-2 text-slate-700 mb-1">Elige un color</span>
+          <span className="text-[11px] absolute -top-5 left-1 text-slate-700 mb-1">Elige un color</span>
           {TEMPLATES.map((t) => (
             <button
               key={t.id}

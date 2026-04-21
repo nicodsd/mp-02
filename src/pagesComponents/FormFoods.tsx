@@ -54,7 +54,10 @@ export default function FormFoods({ initialCategories, user }: any) {
         throw new Error(data.message);
       }
       refreshPage();
-      router.push("/");
+      setError("Plato creado exitosamente");
+      setTimeout(() => {
+        setError("");
+      }, 1000);
     } catch (err: any) {
       setError(err.message);
       setLoading(false);
@@ -69,7 +72,13 @@ export default function FormFoods({ initialCategories, user }: any) {
           <button onClick={() => setError("")}>Cerrar</button>
         </div>
       }
-      <div className="px-5 md:w-[400px] w-full relative mx-auto space-y-10 py-5 flex-1">
+      <header className="p-4 mt-3 flex flex-col gap-1">
+        <h1 className="text-2xl font-bold text-gray-800">Plato Nuevo</h1>
+        <p className="text-gray-500 text-sm">Agrega un nuevo plato a tu menú. <br />
+          Recuerda que puedes editar y cambiar el orden de presentación de los platos cuando quieras.
+        </p>
+      </header>
+      <div className="px-5 md:w-[400px] lg:w-1/3 w-full relative mx-auto space-y-10 py-5 flex-1">
 
         <ImageUpload
           preview={preview}
@@ -96,11 +105,20 @@ export default function FormFoods({ initialCategories, user }: any) {
       </div>
 
       {/* Botón de Acción Fijo/Sticky para Mobile */}
-      <div className="sticky bottom-0 flex items-center h-16 w-full border-t bg-background border-gray-300 py-1 px-5">
+      <div className="sticky bottom-0 flex items-center md:justify-end h-16 w-full border-t bg-background border-gray-300 py-1 md:gap-3 px-5">
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => router.back()}
+          className={`w-fit px-4 md:px-10 max-w-[400px] mx-auto cursor-pointer md:mx-0 block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 bg-gray-400
+          `}
+        >
+          Cancelar
+        </button>
         <button
           type="submit"
           disabled={loading}
-          className={`w-full max-w-[400px] mx-auto block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800 shadow-lg shadow-gray-200"
+          className={`w-fit px-4 md:px-20 max-w-[400px] mx-auto cursor-pointer md:mx-0 block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800 shadow-lg shadow-gray-200"
             }`}
         >
           {loading ? "Guardando..." : "Crear Plato"}

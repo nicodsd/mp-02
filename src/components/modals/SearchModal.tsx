@@ -47,7 +47,7 @@ export default function SearchModal({ arrayFoods, setSearch, setShowModal, showM
                     <div className='flex-1 mt-4 overflow-y-auto pb-20'>
                         <RenderCards
                             foods={filteredFoods}
-                            count={10}
+                            count={4}
                             template={template}
                         />
                     </div>

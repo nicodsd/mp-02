@@ -94,7 +94,7 @@ export default function PromoPanel() {
     <div className="p-3 flex h-full w-full flex-col gap-6 pb-24">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Promociones</h1>
-        <p className="text-gray-500 text-sm">Gestiona los descuentos destacados de hoy.</p>
+        <p className="text-gray-500 text-sm">Aplica descuentos a tus productos.</p>
       </header>
 
       {activePromos.length > 0 ? (
@@ -104,7 +104,7 @@ export default function PromoPanel() {
           </h3>
           <div className="flex flex-col gap-2">
             {activePromos.map((promo) => (
-              <div key={promo._id} className="flex items-center h-fit bg-red-50/30 border border-red-200 p-2 rounded-2xl justify-between animate-fade-in">
+              <div key={promo._id} className="flex items-center h-fit bg-red-50/30 border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
                 <div className="flex items-center gap-2">
                   <Image priority loading="eager" src={promo.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={promo.name} />
                   <div>
@@ -118,7 +118,7 @@ export default function PromoPanel() {
                     </div>
                   </div>
                 </div>
-                <button onClick={() => removePromo(promo._id)} className="p-1 flex items-center gap-1 flex-col text-gray-400 hover:text-red-500 transition-colors">
+                <button onClick={() => removePromo(promo._id)} className="p-1 flex items-center gap-1 flex-col text-gray-400 cursor-pointer hover:text-red-500 transition-colors">
                   <FaTrashAlt size={18} />
                   <span className="text-xs">Eliminar</span>
                 </button>
@@ -133,6 +133,9 @@ export default function PromoPanel() {
       )}
 
       <div className="flex flex-col gap-3">
+        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+          Promocionar:
+        </h3>
         <div className="relative">
           <input
             type="text"
@@ -144,10 +147,10 @@ export default function PromoPanel() {
           <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setSelectedCategory("")}
-            className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-bold transition-all 
+            className={`whitespace-nowrap px-4 py-1.5 cursor-pointer rounded-lg text-sm font-bold transition-all 
                 ${!selectedCategory
                 ? "bg-gray-900 text-white border"
                 : "text-gray-800 border border-gray-300"
@@ -159,7 +162,7 @@ export default function PromoPanel() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat!)}
-              className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-bold transition-all 
+              className={`whitespace-nowrap cursor-pointer px-4 py-1.5 rounded-lg text-sm font-bold transition-all 
                   ${selectedCategory === cat
                   ? "bg-gray-900 text-white border"
                   : "text-gray-800 border border-gray-300"
@@ -177,14 +180,14 @@ export default function PromoPanel() {
               <div
                 key={food._id}
                 onClick={() => !inPromo && handleSelectFood(food)}
-                className={`flex items-center gap-2 p-2 rounded-lg transition-all ${inPromo ? "opacity-40 grayscale cursor-not-allowed border-transparent bg-gray-50" :
-                  selectedFood?._id === food._id ? "border-red-500 bg-red-50/30 border" : "border border-gray-300"
+                className={`flex items-center gap-2 p-1 rounded-lg transition-all ${inPromo ? "opacity-40 grayscale cursor-not-allowed border-transparent bg-gray-50" :
+                  selectedFood?._id === food._id ? "border-red-500 bg-red-50/30 border" : "border border-gray-300 cursor-pointer "
                   }`}
               >
                 <Image priority loading="eager" src={food.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={food.name} />
                 <div className="flex-1">
                   <h5 className="font-semibold text-gray-800 line-clamp-1">{food.name}</h5>
-                  <p className="text-gray-500 font-bold text-xl">{priceFormatter.format(food.price)}</p>
+                  <p className="text-gray-800 font-bold text-xl">{priceFormatter.format(food.price)}</p>
                   {inPromo && <span className="text-[10px] font-black uppercase text-red-500">En promoción</span>}
                 </div>
               </div>
@@ -219,11 +222,11 @@ export default function PromoPanel() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setSelectedFood(null)} className="flex-1 py-4 font-bold text-gray-500 hover:text-gray-800 transition-colors">Cancelar</button>
+              <button onClick={() => setSelectedFood(null)} className="flex-1 cursor-pointer transition-all duration-200 ease-in-out py-4 font-bold text-gray-500 hover:text-gray-800">Cancelar</button>
               <button
                 onClick={handlePublishPromo}
                 disabled={loading || promoPrice == selectedFood.price}
-                className="flex-2 bg-red-600 text-white py-4 rounded-lg font-bold active:scale-95 transition-all disabled:bg-gray-300"
+                className="flex-2 bg-red-600 text-white py-4 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 ease-in-out rounded-lg font-bold active:scale-95 disabled:bg-gray-300"
               >
                 {loading ? "Publicando..." : "Publicar Promo"}
               </button>

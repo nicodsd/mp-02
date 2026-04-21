@@ -123,21 +123,26 @@ export default function PanelUser({
                 leaveTo="-translate-x-full"
               >
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
-                  <div className="flex items-start justify-between px-6 py-8 border-b border-gray-100">
-                    <div className="flex flex-col gap-2">
-                      <Image
-                        src={logotipo}
-                        alt="Logo"
-                        width={70}
-                        height={40}
-                        priority
-                      />
-                      <span className="text-xs text-gray-500">Panel de usuario</span>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg text-gray-800 uppercase">
-                          {user?.name}
-                        </h3>
-                        <UserPlan plan={user?.plan} />
+                  <div className="flex items-start justify-between px-6 py-8">
+                    <div className="flex flex-col">
+                      <BttnBack />
+                      <div className="flex ml-2 flex-col gap-2 mt-10">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src={logotipo}
+                            alt="Logo"
+                            width={70}
+                            height={40}
+                            priority
+                          />
+                          <span className="text-xs text-gray-500">/ Panel de usuario</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg text-gray-800 uppercase">
+                            {user?.name}
+                          </h3>
+                          <UserPlan plan={user?.plan} />
+                        </div>
                       </div>
                     </div>
                     <button
@@ -148,7 +153,7 @@ export default function PanelUser({
                     </button>
                   </div>
 
-                  <nav className="mt-6 px-4 space-y-2 flex flex-col justify-between h-full">
+                  <nav className="mt-10 px-4 space-y-2 flex flex-col justify-between h-full">
                     <div>
                       {menuItems?.map((item, index) => (
                         <button
@@ -163,12 +168,14 @@ export default function PanelUser({
                         </button>
                       ))}
                     </div>
-                    <button
-                      onClick={() => { handleLogout() }}
-                      className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden  transition-colors font-bold"
-                    >
-                      <HiOutlineLogout size={20} /> Cerrar Sesión
-                    </button>
+                    <div className="w-full pl-5">
+                      <button
+                        onClick={() => { handleLogout() }}
+                        className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
+                      >
+                        <HiOutlineLogout size={20} /> Cerrar Sesión
+                      </button>
+                    </div>
                   </nav>
                 </DialogPanel>
               </TransitionChild>
@@ -176,7 +183,7 @@ export default function PanelUser({
           </Dialog>
         </Transition>
 
-        <div className="w-full h-screen mx-auto px-3 sm:px-4 lg:px-8 py-2">
+        <div className="w-full h-screen mx-auto sm:px-4 lg:px-8 py-2">
           <div className="flex h-full w-full justify-between items-start flex-col md:flex-row gap-8">
             <aside className="hidden h-full md:block w-80 shrink-0">
               <div className="sticky top-10">
@@ -199,7 +206,7 @@ export default function PanelUser({
                     <UserPlan plan={user?.plan} />
                   </div>
                 </div>
-                <TabList className="flex flex-col mt-10 gap-y-2">
+                <TabList className="flex flex-col mt-16 gap-y-2">
                   {menuItems?.map((item, index) => (
                     <Tab
                       key={item?.name}
@@ -209,18 +216,20 @@ export default function PanelUser({
                     </Tab>
                   ))}
                 </TabList>
-                <button
-                  onClick={() => { handleLogout() }}
-                  className="mt-30 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900  transition-colors font-bold cursor-pointer"
-                >
-                  <HiOutlineLogout size={20} /> Cerrar Sesión
-                </button>
+                <div className="w-full pl-5">
+                  <button
+                    onClick={() => { handleLogout() }}
+                    className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors font-bold cursor-pointer"
+                  >
+                    <HiOutlineLogout size={20} /> Cerrar Sesión
+                  </button>
+                </div>
               </div>
             </aside>
 
             <main className="flex-1">
-              <TabPanels className="min-h-full md:w-full lg:w-[70%] overflow-hidden">
-                <div className="md:hidden py-1">
+              <TabPanels className="min-h-full w-full lg:w-[70%] overflow-hidden">
+                <div className="md:hidden py-1 px-2 md:px-0">
                   <BttnBack />
                 </div>
                 <div className="pb-13 pt-8 md:pt-6 w-full">
@@ -231,7 +240,7 @@ export default function PanelUser({
                     <MenuItems dataFoods={foods} template={template} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none w-full">
-                    <ConfigureMenu user={user?.id} />
+                    <ConfigureMenu user={user} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none w-full">
                     <PromoPanel />

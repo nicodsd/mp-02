@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { refreshPage } from "@/app/actions";
-import Loading from "@/src/skeleton/Loading";
 import { URI } from "@/src/lib/const";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
 import { useFoodStore } from "@/src/lib/useFoodStore";
@@ -68,12 +67,15 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
             setFoods(updatedFoods);
 
             try {
-                await fetch(`${URI}foods/update-order`, {
+                const response = await fetch(`${URI}foods/update-order`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ order: updatedFoods.map((f, i) => ({ _id: f._id, order: i })) }),
                     credentials: "include",
                 });
+                if (response.status === 200) {
+                    refreshPage();
+                }
             } catch (error) {
                 console.error("Error order", error);
             }
