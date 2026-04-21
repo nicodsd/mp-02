@@ -58,20 +58,18 @@ function Carousel({ foods, template }: { foods: any[]; template: any }) {
             </div>
 
             {slides.length > 1 && (
-                <div className="flex items-center gap-4 mt-4">
-                    <div className="flex gap-1">
-                        {slides.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setCurrent(index)}
-                                className={`h-2 rounded-full transition-all duration-500 ${index === current
-                                    ? `bg-${template?.accentColors?.[0] || "primary"} w-8`
-                                    : `bg-${template?.accentColors?.[0] || "gray-300"} w-2`
-                                    }`}
-                                aria-label={`Ir al slide ${index + 1}`}
-                            />
-                        ))}
-                    </div>
+                <div className="flex items-center h-4 gap-1 mt-3">
+                    {slides.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrent(index)}
+                            className={`h-2 rounded-full transition-all duration-300 ${index === current
+                                ? `bg-${template?.accentColors?.[0] || "primary"} w-8 h-2.5`
+                                : `${template?.backgroundColor2 || "gray-300"} w-2`
+                                }`}
+                            aria-label={`Ir al slide ${index + 1}`}
+                        />
+                    ))}
                 </div>
             )}
         </section>

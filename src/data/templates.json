@@ -4,7 +4,12 @@
         "name": "Original",
         "backgroundColor": "bg-[#fffbf8]",
         "backgroundColor2": "bg-[#ededed]",
-        "accentColors": ["primary", "gray-900", "gray-200", "[#fffbf8]"],
+        "accentColors": [
+            "primary",
+            "gray-900",
+            "gray-200",
+            "[#fffbf8]"
+        ],
         "textColor": "text-gray-700",
         "textColorOpacity": "text-gray-700/50",
         "textColor2": "text-white",
@@ -15,8 +20,13 @@
         "template_id": "night",
         "name": "Noche",
         "backgroundColor": "bg-[#0F0F0F]",
-        "backgroundColor2": "bg-[#1A1A1A]",
-        "accentColors": ["[#333333]", "white", "[#262626]", "[#0F0F0F]"],
+        "backgroundColor2": "bg-[#1a1a1a]",
+        "accentColors": [
+            "primary",
+            "white",
+            "[#262626]",
+            "[#0F0F0F]"
+        ],
         "textColor": "text-white",
         "textColorOpacity": "text-white/60",
         "textColor2": "text-[#0F0F0F]",
@@ -28,7 +38,12 @@
         "name": "Bosque",
         "backgroundColor": "bg-[#1B261A]",
         "backgroundColor2": "bg-[#2D3E2C]",
-        "accentColors": ["[#5D7B5E]", "[#EAE4CC]", "[#3B4E3A]", "[#1B261A]"],
+        "accentColors": [
+            "primary",
+            "[#EAE4CC]",
+            "[#3B4E3A]",
+            "[#1B261A]"
+        ],
         "textColor": "text-[#EAE4CC]",
         "textColorOpacity": "text-[#EAE4CC]/60",
         "textColor2": "text-[#1B261A]",
@@ -40,7 +55,12 @@
         "name": "Oceano",
         "backgroundColor": "bg-[#002D26]",
         "backgroundColor2": "bg-[#004D40]",
-        "accentColors": ["[#00796B]", "[#e0fffd]", "[#58baaa]", "[#002D26]"],
+        "accentColors": [
+            "primary",
+            "[#e0fffd]",
+            "[#58baaa]",
+            "[#002D26]"
+        ],
         "textColor": "text-[#e0fffd]",
         "textColorOpacity": "text-[#e0fffd]/60",
         "textColor2": "text-[#002D26]",
@@ -52,7 +72,12 @@
         "name": "Sunset",
         "backgroundColor": "bg-[#FF6B35]",
         "backgroundColor2": "bg-[#FF8E53]",
-        "accentColors": ["[#590D22]", "[#FFE1A8]", "[#b53f00]", "[#FF6B35]"],
+        "accentColors": [
+            "primary",
+            "[#FFE1A8]",
+            "[#b53f00]",
+            "[#FF6B35]"
+        ],
         "textColor": "text-white",
         "textColorOpacity": "text-white/70",
         "textColor2": "text-[#FF6B35]",
@@ -64,7 +89,12 @@
         "name": "Gold",
         "backgroundColor": "bg-[#fffaf0]",
         "backgroundColor2": "bg-[#fff8dc]",
-        "accentColors": ["[#d8a116]", "[#495057]", "[#FFD700]", "[#F9F5E7]"],
+        "accentColors": [
+            "primary",
+            "[#495057]",
+            "[#FFD700]",
+            "[#fffaf0]"
+        ],
         "textColor": "text-[#495057]",
         "textColorOpacity": "text-[#495057]/60",
         "textColor2": "text-white",
@@ -76,7 +106,12 @@
         "name": "Lemon",
         "backgroundColor": "bg-[#FFFDE7]",
         "backgroundColor2": "bg-[#FFF9C4]",
-        "accentColors": ["[#FBC02D]", "[#33691E]", "[#FFF176]", "[#FFFDE7]"],
+        "accentColors": [
+            "primary",
+            "[#33691E]",
+            "[#FFF176]",
+            "[#FFFDE7]"
+        ],
         "textColor": "text-[#33691E]",
         "textColorOpacity": "text-[#33691E]/60",
         "textColor2": "text-white",
@@ -88,7 +123,12 @@
         "name": "Cherry",
         "backgroundColor": "bg-[#FFF5F5]",
         "backgroundColor2": "bg-[#ffeeee]",
-        "accentColors": ["[#C92A2A]", "[#495057]", "[#FFA8A8]", "[#FFF5F5]"],
+        "accentColors": [
+            "primary",
+            "[#495057]",
+            "[#FFA8A8]",
+            "[#FFF5F5]"
+        ],
         "textColor": "text-[#3b1721]",
         "textColorOpacity": "text-[#3b1721]/70",
         "textColor2": "text-white",
@@ -100,7 +140,12 @@
         "name": "Mint",
         "backgroundColor": "bg-[#E8F5E9]",
         "backgroundColor2": "bg-[#C8E6C9]",
-        "accentColors": ["[#2E7D32]", "[#1B5E20]", "[#A5D6A7]", "[#E8F5E9]"],
+        "accentColors": [
+            "primary",
+            "[#1B5E20]",
+            "[#A5D6A7]",
+            "[#E8F5E9]"
+        ],
         "textColor": "text-[#1B5E20]",
         "textColorOpacity": "text-[#1B5E20]/60",
         "textColor2": "text-white",
@@ -112,7 +157,12 @@
         "name": "Lavanda",
         "backgroundColor": "bg-[#F3E5F5]",
         "backgroundColor2": "bg-[#E1BEE7]",
-        "accentColors": ["[#7B1FA2]", "[#4A148C]", "[#CE93D8]", "[#F3E5F5]"],
+        "accentColors": [
+            "primary",
+            "[#4A148C]",
+            "[#CE93D8]",
+            "[#F3E5F5]"
+        ],
         "textColor": "text-[#4A148C]",
         "textColorOpacity": "text-[#4A148C]/60",
         "textColor2": "text-white",
@@ -124,7 +174,12 @@
         "name": "Sakura",
         "backgroundColor": "bg-[#FFF0F3]",
         "backgroundColor2": "bg-[#FFD1DC]",
-        "accentColors": ["[#590D22]", "[#590D22]", "[#FF8FA3]", "[#FFF0F3]"],
+        "accentColors": [
+            "primary",
+            "[#590D22]",
+            "[#FF8FA3]",
+            "[#FFF0F3]"
+        ],
         "textColor": "text-[#590D22]",
         "textColorOpacity": "text-[#590D22]/60",
         "textColor2": "text-white",

@@ -33,7 +33,7 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                 ${isSelected ? `border-blue-500 bg-blue-50/50` : ``} 
                 ${isDragging ? "shadow-xl opacity-80 rotate-1 scale-[1.02] z-50" : ""}`}
         >
-            <div className={`w-full h-full flex border ${isSelected ? "border-red-500" : "border-gray-200"} ${context ? "rounded-xl" : "rounded-lg"} ${context ? "bg-background-2" : ""} items-center`}>
+            <div className={`w-full h-full flex border ${isSelected ? "border-red-500" : `border-transparent`} ${context ? "rounded-xl" : "rounded-lg"} ${context ? "bg-background-2" : ""} items-center`}>
                 {isSelectionMode ? (
                     <div
                         onClick={() => onToggleSelect(food._id)}
@@ -44,7 +44,7 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                 ) : (
                     <GripVertical
                         size={24}
-                        className={`mx-1 touch-none cursor-grab active:cursor-grabbing`}
+                        className={`mx-1 touch-none ${template?.textColor} cursor-grab active:cursor-grabbing`}
                         {...attributes}
                         {...listeners}
                     />

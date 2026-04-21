@@ -70,7 +70,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
   return (
     <div className="w-full flex flex-col h-full rounded-lg overflow-y-auto">
       {foods.length === 0 ? (
-        <Loading count={count ?? 4} />
+        <Loading count={count ?? 4} template={template} />
       ) : (
         foods.map((food: any) => (
           <div

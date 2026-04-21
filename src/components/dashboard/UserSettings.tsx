@@ -190,7 +190,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
         className="flex w-full mt-3 relative flex-col items-center justify-center border-b border-gray-200 pb-6"
       >
         <div className="w-full px-3 flex flex-col">
-          <div className={`flex justify-around md:justify-start gap-2 md:gap-4 mb-4 pb-6`}>
+          <div className={`flex justify-center md:justify-start gap-5 md:gap-4 mb-4 pb-6`}>
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
               <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
@@ -578,12 +578,14 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
         <div className="w-full flex mt-5 justify-center">
           <QrCode user={user} logoUrl={previewPhoto} />
         </div>
-        <button
-          onClick={() => { logout() }}
-          className="mt-10 flex items-center active:scale-90 gap-3 w-[90%] mx-auto text-red-500 active:text-red-900 md:hidden hover:bg-red-100 transition-colors font-bold"
-        >
-          <HiOutlineLogout size={20} /> Cerrar Sesión
-        </button>
+        <div className="w-full pl-5">
+          <button
+            onClick={() => { logout() }}
+            className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
+          >
+            <HiOutlineLogout size={20} /> Cerrar Sesión
+          </button>
+        </div>
       </div>
     </div>
   );
