@@ -22,7 +22,6 @@ export default function CategoriesForm({
   onChange,
   user,
 }: CategoriesFormProps) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL!;
   const [selected, setSelected] = useState<string[]>([]);
   const [newCategory, setNewCategory] = useState<string>("");
   const [arrayNewCategory, setArrayNewCategory] = useState<string[]>([]);

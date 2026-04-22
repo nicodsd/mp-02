@@ -5,6 +5,7 @@ import { URI } from "@/src/lib/const";
 import Categories from "@/src/components/newfood_comps/Categories";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload"; // El componente anterior
 import { refreshPage } from "@/app/actions";
+import { FaSpinner } from "react-icons/fa";
 
 const imgPlaceholder = "/images/placeholders/image_placeholder.png";
 
@@ -65,13 +66,19 @@ export default function FormFoods({ initialCategories, user }: any) {
   };
 
   return (
-    <form onSubmit={postFood} className="min-h-screen items-center relative flex flex-col w-full">
-      {error &&
-        <div className="flex w-[90%] mx-auto fixed top-10 z-100 bg-red-50 p-3 rounded-lg border border-red-100 justify-around items-center">
-          <p className="text-center text-red-500 text-xs font-bold">{error}</p>
-          <button onClick={() => setError("")}>Cerrar</button>
+    <form onSubmit={postFood} className="min-h-screen items-center pb-20 relative flex flex-col w-full">
+      {error && <div className="w-[95%] mx-auto z-100 flex justify-between items-center fixed top-10 bg-primary p-4 rounded-lg border border-red-100">
+        <div className="flex flex-col  items-start">
+          {error.split(",").map((err: string, i: number) => (
+            <p key={i} className="text-start text-white text-sm md:text-md font-semibold">- {err}</p>
+          ))}
         </div>
-      }
+        <button className="text-white cursor-pointer" onClick={() => {
+          setError("");
+          setLoading(false);
+        }}>Cerrar</button>
+      </div>}
+
       <header className="p-4 mt-3 flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Plato Nuevo</h1>
         <p className="text-gray-500 text-sm">Agrega un nuevo plato a tu menú. <br />
@@ -90,9 +97,9 @@ export default function FormFoods({ initialCategories, user }: any) {
 
         {/* Inputs con mejor feedback visual */}
         <div className="space-y-7">
-          <InputGroup label="Nombre del Plato" id="name" value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
-          <InputGroup label="Descripción" id="description" value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
-          <InputGroup label="Precio" id="price" value={price} onChange={setPrice} placeholder="0.00" type="number" isPrice />
+          <InputGroup label="Nombre del Plato" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
+          <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
+          <InputGroup label="Precio" id="price" value={price} onChange={setPrice} maxLength={10} placeholder="0.00" type="number" isPrice />
 
           {/* Categorías con mejor contenedor */}
           <div className="flex flex-col gap-2">
@@ -104,26 +111,31 @@ export default function FormFoods({ initialCategories, user }: any) {
         </div>
       </div>
 
-      {/* Botón de Acción Fijo/Sticky para Mobile */}
-      <div className="sticky bottom-0 flex items-center md:justify-end h-16 w-full border-t bg-background border-gray-300 py-1 md:gap-3 px-5">
-        <button
-          type="button"
-          disabled={loading}
-          onClick={() => router.back()}
-          className={`w-fit px-4 md:px-10 max-w-[400px] mx-auto cursor-pointer md:mx-0 block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 bg-gray-400
-          `}
-        >
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          disabled={loading}
-          className={`w-fit px-4 md:px-20 max-w-[400px] mx-auto cursor-pointer md:mx-0 block py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-700 hover:bg-blue-800 shadow-lg shadow-gray-200"
-            }`}
-        >
-          {loading ? "Guardando..." : "Crear Plato"}
-        </button>
+      <div className="w-full items-center h-fit md:min-h-24 md:items-center justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
+        <div className="flex gap-2 w-auto">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="px-5 w-full active:scale-90 transition-all py-3 border cursor-pointer rounded-xl"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={loading || !name || !price || !description || !subCategories.length}
+            className="w-fit active:scale-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-w-50 md:w-auto px-6 bg-black text-white py-3 rounded-xl flex justify-center cursor-pointer items-center gap-2"
+          >
+            {loading ? (
+              <>
+                <FaSpinner className="animate-spin" /> Guardando...
+              </>
+            ) : (
+              "Crear Plato"
+            )}
+          </button>
+        </div>
       </div>
+
     </form>
   );
 }
@@ -134,10 +146,11 @@ const InputGroup = ({ label, id, isTextArea, isPrice, onChange, ...props }: any)
     <div className="relative">
       {isPrice && <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">$</span>}
       {isTextArea ? (
-        <textarea id={id} onChange={(e) => onChange(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none" rows={3} {...props} />
+        <textarea id={id} onChange={(e) => onChange(e.target.value)} className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none" rows={2} {...props} />
       ) : (
-        <input id={id} onChange={(e) => onChange(e.target.value)} className={`w-full border border-gray-300 rounded-lg ${isPrice ? "pl-8" : "px-4"} py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`} {...props} />
+        <input maxLength={props.maxLength} id={id} onChange={(e) => onChange(e.target.value)} className={`w-full border border-gray-300 rounded-lg ${isPrice ? "pl-8" : "px-4"} py-3 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all`} {...props} />
       )}
+      {/*  <p className="text-xs text-gray-500 text-right absolute bottom-1 right-1">{props.maxLength - props.value.length} caracteres restantes</p> */}
     </div>
   </div>
 );

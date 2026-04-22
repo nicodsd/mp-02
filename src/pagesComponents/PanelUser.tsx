@@ -183,9 +183,9 @@ export default function PanelUser({
           </Dialog>
         </Transition>
 
-        <div className="w-full h-screen mx-auto sm:px-4 lg:px-8 py-2">
-          <div className="flex h-full w-full justify-between items-start flex-col md:flex-row gap-8">
-            <aside className="hidden h-full md:block w-80 shrink-0">
+        <div className="w-full h-screen md:mx-auto sm:px-4 lg:px-8 py-2">
+          <div className="flex h-full w-full md:justify-between items-start flex-col md:flex-row gap-4 md:gap-8">
+            <aside className="hidden h-full md:block md:w-80 shrink-0">
               <div className="sticky top-10">
                 <BttnBack />
                 <div className="flex ml-2 flex-col gap-2 mt-8">
@@ -227,12 +227,12 @@ export default function PanelUser({
               </div>
             </aside>
 
-            <main className="flex-1">
+            <main className="flex-1 w-full">
               <TabPanels className="min-h-full w-full lg:w-[70%] overflow-hidden">
                 <div className="md:hidden py-1 px-2 md:px-0">
                   <BttnBack />
                 </div>
-                <div className="pb-13 pt-8 md:pt-6 w-full">
+                <div className="pb-13 pt-8 md:pt-6 w-full max-w-full">
                   <TabPanel className="focus:outline-none w-full">
                     <UserSettings user={user} logout={handleLogout} />
                   </TabPanel>

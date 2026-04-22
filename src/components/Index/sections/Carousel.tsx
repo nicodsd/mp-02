@@ -42,17 +42,17 @@ function Carousel({ foods, template }: { foods: any[]; template: any }) {
     if (slides.length === 0) return null;
 
     return (
-        <section className="flex flex-col items-center w-full h-auto overflow-hidden px-1 group">
+        <section className="flex flex-col items-center w-full h-auto overflow-hidden group">
             <div
-                className="flex w-full cursor-grab active:cursor-grabbing transition-transform duration-700 ease-in-out"
+                className="flex w-full cursor-grab active:cursor-grabbing transition-transform duration-100 ease-in-out"
                 style={{ transform: `translateX(-${current * 100}%)` }}
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
             >
                 {slides.map((slide, index) => (
-                    <div key={index} className="min-w-full shrink-0 px-1">
-                        <PromoDayCard foods={slide} />
+                    <div key={index} className={`min-w-full shrink-0 px-1`}>
+                        <PromoDayCard foods={slide} template={template} />
                     </div>
                 ))}
             </div>
@@ -64,8 +64,8 @@ function Carousel({ foods, template }: { foods: any[]; template: any }) {
                             key={index}
                             onClick={() => setCurrent(index)}
                             className={`h-2 rounded-full transition-all duration-300 ${index === current
-                                ? `bg-${template?.accentColors?.[0] || "primary"} w-8 h-2.5`
-                                : `${template?.backgroundColor2 || "gray-300"} w-2`
+                                ? `${template?.accentColors?.[0] || "primary"} w-8 h-2.5`
+                                : `${template?.backgroundColor2 || "bg-gray-300"} w-2`
                                 }`}
                             aria-label={`Ir al slide ${index + 1}`}
                         />

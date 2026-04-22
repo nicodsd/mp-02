@@ -125,7 +125,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
     <div className="flex relative items-center w-full lg:w-3/4 xl:w-1/2 justify-center md:justify-start">
       <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
-          className="relative flex justify-center mb-6 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
+          className="relative flex justify-center mb-8 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
           style={{ backgroundColor: selectedTemplate.bg }}
         >
           <QRCodeCanvas
@@ -155,7 +155,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
         </div>
 
         {user?.plan !== "free" && <div className="flex justify-center relative gap-5 mb-6">
-          <span className="text-[11px] absolute -top-5 left-1 text-slate-700 mb-1">Elige un color</span>
+          <span className="text-[11px] absolute -top-5 left-1 text-slate-700">Elige un color:</span>
           {TEMPLATES.map((t) => (
             <button
               key={t.id}

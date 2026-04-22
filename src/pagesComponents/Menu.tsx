@@ -58,7 +58,6 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
       />
 
       <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 sm:px-[10vw] md:px-[20vw] lg:px-[30vw] md:pb-8 md:pt-3 -translate-y-10">
-
         <FilterHeader
           foods={filteredFoods}
           template={template}
@@ -66,9 +65,9 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
           onOpenModal={() => setShowModal(true)}
         />
 
-        <section aria-label="Filtros e información" className="flex h-fit flex-col gap-8 pt-4">
-          <OffersSection foods={data.foods} template={template} />
+        <OffersSection foods={data.foods} template={template} />
 
+        <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
           <FoodCatalog
             example={false}
             template={template}
