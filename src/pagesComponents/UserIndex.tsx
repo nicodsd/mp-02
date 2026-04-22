@@ -44,7 +44,7 @@ export default function UserIndex({ foods, user, template }: any) {
 
         <AdminOffers foods={foods} template={template} />
 
-        <section className="flex h-fit flex-col gap-2 pt-4 pb-10">
+        <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
 
           <AdminFoodCatalog
             foods={foods}

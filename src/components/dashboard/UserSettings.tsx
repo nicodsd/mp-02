@@ -79,7 +79,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
 
   const prefix = phone.slice(0, 3)
   const number = phone.slice(3)
-  const phoneFormated = `${prefix} ${number}`
+  const phoneFormated = prefix + number
 
   const cancelChanges = () => {
     setName(user?.name);
@@ -180,8 +180,8 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
   };
 
   return (
-    <div className="w-full">
-      <header className="p-3 w-full flex flex-col gap-1">
+    <div className="w-full overflow-x-hidden">
+      <header className="p-3 w-full flex flex-col">
         <h1 className="text-2xl font-bold text-gray-800">Perfil</h1>
         <p className="text-gray-500 text-sm">Edita la información de tu negocio.</p>
       </header>
@@ -189,7 +189,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
         onSubmit={userUpdate}
         className="flex w-full mt-3 relative flex-col items-center justify-center border-b border-gray-200 pb-6"
       >
-        <div className="w-full px-3 flex flex-col">
+        <div className="w-full px-4 flex flex-col">
           <div className={`flex justify-center md:justify-start gap-5 md:gap-4 mb-4 pb-6`}>
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
@@ -254,7 +254,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
               </div>
             }
           </div>
-          <div className="w-full flex flex-col gap-5">
+          <div className="w-full flex flex-col gap-y-5">
             <h2 className="text-lg text-text">Tus datos:</h2>
             <div className="w-full">
               {editStates.name ? (
@@ -405,7 +405,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
                     <label className="flex items-center gap-1 text-xs font-bold ">
                       <FaWhatsapp /> WhatsApp
                     </label>
-                    <p className="text-lg">{phoneFormated}</p>
+                    <p className="text-lg">{prefix} {number}</p>
                   </div>
                   <button
                     type="button"
@@ -540,7 +540,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
           </div>
         </div>
         {isEditing && (
-          <div className="w-full flex-col md:flex-row items-start h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-3">
+          <div className="w-full flex-col md:flex-row items-start h-fit min-h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-4">
             <span className="text-gray-700 md:mr-4 text-md">¿Deseas guardar los cambios?</span>
             <div className="flex gap-2 w-full md:w-auto">
               <button
@@ -549,7 +549,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
                   isEditing &&
                   cancelChanges()
                 }
-                className="px-6 py-3 border cursor-pointer rounded-xl"
+                className="px-4 py-3 border cursor-pointer rounded-xl"
               >
                 Cancelar
               </button>
@@ -570,7 +570,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
           </div>
         )}
       </form>
-      <div className="w-full mt-7 px-3 flex flex-col gap-1">
+      <div className="w-full mt-7 px-3 flex flex-col gap-y-1">
         <h2 className="text-xl font-bold text-gray-800">Personaliza y Comparte</h2>
         <span className="text-gray-500 text-sm">
           Comparte el código QR para acceder a tu menú, o tambien puedes copiar el enlace para compartir en tus redes sociales.

@@ -3,7 +3,7 @@ import BotonAccion from "@/src/components/buttons/index/BotonAction";
 
 export default function Footer({ template }: { template: any }) {
   return (
-    <footer className={`${template?.backgroundColor2 || "bg-background"} border-t ${template?.border || "border-gray-200"}`}>
+    <footer className={`${template?.backgroundColor2 || "bg-background"}`}>
       {/*       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-left px-6 pt-5">
       <div className="md:border-r border-gray-300 h-full md:pt-0 md:p-6">
         <h2 className="text-2xl font-bold text-gray-600">Nosotros</h2>
@@ -65,7 +65,7 @@ export default function Footer({ template }: { template: any }) {
       <div className={`flex flex-col items-start justify-end pb-4 text-start ${template?.textColor || "text-gray-700"} min-h-[160px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs`}>
         <div className={`flex items-center ${template?.textColor || "text-gray-700"} gap-2`}>
           <span>¡Crea ahora tu menú gratis!</span>
-          <a href="https://qmenu.digital" target="_blank" rel="noopener noreferrer" className={`flex bg-gray-200 px-2 font-bold justify-center flex-col items-center rounded-md ${template?.textColor || "text-black"}`}>
+          <a href="https://qmenu.digital" target="_blank" rel="noopener noreferrer" className={`flex ${template?.backgroundColor || "bg-gray-200"} px-2 font-bold justify-center flex-col items-center rounded-md ${template?.textColor || "text-black"}`}>
             Probar Ahora
           </a>
         </div>
