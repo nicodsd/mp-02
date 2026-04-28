@@ -44,7 +44,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
         selectedIds.forEach(id => removeFoodLocal(id));
         console.log(selectedIds)
         try {
-            await fetch(`${URI}foods/delete-multiple`, {
+            await fetch(`${URI}/foods/delete-multiple`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ ids: selectedIds }),
@@ -67,7 +67,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
             setFoods(updatedFoods);
 
             try {
-                const response = await fetch(`${URI}foods/update-order`, {
+                const response = await fetch(`${URI}/foods/update-order`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ order: updatedFoods.map((f, i) => ({ _id: f._id, order: i })) }),

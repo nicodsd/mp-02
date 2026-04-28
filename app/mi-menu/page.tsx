@@ -8,26 +8,17 @@ import templates from "@/src/data/templates.json"
 
 export default async function Page() {
     const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-    const userCookie = cookieStore.get("user")?.value;
-
-    let user = null;
-    let foodsByUser = [];
-    if (userCookie) {
-        try {
-            user = JSON.parse(userCookie);
-
-            const [foods] = await Promise.all([
-                getFoodsByUser(URI, user.id),
-            ]);
-
-            foodsByUser = foods;
-        } catch (error) {
-            console.error("Error cargando datos del usuario:", error);
-        }
+    const token = cookieStore.get('token')?.value || '{}';
+    const userCookie = cookieStore.get("user")?.value || '{}';
+    const menuCookie = cookieStore.get("menu")?.value || '{}';
+    let user: any, foods, template, menu;
+    if (token !== "{}" && userCookie !== "{}") {
+        user = JSON.parse(userCookie);
+        menu = JSON.parse(menuCookie || "");
+        user = { ...user, ...menu };
+        foods = await getFoodsByUser(URI, user.id);
+        template = templates.find((t) => t.template_id === user?.template_id);
     }
-
-    const template = templates.find((t) => t.template_id === user?.template_id);
 
     return (
         <div className="flex relative flex-col min-h-screen">
@@ -39,14 +30,14 @@ export default async function Page() {
                 user={user}
             />
             <UserIndex
-                foods={foodsByUser}
+                foods={foods}
                 user={user}
                 template={template}
                 token={token || ""}
             />
             <BottomNavigation
                 user={user}
-                foods={foodsByUser}
+                foods={foods}
                 logoUrl={user?.photo}
                 template={template}
             />

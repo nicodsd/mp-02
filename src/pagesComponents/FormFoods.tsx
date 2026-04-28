@@ -45,7 +45,7 @@ export default function FormFoods({ initialCategories, user }: any) {
     formData.append("is_promo", "false");
 
     try {
-      const res = await fetch(`${URI}foods/postfood/${user?.id}`, {
+      const res = await fetch(`${URI}/foods/postfood/${user?.id}`, {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -57,6 +57,7 @@ export default function FormFoods({ initialCategories, user }: any) {
       refreshPage();
       setError("Plato creado exitosamente");
       setTimeout(() => {
+        router.push("/mi-menu");
         setError("");
       }, 1000);
     } catch (err: any) {

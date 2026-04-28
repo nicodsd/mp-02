@@ -64,7 +64,7 @@ function Carousel({ foods, template }: { foods: any[]; template: any }) {
                             key={index}
                             onClick={() => setCurrent(index)}
                             className={`h-2 rounded-full transition-all duration-300 ${index === current
-                                ? `${template?.accentColors?.[0] || "primary"} w-8 h-2.5`
+                                ? `${template?.accentColors?.[0] || "bg-primary"} w-8 h-2.5`
                                 : `${template?.backgroundColor2 || "bg-gray-300"} w-2`
                                 }`}
                             aria-label={`Ir al slide ${index + 1}`}

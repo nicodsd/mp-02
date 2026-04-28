@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { updateUserCookie } from "@/app/actions";
+import { updateUserCookie, updateMenuCookie } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import QrCode from "@/src/components/user-settings/QrCode";
 import { placeholder } from "@/src/lib/const";
@@ -129,24 +129,24 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
     const formData = new FormData();
     if (filePhoto) formData.append("photo", filePhoto);
     if (fileBackground) formData.append("cover", fileBackground);
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("location", location);
-    formData.append("phone", phone);
-    formData.append("user_id", user?.id);
-    formData.append("instagram", instagram);
-    formData.append("facebook", facebook);
-    formData.append("tiktok", tiktok);
+    if (editStates.name) formData.append("name", name);
+    if (editStates.description) formData.append("description", description);
+    if (editStates.location) formData.append("location", location);
+    if (editStates.phone) formData.append("phone", phone);
+    if (editStates.instagram) formData.append("instagram", instagram);
+    if (editStates.facebook) formData.append("facebook", facebook);
+    if (editStates.tiktok) formData.append("tiktok", tiktok);
+    formData.append("user_id", String(user?.id));
 
     try {
-      const res = await fetch(URI + `auth/update/${user.id}`, {
+      const res = await fetch(`${URI}/menu/update/info/${user.id}`, {
         method: "PUT",
         body: formData,
         credentials: "include",
       });
 
       const data = await res.json();
-
+      console.log(data);
       if (!res.ok) {
         if (data.errors) {
           alert(`Error de validación: ${data.errors.join(", ")}`);
@@ -155,9 +155,13 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
         }
         return;
       }
-
       if (data.success) {
-        await updateUserCookie(data.user);
+        if (data.user) {
+          await updateUserCookie(data.user);
+        }
+        if (data.menu) {
+          await updateMenuCookie(data.menu);
+        }
         router.refresh();
         setEditStates({
           name: false,
@@ -247,8 +251,8 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
               :
               <div className="flex items-center justify-center gap-2 flex-col">
                 <h3 className="text-lg text-gray-700">Fondo</h3>
-                <div className="w-45 px-5 cursor-not-allowed flex flex-col items-center border-2 border-gray-300 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
-                  <OctagonX size={50} className="text-gray-300" />
+                <div className="w-45 px-5 opacity-30 cursor-not-allowed flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                  <OctagonX size={50} className="text-gray-400" />
                   <p className="text-gray-500 text-sm text-center">Función disponible en plan de pago</p>
                 </div>
               </div>

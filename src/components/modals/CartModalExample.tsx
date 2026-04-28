@@ -1,13 +1,11 @@
 "use client";
-import { useFoodStore } from '@/src/lib/useFoodStore';
 import FoodCard from '@/src/components/modals/cards/FoodCard';
 import { FaWhatsapp, FaPlus, FaMinus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { useCartStoreExample } from '@/src/lib/useCartStoreExample';
 
-export default function CartModalExample({ isOpen, onClose, template }: { isOpen: boolean; onClose: () => void, template: any }) {
+export default function CartModalExample({ isOpen, onClose, template, allFoods }: { isOpen: boolean; onClose: () => void, template: any, allFoods: any[] }) {
     const { selectedIds, quantities, removeId, incrementQuantity, decrementQuantity, clearCart } = useCartStoreExample();
-    const { foods } = useFoodStore();
 
     function formatearPrecio(precio: number | string) {
         const value = typeof precio === "string" ? Number(precio) : precio;
@@ -19,7 +17,7 @@ export default function CartModalExample({ isOpen, onClose, template }: { isOpen
     }
     if (!isOpen) return null;
 
-    const selectedFoods = foods.filter((food: any) => selectedIds.includes(String(food._id)));
+    const selectedFoods = allFoods.filter((food: any) => selectedIds.includes(String(food._id)));
 
     const handleEncargar = (ids: string[]) => {
         if (selectedFoods.length === 0) return;
