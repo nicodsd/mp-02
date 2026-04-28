@@ -61,7 +61,7 @@ export default function EditFoodModal({
 
     try {
       const res = await fetch(
-        `${URI}foods/update/${food._id}`,
+        `${URI}/foods/update/${food._id}`,
         {
           method: "PUT",
           body: dataToSend,

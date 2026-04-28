@@ -49,7 +49,7 @@ export default function PanelUser({
 
   const handleLogout = async () => {
     try {
-      const res = await fetch(`${URI}auth/signout`, {
+      const res = await fetch(`${URI}/auth/signout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: user.id }),

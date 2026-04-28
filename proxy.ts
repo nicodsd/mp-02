@@ -13,7 +13,7 @@ export function proxy(req: NextRequest) {
         default-src 'self';
         script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""};
         style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}'`};
-        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com;
+        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com;
         font-src 'self';
         connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"} http://qmenu.digital https://qmenu.digital;
         object-src 'none';

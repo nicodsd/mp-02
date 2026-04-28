@@ -1,13 +1,15 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { setAuthCookie, setUserCookie } from "@/app/actions";
+import { setAuthCookie, setUserCookie, setMenuCookie } from "@/app/actions";
 import * as Yup from "yup";
 import logo from "@/public/images/logo/LOGOTIPO.svg";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
+import { OctagonX } from "lucide-react";
+import { useParams, useSearchParams } from "next/navigation";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import PlanSelector from "@/src/components/AcordeonPlanRegister";
 import {
@@ -31,6 +33,7 @@ type FormValues = {
   phone: string;
   phonePrefix: string;
   plan: string;
+  mp_preapproval_id: string;
   location: string;
   instagram: string;
   facebook: string;
@@ -43,15 +46,16 @@ const validationSchemas = [
     password: Yup.string()
       .min(6, "Mínimo 6 caracteres")
       .required("Ingrese una contraseña"),
-  }),
-  Yup.object({
-    plan: Yup.string().required("Seleccione un plan"),
-  }),
-  Yup.object({
     name: Yup.string()
       .test("len", "Mínimo 3 caracteres", (val) => !val || val.length >= 3)
       .test("len", "Máximo 20 caracteres", (val) => !val || val.length <= 20)
       .required("Ingrese un nombre"),
+  }),
+  Yup.object({
+    plan: Yup.string().optional(),
+    mp_preapproval_id: Yup.string().optional(),
+  }),
+  Yup.object({
     logo: Yup.mixed().nullable().optional(),
     cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
@@ -59,30 +63,99 @@ const validationSchemas = [
       .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
       .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
       .optional(),
-    phone: Yup.number()
-      .test("len", "Mínimo 7 dígitos", (val) => !val || val.toString().length >= 7)
-      .optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
-    phonePrefix: Yup.number().optional(),
+    phonePrefix: Yup.number().when('phone', {
+      is: (val: string) => val && val.length > 0,
+      then: (schema) => schema.required('Ingrese un prefijo'),
+      otherwise: (schema) => schema.optional(),
+    }),
+    phone: Yup.number().optional().min(7, "Mínimo 7 dígitos")
   }),
 ];
 
 const steps = [
-  { id: 0, label: "Cuenta" },
-  { id: 1, label: "Planes" },
-  { id: 2, label: "Perfil" },
+  { page: 0, label: "Cuenta" },
+  { page: 1, label: "Planes" },
+  { page: 2, label: "Perfil" },
 ];
 
 export default function Register() {
+  const params = useParams<{ page: string; }>();
+  const searchParams = useSearchParams();
+  const preapprovalId = searchParams.get("preapproval_id");
+  const email = searchParams.get("email");
+  const password = searchParams.get("password");
+  const [sessionPlan, setSessionPlan] = useState<string>("");
+  const [sessionEmail, setSessionEmail] = useState<string>("");
+  const [sessionPassword, setSessionPassword] = useState<string>("");
+  const [sessionUsername, setSessionUsername] = useState<string>("");
+
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [isPlanSelected, setIsPlanSelected] = useState<boolean | null>(null);
   const [coverPhotoPreview, setCoverPhotoPreview] = useState<string | null>(
     null,
   );
-  const [apiError, setApiError] = useState<string | null>(null);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
+  const [isResponse, setIsResponse] = useState<boolean | null>(null);
+  //const [isPayActive, setIsPayActive] = useState<boolean | null>(plan_name === "true" ? true : false);
+  const [isPayActive, setIsPayActive] = useState<boolean | null>(false);
+
+  useEffect(() => {
+    if (params.page) {
+      setStep(Number(params.page));
+    }
+    if (preapprovalId) {
+      setIsPayActive(true);/*
+      fetch(URI + `auth/pay/${params.approval_id}`);
+      router.replace(`/registro-de-usuario/${params.page}`); */
+    }
+  }, [params]);
+
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const response = await fetch(`${URI}/auth/check-session`, {
+          method: 'GET',
+          credentials: 'include'
+        });
+        const result = await response.json();
+        if (result.success) {
+          setSessionPlan(result.data.plan);
+          setSessionPassword(result.data.password);
+          setSessionUsername(result.data.name);
+          setSessionEmail(result.data.email);
+        } else {
+          // Si no hay sesión (pero hay ID), quizás expiró
+          setSessionPlan("");
+          setSessionEmail("");
+          setSessionPassword("");
+          setSessionUsername("");
+        }
+      } catch (error) {
+        console.error("❌ Error recuperando sesión:", error);
+      }
+    };
+
+    // Solo buscamos sesión si hay un ID de Mercado Pago en la URL
+    if (preapprovalId) {
+      fetchSessionData();
+    } else {
+      // Si no hay preapprovalId, nos aseguramos de que los estados de sesión estén vacíos (Plan Free)
+      setSessionPlan("");
+      setSessionEmail("");
+      setSessionPassword("");
+      setSessionUsername("");
+    }
+  }, [preapprovalId]);
+
+  console.log("sessionUsername", sessionUsername)
+  console.log("sessionEmail", sessionEmail)
+  console.log("sessionPassword", sessionPassword)
+  console.log("sessionPlan", sessionPlan)
 
   useEffect(() => {
     return () => {
@@ -90,47 +163,82 @@ export default function Register() {
     };
   }, [logoPreview]);
 
+  useEffect(() => {
+    if (serverMessage) {
+      outNotification();
+    }
+  }, [serverMessage]);
+
+  const outNotification = () => {
+    setTimeout(() => {
+      setServerMessage(null);
+    }, 8000);
+  }
+
   const handleFinalSubmit = async (values: FormValues) => {
-    setApiError(null);
+    setServerMessage(null);
 
     const body = new FormData();
-    body.append("email", values.email);
-    body.append("password", values.password);
-    body.append("name", values.name);
-    body.append("description", values.description || "");
-    body.append("phone", String(values.phonePrefix + values.phone || ""));
-    body.append("location", values.location || "");
+    // USER -------------------------------------------------------------------------
+    // 1. PRIORIDAD DE IDENTIDAD: Sesión > Estado Directo > Formulario
+    // Si sessionEmail existe, usamos ese. Si no, usamos el del input del form.
+    const finalEmail = sessionEmail || email || values.email;
+    body.append("email", finalEmail);
+    // CONTRASEÑA: Solo se envía si NO hay sesión (Registro Free)
+    // Si el usuario pagó, la password ya está hasheada en la sesión del servidor.
+
+    const finalPassword = sessionPassword || password || values.password;
+    body.append("password", finalPassword);
+
+    // MERCADO PAGO ID
+    body.append("mp_preapproval_id", preapprovalId || "");
+    // PLAN: Prioridad a la sesión de pago, sino lo que eligió en el form o "free"
+    body.append("plan", sessionPlan || values.plan || "free");
+    const finalUsername = sessionUsername || values.name;
+    body.append("name", finalUsername);
     body.append("is_active", values.is_active ? "1" : "0");
     body.append("is_online", values.is_online ? "1" : "0");
-    body.append("plan", values.plan || "free");
+
+    // MENU -------------------------------------------------------------------------
+    // DATOS DE PERFIL (Vienen siempre del Formulario)
+    body.append("description", values.description || "");
+    body.append("phone", String((values.phonePrefix || "") + (values.phone || "")));
+    body.append("template_id", "default");
+    body.append("location", values.location || "");
+    // ESTADOS Y REDES
     body.append("instagram", values.instagram || "");
     body.append("facebook", values.facebook || "");
     body.append("tiktok", values.tiktok || "");
+    // ARCHIVOS (Cloudinary)
     if (values.logo instanceof File) {
       body.append("photo", values.logo);
     }
     if (values.cover instanceof File) {
       body.append("cover", values.cover);
     }
-
     try {
-      const response = await fetch(`${URI}auth/signup`, {
+      const response = await fetch(`${URI}/auth/signup`, {
         method: "POST",
         body: body,
         credentials: "include",
       });
       const data = await response.json();
-      let user = data.user;
       const { token } = data;
       await setAuthCookie(token);
-      await setUserCookie(user);
       if (!response.ok) {
-        setApiError(data.error || "Ocurrió un error al registrarse.");
+        setIsResponse(data?.success);
+        setServerMessage(data?.message || "Ocurrió un error al registrarse.");
         return;
       }
-      router.push("/");
+      if (data.success) {
+        if (data.user) {
+          await setUserCookie(data.user);
+          await setMenuCookie(data.menu);
+        }
+        router.push("/");
+      }
     } catch (err) {
-      setApiError("Error de conexión. Intente nuevamente.");
+      setServerMessage("Error de conexión. Intente nuevamente.");
     }
   };
 
@@ -139,8 +247,12 @@ export default function Register() {
       <div className="w-full py-3 z-10">
         <BttnBack />
       </div>
-
-      <div className="h-full w-full pb-40">
+      {serverMessage && (
+        <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${isResponse === false ? "bg-red-500" : "bg-green-500"} ${isResponse === false ? "border-red-500" : "border-green-500"} ${isResponse === false ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 rounded-xl`}>
+          {serverMessage}
+        </div>
+      )}
+      <div className="h-full w-full pt-2 pb-36">
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <h1 className="text-3xl font-black text-stone-800 text-start">
@@ -167,7 +279,7 @@ export default function Register() {
             const completed = idx < step;
 
             return (
-              <li key={s.id} className="flex w-fit relative items-center">
+              <li key={s.page} className="flex w-fit relative items-center">
                 <div className="flex flex-col w-10 justify-center items-center z-10">
                   <span
                     className={`flex h-7 w-10 items-center justify-center rounded-full text-md font-bold transition-colors duration-300 ${active || completed
@@ -201,6 +313,7 @@ export default function Register() {
           initialValues={{
             email: "",
             password: "",
+            mp_preapproval_id: "",
             logo: null,
             cover: null,
             name: "",
@@ -220,7 +333,7 @@ export default function Register() {
             if (step < steps.length - 1) {
               setStep(step + 1);
               setSubmitting(false);
-              setApiError(null);
+              setServerMessage(null);
             } else {
               await handleFinalSubmit(values);
               setSubmitting(false);
@@ -241,8 +354,35 @@ export default function Register() {
                   <div className="flex flex-col justify-start h-70 mt-7">
                     <div className="flex flex-col w-full mb-4">
                       <label
+                        htmlFor="name"
+                        className="text-md text-gray-700"
+                      >
+                        Nombre de tu local*
+                      </label>
+                      <div className="flex items-center mt-1 justify-end relative w-full">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                          <FaShop />
+                        </div>
+                        <Field
+                          id="name"
+                          value={values.name}
+                          name="name"
+                          maxLength={15}
+                          type="text"
+                          placeholder="Mi Local"
+                          className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                        />
+                        <ErrorMessage
+                          name="name"
+                          component="div"
+                          className="text-xs mr-1 text-red-500 font-medium absolute"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col w-full mb-4">
+                      <label
                         htmlFor="email"
-                        className="text-gray-600 font-semibold"
+                        className="text-md text-gray-700"
                       >
                         Email*
                       </label>
@@ -251,7 +391,7 @@ export default function Register() {
                         name="email"
                         type="email"
                         placeholder="tu@correo.com"
-                        className="block w-full px-4 py-3 mt-1 outline-none rounded-lg border border-gray-500 text-gray-900 placeholder-gray-[#B8B8B8] placeholder:text-base transition-all text-base"
+                        className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
                       <ErrorMessage
                         name="email"
@@ -262,7 +402,7 @@ export default function Register() {
                     <div className="flex flex-col w-full">
                       <label
                         htmlFor="password"
-                        className="text-gray-600 font-semibold"
+                        className="text-md text-gray-700"
                       >
                         Contraseña*
                       </label>
@@ -271,15 +411,18 @@ export default function Register() {
                         name="password"
                         type="password"
                         placeholder="••••••••"
-                        className="block w-full px-4 py-3 mt-1 outline-none rounded-lg border border-gray-500 text-gray-900 placeholder-gray-[#B8B8B8] placeholder:text-base transition-all text-base"
+                        className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
                       <ErrorMessage
                         name="password"
                         component="div"
                         className="text-xs text-red-500 font-medium"
                       />
-                      <span className="text-xs text-gray-500 font-medium mt-0.5">
+                      <span className="text-xs text-gray-500 font-medium mt-1">
                         La contraseña debe tener al menos 8 caracteres.
+                      </span>
+                      <span className="text-xs text-gray-500 font-medium mt-0.5">
+                        Debe contener una mayúscula, una minúscula y un número
                       </span>
                     </div>
                   </div>
@@ -305,16 +448,16 @@ export default function Register() {
               {step === 2 && (
                 <div className="space-y-2  animate-in flex flex-col fade-in slide-in-from-right-4 duration-300">
                   <h3 className="text-gray-600 text-lg font-semibold h-5">
-                    Crea tu marca
+                    Creá tu marca
                   </h3>
                   <p className="text-xs font-light text-gray-500">
-                    Agrega información de tu negocio para tu QMenú.
+                    Por último, agrega información de tu local gastronómico, luego podrás empezar a subir tus platos a internet y también compartirlos en redes sociales.
                   </p>
                   <div className="flex flex-col gap-6 mt-4">
 
-                    <div className={`flex ${values.plan === "free" ? "justify-start" : "justify-around"} w-full mb-3`}>
+                    <div className={`flex justify-evenly w-full mb-5`}>
                       <div className="relative flex items-center justify-center gap-2 flex-col">
-                        <h3 className="text-lg text-gray-700">Logo</h3>
+                        <h3 className="text-md text-gray-700">Logo</h3>
                         <div className={`w-30 md:w-40 h-30 md:h-40 relative ${logoPreview ? "border-gray-200" : "border-transparent"} border rounded-full overflow-hidden`}>
                           {logoPreview && <Image
                             src={logoPreview}
@@ -349,7 +492,7 @@ export default function Register() {
                         </div>
                       </div>
 
-                      {values.plan !== "free" && (
+                      {values.plan !== "free" && isPayActive ? (
                         <div className="flex flex-col rounded-lg w-fit justify-center items-center">
                           <div className="relative flex items-center justify-center gap-2 flex-col">
                             <h3 className="text-lg text-gray-700">Fondo</h3>
@@ -387,7 +530,17 @@ export default function Register() {
                               </label>
                             </div>
                           </div>
-
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center gap-2 flex-col">
+                          <h3 className="text-md text-gray-700">Fondo</h3>
+                          <div onClick={() => {
+                            setStep((s) => Math.max(0, s - 1));
+                            setServerMessage(null);
+                          }} className="w-45 px-5 opacity-80 active:opacity-30 active:scale-95 transition-all cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                            <OctagonX size={50} className="text-gray-400" />
+                            <p className="text-gray-500 text-sm text-center">Función disponible en plan de pago</p>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -395,45 +548,20 @@ export default function Register() {
                     <div className="flex w-full space-x-5 justify-between">
                       <div className="flex flex-col items-start justify-around">
                         <label
-                          htmlFor="name"
-                          className="block text-md font-medium text-gray-700"
-                        >
-                          Nombre*
-                        </label>
-                        <label
                           htmlFor="location"
-                          className="block text-md font-medium text-gray-700"
+                          className="block text-md text-gray-700"
                         >
                           Ubicación
                         </label>
                         <label
                           htmlFor="phone"
-                          className="block text-md font-medium text-gray-700"
+                          className="block text-md text-gray-700"
                         >
                           WhatsApp
                         </label>
                       </div>
 
                       <div className="flex gap-3 w-full flex-col items-center justify-between">
-                        <div className="flex items-center justify-end relative w-full">
-                          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                            <FaShop />
-                          </div>
-                          <Field
-                            id="name"
-                            value={values.name}
-                            name="name"
-                            maxLength={15}
-                            type="text"
-                            placeholder="Mi Tienda"
-                            className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
-                          />
-                          <ErrorMessage
-                            name="name"
-                            component="div"
-                            className="text-xs mr-1 text-red-500 font-medium absolute"
-                          />
-                        </div>
                         <div className="flex items-center justify-end relative w-full">
                           <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
                           <Field
@@ -454,12 +582,13 @@ export default function Register() {
                             type="tel"
                             inputMode="numeric"
                             placeholder="385"
-                            className="text-gray-700 appearance-none overflow-hidden w-12 text-lg bg-stone-100 border border-gray-300 h-full mr-2 font-bold px-2 py-2 rounded-lg flex items-center"
+                            className="text-gray-700 appearance-none overflow-hidden w-13 text-center text-xl bg-stone-100 border border-gray-300 h-full mr-1 font-bold px-2 py-2 rounded-lg flex items-center"
                           />
                           <Field
                             id="phone"
                             name="phone"
                             type="tel"
+                            inputMode="numeric"
                             placeholder="1234567"
                             maxLength={7}
                             className="text-gray-700 appearance-none overflow-hidden w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
@@ -472,7 +601,7 @@ export default function Register() {
                     <div>
                       <label
                         htmlFor="description"
-                        className="block text-md font-medium text-gray-700 mb-1"
+                        className="block text-md text-gray-700 mb-1"
                       >
                         Descripción
                       </label>
@@ -489,7 +618,7 @@ export default function Register() {
                     </div>
 
                     <div className="border-t border-gray-300 pt-2">
-                      <label className="block text-md font-medium text-gray-700 mt-2 mb-2">
+                      <label className="block text-md text-gray-700 mt-2 mb-2">
                         Redes
                       </label>
                       <div className="flex flex-col gap-3">
@@ -531,26 +660,35 @@ export default function Register() {
               )}
 
               <div className="h-fit w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
-                <div className="flex items-center mb-2 w-[80%] justify-between">
-                  <button
+                <div className="flex items-center mb-2 w-full px-4 justify-end gap-3">
+
+                  {!preapprovalId ? <button
                     type="button"
                     onClick={() => {
                       setStep((s) => Math.max(0, s - 1));
-                      setApiError(null);
+                      setServerMessage(null);
                     }}
                     disabled={step === 0 || isSubmitting}
-                    className={`inline-flex items-center px-6 py-4 text-md font-bold rounded-lg transition-all ${step === 0
+                    className={`inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
                       ? "text-gray-300 cursor-not-allowed"
-                      : "text-white bg-black"
+                      : "text-gray-700 bg-background border border-gray-400"
                       }`}
                   >
                     Atrás
                   </button>
-
+                    :
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
+                    >
+                      Omitir
+                    </button>
+                  }
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center active:scale-90 min-w-40 justify-center px-8 py-4 text-md font-bold text-white transition-all transform hover:scale-[1.02] bg-primary hover:bg-[#d00000] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex active:scale-90 transition-all cursor-pointer items-center w-full min-w-40 justify-center px-8 py-3 text-md font-bold text-white bg-black hover:bg-[#0009] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
@@ -594,11 +732,6 @@ export default function Register() {
                     Iniciar sesión
                   </Link>
                 </div>
-                {apiError && (
-                  <div className="mb-6 p-4 w-[90%] mx-auto absolute bottom-0 left-0 right-0 bg-red-100 border border-red-400 rounded-lg text-red-600 text-sm text-center">
-                    {apiError}
-                  </div>
-                )}
                 <div className="text-center py-2 text-xs">
                   <p>
                     © {new Date().getFullYear()} QMenu. Todos los derechos

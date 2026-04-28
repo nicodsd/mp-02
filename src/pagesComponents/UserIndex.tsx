@@ -8,9 +8,6 @@ import AddDishButton from "@/src/components/user_index/AddDishButton";
 
 export default function UserIndex({ foods, user, template }: any) {
   const [filteredFoods, setFilteredFoods] = useState(foods);
-
-  const initialSubCategories = user?.subCategories || [];
-
   const [showModal, setShowModal] = useState(false);
 
   const handleSearch = (query: string) => {
@@ -27,11 +24,11 @@ export default function UserIndex({ foods, user, template }: any) {
   return (
     <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.backgroundColor}`}>
       <SearchModal
+        template={template}
         arrayFoods={filteredFoods}
         setSearch={handleSearch}
         setShowModal={setShowModal}
         showModal={showModal}
-        template={template}
       />
 
       <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 sm:px-[10vw] md:px-[20vw] lg:px-[30vw] md:pb-8 md:pt-3 -translate-y-10">

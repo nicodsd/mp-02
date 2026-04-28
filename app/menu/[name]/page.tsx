@@ -14,7 +14,7 @@ export default async function Page({
 }) {
   const { name } = await params;
   const user = await userGet(name);
-  const template = templates.find((t) => t.template_id === user?.data.template_id);
+  const template = templates.find((t) => t.template_id === user?.data?.template_id);
   if (!user?.data) {
     return <PageNotFound />;
   }
@@ -24,11 +24,10 @@ export default async function Page({
         state={0}
         bttn={false}
         cookie={""}
-        photo={user?.data.photo}
+        photo={user?.data?.photo}
         user={user?.data}
-        template={template}
       />
-      <Bell phone={user?.data.phone} template={template} />
+      <Bell phone={user?.data?.phone} template={template} />
       <Menu data={user?.data} template={template} />
       <Footer template={template} />
     </>

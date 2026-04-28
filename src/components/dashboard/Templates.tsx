@@ -22,7 +22,7 @@ export default function TemplateSelector({ user }: { user: any }) {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch(`${URI}auth/update/template/${user?.id}`, {
+            const response = await fetch(`${URI}/menu/update/config/${user?.id}`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -32,7 +32,6 @@ export default function TemplateSelector({ user }: { user: any }) {
             const data = await response.json();
             if (data.success) {
                 await updateTemplate(selected);
-                console.log(data.user);
                 router.refresh();
             }
         } catch (error) {

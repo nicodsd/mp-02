@@ -59,8 +59,8 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
 
       <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 sm:px-[10vw] md:px-[20vw] lg:px-[30vw] md:pb-8 md:pt-3 -translate-y-10">
         <FilterHeader
-          foods={filteredFoods}
           template={template}
+          foods={filteredFoods}
           onSearch={handleSearch}
           onOpenModal={() => setShowModal(true)}
         />

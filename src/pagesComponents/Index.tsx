@@ -55,7 +55,7 @@ export default function Inicio() {
         </section>
 
       </article>
-      <BellExample template={template} />
+      <BellExample template={template} foods={foodsData} />
     </main>
   );
 }
