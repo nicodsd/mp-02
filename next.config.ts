@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     '192.168.0.10',
     'qmenu.com.ar',
     '*.qmenu.com.ar',
-    'michel-digit-marijuana-islamic.trycloudflare.com',
+    'obtaining-wages-observation-shine.trycloudflare.com',
     '*.trycloudflare.com'
   ],
   crossOrigin: 'anonymous',
@@ -29,10 +29,17 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       new URL('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
+      new URL('https://asset.cloudinary.com/dsruux0wb/e2cb1caf10f0e6623883207017842db5'),
+      new URL('https://asset.cloudinary.com/dsruux0wb/c57e6243876efa7b8952953eb6078917'),
       {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: "/**",
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**', // Permite todas las rutas dentro de cloudinary
+      },
+      {
+        protocol: 'https',
+        hostname: 'asset.cloudinary.com',
+        pathname: '/**',
       },
       {
         protocol: "https",

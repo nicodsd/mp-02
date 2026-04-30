@@ -1,6 +1,5 @@
 import 'animate.css';
 import Image from "next/image";
-import { FaDelicious } from 'react-icons/fa';
 
 export default function PromoDayCard({ foods, template }: { foods: any, template: any }) {
   const priceFormatter = new Intl.NumberFormat("es-AR", {
@@ -17,21 +16,22 @@ export default function PromoDayCard({ foods, template }: { foods: any, template
 
       <div className="z-20 relative w-full flex flex-1 flex-col justify-between text-white">
 
-
         <div>
           <h3 className="line-clamp-1 text-start text-lg font-bold uppercase leading-tight md:text-xl">
             {
               foods.name.length > 20 ? foods.name.slice(0, 24) + "..." : foods.name
             }
           </h3>
-          <p className="text-start text-sm font-normal opacity-80 leading-tight md:text-xl">{foods?.description}</p>
+          <p className="text-start text-sm font-normal opacity-80 leading-tight md:text-xl">{
+            foods?.description?.length > 30 ? foods?.description?.slice(0, 30) + "..." : foods?.description
+          }</p>
         </div>
         <div className={`justify-center items-end flex flex-col`}>
           <span className="text-[13px] text-gray-300 line-through decoration-primary md:text-sm">
             Antes {priceFormatter.format(foods.price)}
           </span>
 
-          <span className={`text-2xl font-extrabold drop-shadow-md px-2 py-1 rounded-md ${template?.accentColors?.[1] || "text-yellow-300"} leading-none md:text-2xl`}>
+          <span className={`text-2xl font-extrabold drop-shadow-md px-2 py-1 rounded-md ${template?.accentColors?.[1] || "text-yellow-300 bg-primary"} leading-none md:text-2xl`}>
             <span className={`text-sm font-black text-white italic mr-1`}>%OFF</span>
             ¡Hoy {priceFormatter.format(foods.promo_price)}!
           </span>

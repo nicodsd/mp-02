@@ -53,7 +53,7 @@ export default function PromoPanel() {
 
     try {
       const pPrice = Number(promoPrice);
-      const res = await fetch(`${URI}foods/promo/${selectedFood._id}`, {
+      const res = await fetch(`${URI}/foods/promo/${selectedFood._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

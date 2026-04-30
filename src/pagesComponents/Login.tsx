@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { setAuthCookie, setUserCookie } from "@/app/actions";
+import { setAuthCookie, setMenuCookie, setUserCookie } from "@/app/actions";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/images/logo/logo-rojo.png";
@@ -35,7 +35,7 @@ export default function LoginPage() {
       formData.append("email", values.email);
       formData.append("password", values.password);
       try {
-        const response = await fetch(`${URI}auth/signin`, {
+        const response = await fetch(`${URI}/auth/signin`, {
           method: "POST",
           body: formData,
           credentials: "include",
@@ -45,6 +45,7 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
+          await setMenuCookie(data.menu);
           router.push("/mi-menu");
         } else {
           if (data.alreadyLoggedIn) {
@@ -74,14 +75,13 @@ export default function LoginPage() {
     }, 8000);
   }
 
-  const handleLogin = async () => {
+  const handleIsOnline = async () => {
     try {
-      const res = await fetch(`${URI}auth/update/is_online/${formik.values.email}`, {
+      const res = await fetch(`${URI}/auth/update/is_online/${formik.values.email}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify({ is_online: true }),
       });
       const data = await res.json();
@@ -106,7 +106,7 @@ export default function LoginPage() {
           <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${serverMessage === "Error de conexión" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "border-red-500" : "border-green-500"} ${serverMessage === "Error de conexión" ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 ${alreadyLoggedIn && "text-orange-600"} ${alreadyLoggedIn && "bg-orange-50"} ${alreadyLoggedIn && "border-orange-300"} rounded-xl`}>
             {serverMessage} {
               alreadyLoggedIn && (
-                <button onClick={() => { handleLogin() }} className="text-blue-600 font-bold hover:underline ml-1 cursor-pointer uppercase">Cerrar Sesión</button>
+                <button onClick={() => { handleIsOnline() }} className="text-blue-600 font-bold hover:underline ml-1 cursor-pointer uppercase">Cerrar Sesión</button>
               )
             }
           </div>

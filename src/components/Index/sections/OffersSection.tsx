@@ -1,5 +1,6 @@
 import Carousel from "@/src/components/Index/sections/Carousel";
-export default function OffersSection({ foods, template }: { foods: any[]; template: any }) {
+export default function OffersSection({ foods, template }: { foods: any; template: any }) {
+    if (!Array.isArray(foods)) { return null; }
     const hasPromos = foods.some((food) => food.is_promo);
     if (!hasPromos) return null;
     return (

@@ -105,7 +105,7 @@ export default function Pricing() {
               )}
 
               <div className="mb-6">
-                <h3 className={`text-xl font-bold ${plan.recommended ? 'text-primary' : 'text-stone-900'}`}>{plan.name}</h3>
+                <h3 className={`text-xl font-bold ${plan.recommended ? 'text-primary' : 'text-stone-900'}`}>{plan.name === "Plus" ? plan.name + "+" : plan.name}</h3>
                 <p className="text-stone-500 text-sm mt-2 min-h-auto md:min-h-[40px]">{plan.description}</p>
               </div>
 

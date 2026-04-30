@@ -7,6 +7,7 @@ export async function refreshPage() {
     // Marcamos los tags como "stale" usando el perfil recomendado
     revalidateTag('foods', 'max');
     revalidateTag('categories', 'max');
+    revalidateTag('menu', 'max');
 
     // Forzamos la revalidación del path del dashboard para que el 
     // Server Component vuelva a ejecutarse y mande la data nueva al cliente
@@ -37,7 +38,18 @@ export async function setUserCookie(user: object) {
     });
 }
 
-export async function updateUserCookie(updatedFields: object) {
+export async function setMenuCookie(menu: object) {
+    (await cookies()).set({
+        name: "menu",
+        value: JSON.stringify(menu),
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+    });
+}
+
+export async function updateUserCookie(newData: any) {
     const cookieStore = await cookies();
     const currentUserCookie = cookieStore.get("user");
 
@@ -45,14 +57,18 @@ export async function updateUserCookie(updatedFields: object) {
         try {
             const currentUser = JSON.parse(currentUserCookie.value);
 
+            // Si newData es un string, actualizamos solo el nombre.
+            // Si es un objeto, mezclamos todo.
             const updatedUser = {
                 ...currentUser,
-                ...updatedFields
+                ...(typeof newData === 'string'
+                    ? { name: newData.replace(/"/g, '') } // Limpiamos comillas por si las dudas
+                    : newData)
             };
 
             cookieStore.set({
                 name: "user",
-                value: JSON.stringify(updatedUser),
+                value: JSON.stringify(updatedUser), // Aquí es el único lugar donde debe haber stringify
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
@@ -61,7 +77,35 @@ export async function updateUserCookie(updatedFields: object) {
 
             revalidatePath('/', 'layout');
         } catch (error) {
-            console.error("Error al parsear la cookie de usuario:", error);
+            console.error("Error al actualizar la cookie:", error);
+        }
+    }
+}
+export async function updateMenuCookie(updatedFields: object) {
+    const cookieStore = await cookies();
+    const currentMenuCookie = cookieStore.get("menu");
+
+    if (currentMenuCookie) {
+        try {
+            const currentMenu = JSON.parse(currentMenuCookie.value);
+
+            const updatedMenu = {
+                ...currentMenu,
+                ...updatedFields
+            };
+
+            cookieStore.set({
+                name: "menu",
+                value: JSON.stringify(updatedMenu),
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                path: "/",
+            });
+
+            revalidatePath('/', 'layout');
+        } catch (error) {
+            console.error("Error al parsear la cookie de menu:", error);
         }
     }
 }
@@ -70,25 +114,26 @@ export async function logout() {
     const cookieStore = await cookies();
     cookieStore.delete("token");
     cookieStore.delete("user");
+    cookieStore.delete("menu");
     return { success: true };
 }
 
 export async function updateTemplate(templateId: string) {
     const cookieStore = await cookies();
-    const currentUserCookie = cookieStore.get("user");
+    const currentMenuCookie = cookieStore.get("menu");
 
-    if (currentUserCookie) {
+    if (currentMenuCookie) {
         try {
-            const currentUser = JSON.parse(currentUserCookie.value);
+            const currentMenu = JSON.parse(currentMenuCookie.value);
 
-            const updatedUser = {
-                ...currentUser,
+            const updatedMenu = {
+                ...currentMenu,
                 template_id: templateId
             };
 
             cookieStore.set({
-                name: "user",
-                value: JSON.stringify(updatedUser),
+                name: "menu",
+                value: JSON.stringify(updatedMenu),
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
@@ -97,23 +142,26 @@ export async function updateTemplate(templateId: string) {
 
             revalidatePath('/', 'layout');
         } catch (error) {
-            console.error("Error al parsear la cookie de usuario:", error);
+            console.error("Error al parsear la cookie de menu:", error);
         }
     }
 }
 
-export async function activateRestaurantSubscription(data: { status: string, qMenuId?: string, email?: string, transactionId?: number | string }) {
+export async function activateRestaurantSubscription(data: {
+    mp_subscription_state: string;
+    mp_preapproval_id?: string;
+}) {
     // Al no tener Prisma u ORM aquí (porque separas Front y Back), mandamos una petición a tu backend de datos.
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';
     console.log("🚀 Enviando activación de suscripción al Backend:", data);
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';
 
     try {
-        const response = await fetch(`${apiUrl}auth/subscription/webhook`, {
+        const response = await fetch(`${apiUrl}/auth/subscription/webhook-mp`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 // IMPORTANTE: Si tu backend necesita validación de que esta petición viene de tu front de confianza, manda un header aquí, por ejemplo:
-                // 'x-webhook-secret': process.env.INTERNAL_WEBHOOK_SECRET || '',
+                'x-webhook-secret': process.env.MP_WEBHOOK_SECRET || '',
             },
             body: JSON.stringify(data)
         });
@@ -122,6 +170,7 @@ export async function activateRestaurantSubscription(data: { status: string, qMe
             console.error(`❌ Error actualizando la DB en el Backend: ${response.status}`);
         } else {
             console.log('✅ Base de datos actualizada con éxito en el Backend.');
+
         }
 
     } catch (error) {
