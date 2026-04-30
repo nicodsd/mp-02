@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { MercadoPagoConfig, Payment, PreApproval } from "mercadopago";
+import { NextResponse } from "next/server";
 import { activateRestaurantSubscription } from "@/app/actions";
 import crypto from "crypto";
 
@@ -10,7 +10,11 @@ const client = new MercadoPagoConfig({
 // ----------------------------------------------------------
 // VALIDACIÓN DE FIRMA
 // ----------------------------------------------------------
-function isValidWebhookSignature(rawBody: string, signatureHeader: string | null, secret: string | undefined) {
+function isValidWebhookSignature(
+    rawBody: string,
+    signatureHeader: string | null,
+    secret: string | undefined
+): boolean {
     if (process.env.NODE_ENV !== "production") return true;
     if (!secret || !signatureHeader) return false;
 
@@ -20,8 +24,20 @@ function isValidWebhookSignature(rawBody: string, signatureHeader: string | null
 
     if (!tsPart || !v1Part) return false;
 
-    const timestamp = tsPart.split("=")[1];
-    const receivedSignature = v1Part.split("=")[1];
+    let timestamp = tsPart.split("=")[1];
+    let receivedSignature = v1Part.split("=")[1];
+
+
+    parts.forEach((part) => {
+        const [key, value] = part.split("=");
+        if (key === "ts") timestamp = value;
+        if (key === "v1") receivedSignature = value;
+    });
+
+    if (!timestamp || !receivedSignature) {
+        console.error("❌ Formato de firma inválido");
+        return false;
+    }
 
     // Verificar que el timestamp no tenga más de 10 minutos
     const tolerance = 600; // segundos
@@ -33,6 +49,7 @@ function isValidWebhookSignature(rawBody: string, signatureHeader: string | null
         return false;
     }
 
+    // Calcular firma esperada
     const message = `${timestamp}.${rawBody}`;
     const expectedSignature = crypto
         .createHmac("sha256", secret)
@@ -46,18 +63,15 @@ function isValidWebhookSignature(rawBody: string, signatureHeader: string | null
     return expectedBuffer.length === receivedBuffer.length &&
         crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
 }
-
 // ----------------------------------------------------------
 // HANDLER POST
-// ----------------------------------------------------------
+// ---------------------------------------------------------
 export async function POST(request: Request) {
     const rawBody = await request.text();
     const signatureHeader = request.headers.get("x-signature");
-
     console.log("📨 Webhook POST recibido");
     console.log(`   x-signature presente: ${!!signatureHeader}`);
     console.log(`   Entorno: ${process.env.NODE_ENV || "development"}`);
-
     // Validar firma (en desarrollo pasa directo)
     if (!isValidWebhookSignature(rawBody, signatureHeader, process.env.MP_WEBHOOK_SECRET)) {
         return NextResponse.json(
@@ -67,6 +81,7 @@ export async function POST(request: Request) {
     }
 
     // Parsear el body
+
     let body = {} as any;
     try {
         body = JSON.parse(rawBody);
@@ -82,27 +97,21 @@ export async function POST(request: Request) {
             entity: urlObj.searchParams.get("entity")
         };
     }
-
     const entity = body.entity || body.type;
     const entityId = body.data?.id;
-
     console.log(`🔔 Entity: ${entity}, ID: ${entityId}`);
-
     if (!entityId) {
         console.log("⚠️ No se encontró ID en la notificación");
         return NextResponse.json({ received: true }, { status: 200 });
     }
-
     // ----------------------------------------------------------
     // PROCESAR SEGÚN EL TIPO DE ENTIDAD
     // ----------------------------------------------------------
-
     try {
         // PAGO
         if (entity === "payment") {
             console.log("💳 Procesando notificación de PAGO");
             const paymentAPI = new Payment(client);
-
             try {
                 const paymentData = await paymentAPI.get({ id: entityId });
                 console.log(`   Estado: ${paymentData.status}`);
@@ -111,10 +120,8 @@ export async function POST(request: Request) {
 
                 if (paymentData.status === "approved") {
                     await activateRestaurantSubscription({
-                        status: "active",
-                        qMenuId: paymentData.external_reference || paymentData.metadata?.qmenu_id,
-                        email: paymentData.payer?.email,
-                        transactionId: paymentData.id?.toString(),
+                        mp_subscription_state: "active",
+                        mp_preapproval_id: paymentData.external_reference || paymentData.metadata?.qmenu_id,
                     });
                     console.log("✅ Suscripción activada por pago aprobado");
                 } else {
@@ -137,7 +144,6 @@ export async function POST(request: Request) {
         ) {
             console.log("🔄 Procesando notificación de SUSCRIPCIÓN");
             const preapprovalAPI = new PreApproval(client);
-
             try {
                 const preapprovalData = await preapprovalAPI.get({ id: entityId });
                 console.log(`   Estado: ${preapprovalData.status}`);
@@ -148,28 +154,28 @@ export async function POST(request: Request) {
                     case "authorized":
                         console.log("✅ Suscripción autorizada");
                         await activateRestaurantSubscription({
-                            status: "active",
-                            qMenuId: preapprovalData.external_reference,
-                            email: preapprovalData.payer_email,
-                            preapprovalId: preapprovalData.id,
-                            transactionId: undefined,
+                            mp_subscription_state: preapprovalData.status, // "authorized", "cancelled", etc.
+                            mp_preapproval_id: preapprovalData.id,        // El ID de la suscripción
+                            // mp_subscription_id: ... (si lo necesitas guardar aparte)
                         });
                         break;
 
                     case "cancelled":
                         console.log("❌ Suscripción cancelada");
                         await activateRestaurantSubscription({
-                            status: "inactive",
-                            qMenuId: preapprovalData.external_reference,
-                            email: preapprovalData.payer_email,
-                            preapprovalId: preapprovalData.id,
+                            mp_subscription_state: preapprovalData.status, // "authorized", "cancelled", etc.
+                            mp_preapproval_id: preapprovalData.id,        // El ID de la suscripción
+                            // mp_subscription_id: ... (si lo necesitas guardar aparte)
                         });
                         break;
-
                     case "paused":
                         console.log("⏸️ Suscripción pausada");
+                        await activateRestaurantSubscription({
+                            mp_subscription_state: preapprovalData.status, // "authorized", "cancelled", etc.
+                            mp_preapproval_id: preapprovalData.id,        // El ID de la suscripción
+                            // mp_subscription_id: ... (si lo necesitas guardar aparte)
+                        });
                         break;
-
                     default:
                         console.log(`ℹ️ Estado no manejado: ${preapprovalData.status}`);
                 }
@@ -206,9 +212,7 @@ export async function GET(request: Request) {
         topic: urlObj.searchParams.get("topic"),
         id: urlObj.searchParams.get("id"),
     };
-
     console.log("🧪 Webhook GET recibido:", params);
-
     // Si es una simulación con ID, podemos intentar consultar
     const entityId = params.dataId || params.id;
     if (entityId) {
@@ -233,9 +237,9 @@ export async function GET(request: Request) {
             }
         }
     }
-
     return NextResponse.json({
         message: "Webhook GET recibido correctamente",
         params
+
     }, { status: 200 });
 }
