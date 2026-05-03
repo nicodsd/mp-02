@@ -95,6 +95,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         try {
             // Llamamos a tu API
             const response = await fetch(`${URI}/auth/subscribe`,
+            const response = await fetch(`${URI}/auth/subscribe`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
