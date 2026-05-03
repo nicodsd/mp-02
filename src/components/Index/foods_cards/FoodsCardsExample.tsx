@@ -2,6 +2,7 @@
 import Image from "next/image";
 import AddFood from "@/src/components/buttons/AddFood";
 import AddFoodExample from "@/src/components/buttons/AddFoodExample";
+import { FaEdit } from "react-icons/fa";
 
 export default function FoodsCardsExample({
   name,
@@ -12,7 +13,7 @@ export default function FoodsCardsExample({
   _id,
   example,
   promo_price,
-  template
+  template,
 }: {
   name: string;
   photo: string;
@@ -22,7 +23,7 @@ export default function FoodsCardsExample({
   is_promo: boolean;
   promo_price: number | string;
   template: any;
-  example: boolean;
+  example?: boolean;
 }) {
 
   function formatearPrecio(precio: number | string) {
@@ -65,7 +66,7 @@ export default function FoodsCardsExample({
             example ? (
               <AddFoodExample _id={_id} />
             ) : (
-              <AddFood _id={_id} />
+              <AddFood _id={String(_id)} />
             )
           }
         </div>

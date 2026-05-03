@@ -35,20 +35,21 @@ type MenuProps = {
 };
 
 export default function Menu({ data, template }: { data: MenuProps, template: any }) {
+  const activeFoods = data.foods.filter((f: any) => !f.is_archived);
   const [showModal, setShowModal] = useState(false);
-  const [filteredFoods, setFilteredFoods] = useState(data.foods);
+  const [filteredFoods, setFilteredFoods] = useState(activeFoods);
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {
-      const result = data.foods.filter((f: any) => f.name.toLowerCase().includes(query.toLowerCase()));
+      const result = activeFoods.filter((f: any) => f.name.toLowerCase().includes(query.toLowerCase()));
       setFilteredFoods(result);
     } else {
-      setFilteredFoods(data.foods);
+      setFilteredFoods(activeFoods);
     }
   };
 
   return (
-    <main className={`w-full ${template?.backgroundColor || "bg-background"} relative p-3 md:p-0 md:py-6 h-full`}>
+    <main className={`w-full ${template?.bgMenu || "bg-background"} relative p-3 md:p-0 md:py-6 h-full`}>
       <SearchModal
         template={template}
         arrayFoods={filteredFoods}
@@ -65,13 +66,13 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
           onOpenModal={() => setShowModal(true)}
         />
 
-        <OffersSection foods={data.foods} template={template} />
+        <OffersSection foods={activeFoods} template={template} />
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
           <FoodCatalog
             example={false}
             template={template}
-            allFoods={data.foods}
+            allFoods={activeFoods}
             initialSubCategories={data.categories}
             user={data}
           />

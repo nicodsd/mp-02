@@ -36,6 +36,7 @@ export default function EditFoodModal({
     name: "",
     description: "",
     price: "",
+    is_archived: false,
   });
 
   useEffect(() => {
@@ -43,7 +44,8 @@ export default function EditFoodModal({
       setFormData({
         name: food.name || "",
         description: food.description || "",
-        price: food.price || ""
+        price: food.price || "",
+        is_archived: food.is_archived || false,
       });
       setPreview(food.photo || null);
     }
@@ -58,6 +60,7 @@ export default function EditFoodModal({
     dataToSend.append("name", formData.name);
     dataToSend.append("description", formData.description);
     dataToSend.append("price", formData.price);
+    dataToSend.append("is_archived", String(formData.is_archived));
 
     try {
       const res = await fetch(
@@ -115,15 +118,15 @@ export default function EditFoodModal({
                 onSubmit={handleUpdate}
                 className="flex flex-col md:flex-row h-full"
               >
-                <div className="md:w-1/2 bg-black relative group min-h-60">
+                <div className="md:w-1/2 bg-black relative group h-fit">
                   <Image
                     width={500}
                     height={500}
                     src={preview || "/placeholder-food.png"}
                     alt="Preview"
-                    className="w-full h-60 object-cover"
+                    className="w-full h-40 object-cover"
                   />
-                  <label className={`absolute inset-0 flex flex-col items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-white`}>
+                  <label className={`absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-100 hover:bg-black/40 transition-opacity cursor-pointer text-white`}>
                     <FaCloudUploadAlt size={30} />
                     <span className="font-bold text-xs mt-2 text-center px-4">
                       Click para cambiar imagen
@@ -142,20 +145,21 @@ export default function EditFoodModal({
                   </label>
                 </div>
 
-                <div className="md:w-1/2 px-5 pb-8 pt-5 flex flex-col gap-3">
+                <div className="md:w-1/2 px-4 pb-8 pt-5 flex flex-col gap-3">
                   <div className="flex justify-between items-center mb-2">
-                    <DialogTitle className="text-xl font-bold text-gray-900 uppercase">
+                    <DialogTitle className="text-lg font-semibold text-gray-900 uppercase">
                       Editar
                     </DialogTitle>
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className={`text-[12px] font-bold text-gray-900 uppercase tracking-widest ml-1`}>
+                    <label className={`text-[10px] font-bold text-gray-700 uppercase tracking-widest ml-1`}>
                       Nombre
                     </label>
                     <input
                       className={`border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-800`}
                       placeholder="Ej: Hamburguesa Triple"
+                      maxLength={30}
                       value={formData.name}
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
@@ -164,12 +168,13 @@ export default function EditFoodModal({
                   </div>
 
                   <div className="flex flex-col gap-1">
-                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">
+                    <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest ml-1">
                       Descripción / Ingredientes
                     </label>
                     <textarea
-                      className="border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-800 leading-relaxed"
+                      className="border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-700 leading-relaxed"
                       placeholder="Describe los ingredientes..."
+                      maxLength={25}
                       value={formData.description}
                       onChange={(e) =>
                         setFormData({
@@ -183,10 +188,10 @@ export default function EditFoodModal({
                   {/* Campo Precio */}
                   <div className="flex flex-col gap-1">
                     <div className="w-full flex items-center justify-end gap-2">
-                      <label className="text-xl">Precio ($):</label>
+                      <label className="text-2xl text-gray-800 font-bold tracking-widest flex items-center justify-center gap-2"> <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Precio</span> $</label>
                       <input
                         type="number"
-                        className="border border-gray-200 w-20 p-2 text-xl text-center outline-none focus:border-black rounded-lg transition-colors font-bold text-gray-800"
+                        className="border border-gray-200 w-30 p-2 text-3xl text-center outline-none focus:border-black rounded-2xl transition-colors font-bold text-gray-800"
                         placeholder="0.00"
                         value={formData.price}
                         onChange={(e) =>
@@ -194,6 +199,37 @@ export default function EditFoodModal({
                         }
                       />
                     </div>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 mt-2 pt-2 border-t border-gray-100">
+                    <div className="flex flex-col w-[65%]">
+                      <label
+                        htmlFor="archive-checkbox"
+                        className="text-[10px] font-bold text-gray-700 uppercase tracking-widest cursor-pointer"
+                        onClick={() =>
+                          setFormData({ ...formData, is_archived: !formData.is_archived })
+                        }
+                      >
+                        Archivar plato
+                      </label>
+                      <span className="text-xs text-gray-500 leading-tight">
+                        Se ocultará del menú principal de tus clientes.
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormData({ ...formData, is_archived: !formData.is_archived })
+                      }
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.is_archived ? "bg-gray-800" : "bg-gray-300"
+                        }`}
+                    >
+                      <span
+                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${formData.is_archived ? "translate-x-6" : "translate-x-1"
+                          }`}
+                      />
+                    </button>
+
                   </div>
 
                   <button

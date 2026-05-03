@@ -24,16 +24,18 @@ export default function PromoPanel() {
 
   const categories = useMemo(() => Array.from(new Set(foods.map((f) => f.sub_category))), [foods]);
 
+  const activeFoods = useMemo(() => foods.filter((f) => !f.is_archived), [foods]);
+
   // CAMBIO LÓGICO: activePromos ahora es independiente de los filtros de búsqueda
-  const activePromos = useMemo(() => foods.filter((f) => f.is_promo), [foods]);
+  const activePromos = useMemo(() => activeFoods.filter((f) => f.is_promo), [activeFoods]);
 
   const filteredFoods = useMemo(() => {
-    return foods.filter((food) => {
+    return activeFoods.filter((food) => {
       const matchesCategory = !selectedCategory || food.sub_category === selectedCategory;
       const matchesSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [foods, selectedCategory, searchTerm]);
+  }, [activeFoods, selectedCategory, searchTerm]);
 
   const handleSelectFood = (food: any) => {
     setSelectedFood(food);
@@ -98,13 +100,16 @@ export default function PromoPanel() {
       </header>
 
       {activePromos.length > 0 ? (
-        <section className="flex flex-col w-full gap-3 max-h-120 overflow-y-auto">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
-          </h3>
+        <section className="flex flex-col w-full gap-3 max-h-120 bg-slate-100 border border-red-500 rounded-xl p-1 overflow-y-auto">
+          <div className="p-2">
+            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+              Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+            </h3>
+            <p className="text-xs text-gray-400">No puedes poner una promoción a un producto que ya tiene una promoción.</p>
+          </div>
           <div className="flex flex-col gap-2">
             {activePromos.map((promo) => (
-              <div key={promo._id} className="flex items-center h-fit bg-red-50/30 border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
+              <div key={promo._id} className="flex items-center h-fit bg-background border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
                 <div className="flex items-center gap-2">
                   <Image priority loading="eager" src={promo.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={promo.name} />
                   <div>
@@ -127,27 +132,31 @@ export default function PromoPanel() {
           </div>
         </section>
       ) : (
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
-        </h3>
+        <div className="h-20 flex items-start justify-start ">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+          </h3>
+        </div>
       )}
 
       <div className="flex flex-col gap-3">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          Promocionar:
-        </h3>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Buscar plato para promocionar..."
-            className="pl-10 pr-2 py-3 border z-100 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        <div className="flex flex-col gap-1">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            Promocionar
+          </h3>
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Buscar plato para promocionar..."
+              className="pl-10 pr-2 py-3 border z-100 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          </div>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 overflow-x-scroll no-scrollbar">
           <button
             onClick={() => setSelectedCategory("")}
             className={`whitespace-nowrap px-4 py-1.5 cursor-pointer rounded-lg text-sm font-bold transition-all 

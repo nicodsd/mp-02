@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
-import { OctagonX } from "lucide-react";
 import { useParams, useSearchParams } from "next/navigation";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import PlanSelector from "@/src/components/AcordeonPlanRegister";
+import { OctagonX, Mail, KeyRound, Store } from "lucide-react";
 import {
   FaInstagram,
   FaFacebook,
@@ -19,7 +19,6 @@ import {
   FaCamera,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { FaShop } from "react-icons/fa6";
 
 type FormValues = {
   email: string;
@@ -151,11 +150,6 @@ export default function Register() {
       setSessionUsername("");
     }
   }, [preapprovalId]);
-
-  console.log("sessionUsername", sessionUsername)
-  console.log("sessionEmail", sessionEmail)
-  console.log("sessionPassword", sessionPassword)
-  console.log("sessionPlan", sessionPlan)
 
   useEffect(() => {
     return () => {
@@ -361,7 +355,7 @@ export default function Register() {
                       </label>
                       <div className="flex items-center mt-1 justify-end relative w-full">
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                          <FaShop />
+                          <Store size={17} />
                         </div>
                         <Field
                           id="name"
@@ -370,7 +364,7 @@ export default function Register() {
                           maxLength={15}
                           type="text"
                           placeholder="Mi Local"
-                          className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                          className="block w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                         />
                         <ErrorMessage
                           name="name"
@@ -379,6 +373,7 @@ export default function Register() {
                         />
                       </div>
                     </div>
+
                     <div className="flex flex-col w-full mb-4">
                       <label
                         htmlFor="email"
@@ -386,19 +381,25 @@ export default function Register() {
                       >
                         Email*
                       </label>
-                      <Field
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="tu@correo.com"
-                        className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
-                      />
-                      <ErrorMessage
-                        name="email"
-                        component="div"
-                        className="text-xs text-red-500 font-medium"
-                      />
+                      <div className="flex items-center mt-1 justify-end relative w-full">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                          <Mail size={17} />
+                        </div>
+                        <Field
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="tu@correo.com"
+                          className="block w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-xs mr-1 text-red-500 font-medium absolute"
+                        />
+                      </div>
                     </div>
+
                     <div className="flex flex-col w-full">
                       <label
                         htmlFor="password"
@@ -406,18 +407,23 @@ export default function Register() {
                       >
                         Contraseña*
                       </label>
-                      <Field
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="••••••••"
-                        className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
-                      />
-                      <ErrorMessage
-                        name="password"
-                        component="div"
-                        className="text-xs text-red-500 font-medium"
-                      />
+                      <div className="flex items-center mt-1 justify-end relative w-full">
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                          <KeyRound size={17} />
+                        </div>
+                        <Field
+                          id="password"
+                          name="password"
+                          type="password"
+                          placeholder="••••••••"
+                          className="block w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                        />
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="text-xs mr-1 text-red-500 font-medium absolute"
+                        />
+                      </div>
                       <span className="text-xs text-gray-500 font-medium mt-1">
                         La contraseña debe tener al menos 8 caracteres.
                       </span>
@@ -430,18 +436,26 @@ export default function Register() {
               )}
 
               {step === 1 && (
-                <div className="space-y-4">
+                <div className="space-y-8">
                   <div className="animate-in space-y-2 fade-in slide-in-from-right-4 duration-300">
                     <h3 className="text-gray-600 font-semibold h-5 text-lg">
                       Elige tu plan
                     </h3>
-                    <p className="text-xs font-light text-gray-500">
+                    <p className="text-sm font-light text-gray-500">
                       Selecciona el plan que mejor se adapte a tus necesidades.
                     </p>
                   </div>
                   <div className="flex flex-col justify-start h-fit mt-3">
                     <PlanSelector values={values} setFieldValue={setFieldValue} />
                   </div>
+                  <span className="text-xs text-gray-500 font-light mt-1">
+                    <p className="mb-1">
+                      Si deseas realizar un reembolso, <Link className="cursor-pointer underline font-medium" href="/contacto">comunicate por aquí</Link>
+                    </p>
+                    <p>
+                      Tambien puedes cambiar de plan o darte de baja cuando quieras, los pagos se realizan por medio de <Link className="cursor-pointer underline font-semibold text-blue-500" href="https://www.mercadopago.com.ar/subscriptions#from-section=menu">Mercado Pago</Link> y se aceptan todas las tarjetas.
+                    </p>
+                  </span>
                 </div>
               )}
 

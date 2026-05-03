@@ -11,7 +11,6 @@ export async function userGet(name: string) {
             return null;
         }
         if (response.ok) {
-            console.log("DATA", dataDB);
             return dataDB || null;
         } else {
             return NextResponse.json({ error: dataDB.message || "Fallo el registro." }, { status: 400 });

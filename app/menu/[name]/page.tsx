@@ -27,7 +27,7 @@ export default async function Page({
         photo={user?.data?.photo}
         user={user?.data}
       />
-      <Bell phone={user?.data?.phone} template={template} />
+      <Bell user={user?.data} template={template} />
       <Menu data={user?.data} template={template} />
       <Footer template={template} />
     </>

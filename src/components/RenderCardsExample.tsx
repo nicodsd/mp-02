@@ -45,7 +45,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
 
     timerRef.current = setTimeout(async () => {
       try {
-        const res = await fetch(`${URI}foods/delete/${food._id}`, {
+        const res = await fetch(`${URI}/foods/delete/${food._id}`, {
           method: "DELETE",
           credentials: "include",
         });
@@ -80,7 +80,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
               }`}
           >
             <div className="w-full h-full">
-              <FoodsCardsExample example={example} {...food} template={template} />
+              <FoodsCardsExample example={example} {...food} template={template} context={context} edit={() => handleEditClick} />
             </div>
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">

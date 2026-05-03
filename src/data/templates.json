@@ -2,12 +2,19 @@
     {
         "template_id": "default",
         "name": "Original",
+        "bgMenu": "bg-[#fffbf8]",
         "backgroundColor": "bg-[#fffbf8]",
         "backgroundColor2": "bg-[#ededed]",
         "accentColors": [
             "primary",
             "gray-900",
             "gray-200",
+            "[#fffbf8]"
+        ],
+        "accentColors2": [
+            "[primary]",
+            "[gray-900]",
+            "[gray-200]",
             "[#fffbf8]"
         ],
         "textColor": "text-gray-700",
@@ -19,41 +26,56 @@
     {
         "template_id": "night",
         "name": "Noche",
+        "bgMenu": "bg-[#0a0a0a]",
         "backgroundColor": "bg-[#0a0a0a]",
-        "backgroundColor2": "bg-[#141414]",
+        "backgroundColor2": "bg-[#2c2e27]",
         "accentColors": [
             "bg-[#fff]",
             "bg-[#495c49]",
             "bg-[#262626]",
             "bg-[#0F0F0F]"
         ],
+        "accentColors2": [
+            "[#fff]",
+            "[#495c49]",
+            "[#262626]",
+            "[#0F0F0F]"
+        ],
         "textColor": "text-white",
         "textColorOpacity": "text-white/60",
         "textColor2": "text-[#0F0F0F]",
-        "icons": "text-[#75ff75]",
-        "border": "border-[#495c49]"
+        "icons": "text-[#b6ff17]",
+        "border": "border-[#5d6649]"
     },
     {
         "template_id": "forest",
         "name": "Bosque",
+        "bgMenu": "bg-[#172118]",
         "backgroundColor": "bg-[#172118]",
-        "backgroundColor2": "bg-[#2D3E2C]",
-        "accentColor2": "bg-[#edff47]",
+        "backgroundColor2": "bg-[#2f3d10]",
+        "accentColor2": "bg-[#ffea00]",
         "accentColors": [
-            "bg-[#edff47]",
+            "bg-[#ffea00]",
             "bg-[#8d9432]",
             "bg-[#3B4E3A]",
             "bg-[#1B261A]"
         ],
+        "accentColors2": [
+            "[#ffea00]",
+            "[#8d9432]",
+            "[#3B4E3A]",
+            "[#1B261A]"
+        ],
         "textColor": "text-[#faffcc]",
         "textColorOpacity": "text-[#faffcc]/50",
         "textColor2": "text-[#1B261A]",
-        "icons": "text-[#edff47]",
+        "icons": "text-[#ffea00]",
         "border": "border-[#425424]"
     },
     {
         "template_id": "ocean",
         "name": "Oceano",
+        "bgMenu": "bg-[#002119]",
         "backgroundColor": "bg-[#002119]",
         "backgroundColor2": "bg-[#004D40]",
         "accentColors": [
@@ -61,6 +83,12 @@
             "bg-[#00804a]",
             "bg-[#58baaa]",
             "bg-[#002D26]"
+        ],
+        "accentColors2": [
+            "[#e0fffd]",
+            "[#00804a]",
+            "[#58baaa]",
+            "[#002D26]"
         ],
         "textColor": "text-[#e0fffd]",
         "textColorOpacity": "text-[#e0fffd]/60",
@@ -71,30 +99,44 @@
     {
         "template_id": "sunset",
         "name": "Sunset",
-        "backgroundColor": "bg-[#ed6728]",
-        "backgroundColor2": "bg-[#f5a940]",
+        "bgMenu": "bg-[#e33a14]",
+        "backgroundColor": "bg-[#e33a14]",
+        "backgroundColor2": "bg-[#732c1d]",
         "accentColors": [
             "bg-[#FFE1A8]",
             "bg-[#f5a940]",
             "bg-[#b53f00]",
             "bg-[#FF6B35]"
         ],
+        "accentColors2": [
+            "[#FFE1A8]",
+            "[#f5a940]",
+            "[#b53f00]",
+            "[#FF6B35]"
+        ],
         "textColor": "text-[#ffe8e0]",
         "textColorOpacity": "text-[#ffd6d6]/70",
         "textColor2": "text-[#FF6B35]",
         "icons": "text-[#ffffff]",
-        "border": "border-[#302728]/20"
+        "border": "border-[#cfa699]/90"
     },
     {
         "template_id": "gold",
         "name": "Gold",
-        "backgroundColor": "bg-[#fffaf0]",
+        "bgMenu": "bg-[#fffff0]",
+        "backgroundColor": "bg-[#fffff0]",
         "backgroundColor2": "bg-[#fff5db]",
         "accentColors": [
             "bg-[#e8b707]",
             "bg-[#e8b707]",
             "bg-[#e8b707]",
             "bg-[#fffaf0]"
+        ],
+        "accentColors2": [
+            "[#e8b707]",
+            "[#e8b707]",
+            "[#e8b707]",
+            "[#fffaf0]"
         ],
         "textColor": "text-[#3b332a]",
         "textColorOpacity": "text-[#3b332a]/60",
@@ -105,6 +147,7 @@
     {
         "template_id": "lemon",
         "name": "Lemon",
+        "bgMenu": "bg-[#fdfff0]",
         "backgroundColor": "bg-[#fdfff0]",
         "backgroundColor2": "bg-[#fbffc2]",
         "accentColors": [
@@ -113,8 +156,14 @@
             "bg-[#FFF176]",
             "bg-[#FFFDE7]"
         ],
-        "textColor": "text-[#68a321]",
-        "textColorOpacity": "text-[#68a321]/50",
+        "accentColors2": [
+            "[#7fc728]",
+            "[#7fc728]",
+            "[#FFF176]",
+            "[#FFFDE7]"
+        ],
+        "textColor": "text-[#4a4900]",
+        "textColorOpacity": "text-[#595800]/60",
         "textColor2": "text-white",
         "icons": "text-[#d1e000]",
         "border": "border-[#FFF176]"
@@ -122,13 +171,20 @@
     {
         "template_id": "cherry",
         "name": "Cherry",
+        "bgMenu": "bg-[#fffbfa]",
         "backgroundColor": "bg-[#fffbfa]",
         "backgroundColor2": "bg-[#ffebe8]",
         "accentColors": [
             "bg-[#c41a00]",
-            "bg-primary",
+            "bg-[#754343]",
             "bg-[#FFA8A8]",
             "bg-[#FFF5F5]"
+        ],
+        "accentColors2": [
+            "[#c41a00]",
+            "[#754343]",
+            "[#FFA8A8]",
+            "[#FFF5F5]"
         ],
         "textColor": "text-[#754343]",
         "textColorOpacity": "text-[#754343]/70",
@@ -139,16 +195,23 @@
     {
         "template_id": "mint",
         "name": "Mint",
+        "bgMenu": "bg-[#f8ffe8]",
         "backgroundColor": "bg-[#f8ffe8]",
-        "backgroundColor2": "bg-[#deffd4]",
+        "backgroundColor2": "bg-[#def2a5]",
         "accentColors": [
             "bg-[#2a7a11]",
             "bg-[#31d100]",
             "bg-[#A5D6A7]",
             "bg-[#E8F5E9]"
         ],
-        "textColor": "text-[#567d4a]",
-        "textColorOpacity": "text-[#567d4a]/60",
+        "accentColors2": [
+            "[#2a7a11]",
+            "[#31d100]",
+            "[#A5D6A7]",
+            "[#E8F5E9]"
+        ],
+        "textColor": "text-[#45442b]",
+        "textColorOpacity": "text-[#45442b]/60",
         "textColor2": "text-white",
         "icons": "text-[#31d100]",
         "border": "border-[#A5D6A7]/50"
@@ -156,13 +219,20 @@
     {
         "template_id": "lavender",
         "name": "Lavanda",
-        "backgroundColor": "bg-[#fafffa]",
+        "bgMenu": "bg-[#fdfff0]",
+        "backgroundColor": "bg-[#fdfff0]",
         "backgroundColor2": "bg-[#f3ebf7]",
         "accentColors": [
             "bg-[#4A148C]",
             "bg-[#4A148C]",
             "bg-[#CE93D8]",
             "bg-[#F3E5F5]"
+        ],
+        "accentColors2": [
+            "[#4A148C]",
+            "[#4A148C]",
+            "[#CE93D8]",
+            "[#F3E5F5]"
         ],
         "textColor": "text-[#0d2e18]/70",
         "textColorOpacity": "text-[#0d2e18]/40",
@@ -173,13 +243,20 @@
     {
         "template_id": "sakura",
         "name": "Sakura",
-        "backgroundColor": "bg-[#FFF0F3]",
-        "backgroundColor2": "bg-[#FFD1DC]",
+        "bgMenu": "bg-[#fef5ff]",
+        "backgroundColor": "bg-[#fef5ff]",
+        "backgroundColor2": "bg-[#fdd4ff]",
         "accentColors": [
             "bg-[#FF4D6D]",
             "bg-[#e61271]",
             "bg-[#FF8FA3]",
             "bg-[#FFF0F3]"
+        ],
+        "accentColors2": [
+            "[#FF4D6D]",
+            "[#e61271]",
+            "[#FF8FA3]",
+            "[#FFF0F3]"
         ],
         "textColor": "text-[#590D22]",
         "textColorOpacity": "text-[#590D22]/60",

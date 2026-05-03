@@ -22,7 +22,7 @@ export default function UserIndex({ foods, user, template }: any) {
   };
 
   return (
-    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.backgroundColor}`}>
+    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.bgMenu || "bg-background"}`}>
       <SearchModal
         template={template}
         arrayFoods={filteredFoods}
