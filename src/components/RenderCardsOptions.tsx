@@ -34,7 +34,7 @@ export default function RenderCardsOptions({
         food={selectedFood}
         onUpdate={() => refreshPage()}
       />
-      <div className={`w-fit flex justify-start overflow-x-scroll p-0.5 rounded-xl ${template?.backgroundColor2 || "bg-background-2"}`}>
+      <div className={`w-fit flex justify-start no-scrollbar p-0.5 rounded-xl ${template?.backgroundColor2 || "bg-background-2"}`}>
         {foods.length === 0 ? (
           <Loading count={count ?? 6} template={template} />
         ) : (
