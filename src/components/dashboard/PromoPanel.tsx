@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import DiscountSlider from "@/src/components/Index/filters/DiscountSlider";
-import { FaSearch, FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt } from "react-icons/fa";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import { refreshPage } from "@/app/actions";
+import Search from "@/src/components/Index/filters/Search"
 import Image from "next/image";
-
-const URI = process.env.NEXT_PUBLIC_API_URL;
+import { URI } from "@/src/lib/const";
 
 const priceFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -14,36 +14,45 @@ const priceFormatter = new Intl.NumberFormat("es-AR", {
   minimumFractionDigits: 0,
 });
 
-export default function PromoPanel() {
-  const { foods, updatePromo } = useFoodStore();
+export default function PromoPanel({ foods }: { foods: any[] }) {
+  const { updatePromo } = useFoodStore();
   const [selectedFood, setSelectedFood] = useState<any | null>(null);
   const [promoPrice, setPromoPrice] = useState<string>("");
+  const [currentPrice, setCurrentPrice] = useState<string>("");
+  const [currentPercent, setCurrentPercent] = useState<number>(0);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
   const categories = useMemo(() => Array.from(new Set(foods.map((f) => f.sub_category))), [foods]);
 
-  // CAMBIO LÓGICO: activePromos ahora es independiente de los filtros de búsqueda
   const activePromos = useMemo(() => foods.filter((f) => f.is_promo), [foods]);
 
   const filteredFoods = useMemo(() => {
     return foods.filter((food) => {
       const matchesCategory = !selectedCategory || food.sub_category === selectedCategory;
       const matchesSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesSearch && !food.is_promo;
     });
   }, [foods, selectedCategory, searchTerm]);
 
   const handleSelectFood = (food: any) => {
     setSelectedFood(food);
     setPromoPrice(String(food.price));
+    setCurrentPrice(String(food.price));
+    setCurrentPercent(0);
   };
 
   const applyDiscount = (percent: number) => {
+    setCurrentPercent(percent);
+    if (percent === 100) {
+      setPromoPrice("0");
+      setCurrentPrice("0");
+    }
     if (selectedFood) {
       const discounted = selectedFood.price - (selectedFood.price * percent) / 100;
       setPromoPrice(String(Math.round(discounted)));
+      return setCurrentPrice(String(Math.round(discounted)));
     }
   };
 
@@ -74,7 +83,7 @@ export default function PromoPanel() {
 
   const removePromo = async (id: string | number) => {
     try {
-      const res = await fetch(`${URI}foods/promo/${id}`, {
+      const res = await fetch(`${URI}/foods/promo/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -91,20 +100,23 @@ export default function PromoPanel() {
   };
 
   return (
-    <div className="p-3 flex h-full w-full flex-col gap-6 pb-24">
+    <div className="p-3 flex h-full w-full flex-col gap-6">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Promociones</h1>
         <p className="text-gray-500 text-sm">Aplica descuentos a tus productos.</p>
       </header>
 
       {activePromos.length > 0 ? (
-        <section className="flex flex-col w-full gap-3 max-h-120 overflow-y-auto">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
-          </h3>
+        <section className="flex flex-col w-full gap-3 max-h-120 bg-slate-100 border border-red-500 rounded-xl p-1 overflow-y-auto">
+          <div className="p-2">
+            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+              Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+            </h3>
+            <p className="text-xs text-gray-400">No puedes poner una promoción a un producto que ya tiene una promoción.</p>
+          </div>
           <div className="flex flex-col gap-2">
             {activePromos.map((promo) => (
-              <div key={promo._id} className="flex items-center h-fit bg-red-50/30 border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
+              <div key={promo._id} className="flex items-center h-fit bg-background border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
                 <div className="flex items-center gap-2">
                   <Image priority loading="eager" src={promo.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={promo.name} />
                   <div>
@@ -120,34 +132,31 @@ export default function PromoPanel() {
                 </div>
                 <button onClick={() => removePromo(promo._id)} className="p-1 flex items-center gap-1 flex-col text-gray-400 cursor-pointer hover:text-red-500 transition-colors">
                   <FaTrashAlt size={18} />
-                  <span className="text-xs">Eliminar</span>
+                  <span className="text-xs">Quitar</span>
                 </button>
               </div>
             ))}
           </div>
         </section>
       ) : (
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          Activas: <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
-        </h3>
+        <div className="h-20 flex items-start justify-start ">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+          </h3>
+        </div>
       )}
 
-      <div className="flex flex-col gap-3">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          Promocionar:
-        </h3>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Buscar plato para promocionar..."
-            className="pl-10 pr-2 py-3 border z-100 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+      <div className="flex flex-col gap-3 border-t border-gray-200 pt-7">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            Aplicar Promoción
+          </h3>
+          <div className="relative mt-3">
+            <Search arrayFoods={foods} setSearch={setSearchTerm} />
+          </div>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+        <div className="flex gap-2 px-2 overflow-x-scroll no-scrollbar">
           <button
             onClick={() => setSelectedCategory("")}
             className={`whitespace-nowrap px-4 py-1.5 cursor-pointer rounded-lg text-sm font-bold transition-all 
@@ -173,7 +182,7 @@ export default function PromoPanel() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 overflow-y-auto max-h-120">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 overflow-y-auto max-h-110 bg-gray-200/60 p-1 rounded-xl">
           {filteredFoods.map((food) => {
             const inPromo = activePromos.some(p => p._id === food._id);
             return (
@@ -181,7 +190,7 @@ export default function PromoPanel() {
                 key={food._id}
                 onClick={() => !inPromo && handleSelectFood(food)}
                 className={`flex items-center gap-2 p-1 rounded-lg transition-all ${inPromo ? "opacity-40 grayscale cursor-not-allowed border-transparent bg-gray-50" :
-                  selectedFood?._id === food._id ? "border-red-500 bg-red-50/30 border" : "border border-gray-300 cursor-pointer "
+                  selectedFood?._id === food._id ? "border-red-500 bg-red-50/30 border" : "border bg-background border-gray-300 cursor-pointer "
                   }`}
               >
                 <Image priority loading="eager" src={food.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={food.name} />

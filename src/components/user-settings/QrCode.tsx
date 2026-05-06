@@ -21,7 +21,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user?.name?.replace(" ", "-"))}`;
+  const url = `${NEXT_PUBLIC_URL}/menu/${encodeURIComponent(user?.name?.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {

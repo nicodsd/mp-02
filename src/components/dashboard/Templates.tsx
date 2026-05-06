@@ -4,7 +4,6 @@ import { URI } from '@/src/lib/const';
 import templates from '@/src/data/templates.json';
 import { useRouter } from 'next/navigation';
 import { updateTemplate } from "@/app/actions";
-import { FaCircle } from 'react-icons/fa';
 
 export default function TemplateSelector({ user }: { user: any }) {
     const [selected, setSelected] = useState<string>(user?.template_id || 'default');

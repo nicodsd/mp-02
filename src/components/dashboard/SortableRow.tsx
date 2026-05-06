@@ -2,7 +2,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { FaEdit, FaCheckSquare, FaRegSquare } from "react-icons/fa";
+import { FaEdit, FaCheckSquare, FaRegSquare, FaArchive } from "react-icons/fa";
 import { GripVertical } from "lucide-react";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 
@@ -29,44 +29,60 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
             ref={setNodeRef}
             style={style}
             className={`flex justify-between items-center transition-all 
-                ${context ? "mb-1 rounded-xl" : ""} 
+                ${context ? "mb-0.5 rounded-xl" : ""} 
                 ${isSelected ? `border-blue-500 bg-blue-50/50` : ``} 
                 ${isDragging ? "shadow-xl opacity-80 rotate-1 scale-[1.02] z-50" : ""}`}
         >
-            <div className={`w-full h-full flex border ${isSelected ? "border-red-500" : `border-transparent`} ${context ? "rounded-xl" : "rounded-lg"} ${context ? "bg-background-2" : ""} items-center`}>
+            <div className={`w-full h-full relative flex border ${isSelected ? "border-red-500" : `border-transparent`} ${context ? "rounded-xl" : "rounded-lg"} ${context ? "bg-background" : ""} items-center`}>
                 {isSelectionMode ? (
                     <div
                         onClick={() => onToggleSelect(food._id)}
-                        className={`px-2 cursor-pointer text-gray-500 active:scale-90 transition-transform`}
+                        className={`px-1 cursor-pointer text-gray-500 active:scale-90 transition-transform`}
                     >
-                        {isSelected ? <FaCheckSquare size={20} /> : <FaRegSquare size={20} />}
+                        {isSelected ? <FaCheckSquare size={18} /> : <FaRegSquare size={18} />}
                     </div>
                 ) : (
-                    <GripVertical
-                        size={24}
-                        className={`mx-1 touch-none ${template?.textColor} cursor-grab active:cursor-grabbing`}
-                        {...attributes}
-                        {...listeners}
-                    />
+                    <>
+                        {
+                            food.is_archived ? (
+                                <div className={`absolute top-0 left-0 w-full h-full text-2xl px-3 py-3 rounded-lg z-20 font-bold flex items-end justify-start gap-2 ${context ? "text-gray-700" : `${template?.textColor} bg-slate-400/60`}`}>
+                                    {
+                                        !context && (
+                                            <>
+                                                <FaArchive />
+                                                <span className="text-lg leading-none">Este plato no será visible</span>
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            ) : (
+                                <GripVertical
+                                    size={24}
+                                    className={`mx-1 touch-none ${context ? "text-gray-700" : template?.textColor} cursor-grab active:cursor-grabbing`}
+                                    {...attributes}
+                                    {...listeners}
+                                />
+                            )
+                        }
+                    </>
                 )}
                 <SortableFoodCard
                     food={food}
                     context={!!context}
                     template={template}
                 />
-            </div>
-
-            {context && !isSelectionMode && (
-                <div className="flex items-center text-blue-600 justify-center h-full border-gray-200 bg-gray-50/30 min-w-[60px]">
+                {!isSelectionMode && (
                     <button
                         onClick={() => onEdit(food)}
                         className={`
-                            p-3 bg-background-2 border border-gray-200 rounded-full hover:bg-gray-900 hover:text-white transition-all shadow-sm active:scale-90`}
+                            ${context ? "static z-50 h-full bg-background/50 rounded-none" : `${template?.icons} ${template?.backgroundColor2}`
+                            }
+                            "w-fit h-fit text-lg p-2.5 ml-2 absolute top-2 right-2 z-30 active:scale-70 active:opacity-80 transition-transform duration-300 rounded-full flex items-center justify-center"`}
                     >
-                        <FaEdit size={16} />
+                        <FaEdit />
                     </button>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </div >
     );
 }

@@ -11,6 +11,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             id: "free",
             name: "Gratuito",
             price: 0,
+            btn: false,
             color: "bg-white",
             textColor: "text-stone-800",
             features: [
@@ -24,6 +25,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         {
             id: "plus",
             name: "Plus+",
+            btn: true,
             price: 100,
             color: "bg-primary",
             textColor: "text-white",
@@ -40,6 +42,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         {
             id: "premium",
             name: "Premium",
+            btn: true,
             price: 100,
             color: "bg-black",
             textColor: "text-white",
@@ -147,16 +150,12 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                             >
                                 {/* Card Header */}
                                 <div onClick={() => handlePlanClick(plan.id)}
-                                    className={`w-full flex items-center justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2' : 'py-5 px-3'} ${plan.textColor}`}
+                                    className={`w-full flex items-center ${plan.id === 'premium' ? 'btn-god-rays' : ''} justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2' : 'py-5 px-3'} ${plan.textColor}`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div onClick={() => handlePlanClick(plan.id)} className={`h-6 w-6 rounded-md border-2 flex items-center justify-center transition-all ${plan.id === 'free' ? 'border-stone-400' : 'border-white'
-                                            } ${isSelected && plan.id !== 'free' ? 'border-white' : ''}`}>
-                                            {isSelected && <Check className={`h-4 w-4 ${plan.id === 'free' ? 'text-stone-700' : 'text-white'}`} />}
-                                        </div>
 
                                         <div className="text-start">
-                                            <span className={`text-md ${plan.id !== 'free' ? 'font-bold' : 'font-medium'} block leading-none`}>
+                                            <span className={`text-lg ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
                                                 {plan.name}
                                             </span>
                                         </div>
@@ -173,26 +172,26 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
 
                                 {/* Cuerpo Desplegable */}
                                 <div
-                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-[600px] border-t border-stone-100' : 'max-h-0'
+                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-[600px] px-4 pb-4 border-t border-stone-100' : 'max-h-0'
                                         } overflow-hidden`}
                                 >
-                                    <div className="p-5 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
+                                    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
                                         {plan.features.map((feature, idx) => (
                                             <motion.div
                                                 key={idx}
                                                 initial={{ opacity: 0, x: -10 }}
                                                 animate={isOpen ? { opacity: 1, x: 0 } : {}}
                                                 transition={{ delay: idx * 0.05 }}
-                                                className="flex items-center gap-3 text-[12px] leading-3 text-stone-600"
+                                                className="flex items-center gap-2 text-[13px] leading-3 text-stone-600"
                                             >
                                                 <div className={`h-1.5 ${plan.id === 'premium' ? 'bg-black' : 'bg-stone-400'} w-1.5 rounded-full shrink-0`} />
                                                 {feature}
                                             </motion.div>
                                         ))}
-                                        <button type='button' className={`w-full cursor-pointer mt-3 ${plan.id !== 'free' ? 'font-bold' : 'font-medium'} ${plan.id !== 'free' ? 'text-white' : 'text-stone-800'} ${plan.id !== 'free' ? 'border border-transparent' : 'border border-gray-300'} ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
-                                            Proceder al pago
-                                        </button>
                                     </div>
+                                    <button type='button' className={`w-full cursor-pointer mt-3 ${plan.id !== 'free' ? 'font-bold' : 'font-medium'} ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'} ${plan.id !== 'free' ? 'border border-transparent' : 'border border-gray-300'} ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
+                                        {plan.btn ? 'Proceder al pago' : 'Seleccionar Plan'}
+                                    </button>
                                 </div>
                             </motion.div>
                         );
@@ -204,10 +203,3 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
 };
 
 export default PlanSelector;
-
-
-//https://donor-rest-september-beyond.trycloudflare.com/2?preapproval_id=2d6a226a08cb4e62a670fe137c4e8aa0
-
-//https://donor-rest-september-beyond.trycloudflare.com/2registro-de-usuario/2?plan_name=plus&password=hola1234&email=hola1234@gdd.com&?preapproval_id=827da03ac16a40e5aca6e3d05690ced5
-
-//https://donor-rest-september-beyond.trycloudflare.com/registro-de-usuario/2?plan_name=plus&password=hola1234&email=hola1234@gdd.com&?preapproval_id=252962bfee6143329f169b7e4fe07b07

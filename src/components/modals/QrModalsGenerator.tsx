@@ -30,7 +30,7 @@ export default function QrModalsGenerator({
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}menu/${encodeURIComponent(user.name.replace(" ", "-"))}`;
+  const url = `${NEXT_PUBLIC_URL}/menu/${encodeURIComponent(user.name.replace(" ", "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
@@ -137,7 +137,7 @@ export default function QrModalsGenerator({
   return (
     <div>
       {isOpen && (
-        <div className={`fixed ${template?.backgroundColor2} backdrop-blur-sm inset-0 flex items-center justify-center z-100`}>
+        <div className={`fixed ${template?.bgMenu || "bg-background"} backdrop-blur-sm inset-0 flex items-center justify-center z-100`}>
           <div className={`p-6 text-center w-[95%] max-w-96 animate-in fade-in zoom-in duration-200`}>
             <h3 className={`text-2xl mb-4 ${template?.textColor}`}>
               Personaliza y Comparte

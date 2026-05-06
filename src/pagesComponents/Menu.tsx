@@ -35,20 +35,21 @@ type MenuProps = {
 };
 
 export default function Menu({ data, template }: { data: MenuProps, template: any }) {
+  const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
   const [showModal, setShowModal] = useState(false);
-  const [filteredFoods, setFilteredFoods] = useState(data.foods);
+  const [filteredFoods, setFilteredFoods] = useState(activeFoods);
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {
-      const result = data.foods.filter((f: any) => f.name.toLowerCase().includes(query.toLowerCase()));
+      const result = activeFoods.filter((f: any) => f.name.toLowerCase().includes(query.toLowerCase()));
       setFilteredFoods(result);
     } else {
-      setFilteredFoods(data.foods);
+      setFilteredFoods(activeFoods);
     }
   };
 
   return (
-    <main className={`w-full ${template?.backgroundColor || "bg-background"} relative p-3 md:p-0 md:py-6 h-full`}>
+    <main className={`w-full ${template?.bgMenu || "bg-background"} relative p-3 md:p-0 md:py-6 h-full`}>
       <SearchModal
         template={template}
         arrayFoods={filteredFoods}
@@ -71,7 +72,7 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
           <FoodCatalog
             example={false}
             template={template}
-            allFoods={data.foods}
+            allFoods={activeFoods}
             initialSubCategories={data.categories}
             user={data}
           />
