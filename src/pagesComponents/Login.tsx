@@ -127,7 +127,7 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="text-start mb-5 px-5">
-              <h1 className="text-gray-700 text-3xl leading-none font-extrabold tracking-tight">
+              <h1 className="text-stone-800 text-3xl leading-none font-extrabold tracking-tight">
                 ¡Hola! <br />
               </h1>
               <p className="text-gray-600 text-sm font-semibold">
@@ -214,8 +214,7 @@ export default function LoginPage() {
       <footer className="w-full h-fit flex flex-col items-center justify-between bg-background space-y-5 py-2">
         <div className="text-center py-2 text-xs">
           <p>
-            © {new Date().getFullYear()} QMenu. Todos los derechos
-            reservados.
+            © {new Date().getFullYear()} QMenu.
           </p>
         </div>
       </footer>

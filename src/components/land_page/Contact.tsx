@@ -54,16 +54,6 @@ export default function Contact() {
             <div className="space-y-3 max-w-md mx-auto lg:mx-0">
               <div className="flex items-center text-left p-4 rounded-xl border border-gray-300">
                 <div className="mr-4 shrink-0">
-                  <Mail className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-                </div>
-                <div className="overflow-hidden">
-                  <h4 className="text-stone-900 font-semibold text-sm md:text-base">Ventas y Soporte</h4>
-                  <span className="text-stone-500 text-sm truncate">qmenuofi@gmail.com</span>
-                </div>
-              </div>
-
-              <div className="flex items-center text-left p-4 rounded-xl border border-gray-300">
-                <div className="mr-4 shrink-0">
                   <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
                 <div>

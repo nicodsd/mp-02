@@ -98,7 +98,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
             <div className={`flex flex-col overflow-y-auto overflow-x-hidden ${context ? " bg-gray-200/60 p-1" : ""} rounded-xl`}>
                 {foods.length === 0 ? (
                     <div className="flex justify-center items-center h-full">
-                        <span className={`text-center ${template?.textColor} py-20`}>No hay platos que mostrar</span>
+                        <span className={`text-center ${context ? "text-gray-800 py-30" : template?.textColor} py-20`}>No hay platos que mostrar</span>
                     </div>
                 ) : (
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

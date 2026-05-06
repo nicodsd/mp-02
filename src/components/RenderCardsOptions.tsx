@@ -34,7 +34,7 @@ export default function RenderCardsOptions({
         food={selectedFood}
         onUpdate={() => refreshPage()}
       />
-      <div className={`w-fit flex justify-start no-scrollbar p-0.5 rounded-xl ${template?.backgroundColor2 || "bg-background-2"}`}>
+      <div className={`w-full flex justify-start overflow-x-auto no-scrollbar p-0.5 rounded-xl ${template?.backgroundColor2 || "bg-background-2"}`}>
         {foods.length === 0 ? (
           <Loading count={count ?? 6} template={template} />
         ) : (
@@ -44,12 +44,10 @@ export default function RenderCardsOptions({
               className={`rounded-lg relative`}
             >
               {
-                food.is_archived && (
-                  <div className="absolute top-0 left-0 bg-linear-to-b from-gray-900 to-background/20 text-gray-100 w-full h-full text-2xl px-3 py-3 rounded-lg z-20 font-bold flex items-center justify-center gap-1">
-
+                !example && food.is_archived && (
+                  <div className={`absolute top-0 left-0 w-full h-full text-2xl px-3 py-3 rounded-lg z-20 flex-col font-bold flex items-center justify-center gap-1 ${context ? "text-gray-700" : `${template?.textColor} bg-slate-400/60`}`}>
                     <FaArchive />
-                    <span className="text-sm">Archivado</span>
-
+                    <span className="text-sm text-center">Este plato no será visible</span>
                   </div>
                 )
               }

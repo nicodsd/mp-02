@@ -36,18 +36,18 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
       <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col items-start p-3 rounded-xl bg-orange-400 justify-between">
           <span className="text-lg text-white mb-1 font-semibold leading-tight">Platos</span>
-          <span className="text-[5rem] font-bold text-white">{activeDataFoods.length}</span>
+          <span className="text-[3rem] font-bold text-white">{activeDataFoods.length}</span>
           <span className="text-xs font-medium text-white/80">Platos Activos</span>
         </div>
         <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
           <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
-          <span className="text-[5rem] font-bold text-white">{activePromos.length}</span>
+          <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
           <span className="text-xs font-medium text-white/80">Promociones</span>
         </div>
       </div>
 
       <div className="flex flex-col gap-3 w-full pt-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-2">
           <button
             onClick={() => setView("active")}
             className={`px-4 py-2 font-semibold text-sm rounded-lg transition-colors 
@@ -67,7 +67,7 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
           <button
             onClick={() => setView("archived")}
             className={`px-4 py-2 font-semibold text-sm rounded-lg transition-colors 
-              ${view === "archived" ? "bg-gray-800 text-white"
+              ${view === "archived" ? "bg-slate-500 text-white"
                 :
                 "bg-transparent text-gray-500 hover:bg-gray-100"
               }`}
@@ -85,7 +85,14 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />
         </div>
-        <div className="flex w-full h-100">
+        <div className="flex w-full h-110 relative">
+          {
+            view === "active" ? (
+              <div className="bg-orange-300/40 absolute top-10 left-1/2 -translate-x-1/2 blur-lg w-[80%] h-2/3"></div>
+            ) : (
+              <div className="bg-gray-800/20 absolute top-10 left-1/2 -translate-x-1/2 blur-lg w-[80%] h-2/3"></div>
+            )
+          }
           <RenderSortCards template={template} foods={arrayFoods} count={4} context={true} />
         </div>
       </div>

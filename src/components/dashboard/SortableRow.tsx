@@ -45,9 +45,15 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                     <>
                         {
                             food.is_archived ? (
-                                <div className="absolute top-0 left-0 bg-linear-to-r from-gray-900 to-background/20 text-gray-100 w-full h-full text-2xl px-3 py-3 rounded-lg z-20 font-bold flex items-end justify-start gap-1">
-                                    <FaArchive />
-                                    <span className="text-sm">Archivado</span>
+                                <div className={`absolute top-0 left-0 w-full h-full text-2xl px-3 py-3 rounded-lg z-20 font-bold flex items-end justify-start gap-2 ${context ? "text-gray-700" : `${template?.textColor} bg-slate-400/60`}`}>
+                                    {
+                                        !context && (
+                                            <>
+                                                <FaArchive />
+                                                <span className="text-lg leading-none">Este plato no será visible</span>
+                                            </>
+                                        )
+                                    }
                                 </div>
                             ) : (
                                 <GripVertical
@@ -77,6 +83,6 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                     </button>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

@@ -21,7 +21,7 @@ export const SelectionToolbar = ({
 }: SelectionToolbarProps) => {
     if (!isSelectionMode) {
         return (
-            <div className="flex items-center justify-start py-1 sticky top-0 backdrop-blur-md z-20 mb-1 rounded-xl">
+            <div className="flex items-center justify-start py-1 sticky top-0 backdrop-blur-lg z-20 mb-1 rounded-xl">
                 <button
                     onClick={() => setIsSelectionMode(true)}
                     className="text-xs flex text-gray-500 items-center gap-2 px-3 py-2 rounded-lg transition-all"

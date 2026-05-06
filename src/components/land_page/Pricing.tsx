@@ -2,6 +2,7 @@
 import React from 'react';
 import { Check, Link } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface PricingPlan {
   name: string;
@@ -86,6 +87,10 @@ export default function Pricing() {
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
+        </div>
+        <div className="flex w-full justify-start items-center gap-1 pl-2">
+          <p className="text-sm">Suscripciones gestionadas a través de </p>
+          <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="" width={300} height={300} className="w-30" />
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}

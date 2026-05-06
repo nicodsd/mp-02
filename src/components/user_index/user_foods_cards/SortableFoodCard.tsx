@@ -14,10 +14,10 @@ export function SortableFoodCard({ food, context, template }: { food: any, conte
 
     return (
         <div
-            className={`flex w-full relative overflow-hidden 
+            className={`flex w-full relative overflow-hidden ${food.is_archived ? "grayscale opacity-50" : template?.backgroundColor}
                 ${context
                     ? `border border-gray-200 bg-background md:pr-6 px-2 rounded-xl py-1 h-30 items-center`
-                    : `border h-27 ${template?.border} ${food.is_archived ? "opacity-50" : template?.backgroundColor} rounded-lg p-1 items-center`
+                    : `border h-27 ${template?.border} rounded-lg p-1 items-center`
                 }`}
         >
             <Image

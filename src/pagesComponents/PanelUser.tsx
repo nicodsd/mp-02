@@ -17,6 +17,7 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { useRouter } from "next/navigation";
+import { MdStorefront } from "react-icons/md";
 import {
   HiOutlineUser,
   HiOutlineClipboardList,
@@ -30,6 +31,7 @@ import UserSettings from "@/src/components/dashboard/UserSettings";
 import MenuItems from "@/src/components/dashboard/MenuItems";
 import ConfigureMenu from "@/src/components/dashboard/Templates";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
+import Sucursales from "@/src/components/dashboard/StoreAdd";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
 export default function PanelUser({
@@ -80,9 +82,11 @@ export default function PanelUser({
     { name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
     { name: "Personalización", icon: <HiOutlineColorSwatch size={20} /> },
     { name: "Promociones", icon: <HiOutlineTicket size={20} /> },
+    { name: "Sucursales", icon: <MdStorefront size={20} /> },
   ];
 
   if (user?.plan === "free") {
+    menuItems.pop();
     menuItems.pop();
     menuItems.pop();
   }
@@ -243,7 +247,10 @@ export default function PanelUser({
                     <ConfigureMenu user={user} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none w-full">
-                    <PromoPanel />
+                    <PromoPanel foods={foods} />
+                  </TabPanel>
+                  <TabPanel className="focus:outline-none w-full">
+                    <Sucursales />
                   </TabPanel>
                 </div>
               </TabPanels>

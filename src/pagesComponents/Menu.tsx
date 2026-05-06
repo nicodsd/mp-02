@@ -35,7 +35,7 @@ type MenuProps = {
 };
 
 export default function Menu({ data, template }: { data: MenuProps, template: any }) {
-  const activeFoods = data.foods.filter((f: any) => !f.is_archived);
+  const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(activeFoods);
 
@@ -66,7 +66,7 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
           onOpenModal={() => setShowModal(true)}
         />
 
-        <OffersSection foods={activeFoods} template={template} />
+        <OffersSection foods={data.foods} template={template} />
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
           <FoodCatalog

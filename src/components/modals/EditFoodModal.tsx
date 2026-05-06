@@ -174,7 +174,7 @@ export default function EditFoodModal({
                     <textarea
                       className="border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-700 leading-relaxed"
                       placeholder="Describe los ingredientes..."
-                      maxLength={25}
+                      maxLength={50}
                       value={formData.description}
                       onChange={(e) =>
                         setFormData({

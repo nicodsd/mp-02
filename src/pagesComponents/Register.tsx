@@ -85,36 +85,23 @@ export default function Register() {
   const searchParams = useSearchParams();
   const preapprovalId = searchParams.get("preapproval_id");
   const email = searchParams.get("email");
+  const router = useRouter();
   const password = searchParams.get("password");
+  const [step, setStep] = useState(0);
   const [sessionPlan, setSessionPlan] = useState<string>("");
   const [sessionEmail, setSessionEmail] = useState<string>("");
   const [sessionPassword, setSessionPassword] = useState<string>("");
   const [sessionUsername, setSessionUsername] = useState<string>("");
-
-  const router = useRouter();
-  const [step, setStep] = useState(0);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const [isPlanSelected, setIsPlanSelected] = useState<boolean | null>(null);
-  const [coverPhotoPreview, setCoverPhotoPreview] = useState<string | null>(
-    null,
-  );
+  const [coverPhotoPreview, setCoverPhotoPreview] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [isResponse, setIsResponse] = useState<boolean | null>(null);
-  //const [isPayActive, setIsPayActive] = useState<boolean | null>(plan_name === "true" ? true : false);
   const [isPayActive, setIsPayActive] = useState<boolean | null>(false);
 
   useEffect(() => {
     if (params.page) {
       setStep(Number(params.page));
     }
-    if (preapprovalId) {
-      setIsPayActive(true);/*
-      fetch(URI + `auth/pay/${params.approval_id}`);
-      router.replace(`/registro-de-usuario/${params.page}`); */
-    }
-  }, [params]);
-
-  useEffect(() => {
     const fetchSessionData = async () => {
       try {
         const response = await fetch(`${URI}/auth/check-session`, {
@@ -127,6 +114,9 @@ export default function Register() {
           setSessionPassword(result.data.password);
           setSessionUsername(result.data.name);
           setSessionEmail(result.data.email);
+          if (preapprovalId) {
+            setIsPayActive(true);
+          }
         } else {
           // Si no hay sesión (pero hay ID), quizás expiró
           setSessionPlan("");
@@ -149,7 +139,7 @@ export default function Register() {
       setSessionPassword("");
       setSessionUsername("");
     }
-  }, [preapprovalId]);
+  }, [preapprovalId, params]);
 
   useEffect(() => {
     return () => {
@@ -209,6 +199,9 @@ export default function Register() {
     }
     if (values.cover instanceof File) {
       body.append("cover", values.cover);
+    }
+    if (isPayActive) {
+      body.append("paymentCreated", new Date().toISOString());
     }
     try {
       const response = await fetch(`${URI}/auth/signup`, {
@@ -448,7 +441,7 @@ export default function Register() {
                   <div className="flex flex-col justify-start h-fit mt-3">
                     <PlanSelector values={values} setFieldValue={setFieldValue} />
                   </div>
-                  <span className="text-xs text-gray-500 font-light mt-1">
+                  <span className="text-xs lg:text-sm text-gray-500 font-light mt-1">
                     <p className="mb-1">
                       Si deseas realizar un reembolso, <Link className="cursor-pointer underline font-medium" href="/contacto">comunicate por aquí</Link>
                     </p>
@@ -702,7 +695,7 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex active:scale-90 transition-all cursor-pointer items-center w-full min-w-40 justify-center px-8 py-3 text-md font-bold text-white bg-black hover:bg-[#0009] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex active:scale-90 transition-all cursor-pointer items-center w-full min-w-40 max-w-50 justify-center px-8 py-3 text-md font-bold text-white bg-black hover:bg-[#0009] rounded-lg shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
@@ -748,8 +741,7 @@ export default function Register() {
                 </div>
                 <div className="text-center py-2 text-xs">
                   <p>
-                    © {new Date().getFullYear()} QMenu. Todos los derechos
-                    reservados.
+                    © {new Date().getFullYear()} QMenu.
                   </p>
                 </div>
               </div>
@@ -760,117 +752,3 @@ export default function Register() {
     </div>
   );
 }
-
-{/*  <div className="flex flex-col pb-4 rounded-lg w-fit justify-center items-center">
-                        <label
-                          htmlFor="logo"
-                          className="block text-md font-medium text-gray-700 mb-1"
-                        >
-                          Logo
-                        </label>
-                        <div className="flex justify-center items-center relative">
-                          <FaCamera className="absolute z-30 flex items-center justify-center text-2xl hover:bg-gray-50 transition-colors" />
-                          <label
-                            htmlFor="logo"
-                            className="cursor-pointer mx-auto absolute z-10 -bottom-3 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors"
-                          >
-                            <span>Elegir Logo</span>
-                            <input
-                              id="logo"
-                              name="logo"
-                              type="file"
-                              accept="image/*"
-                              className="sr-only"
-                              onChange={(e) => {
-                                const file = e.currentTarget.files?.[0] || null;
-                                setFieldValue("logo", file);
-                                if (file) {
-                                  const url = URL.createObjectURL(file);
-                                  setLogoPreview(url);
-                                } else {
-                                  setLogoPreview(null);
-                                }
-                              }}
-                            />
-                          </label>
-                          {(logoPreview && (
-                            <div className="rounded-full w-28 h-28">
-                              <Image
-                                src={logoPreview}
-                                alt="Logo preview"
-                                width={80}
-                                height={80}
-                                className="rounded-full border w-28 h-28 bg-black border-gray-200 object-cover"
-                              />
-                            </div>
-                          )) || (
-                              <div className="rounded-full w-28 h-28">
-                                <div className="rounded-full w-28 h-28 border-2 border-black object-cover">
-                                  {/* <Image
-                                                        src="/placeholder.png"
-                                                        alt="Logo preview"
-                                                        fill
-                                                        className="rounded-full border border-gray-200 object-cover"
-                                                    /> 
-                                </div>
-                              </div>
-                            )}
-                        </div>
-                        <ErrorMessage
-                          name="logo"
-                          component="div"
-                          className="mt-1 text-sm text-red-500 font-medium"
-                        />
-                      </div> */}
-
-{/*                           <label
-                            htmlFor="cover"
-                            className="block text-md font-medium text-gray-700 mb-1"
-                          >
-                            Foto de portada
-                          </label>
-                          <FaCamera className="absolute z-30 flex mt-5 items-center justify-center text-2xl hover:bg-gray-50 transition-colors" />
-                          <div className="flex justify-center items-center space-x-4 relative">
-                            <label className="cursor-pointer mx-auto absolute z-10 -bottom-3 flex items-center justify-center px-3 min-w-21.5 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-light text-white bg-black hover:bg-gray-50 transition-colors">
-                              <span>Subir fondo</span>
-                              <input
-                                id="cover"
-                                name="cover"
-                                type="file"
-                                accept="image/*"
-                                className="sr-only"
-                                onChange={(e) => {
-                                  const file =
-                                    e.currentTarget.files?.[0] || null;
-                                  setFieldValue("cover", file);
-                                  if (file) {
-                                    const url = URL.createObjectURL(file);
-                                    setCoverPhotoPreview(url);
-                                  } else {
-                                    setCoverPhotoPreview(null);
-                                  }
-                                }}
-                              />
-                            </label>
-                            {(coverPhotoPreview && (
-                              <div className="relative z-0 w-full h-20">
-                                <Image
-                                  src={coverPhotoPreview}
-                                  alt="Cover photo preview"
-                                  width={100}
-                                  height={60}
-                                  className="rounded-lg border w-40 h-22 border-gray-200 object-cover"
-                                />
-                              </div>
-                            )) || (
-                                <div className="">
-                                  <div className="rounded-2xl w-44 h-28 border-2 border-black object-cover"></div>
-                                  {/* <Image
-                                                        src="/placeholder.png"
-                                                        alt="Logo preview"
-                                                        fill
-                                                        className="rounded-full border border-gray-200 object-cover"
-                                                    />
-                                </div>
-                              )}
-                          </div> */}

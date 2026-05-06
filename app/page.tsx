@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
-        <Navbar />
+        <Navbar isIndex={true} />
         <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
           <Hero />
           <Features />

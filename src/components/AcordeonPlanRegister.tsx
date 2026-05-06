@@ -155,7 +155,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                     <div className="flex items-center gap-3">
 
                                         <div className="text-start">
-                                            <span className={`text-base ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
+                                            <span className={`text-lg ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
                                                 {plan.name}
                                             </span>
                                         </div>
