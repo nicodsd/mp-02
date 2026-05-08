@@ -36,11 +36,13 @@ import UserPlan from "@/src/components/user-plan/UserPlan";
 
 export default function PanelUser({
   user,
+  menus,
   token,
   foods,
   template,
 }: {
   user: any;
+  menus: any;
   token: string;
   foods: any[];
   template: any;
@@ -250,7 +252,7 @@ export default function PanelUser({
                     <PromoPanel foods={foods} />
                   </TabPanel>
                   <TabPanel className="focus:outline-none w-full">
-                    <Sucursales />
+                    <Sucursales menus={menus?.menus} user_id={user?.id} />
                   </TabPanel>
                 </div>
               </TabPanels>

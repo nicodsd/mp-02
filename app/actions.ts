@@ -8,6 +8,7 @@ export async function refreshPage() {
     revalidateTag('foods', 'max');
     revalidateTag('categories', 'max');
     revalidateTag('menu', 'max');
+    revalidateTag('menus', 'max');
 
     // Forzamos la revalidación del path del dashboard para que el 
     // Server Component vuelva a ejecutarse y mande la data nueva al cliente

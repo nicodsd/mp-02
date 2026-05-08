@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FaRegSquare, FaTimes, FaTrash } from "react-icons/fa";
+import { FaRegSquare, FaTimes } from "react-icons/fa";
 
 interface SelectionToolbarProps {
     isSelectionMode: boolean;
@@ -8,7 +8,6 @@ interface SelectionToolbarProps {
     setIsSelectionMode: (mode: boolean) => void;
     onCancelSelection: () => void;
     onBulkDelete: () => void;
-    template: any;
 }
 
 export const SelectionToolbar = ({
@@ -17,7 +16,6 @@ export const SelectionToolbar = ({
     setIsSelectionMode,
     onCancelSelection,
     onBulkDelete,
-    template
 }: SelectionToolbarProps) => {
     if (!isSelectionMode) {
         return (
@@ -26,7 +24,7 @@ export const SelectionToolbar = ({
                     onClick={() => setIsSelectionMode(true)}
                     className="text-xs flex text-gray-500 items-center gap-2 px-3 py-2 rounded-lg transition-all"
                 >
-                    <FaRegSquare className={`text-base text-gray-500`} /> Seleccionar para eliminar
+                    <FaRegSquare className="text-base text-gray-500" /> Seleccionar para eliminar
                 </button>
             </div>
         );
@@ -38,11 +36,11 @@ export const SelectionToolbar = ({
                 <div className="flex items-center gap-2">
                     <button
                         onClick={onCancelSelection}
-                        className={`p-2 hover:bg-gray-100 rounded-full`}
+                        className="p-2 hover:bg-gray-100 rounded-full"
                     >
                         <FaTimes size={18} />
                     </button>
-                    <span className={`text-sm`}>
+                    <span className="text-sm">
                         {selectedCount} seleccionados
                     </span>
                 </div>
@@ -51,10 +49,11 @@ export const SelectionToolbar = ({
                     onClick={onBulkDelete}
                     disabled={selectedCount === 0}
                     className={`flex items-center px-4 py-2 rounded-lg text-xs transition-all ${selectedCount > 0
-                        ? `bg-primary text-white font-semibold cursor-pointer shadow`
-                        : `bg-gray-200 text-gray-400 cursor-not-allowed`
+                        ? "bg-primary text-white font-semibold cursor-pointer shadow"
+                        : "bg-gray-200 text-gray-400 cursor-not-allowed"
                         }`}
-                > Eliminar seleccionados
+                >
+                    Eliminar seleccionados
                 </button>
             </div>
         </div>
