@@ -1,111 +1,87 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
-import DiscountSlider from "@/src/components/Index/filters/DiscountSlider";
-import { FaTrashAlt } from "react-icons/fa";
-import { useFoodStore } from "@/src/lib/useFoodStore";
-import { refreshPage } from "@/app/actions";
-import Search from "@/src/components/Index/filters/Search"
-import Image from "next/image";
-import { URI } from "@/src/lib/const";
+import React, { useState } from "react";
+import { HiOutlinePlus } from "react-icons/hi";
+import StoreAddModal from "@/src/components/modals/StoreAddModal";
+import { SelectionToolbar } from "@/src/components/dashboard/SelectionToolbarStoreDelete";
+import { SucursalCard } from "@/src/components/dashboard/SucursalCard";
 
-const priceFormatter = new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    minimumFractionDigits: 0,
-});
+export default function Sucursales({ menus, user_id }: { menus: any[], user_id: string }) {
+    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isSelectionMode, setIsSelectionMode] = useState(false);
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-export default function Sucursales() {
-    /*     const { updatePromo } = useFoodStore();
-        const [selectedFood, setSelectedFood] = useState<any | null>(null);
-        const [promoPrice, setPromoPrice] = useState<string>("");
-        const [currentPrice, setCurrentPrice] = useState<string>("");
-        const [currentPercent, setCurrentPercent] = useState<number>(0);
-        const [selectedCategory, setSelectedCategory] = useState<string>("");
-        const [searchTerm, setSearchTerm] = useState<string>("");
-        const [loading, setLoading] = useState(false);
-    
-        const categories = useMemo(() => Array.from(new Set(foods.map((f) => f.sub_category))), [foods]);
-    
-        const activePromos = useMemo(() => foods.filter((f) => f.is_promo), [foods]);
-    
-        const filteredFoods = useMemo(() => {
-            return foods.filter((food) => {
-                const matchesCategory = !selectedCategory || food.sub_category === selectedCategory;
-                const matchesSearch = !searchTerm || food.name.toLowerCase().includes(searchTerm.toLowerCase());
-                return matchesCategory && matchesSearch && !food.is_promo;
-            });
-        }, [foods, selectedCategory, searchTerm]);
-    
-        const handleSelectFood = (food: any) => {
-            setSelectedFood(food);
-            setPromoPrice(String(food.price));
-            setCurrentPrice(String(food.price));
-            setCurrentPercent(0);
-        };
-    
-        const applyDiscount = (percent: number) => {
-            setCurrentPercent(percent);
-            if (percent === 100) {
-                setPromoPrice("0");
-                setCurrentPrice("0");
-            }
-            if (selectedFood) {
-                const discounted = selectedFood.price - (selectedFood.price * percent) / 100;
-                setPromoPrice(String(Math.round(discounted)));
-                return setCurrentPrice(String(Math.round(discounted)));
-            }
-        };
-    
-        const handlePublishPromo = async () => {
-            if (!selectedFood) return;
-            setLoading(true);
-    
-            try {
-                const pPrice = Number(promoPrice);
-                const res = await fetch(`${URI}/foods/promo/${selectedFood._id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ is_promo: true, promo_price: pPrice }),
-                });
-    
-                if (res.ok) {
-                    updatePromo(selectedFood._id, true, pPrice);
-                    await refreshPage();
-                    setSelectedFood(null);
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-    
-        const removePromo = async (id: string | number) => {
-            try {
-                const res = await fetch(`${URI}/foods/promo/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ is_promo: false, promo_price: 0 }),
-                });
-    
-                if (res.ok) {
-                    updatePromo(id, false, 0);
-                    await refreshPage();
-                }
-            } catch (error) {
-                console.error("Error al quitar promo:", error);
-            }
-        }; */
+    let menusCount = (menus?.length || 0) + 1;
+
+    const toggleSelection = (id: string) => {
+        setSelectedIds(prev =>
+            prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    };
+
+    const handleCancel = () => {
+        setIsSelectionMode(false);
+        setSelectedIds([]);
+    };
+
+    const handleBulkDelete = () => {
+        if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
+            console.log("Eliminando IDs:", selectedIds);
+            // Aquí llamarías a tu action o API
+            handleCancel();
+        }
+    };
 
     return (
-        <div className="p-3 flex h-full w-full flex-col gap-6">
-            <header className="flex flex-col gap-1">
-                <h1 className="text-2xl font-bold text-gray-800">Sucursales</h1>
-                <p className="text-gray-500 text-sm">Agrega y gestiona tus menús para tus diferentes sucursales.</p>
-            </header>
+        <div className="relative min-h-screen w-full overflow-hidden">
+            <StoreAddModal
+                isOpen={isOpenModal}
+                menusCount={menusCount}
+                user_id={user_id}
+                setIsOpen={setIsOpenModal}
+            />
 
+            <div className="p-3 flex h-full w-full flex-col gap-2">
+                <header className="flex flex-col gap-1">
+                    <h1 className="text-2xl font-bold text-gray-800">Sucursales</h1>
+                    <p className="text-gray-500 text-sm">Agrega y gestiona tus menús para tus diferentes sucursales.</p>
+                </header>
+
+                <div>
+                    {/* Toolbar con el estilo referenciado */}
+                    <SelectionToolbar
+                        isSelectionMode={isSelectionMode}
+                        selectedCount={selectedIds.length}
+                        setIsSelectionMode={setIsSelectionMode}
+                        onCancelSelection={handleCancel}
+                        onBulkDelete={handleBulkDelete}
+                    />
+
+                    <div className="gap-4 grid grid-cols-2 px-2 py-2">
+                        {menus?.map((m) => (
+                            <SucursalCard
+                                key={m._id}
+                                m={m}
+                                isSelected={selectedIds.includes(m._id)}
+                                isSelectionMode={isSelectionMode}
+                                onToggle={toggleSelection}
+                            />
+                        ))}
+
+                        {/* El botón de agregar solo aparece si no estamos eliminando */}
+                        {!isSelectionMode && (
+                            <button
+                                onClick={() => setIsOpenModal(true)}
+                                className="flex flex-col h-50 items-center justify-center gap-2 border-2 border-dashed bg-red-50 border-primary rounded-xl hover:bg-gray-50 transition-colors text-gray-400"
+                            >
+                                <div className="bg-primary p-2 rounded-full text-white shadow-lg">
+                                    <HiOutlinePlus size={24} />
+                                </div>
+                                <span className="text-lg font-bold text-gray-600">Nuevo menú</span>
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -88,9 +88,9 @@ export default function Pricing() {
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
         </div>
-        <div className="flex w-full justify-start items-center gap-1 pl-2">
+        <div className="flex text-stone-600 flex-col md:flex-row w-full justify-start items-center gap-1 pl-2 mb-3 md:mb-0">
           <p className="text-sm">Suscripciones gestionadas a través de </p>
-          <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="" width={300} height={300} className="w-30" />
+          <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="logo-mercado-pago" width={300} height={300} className="w-23 md:w-30" />
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}

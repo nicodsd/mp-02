@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchModal from "@/src/components/modals/SearchModal";
 import FilterHeader from "@/src/components/Index/sections/FilterHeader";
 import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
+import { URI } from "@/src/lib/const";
 
 type Food = {
   _id: string | number;
@@ -38,6 +39,37 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
   const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(activeFoods);
+
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token") || localStorage.getItem("token");
+
+    if (!data._id) {
+      const trackVisit = async () => {
+        try {
+          const response = await fetch(`${URI}/analytics/visit`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              user_id: data._id,
+              user_url: data.name
+            })
+          });
+
+          if (!response.ok) {
+            console.error("Error al registrar visita:", await response.text());
+          }
+        } catch (error) {
+          console.error("Error de red al registrar visita:", error);
+        }
+      };
+      trackVisit();
+    }
+
+  }, [data._id, data.name]);
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {

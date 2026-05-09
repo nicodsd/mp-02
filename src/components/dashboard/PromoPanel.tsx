@@ -7,6 +7,7 @@ import { refreshPage } from "@/app/actions";
 import Search from "@/src/components/Index/filters/Search"
 import Image from "next/image";
 import { URI } from "@/src/lib/const";
+import { motion } from "framer-motion";
 
 const priceFormatter = new Intl.NumberFormat("es-AR", {
   style: "currency",
@@ -207,8 +208,15 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
 
 
       {selectedFood && (
-        <div className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center">
-          <div className="bg-white w-full sm:w-[500px] rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
+        <div
+          className="fixed inset-0 z-100 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white w-full sm:w-[500px] rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
             <div className="flex justify-between items-start mb-6">
               <div>
                 <span className="text-xs font-bold text-red-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
@@ -240,7 +248,7 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
                 {loading ? "Publicando..." : "Publicar Promo"}
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

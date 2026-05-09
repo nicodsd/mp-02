@@ -6,10 +6,10 @@
         "backgroundColor": "bg-[#fffbf8]",
         "backgroundColor2": "bg-[#ededed]",
         "accentColors": [
-            "primary",
-            "gray-900",
-            "gray-200",
-            "[#fffbf8]"
+            "bg-primary",
+            "bg-primary",
+            "bg-gray-200",
+            "bg-[#fffbf8]"
         ],
         "accentColors2": [
             "[primary]",

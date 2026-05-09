@@ -16,7 +16,7 @@ export default function PromoDayCard({ foods, template }: { foods: any, template
 
       <div className="z-20 relative w-full flex flex-1 flex-col justify-between text-white">
 
-        <div className="w-80 md:w-full">
+        <div className="w-75 md:w-full">
           <h3 className="line-clamp-1 text-start text-lg font-bold uppercase leading-tight md:text-2xl">
             {
               foods.name.length > 20 ? foods.name.slice(0, 24) + "..." : foods.name

@@ -20,6 +20,7 @@ import {
 } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
 import { URI } from "@/src/lib/const";
+import { motion } from "framer-motion";
 
 const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
   const router = useRouter();
@@ -544,7 +545,11 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
           </div>
         </div>
         {isEditing && (
-          <div className="w-full flex-col md:flex-row items-start h-fit min-h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-70 flex gap-3 px-4 md:px-7 py-4">
+          <motion.div
+            initial={{ y: 100 }}
+            animate={{ y: 0 }}
+            className="w-full flex-col md:flex-row items-center h-fit min-h-24 md:items-center justify-center md:justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-50 flex gap-3 px-4 md:px-7 py-4 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]"
+          >
             <span className="text-gray-700 md:mr-4 text-md">¿Deseas guardar los cambios?</span>
             <div className="flex gap-2 w-full md:w-auto">
               <button
@@ -571,7 +576,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
                 )}
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
       </form>
       <div className="w-full mt-7 px-3 flex flex-col gap-y-1">

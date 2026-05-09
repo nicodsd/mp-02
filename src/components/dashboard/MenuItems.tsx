@@ -3,7 +3,9 @@ import React, { useMemo, useState } from "react";
 import SearchInput from "@/src/components/Index/filters/Search";
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 import RenderSortCards from "../user_index/user_sections/RenderSortCards";
-export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template: any }) {
+import { URI } from "@/src/lib/const";
+import { useEffect } from "react";
+export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; template: any; token?: string }) {
   const activeDataFoods = useMemo(() => dataFoods.filter((f) => !f.is_archived), [dataFoods]);
   const archivedDataFoods = useMemo(() => dataFoods.filter((f) => f.is_archived), [dataFoods]);
 
@@ -26,6 +28,31 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
 
   const activePromos = useMemo(() => activeDataFoods.filter((f) => f.is_promo), [activeDataFoods]);
 
+  const [analytics, setAnalytics] = useState<{ visits: number, topDishes: string[] }>({ visits: 0, topDishes: [] });
+
+  useEffect(() => {
+    async function fetchAnalytics() {
+      if (!token) return;
+      try {
+        const res = await fetch(`${URI}/analytics`, {
+          credentials: "include"
+        });
+        if (!res.ok) {
+          console.error("Analytics fetch failed with status:", res.status);
+          return;
+        }
+        const data = await res.json();
+        if (data.success && data.analytics) {
+          setAnalytics(data.analytics);
+          console.log("Analytics fetched successfully:", data.analytics);
+        }
+      } catch (error) {
+        console.error("Error fetching analytics:", error);
+      }
+    }
+    fetchAnalytics();
+  }, [token]);
+
   return (
     <div className="flex p-3 w-full flex-col gap-6 relative">
       <header className="flex flex-col gap-1">
@@ -44,9 +71,16 @@ export function MenuItems({ dataFoods, template }: { dataFoods: any[]; template:
           <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
           <span className="text-xs font-medium text-white/80">Promociones</span>
         </div>
+        <div className="flex flex-col items-start p-3 rounded-xl bg-indigo-500 justify-between">
+          <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
+          <span className="text-[3rem] font-bold text-white">{analytics.visits}</span>
+          <span className="text-xs font-medium text-white/80">Vistas al menú</span>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 w-full pt-4">
+
+
         <div className="flex items-center gap-2 pl-2">
           <button
             onClick={() => setView("active")}
