@@ -7,7 +7,7 @@
         "backgroundColor2": "bg-[#ededed]",
         "accentColors": [
             "bg-primary",
-            "bg-gray-900",
+            "bg-primary",
             "bg-gray-200",
             "bg-[#fffbf8]"
         ],

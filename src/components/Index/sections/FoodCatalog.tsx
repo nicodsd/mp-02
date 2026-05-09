@@ -77,6 +77,7 @@ export default function FoodCatalog({ allFoods, template, example }: any) {
                         <RenderCardsOptions
                             example={example}
                             template={template}
+                            context={true}
                             foods={processedFoods.filter(f => f.sub_category === "Postres")}
                         />
                     </div>
