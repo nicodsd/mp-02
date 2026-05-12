@@ -22,11 +22,12 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
     if (foods?.length === 0) return null;
 
     const isPremium = user.plan === "premium" || user.plan === "plus";
-
+    const enabledDrinks = user?.enable_bebidas
+    const enabledDesserts = user?.enable_postres
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {foods.filter((f: any) => f.sub_category === "Bebidas").length > 0 &&
+                {foods.filter((f: any) => f.sub_category === "Bebidas").length > 0 && enabledDrinks &&
                     <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
@@ -58,7 +59,14 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         )}
                         <SortableContext
                             arrayFoods={processedFoods.filter(f => {
-                                const isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                                let isMain = true
+                                if (enabledDesserts && enabledDrinks) {
+                                    isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                                } else if (enabledDesserts && !enabledDrinks) {
+                                    isMain = f.sub_category !== "Postres";
+                                } else if (!enabledDesserts && enabledDrinks) {
+                                    isMain = f.sub_category !== "Bebidas";
+                                }
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
                             template={template}
@@ -67,7 +75,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                 ) : (
                     null
                 )}
-                {foods.filter((f: any) => f.sub_category === "Postres").length > 0 &&
+                {foods.filter((f: any) => f.sub_category === "Postres").length > 0 && enabledDesserts &&
                     <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Postres</h2>

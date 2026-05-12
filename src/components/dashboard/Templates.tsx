@@ -1,14 +1,13 @@
+'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { URI } from '@/src/lib/const';
 import templates from '@/src/data/templates.json';
-import { useRouter } from 'next/navigation';
 import { updateTemplate } from "@/app/actions";
 
 export default function TemplateSelector({ user }: { user: any }) {
     const [selected, setSelected] = useState<string>(user?.template_id || 'default');
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
     const currentTemplate = templates.find(t => t.template_id === selected) || templates[0];
     const userTemplate = templates.find(t => t.template_id === user.template_id) || templates[0];
 
@@ -29,7 +28,6 @@ export default function TemplateSelector({ user }: { user: any }) {
             const data = await response.json();
             if (data.success) {
                 await updateTemplate(selected);
-                router.refresh();
             }
         } catch (error) {
             console.error(error);

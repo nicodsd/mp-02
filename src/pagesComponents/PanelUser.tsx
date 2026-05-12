@@ -7,7 +7,6 @@ import { logout } from "@/app/actions"
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   Tab,
-  TabPanel,
   TabPanels,
   TabGroup,
   TabList,
@@ -28,26 +27,18 @@ import {
   HiOutlineAdjustments,
   HiOutlineClipboardList,
 } from "react-icons/hi";
-import UserSettings from "@/src/components/dashboard/UserSettings";
-import MenuItems from "@/src/components/dashboard/MenuItems";
-import ConfigureMenu from "@/src/components/dashboard/ConfigureMenu";
-import TemplateSelector from "@/src/components/dashboard/Templates";
-import PromoPanel from "@/src/components/dashboard/PromoPanel";
-import Sucursales from "@/src/components/dashboard/StoreAdd";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
 export default function PanelUser({
   user,
-  menus,
   token,
-  foods,
   template,
+  children,
 }: {
   user: any;
-  menus: any;
   token: string;
-  foods: any[];
   template: any;
+  children: React.ReactNode;
 }) {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -240,29 +231,7 @@ export default function PanelUser({
 
             <main className="flex-1 w-full">
               <TabPanels className="min-h-full w-full lg:w-[70%] overflow-hidden">
-                <div className="md:hidden py-1 px-2 md:px-0">
-                  <BttnBack />
-                </div>
-                <div className="pb-13 pt-8 md:pt-6 w-full max-w-full">
-                  <TabPanel className="focus:outline-none w-full">
-                    <UserSettings user={user} logout={handleLogout} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <MenuItems dataFoods={foods} template={template} token={token} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <PromoPanel foods={foods} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <ConfigureMenu user={user} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <TemplateSelector user={user} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <Sucursales menus={menus?.menus} user_id={user?.id} />
-                  </TabPanel>
-                </div>
+                {children}
               </TabPanels>
             </main>
           </div>

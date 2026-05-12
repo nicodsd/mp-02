@@ -15,11 +15,11 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             color: "bg-white",
             textColor: "text-stone-800",
             features: [
-                "Hasta 10 platos.",
-                "Código QR con tu logo.",
-                "Fotos básicas.",
-                "Actualización en tiempo real.",
-                "Los pedidos te llegan al WhatsApp."
+                "Hasta 10 platos",
+                "Código QR para compartir",
+                "Fotos básicas",
+                "Actualización en tiempo real",
+                "Los pedidos te llegan al WhatsApp"
             ],
         },
         {
@@ -30,13 +30,15 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             color: "bg-primary",
             textColor: "text-white",
             features: [
-                "Platos ilimitados.",
-                "Códigos QR personalizables con tu logo.",
-                "Fotos de alta calidad.",
-                "Analíticas de visitas.",
-                "Menú personalizable según estética.",
-                "Compras por WhatsApp.",
-                "Gestión de promociones."
+                "Platos ilimitados",
+                "Códigos QR personalizables con tu logo",
+                "Fotos de alta calidad",
+                "Analíticas de visitas",
+                "Paleta de colores que mejor se adapte a tu marca",
+                "Pedidos por WhatsApp",
+                "Gestión de promociones",
+                "Botón de 'Descanso' para vacaciones",
+                "Soporte prioritario"
             ],
         },
         {
@@ -47,18 +49,18 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             color: "bg-black",
             textColor: "text-white",
             features: [
-                "Platos ilimitados.",
-                "Códigos QR personalizables con tu logo.",
-                "Fotos de alta calidad.",
-                "Analíticas de visitas.",
-                "Menú altamente personalizable, diferenciate de la competencia.",
-                "Compras por WhatsApp.",
-                "Seccion para gestión de pedidos.",
-                "Multi sucursal.",
-                "Botón de 'Descanso' para vacaciones.",
-                "Agrega promociones a tus productos.",
-                "Menús diferenciados por zona.",
-                "Soporte prioritario."
+                "Platos ilimitados",
+                "Códigos QR personalizables con tu logo",
+                "Fotos de alta calidad",
+                "Analíticas de visitas",
+                "Menú altamente personalizable, diferenciate de la competencia",
+                "Pedidos por WhatsApp",
+                "Seccion para gestión de pedidos",
+                "Multi sucursal",
+                "Botón de 'Descanso' para vacaciones",
+                "Agrega promociones a tus productos",
+                "Menús diferenciados por zona",
+                "Soporte prioritario"
             ],
         }
     ];

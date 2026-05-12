@@ -21,12 +21,15 @@ export default function FoodCatalog({ allFoods, template, example }: any) {
 
     if (allFoods?.length === 0) return null;
 
+    const enabledDrinks = example?.user?.enable_bebidas;
+    const enabledDesserts = example?.user?.enable_postres;
+
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
 
                 {/* BEBIDAS */}
-                {processedFoods.some(f => f.sub_category === "Bebidas") && (
+                {enabledDrinks && processedFoods.some(f => f.sub_category === "Bebidas") && (
                     <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
@@ -61,14 +64,21 @@ export default function FoodCatalog({ allFoods, template, example }: any) {
                         example={example}
                         template={template}
                         arrayFoods={processedFoods.filter(f => {
-                            const isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                            let isMain = true
+                            if (enabledDesserts && enabledDrinks) {
+                                isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                            } else if (enabledDesserts && !enabledDrinks) {
+                                isMain = f.sub_category !== "Postres";
+                            } else if (!enabledDesserts && enabledDrinks) {
+                                isMain = f.sub_category !== "Bebidas";
+                            }
                             return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                         })}
                     />
                 </div>
 
                 {/* POSTRES */}
-                {processedFoods.some(f => f.sub_category === "Postres") && (
+                {enabledDesserts && processedFoods.some(f => f.sub_category === "Postres") && (
                     <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Postres</h2>

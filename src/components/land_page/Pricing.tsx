@@ -25,7 +25,7 @@ const plans: PricingPlan[] = [
     description: "Para pequeños locales o food trucks que inician.",
     features: [
       "Hasta 10 platos",
-      "Código QR con tu logo",
+      "Código QR para compartir",
       "Fotos básicas",
       "Actualización en tiempo real",
       "Los pedidos te llegan al WhatsApp"
@@ -44,9 +44,11 @@ const plans: PricingPlan[] = [
       "Códigos QR personalizables con tu logo",
       "Fotos de alta calidad",
       "Analíticas de visitas",
-      "Menú personalizable según estética",
-      "Compras por WhatsApp",
-      "Gestión de promociones"
+      "Paleta de colores que mejor se adapte a tu marca",
+      "Pedidos por WhatsApp",
+      "Gestión de promociones",
+      "Botón de 'Descanso' para vacaciones",
+      "Soporte prioritario"
     ],
     cta: "Elegir Plan Plus",
     href: "/registro-de-usuario?plan=plus",
@@ -57,14 +59,14 @@ const plans: PricingPlan[] = [
     price: "$19.900",
     before: "$24.900",
     period: "/mes",
-    description: "El plan más completo para locales con gran variedad de platos y que quieren destacar su marca.",
+    description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
     features: [
       "Platos ilimitados",
       "Códigos QR personalizables con tu logo",
       "Fotos de alta calidad",
       "Analíticas de visitas",
       "Menú altamente personalizable, diferenciate de la competencia",
-      "Compras por WhatsApp",
+      "Pedidos por WhatsApp",
       "Seccion para gestión de pedidos",
       "Multi sucursal",
       "Botón de 'Descanso' para vacaciones",
@@ -82,21 +84,22 @@ export default function Pricing() {
   return (
     <section id="planes" className="py-16 md:py-14 md:mt-20 w-full">
       <div className="w-full">
-        <div className="text-center md:text-start mb-12 md:mb-16 px-2">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
+        <div className="text-center md:text-start mb-8 md:mb-16 px-2">
+          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
+          <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
-        </div>
-        <div className="flex text-stone-600 flex-col md:flex-row w-full justify-start items-center gap-1 pl-2 mb-3 md:mb-0">
-          <p className="text-sm">Suscripciones gestionadas a través de </p>
-          <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="logo-mercado-pago" width={300} height={300} className="w-23 md:w-30" />
+          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex mt-6 text-stone-600 bg-white border border-gray-200 rounded-xl md:flex-row w-full justify-center items-center gap-1 px-2">
+            <p className="text-sm">Suscripciones a través de </p>
+            <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="logo-mercado-pago" width={300} height={300} className="w-23 md:w-30" />
+          </motion.div>
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 space-y-4 gap-3 items-start px-2">
           {plans.map((plan, index) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}
               key={index}
               className={`relative flex flex-col p-6 md:p-8 rounded-2xl border
                 ${!plan.premium && !plan.recommended && 'border-gray-200'}
@@ -162,7 +165,7 @@ export default function Pricing() {
                     {plan.cta}
                   </a>
               }
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
