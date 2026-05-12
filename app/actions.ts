@@ -16,6 +16,10 @@ export async function refreshPage() {
     revalidatePath('/', 'layout');
     revalidatePath('/panel-de-usuario', 'page');
 }
+export async function refreshPagePanelMenuConfigure() {
+    revalidateTag('menu', 'max');
+    revalidatePath('/panel-de-usuario', 'page');
+}
 
 export async function setAuthCookie(token: string) {
     (await cookies()).set({
@@ -87,36 +91,26 @@ export async function updateMenuCookie(updatedFields: object) {
     const currentMenuCookie = cookieStore.get("menu");
 
     if (currentMenuCookie) {
-        try {
-            const currentMenu = JSON.parse(currentMenuCookie.value);
+        const currentMenu = JSON.parse(currentMenuCookie.value);
+        const updatedMenu = { ...currentMenu, ...updatedFields };
 
-            const updatedMenu = {
-                ...currentMenu,
-                ...updatedFields
-            };
+        cookieStore.set({
+            name: "menu",
+            value: JSON.stringify(updatedMenu),
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+            path: "/",
+        });
 
-            cookieStore.set({
-                name: "menu",
-                value: JSON.stringify(updatedMenu),
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict",
-                path: "/",
-            });
+        // EN VEZ DE revalidatePath('/panel-de-usuario') que recarga TODO
+        // Usamos tags específicos si los fetch están tageados:
+        revalidateTag('menus', 'max');
 
-            revalidatePath('/', 'layout');
-        } catch (error) {
-            console.error("Error al parsear la cookie de menu:", error);
-        }
+        // O si necesitas el path, Next.js intentará usar el cache 
+        // de los fetch que NO hayan cambiado sus tags.
+        revalidatePath('/panel-de-usuario', 'page');
     }
-}
-
-export async function logout() {
-    const cookieStore = await cookies();
-    cookieStore.delete("token");
-    cookieStore.delete("user");
-    cookieStore.delete("menu");
-    return { success: true };
 }
 
 export async function updateTemplate(templateId: string) {
@@ -141,11 +135,26 @@ export async function updateTemplate(templateId: string) {
                 path: "/",
             });
 
-            revalidatePath('/', 'layout');
+            // EN VEZ DE revalidatePath('/panel-de-usuario') que recarga TODO
+            // Usamos tags específicos si los fetch están tageados:
+            revalidateTag('menus', 'max');
+
+            // O si necesitas el path, Next.js intentará usar el cache 
+            // de los fetch que NO hayan cambiado sus tags.
+            revalidatePath('/panel-de-usuario', 'page');
+            revalidatePath('/', 'page');
         } catch (error) {
             console.error("Error al parsear la cookie de menu:", error);
         }
     }
+}
+
+export async function logout() {
+    const cookieStore = await cookies();
+    cookieStore.delete("token");
+    cookieStore.delete("user");
+    cookieStore.delete("menu");
+    return { success: true };
 }
 
 export async function activateRestaurantSubscription(data: {

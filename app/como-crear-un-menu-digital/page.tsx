@@ -46,7 +46,7 @@ export default function ContactoPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-40 pb-20">
+                <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-40 pb-20">
                     <section id="contacto" className="w-full relative">
                         <div className="w-full">
                             {/* Layout: Stack en móvil, 2 columnas en LG */}

@@ -26,9 +26,18 @@ export default async function Page() {
                 state={0}
                 bttn={true}
                 cookie={token}
+                template={template}
                 photo={user?.photo}
                 user={user}
             />
+            <div className={`
+                ${user?.navBar === "recortado"
+                    ?
+                    `absolute top-34 rounded-t-full h-60 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
+                    :
+                    "hidden"
+                }`
+            } />
             <UserIndex
                 foods={foods}
                 user={user}

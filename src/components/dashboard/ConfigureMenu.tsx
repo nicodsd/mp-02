@@ -1,10 +1,8 @@
 "use client";
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { URI } from '@/src/lib/const';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { FaSpinner } from "react-icons/fa";
 import { ConfigOptionCard, ConfigSwitch } from '@/src/components/dashboard/configComponents/ConfigComponents';
 
 import ImgDefaultTemplate from "@/public/images/dashboard/default.png";
@@ -12,142 +10,148 @@ import ImgListaDesplegable from "@/public/images/dashboard/lista-desplegable.png
 import ImgPorDefecto from "@/public/images/dashboard/por-defecto.png";
 import ImgHorizontal from "@/public/images/dashboard/horizontal.png";
 import ImgRecortado from "@/public/images/dashboard/recortado.png";
+import { updateMenuCookie } from '@/app/actions';
 
 export default function ConfigureMenu({ user }: { user: any }) {
-    const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
+    const [loadingNavbar, setLoadingNavbar] = useState(false);
+    const [loadingPresentation, setLoadingPresentation] = useState(false);
     const [navBar, setNavBar] = useState(user?.navBar || "default");
-    const [presentation, setPresentation] = useState(user?.presentation_type || 'default');
-    const [satellites, setSatellites] = useState({
-        bebidas: user?.enable_bebidas || false,
-        postres: user?.enable_postres || false
-    });
-    const [whatsappOrders, setWhatsappOrders] = useState(user?.whatsAppCart || true);
+    const [presentation, setPresentation] = useState(user?.presentation || 'default');
+    const [enableBebidas, setEnableBebidas] = useState(user?.enable_bebidas || false);
+    const [enablePostres, setEnablePostres] = useState(user?.enable_postres || false);
+    const [whatsappOrders, setWhatsappOrders] = useState(user?.whatsAppCart ?? true);
 
-    const hasChanges = useMemo(() => {
-        return (
-            navBar !== (user?.navBar || "default") ||
-            presentation !== (user?.presentation_type || 'default') ||
-            satellites.bebidas !== (user?.enable_bebidas || false) ||
-            satellites.postres !== (user?.enable_postres || false) ||
-            whatsappOrders !== (user?.whatsAppCart || true)
-        );
-    }, [navBar, presentation, satellites, whatsappOrders, user]);
+    useEffect(() => {
+        if (user) {
+            setNavBar(user.navBar || "default");
+            setPresentation(user.presentation || 'default');
+            setEnableBebidas(user.enable_bebidas || false);
+            setEnablePostres(user.enable_postres || false);
+            setWhatsappOrders(user.whatsAppCart ?? true);
+        }
+    }, [user]);
 
-    const cancelChanges = () => {
-        setNavBar(user?.navBar || 'default');
-        setPresentation(user?.presentation_type || 'default');
-        setSatellites({
-            bebidas: user?.enable_bebidas || false,
-            postres: user?.enable_postres || false
-        });
-        setWhatsappOrders(user?.whatsAppCart || true);
-    };
+    const navBarOptions = [
+        { id: "default", label: "Por defecto", format: "vertical", selected: navBar === "default", image: ImgPorDefecto, alt: "D", width: 150, height: 150 },
+        { id: "recortado", label: "Recortado", format: "vertical", selected: navBar === "recortado", image: ImgRecortado, alt: "R", width: 150, height: 150 },
+        { id: "horizontal", label: "Horizontal", format: "vertical", selected: navBar === "horizontal", image: ImgHorizontal, alt: "H", width: 150, height: 150 }
+    ];
 
-    const handleUpdateTemplate = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await fetch(`${URI}/menu/update/config/${user?.id}`, {
-                method: 'PUT',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    navBar: navBar,
-                    presentation: presentation,
-                    enable_bebidas: satellites.bebidas,
-                    enable_postres: satellites.postres,
-                    whatsAppCart: whatsappOrders
-                }),
-            });
-            if (!response.ok) throw new Error('Error al actualizar');
-            const data = await response.json();
-            if (data.success) router.refresh();
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
+    const presentationOptions = [
+        { id: "default", label: "Por defecto", format: "horizontal", selected: presentation === "default", image: ImgDefaultTemplate, alt: "Def", width: 150, height: 150 },
+        { id: "list", label: "Lista desplegable", format: "horizontal", selected: presentation === "list", image: ImgListaDesplegable, alt: "List", width: 150, height: 150 }
+    ];
+
+    const updateConfig = async (key: string, value: any) => {
+
+        if (key === "presentation" && presentation !== value) {
+            setPresentation(value);
+            setLoadingPresentation(true);
+        }
+
+        if (key === "navBar" && navBar !== value) {
+            setNavBar(value);
+            setLoadingNavbar(true);
+        }
+
+        if (key === 'enable_bebidas') setEnableBebidas(value);
+        if (key === 'enable_postres') setEnablePostres(value);
+        if (key === 'whatsAppCart') setWhatsappOrders(value);
+
+        const payload = {
+            navBar: key === 'navBar' ? value : navBar,
+            presentation: key === 'presentation' ? value : presentation,
+            enable_bebidas: key === 'enable_bebidas' ? value : enableBebidas,
+            enable_postres: key === 'enable_postres' ? value : enablePostres,
+            whatsAppCart: key === 'whatsAppCart' ? value : whatsappOrders
+        };
+
+        if ((navBar !== value && key === "navBar") || (presentation !== value && key === "presentation")) {
+            if (key === 'navBar') setLoadingNavbar(true);
+            if (key === 'presentation') setLoadingPresentation(true);
+            try {
+                const response = await fetch(`${URI}/menu/update/config/${user?.id}`, {
+                    method: 'PUT',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                if (response.ok) {
+                    await updateMenuCookie(payload)
+                } else {
+                    console.error("Error al guardar en el servidor");
+                }
+            } catch (error) {
+                console.error("Error de red:", error);
+            } finally {
+                if (key === 'navBar') setLoadingNavbar(false);
+                if (key === 'presentation') setLoadingPresentation(false);
+            }
         }
     };
 
     return (
         <div className="min-h-screen pb-20 md:pb-32 px-3">
+            {(loadingNavbar || loadingPresentation) && (
+                <div className="fixed inset-0 bg-gray-50/50 z-50 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                </div>
+            )}
             <header className="py-3 flex flex-col gap-1 mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Personalizar menú</h1>
-                <p className="text-gray-500 text-sm">Configura la estructura y el flujo visual de tu menú.</p>
+                <h1 className="text-2xl font-bold text-gray-800">Configuración del menú</h1>
+                <p className="text-gray-500 text-sm">Tus cambios se aplican al instante.</p>
             </header>
 
-            <form onSubmit={handleUpdateTemplate} className="flex flex-col w-full items-start justify-start gap-10">
+            <div className="flex flex-col w-full items-start justify-start gap-10">
 
-                <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full flex flex-col gap-3">
+                <section className="w-full flex flex-col gap-3">
                     <div className="flex flex-col">
                         <h2 className="font-bold text-gray-800">Encabezado</h2>
                         <p className="text-xs text-gray-500">Selecciona un tipo de encabezado.</p>
                     </div>
-                    <div className="grid grid-cols-3 gap-2 w-full">
-                        <ConfigOptionCard id="default" label="Por defecto" type="vertical" selected={navBar === "default"} onSelect={setNavBar}>
-                            <Image className='w-fit h-14 object-contain' src={ImgPorDefecto} alt="D" width={150} height={150} />
-                        </ConfigOptionCard>
-                        <ConfigOptionCard id="recortado" label="Recortado" type="vertical" selected={navBar === "recortado"} onSelect={setNavBar}>
-                            <Image className='w-fit h-14 object-contain' src={ImgRecortado} alt="R" width={150} height={150} />
-                        </ConfigOptionCard>
-                        <ConfigOptionCard id="horizontal" label="Horizontal" type="vertical" selected={navBar === "horizontal"} onSelect={setNavBar}>
-                            <Image className='w-fit h-8 object-contain' src={ImgHorizontal} alt="H" width={150} height={150} />
-                        </ConfigOptionCard>
+                    <div className="grid grid-cols-3 gap-2 h-38 w-full">
+                        {navBarOptions.map((option) => (
+                            <ConfigOptionCard key={option.id} id={option.id} label={option.label} format={"vertical"} selected={option.selected}
+                                onSelect={(id: string) => updateConfig('navBar', id)}>
+                                <Image className='w-fit h-14 object-contain' src={option.image} alt={option.alt} width={option.width} height={option.height} />
+                            </ConfigOptionCard>
+                        ))}
                     </div>
-                </motion.section>
+                </section>
 
-                <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="w-full flex flex-col gap-3">
-                    <div className="flex flex-col">
-                        <h2 className="font-bold text-gray-800">Tipo de presentación</h2>
-                        <p className="text-xs text-gray-500">Elige la disposición de los platos.</p>
+                <section className="w-full flex flex-col gap-3">
+                    <h2 className="font-bold text-gray-800">Tipo de presentación</h2>
+                    <div className="flex flex-col gap-3 h-52">
+                        {presentationOptions.map((option) => (
+                            <ConfigOptionCard key={option.id} id={option.id} label={option.label} format={"horizontal"} selected={option.selected}
+                                onSelect={(id: string) => updateConfig('presentation', id)}>
+                                <Image className='w-fit h-14 object-contain' src={option.image} alt={option.alt} width={option.width} height={option.height} />
+                            </ConfigOptionCard>
+                        ))}
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <ConfigOptionCard id="default" label="Por defecto" type="horizontal" selected={presentation === 'default'} onSelect={setPresentation}>
-                            <Image className='w-14 h-14' src={ImgDefaultTemplate} alt="Def" width={150} height={150} />
-                        </ConfigOptionCard>
-                        <ConfigOptionCard id="list" label="Lista desplegable" type="horizontal" selected={presentation === 'list'} onSelect={setPresentation}>
-                            <Image className='w-14 h-14' src={ImgListaDesplegable} alt="List" width={150} height={150} />
-                        </ConfigOptionCard>
-                    </div>
-                </motion.section>
+                </section>
 
-                <motion.section className="w-full">
+                <section className="w-full">
                     <h2 className="font-bold text-gray-800 mb-2">Menús satélites</h2>
                     <div className="flex flex-col bg-gray-50/50 rounded-2xl px-4 py-1 border shadow-md border-gray-100">
-                        <ConfigSwitch label="Habilitar menú superior Bebidas" enabled={satellites.bebidas} onChange={(v: boolean) => setSatellites({ ...satellites, bebidas: v })} />
+                        <ConfigSwitch label="Habilitar menú superior Bebidas" enabled={enableBebidas}
+                            onChange={(v: boolean) => updateConfig('enable_bebidas', v)} />
                         <div className="h-px bg-gray-100 w-full" />
-                        <ConfigSwitch label="Habilitar menú inferior Postres" enabled={satellites.postres} onChange={(v: boolean) => setSatellites({ ...satellites, postres: v })} />
+                        <ConfigSwitch label="Habilitar menú inferior Postres" enabled={enablePostres}
+                            onChange={(v: boolean) => updateConfig('enable_postres', v)} />
                     </div>
-                </motion.section>
+                </section>
 
-                {/* SECCIÓN 4: WHATSAPP */}
-                <motion.section className="w-full">
+                <section className="w-full">
                     <h2 className="font-bold text-gray-800 mb-2">Pedidos WhatsApp</h2>
                     <div className="bg-gray-50/50 rounded-2xl px-4 py-1 border shadow-md border-gray-100">
-                        <ConfigSwitch label="Función de pedidos activa" enabled={whatsappOrders} onChange={setWhatsappOrders} />
+                        <ConfigSwitch label="Función de pedidos activa" enabled={whatsappOrders}
+                            onChange={(v: boolean) => updateConfig('whatsAppCart', v)} />
                     </div>
-                </motion.section>
-
-                {hasChanges && (
-                    <motion.div
-                        initial={{ y: 100 }}
-                        animate={{ y: 0 }}
-                        className="w-full flex-col md:flex-row items-center h-fit min-h-24 md:items-center justify-center md:justify-end bg-white border-t border-gray-200 fixed bottom-0 left-0 right-0 z-50 flex gap-3 px-4 md:px-7 py-4 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]"
-                    >
-                        <span className="text-gray-700 md:mr-4 font-medium">¿Deseas guardar los cambios?</span>
-                        <div className="flex gap-2 w-full md:w-auto">
-                            <button type="button" onClick={cancelChanges} className="px-5 py-3 border border-gray-300 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
-                                Cancelar
-                            </button>
-                            <button type="submit" disabled={loading} className="w-full md:w-auto px-8 bg-black text-white py-3 rounded-xl flex justify-center items-center gap-2 font-bold disabled:opacity-50">
-                                {loading ? <FaSpinner className="animate-spin" /> : "Guardar Cambios"}
-                            </button>
-                        </div>
-                    </motion.div>
-                )}
-            </form>
+                </section>
+            </div>
         </div>
     );
 }

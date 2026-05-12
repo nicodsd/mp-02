@@ -19,17 +19,26 @@ export default async function Page({
     return <PageNotFound />;
   }
   return (
-    <>
+    <div className="flex relative flex-col min-h-screen">
       <NavBar
         state={0}
         bttn={false}
-        cookie={""}
+        cookie={undefined}
+        template={template}
         photo={user?.data?.photo}
         user={user?.data}
       />
+      <div className={`
+        ${user?.data?.navBar === "recortado"
+          ?
+          `absolute top-34 rounded-t-full h-60 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
+          :
+          "hidden"
+        }`
+      } />
       <Bell user={user?.data} template={template} />
       <Menu data={user?.data} template={template} />
       <Footer template={template} />
-    </>
+    </div>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
+import { URI } from "@/src/lib/const";
 import StoreAddModal from "@/src/components/modals/StoreAddModal";
 import { SelectionToolbar } from "@/src/components/dashboard/SelectionToolbarStoreDelete";
 import { SucursalCard } from "@/src/components/dashboard/SucursalCard";
+import { refreshPage } from "@/app/actions";
 
 export default function Sucursales({ menus, user_id }: { menus: any[], user_id: string }) {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -23,13 +25,25 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
         setSelectedIds([]);
     };
 
-    const handleBulkDelete = () => {
+    const handleBulkDelete = async () => {
         if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
-            console.log("Eliminando IDs:", selectedIds);
-            // Aquí llamarías a tu action o API
+            try {
+                const res = await fetch(`${URI}/menu/delete-menus/${selectedIds}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                });
+                if (!res.ok) throw new Error('Error al eliminar');
+                const data = await res.json();
+                if (data.success) {
+                    alert("Menús eliminados correctamente");
+                    await refreshPage();
+                }
+            } catch (error) {
+                console.error(error);
+            }
             handleCancel();
         }
-    };
+    }
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden">

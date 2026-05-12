@@ -1,5 +1,5 @@
 "use client"
-import { Github, Twitter, Instagram } from 'lucide-react';
+import { Github, Twitter, Instagram, MapPin } from 'lucide-react';
 
 export default function Footer() {
   const navLinks = [
@@ -51,9 +51,15 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-stone-500 text-sm">
-            © {new Date().getFullYear()} QMenú.
-          </p>
+          <div className="text-stone-500 text-sm flex flex-col items-center gap-2">
+            <p>© {new Date().getFullYear()} QMenú.</p>
+            <div className="flex items-center text-left">
+              <div className="mr-2 shrink-0">
+                <MapPin className="h-4 w-4 md:h-6 md:w-6 text-primary" />
+              </div>
+              <p className="text-stone-500 text-xs md:text-sm">Santiago del Estero, Argentina.</p>
+            </div>
+          </div>
           {/* <div className="flex space-x-6">
             <a href="#" className="text-stone-500 hover:text-white transition-colors"><Instagram className="h-5 w-5" /></a>
             <a href="#" className="text-stone-500 hover:text-white transition-colors"><Twitter className="h-5 w-5" /></a>
