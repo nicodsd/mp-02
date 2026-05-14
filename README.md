@@ -1,97 +1,97 @@
 ![banner](/public/images/mask-group.png "Banner con presentación del logo")
 
-# QMenú - Solución inteligente de menús digitales.
+# QMenú - Smart Digital Menu Solution
 
-**QMenú** es una plataforma web Fullstack diseñada para que locales gastronómicos autogestionen sus catálogos de platos de manera eficiente, moderna y personalizada. La aplicación permite a los comercios digitalizar su oferta, mejorar la experiencia del cliente y escalar sus ventas mediante herramientas tecnológicas de vanguardia.
+**QMenú** is a Fullstack web platform designed for restaurants and gastronomic businesses to self-manage their dish catalogs efficiently, modernly, and customly. The application allows businesses to digitalize their offerings, enhance the customer experience, and scale their sales through cutting-edge technological tools.
 
 ---
 
-## 📈 Stack Tecnológico
+## 📈 Tech Stack
 
-La arquitectura de QMenú se apoya en tecnologías modernas para garantizar un alto rendimiento y escalabilidad:
+The architecture of QMenú relies on modern technologies to guarantee high performance and scalability:
 
-* **Frontend:** `Next.js 16` + `React 19` con `Tailwind CSS` (Diseño adaptable y multiplataforma).
+* **Frontend:** `Next.js 16` + `React 19` with `Tailwind CSS` (Responsive and cross-platform design).
 * **Backend:** `Node.js` & `Express 5.x`.
-* **Base de Datos:** `MongoDB` con `Mongoose`.
-* **IA:** Integración de modelos de lenguaje para la optimización inteligente del catálogo.
-* **Infraestructura:** Despliegue optimizado con `Vercel Analytics` y `Speed Insights`.
+* **Database:** `MongoDB` with `Mongoose`.
+* **AI:** Integration of language models for smart catalog optimization.
+* **Infrastructure:** Optimized deployment with `Vercel Analytics` and `Speed Insights`.
 
 ---
 
-## 📝 Características Principales
+## 📝 Key Features
 
-* **Autenticación y Perfiles:** Sistema completo de usuarios con gestión de datos personales y carga de fotos de perfil.
-* **Panel de Administración (CRUD):** Interfaz intuitiva para el control total sobre el inventario de platos (Crear, Leer, Actualizar, Eliminar).
-* **Personalización de Marca:** Ajuste de la estética del menú para alinearse con la identidad visual del local.
-* **Generador de QR:** Creación dinámica de códigos QR vinculados al menú, listos para descargar e imprimir.
-* **Sistema de Pedidos (Premium):** Integración directa con la API de WhatsApp para recibir pedidos en tiempo real.
-* **Vista del Usuario:** Interfaz fluida, rápida y visualmente atractiva para explorar platos sin necesidad de instalar aplicaciones externas.
-
----
-
-## 🫆 Seguridad de Nivel Producción
-
-QMenú implementa una arquitectura de seguridad multi-nivel para proteger la integridad de los datos:
-
-* **Content Security Policy (CSP):** Configuración estricta de encabezados HTTP para mitigar ataques XSS y asegurar que solo scripts autorizados (Mercado Pago, Vercel Analytics y Google Tag Manager) se ejecuten en el cliente.
-* **Input Sanitization:** Validación rigurosa de datos en ambos extremos:
-    * **Client-side:** Schemas de `Yup` para feedback inmediato al usuario.
-    * **Server-side:** Validaciones con `Joi` y `express-validator` para prevenir inyecciones NoSQL.
-* **Rate Limiting:** Implementación de `express-rate-limit` para proteger endpoints críticos contra ataques de fuerza bruta.
-* **Secure Storage:** Hashing de credenciales con `bcryptjs` y gestión de sesiones mediante tokens **JWT** firmados con cookies `HttpOnly`.
+* **Authentication & Profiles:** Comprehensive user system featuring personal data management and profile picture uploads.
+* **Admin Dashboard (CRUD):** Intuitive interface for complete control over the dish inventory (Create, Read, Update, Delete).
+* **Branding Customization:** Fine-tuning of the menu's aesthetics to align with the restaurant's visual identity.
+* **QR Generator:** Dynamic creation of QR codes linked directly to the menu, ready to download and print.
+* **Ordering System (Premium):** Direct integration with the WhatsApp API to receive orders in real time.
+* **User View:** Fluid, fast, and visually appealing interface to explore dishes without installing external applications.
 
 ---
 
-## ⚙️ Especificaciones Técnicas Detalladas
+## 🛡️ Production-Grade Security
 
-### Backend & Core / Repositorio "m-01back"
-* **Rutas Asíncronas:** Uso de las últimas capacidades de **Express** para un manejo eficiente de peticiones.
-* **Estrategia de Identidad:** Validación mediante **JSON Web Tokens (JWT)** integrada con `Passport.js` y `jsonwebtoken`.
-* **Integridad de Datos:** Doble capa de validación para garantizar la consistencia absoluta en el esquema de MongoDB.
+QMenú implements a multi-level security architecture to protect data integrity:
+
+* **Content Security Policy (CSP):** Strict configuration of HTTP headers to mitigate XSS attacks and ensure only authorized third-party scripts (`Mercado Pago`, `Vercel Analytics`, and `Google Tag Manager`) execute on the client-side.
+* **Input Sanitization:** Rigorous data validation on both ends:
+    * **Client-side:** `Yup` schemas for immediate user feedback.
+    * **Server-side:** Validations with `Joi` and `express-validator` to prevent NoSQL injections.
+* **Rate Limiting:** Implementation of `express-rate-limit` to protect critical endpoints against brute-force attacks.
+* **Secure Storage:** Credential hashing via `bcryptjs` and session management using **JWT** tokens signed within `HttpOnly` cookies.
+
+---
+
+## ⚙️ Detailed Technical Specifications
+
+### Backend & Core / "m-01back" Repository
+* **Asynchronous Routing:** Leverages the latest **Express** features for efficient request handling.
+* **Identity Strategy:** Authentication via **JSON Web Tokens (JWT)** integrated with `Passport.js` and `jsonwebtoken`.
+* **Data Integrity:** Dual-layer validation to guarantee absolute consistency within the MongoDB schema.
 
 ### Frontend & Performance
-* **State Management:** Gestión de estado ligero, rápido y escalable mediante `Zustand`.
-* **UX Animada:** Interfaces dinámicas impulsadas por `Framer Motion`, `Animate.css` y `motion`.
-* **Optimización de Media:** Procesamiento de imágenes en cliente con `browser-image-compression` antes de la subida a **Cloudinary**.
+* **State Management:** Lightweight, fast, and scalable state management using `Zustand`.
+* **Animated UX:** Dynamic interfaces powered by `Framer Motion`, `Animate.css`, and `motion`.
+* **Media Optimization:** Client-side image processing with `browser-image-compression` prior to **Cloudinary** upload.
 
-### Integraciones de Terceros
-* **Mercado Pago API:** Flujo completo de pagos para la gestión de suscripciones.
-* **Cloudinary SDK:** Transformación y almacenamiento optimizado de activos visuales en la nube.
-* **QR Generation:** Producción de códigos de alta resolución con `qrcode.react`.
+### Third-Party Integrations
+* **Mercado Pago API:** Complete checkout flow for subscription management.
+* **Cloudinary SDK:** Cloud-based transformation and optimized storage for visual assets.
+* **QR Generation:** High-resolution code production using `qrcode.react`.
 
 ---
 
-## 💡 Instalación y Uso
+## 💡 Installation and Usage
 
-Si deseas ejecutar este proyecto localmente, sigue estos pasos:
+To run this project locally, follow these steps:
 
-1. **Clona el repositorio:**
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/nicodsd/mp-02.git
+   git clone [https://github.com/nicodsd/mp-02.git](https://github.com/nicodsd/mp-02.git)
    ```
 
-2. **Instala las dependencias:**
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. **Configura las variables de entorno:**
-   Primero crea un archivo `.env.local` en la raíz del proyecto con la siguiente clave:
+3. **Configure environment variables:**
+  First, create a .env.local file in the project root with the following key:
    ```env
     NEXT_PUBLIC_API_URL=http://localhost:[PORT]/
    ```
-   Luego crea un archivo `.env.production` en la raíz del proyecto con la siguiente clave:
+  Then, create a .env.production file in the project root with the following key:
    ```env
-    NEXT_PUBLIC_API_URL="[URL_DEL_BACKEND]"
+    NEXT_PUBLIC_API_URL="[URL_BACKEND]"
    ```
 
-4. **Inicia el servidor de desarrollo:**
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
 
 ---
 
-## 📄 Licencia
+## 📄 License
 
-Todos los derechos reservados para Nico Barrera.
+All right reserved by Nico Barrera.
