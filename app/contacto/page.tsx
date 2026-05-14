@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
-import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
-import emailjs from 'emailjs-com';
+import { Send, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { motion } from "framer-motion";
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
@@ -10,7 +10,6 @@ export default function ContactoPage() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        restaurant: '',
         message: ''
     });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -28,7 +27,7 @@ export default function ContactoPage() {
                     process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
                 );
                 setStatus('success');
-                setFormData({ name: '', email: '', restaurant: '', message: '' });
+                setFormData({ name: '', email: '', message: '' });
             } else {
                 setStatus('error');
             }

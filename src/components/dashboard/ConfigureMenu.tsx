@@ -67,7 +67,7 @@ export default function ConfigureMenu({ user }: { user: any }) {
             whatsAppCart: key === 'whatsAppCart' ? value : whatsappOrders
         };
 
-        if ((navBar !== value && key === "navBar") || (presentation !== value && key === "presentation")) {
+        if ((navBar !== value && key === "navBar") || (presentation !== value && key === "presentation") || (enableBebidas !== value && key === "enable_bebidas") || (enablePostres !== value && key === "enable_postres") || (whatsappOrders !== value && key === "whatsAppCart")) {
             if (key === 'navBar') setLoadingNavbar(true);
             if (key === 'presentation') setLoadingPresentation(true);
             try {

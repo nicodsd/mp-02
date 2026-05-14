@@ -180,6 +180,14 @@ export default function LoginPage() {
                       </span>
                     )}
                   </div>
+                  <div className="flex w-full justify-end">
+                    <Link
+                      className="text-gray-500 mr-2 hover:underline cursor-pointer uppercase text-sm font-bold mt-2"
+                      href="/olvide-mi-contrasena"
+                    >
+                      Olvidé mi contraseña
+                    </Link>
+                  </div>
                 </div>
               </div>
 

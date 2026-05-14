@@ -5,7 +5,7 @@ import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsBy
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import { Utensils, Martini, Dessert } from "lucide-react";
 
-export default function FoodCatalog({ allFoods, template, example }: any) {
+export default function FoodCatalog({ allFoods, template, example, user }: any) {
     const [selectedSubCategory, setSelectedSubCategory] = useState("0");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
 
@@ -21,8 +21,16 @@ export default function FoodCatalog({ allFoods, template, example }: any) {
 
     if (allFoods?.length === 0) return null;
 
-    const enabledDrinks = example?.user?.enable_bebidas;
-    const enabledDesserts = example?.user?.enable_postres;
+    let enabledDrinks;
+    let enabledDesserts;
+
+    if (!example) {
+        enabledDrinks = user?.enable_bebidas;
+        enabledDesserts = user?.enable_postres;
+    } else {
+        enabledDrinks = true
+        enabledDesserts = true
+    }
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
@@ -54,7 +62,7 @@ export default function FoodCatalog({ allFoods, template, example }: any) {
                     <div className="flex justify-between items-end mb-1">
                         <Categories
                             template={template}
-                            foods={allFoods}
+                            foods={allFoods.filter((f: any) => f.sub_category !== "Bebidas" && f.sub_category !== "Postres")}
                             selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                         />
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />

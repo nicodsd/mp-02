@@ -257,7 +257,6 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
   };
 
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
-  console.log({ template });
   return (
     <div className={`flex flex-col h-full pt-12 items-center justify-center 
     ${template?.template_id === "default"
@@ -275,13 +274,13 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         template?.template_id === "sakura"
         ? `${template?.textColor}` : "text-white"} w-full`}>
       <div className="relative">
-        <div className={`rounded-full p-1 bg-white`}>
+        <div className={`rounded-full p-1.5 ${template?.backgroundColor}`}>
           <Image
             priority
             src={optimizedPhoto || logo}
             width={200}
             height={200}
-            className="rounded-full object-cover w-[100px] h-[100px]"
+            className="rounded-full object-cover w-[130px] h-[130px] shadow-sm"
             alt="Profile"
           />
         </div>

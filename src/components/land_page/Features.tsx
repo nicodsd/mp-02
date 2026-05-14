@@ -62,12 +62,12 @@ export default function Features() {
             </motion.div>
           ))}
         </div>
-        <div className="w-full flex items-center justify-center mt-4">
+        <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className="w-full flex items-center justify-center mt-4">
           <Link href="/caracteristicas-menu-digital" className="w-full md:w-[50%] cursor-pointer border px-2 py-3 hover:bg-primary hover:text-white transition-all border-primary rounded-lg flex items-center justify-center gap-2">
             <span className="text-md font-bold text-primary">Ver Todas las Caracteristicas</span>
             <ArrowRight className="text-primary" />
           </Link>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
