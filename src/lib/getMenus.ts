@@ -2,6 +2,7 @@
 import { URI } from "./const";
 
 export default async function getMenus(user_id: string) {
+    if (!user_id) return { menus: [] };
     try {
         // Añadimos configuración de cache y tags
         const res = await fetch(`${URI}/menu/get-menus/${user_id}`, {

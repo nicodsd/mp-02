@@ -1,11 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { updateUserCookie, updateMenuCookie } from "@/app/actions";
-import { useRouter } from "next/navigation";
+import { updateUserCookie, updateMenuCookie, logout } from "@/app/actions";
 import QrCode from "@/src/components/user-settings/QrCode";
 import { placeholder } from "@/src/lib/const";
 import { HiOutlineLogout } from "react-icons/hi";
+import { useRouter } from "next/navigation";
 import { OctagonX } from "lucide-react";
 import {
   FaCamera,
@@ -22,7 +22,7 @@ import { TbNotes } from "react-icons/tb";
 import { URI } from "@/src/lib/const";
 import { motion } from "framer-motion";
 
-const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
+const UserSettings = ({ user }: { user: any }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -106,6 +106,27 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
     });
   }
 
+  const hadleLogoutUserAction = async (userId: string) => {
+    try {
+      const response = await fetch(`${URI}/auth/signout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: userId }),
+      });
+      if (!response.ok) {
+        throw new Error("Error al cerrar sesión");
+      }
+      if (response.status === 200) {
+        await logout();
+      }
+    } catch (err) {
+      console.error("Error en logout:", err);
+    } finally {
+      router.push("/");
+      router.refresh()
+    }
+  }
+
   const toggleEdit = (field: keyof typeof editStates) => {
     setEditStates((prev) => ({ ...prev, [field]: !prev[field] }));
   };
@@ -147,7 +168,6 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
       });
 
       const data = await res.json();
-      console.log(data);
       if (!res.ok) {
         if (data.errors) {
           alert(`Error de validación: ${data.errors.join(", ")}`);
@@ -260,7 +280,6 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
             }
           </div>
           <div className="w-full flex flex-col gap-y-5">
-            <h2 className="text-lg text-text">Tus datos:</h2>
             <div className="w-full">
               {editStates.name ? (
                 <div className="relative">
@@ -589,7 +608,7 @@ const UserSettings = ({ user, logout }: { user: any, logout: () => void }) => {
         </div>
         <div className="w-full pl-5">
           <button
-            onClick={() => { logout() }}
+            onClick={() => hadleLogoutUserAction(String(user?.id))}
             className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
           >
             <HiOutlineLogout size={20} /> Cerrar Sesión

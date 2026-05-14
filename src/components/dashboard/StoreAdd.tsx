@@ -3,17 +3,22 @@ import React, { useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import { URI } from "@/src/lib/const";
 import StoreAddModal from "@/src/components/modals/StoreAddModal";
-import { SelectionToolbar } from "@/src/components/dashboard/SelectionToolbarStoreDelete";
-import { SucursalCard } from "@/src/components/dashboard/SucursalCard";
+import { SelectionToolbar } from "@/src/components/dashboard/components/storeComponents/SelectionToolbarStoreDelete";
+import { SucursalCard } from "@/src/components/dashboard/components/storeComponents/SucursalCard";
 import { refreshPage } from "@/app/actions";
+import SelectStoreModal from "./components/storeComponents/SelectStoreModal";
 
 export default function Sucursales({ menus, user_id }: { menus: any[], user_id: string }) {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [openSelectStore, setOpenSelectStore] = useState(false);
     const [isSelectionMode, setIsSelectionMode] = useState(false);
+    const [storeId, setStoreId] = useState("");
+    const [menu, setMenu] = useState<any>({});
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
     let menusCount = (menus?.length || 0) + 1;
 
+    //console.log("menus", menus);
     const toggleSelection = (id: string) => {
         setSelectedIds(prev =>
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
@@ -24,6 +29,10 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
         setIsSelectionMode(false);
         setSelectedIds([]);
     };
+
+    const handleEditStore = async () => {
+
+    }
 
     const handleBulkDelete = async () => {
         if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
@@ -45,6 +54,12 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
         }
     }
 
+    const handleSelectStore = (storeId: string) => {
+        setStoreId(storeId);
+        setMenu(menus.find((m: any) => m._id === storeId));
+        setOpenSelectStore(true);
+    }
+
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
             <StoreAddModal
@@ -54,6 +69,17 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                 setIsOpen={setIsOpenModal}
             />
 
+            {openSelectStore && (
+                <SelectStoreModal
+                    isOpen={openSelectStore}
+                    storeId={storeId}
+                    menu={menu}
+                    onClose={() => setOpenSelectStore(false)}
+                    handleBulkDelete={handleBulkDelete}
+                    handleEditStore={handleEditStore}
+                />
+            )}
+
             <div className="p-3 flex h-full w-full flex-col gap-2">
                 <header className="flex flex-col gap-1">
                     <h1 className="text-2xl font-bold text-gray-800">Sucursales</h1>
@@ -61,7 +87,6 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                 </header>
 
                 <div>
-                    {/* Toolbar con el estilo referenciado */}
                     <SelectionToolbar
                         isSelectionMode={isSelectionMode}
                         selectedCount={selectedIds.length}
@@ -70,18 +95,29 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                         onBulkDelete={handleBulkDelete}
                     />
 
-                    <div className="gap-4 grid grid-cols-2 px-2 py-2">
+                    <div className="gap-4 grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 px-2 py-2">
+
                         {menus?.map((m) => (
-                            <SucursalCard
-                                key={m._id}
-                                m={m}
-                                isSelected={selectedIds.includes(m._id)}
-                                isSelectionMode={isSelectionMode}
-                                onToggle={toggleSelection}
-                            />
+                            !isSelectionMode ? (
+                                <div key={m._id} onClick={() => handleSelectStore(m._id)}>
+                                    <SucursalCard
+                                        m={m}
+                                        isSelected={selectedIds.includes(m._id)}
+                                        isSelectionMode={isSelectionMode}
+                                        onToggle={toggleSelection}
+                                    />
+                                </div>)
+                                :
+                                (
+                                    <SucursalCard
+                                        m={m}
+                                        isSelected={selectedIds.includes(m._id)}
+                                        isSelectionMode={isSelectionMode}
+                                        onToggle={toggleSelection}
+                                    />
+                                )
                         ))}
 
-                        {/* El botón de agregar solo aparece si no estamos eliminando */}
                         {!isSelectionMode && (
                             <button
                                 onClick={() => setIsOpenModal(true)}
