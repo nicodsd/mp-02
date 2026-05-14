@@ -1,35 +1,47 @@
 "use client";
 import React, { useState } from 'react';
-import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
-import emailjs from 'emailjs-com';
+import { Send, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { motion } from "framer-motion";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    restaurant: '',
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('loading');
 
-    setTimeout(() => {
-      if (formData.name && formData.email) {
-        emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-          formData,
-          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-        );
-        setStatus('success');
-        setFormData({ name: '', email: '', restaurant: '', message: '' });
-      } else {
-        setStatus('error');
+    try {
+      // 1. Validar que las variables existen
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error("Faltan variables de entorno");
       }
+
+      // 2. Enviar usando async/await en lugar de setTimeout (más limpio)
+      await emailjs.send(
+        serviceId,
+        templateId,
+        formData,
+        publicKey
+      );
+
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error("Error en EmailJS:", error);
+      setStatus('error');
+    } finally {
       setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -40,45 +52,23 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="py-16 md:py-24 relative w-full">
+    <section id="contacto" className="pt-20 pb-10 md:py-24 relative w-full">
       <div className="w-full">
         {/* Layout: Stack en móvil, 2 columnas en LG */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
 
-          <div className="text-center md:text-start mb-12 md:mb-16 px-2">
-            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">¿Listo para modernizar tu local?</h2>
-            <p className="text-stone-600 text-base md:text-lg mb-8 lg:mx-0">
+          <div className="text-center md:text-start md:mb-16 px-2">
+            <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Contacto</motion.h1>
+            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-md mb-8 lg:mx-0">
               Únete a miles de restaurantes que ya usan QMenú. Si tienes dudas o necesitas un plan personalizado, escríbenos.
-            </p>
-
-            <div className="space-y-3 max-w-md mx-auto lg:mx-0">
-              <div className="flex items-center text-left p-4 rounded-xl border border-gray-300">
-                <div className="mr-4 shrink-0">
-                  <Mail className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-                </div>
-                <div className="overflow-hidden">
-                  <h4 className="text-stone-900 font-semibold text-sm md:text-base">Ventas y Soporte</h4>
-                  <span className="text-stone-500 text-sm truncate">qmenuofi@gmail.com</span>
-                </div>
-              </div>
-
-              <div className="flex items-center text-left p-4 rounded-xl border border-gray-300">
-                <div className="mr-4 shrink-0">
-                  <MapPin className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-stone-900 font-semibold text-sm md:text-base">Ubicación</h4>
-                  <p className="text-stone-500 text-xs md:text-sm">Santiago del Estero, Argentina.</p>
-                </div>
-              </div>
-            </div>
+            </motion.p>
           </div>
 
           {/* Form Card */}
           <div className="p-6 md:p-8 rounded-2xl border border-gray-300">
             <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-bold text-stone-700 mb-2">Nombre completo</label>
+                <label htmlFor="name" className="block text-sm font-bold text-stone-700 mb-2">Nombre</label>
                 <input
                   type="text"
                   id="name"
@@ -103,18 +93,6 @@ export default function Contact() {
                     onChange={handleChange}
                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
                     placeholder="email@ejemplo.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="restaurant" className="block text-sm font-bold text-stone-700 mb-2">Restaurante</label>
-                  <input
-                    type="text"
-                    id="restaurant"
-                    name="restaurant"
-                    value={formData.restaurant}
-                    onChange={handleChange}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Ej. La Trattoria"
                   />
                 </div>
               </div>
@@ -146,9 +124,14 @@ export default function Contact() {
                   </>
                 )}
               </button>
+              {status === 'success' && (
+                <p className="text-green-600 text-sm text-center font-medium mt-2 transition-all">¡Mensaje enviado con éxito!</p>
+              )}
+              {status === 'error' && (
+                <p className="text-red-600 text-sm text-center font-medium mt-2 transition-all">Error al enviar el mensaje. Intenta de nuevo.</p>
+              )}
             </form>
           </div>
-
         </div>
       </div>
     </section>

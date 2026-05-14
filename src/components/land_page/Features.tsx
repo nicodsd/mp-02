@@ -1,6 +1,7 @@
 "use client";
-import { Camera, QrCode, Smartphone, CloudLightning, Globe, ShieldCheck, PieChart, Zap } from 'lucide-react';
+import { Camera, QrCode, Smartphone, CloudLightning, ArrowRight, PieChart, Zap, ChevronDown } from 'lucide-react';
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const featuresList = [
   {
@@ -25,7 +26,7 @@ const featuresList = [
   },
   {
     icon: <Smartphone className="h-6 w-6" />,
-    title: "100% Responsive",
+    title: "Para todos los dispositivos",
     description: "Diseño optimizado para usarse en cualquier dispositivo, fluidez sin necesidad de instalar apps."
   },
   {
@@ -40,16 +41,15 @@ export default function Features() {
     <section id="caracteristicas" className="py-16 md:py-24 lg:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
         <div className="text-center md:text-start mb-12 md:mb-16 px-2">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Todo lo que tu negocio necesita</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-stone-600 text-base md:text-lg">
-            Una herramienta potente y fácil de usar para digitalizar tu local gastronómico.
+          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h2>
+          <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg px-3">
+            Una herramienta potente y fácil de usar para digitalizar tu local gastronómico ahora mismo.
           </motion.p>
         </div>
 
-        {/* Grid: 1 col móvil, 2 cols tablet, 4 cols desktop */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8">
           {featuresList.map((feature, index) => (
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-3xl border border-gray-300 items-start group">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
               <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                 {feature.icon}
               </div>
@@ -62,7 +62,13 @@ export default function Features() {
             </motion.div>
           ))}
         </div>
+        <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className="w-full flex items-center justify-center mt-4">
+          <Link href="/caracteristicas-menu-digital" className="w-full md:w-[50%] cursor-pointer border px-2 py-3 hover:bg-primary hover:text-white transition-all border-primary rounded-lg flex items-center justify-center gap-2">
+            <span className="text-md font-bold text-primary">Ver Todas las Caracteristicas</span>
+            <ArrowRight className="text-primary" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
-}
+} 

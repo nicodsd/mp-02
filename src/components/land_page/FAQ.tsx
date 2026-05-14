@@ -6,7 +6,7 @@ import { HiChevronDown } from "react-icons/hi";
 const faqs = [
   {
     question: "¿Qué es esta plataforma y cómo me ayuda?",
-    answer: "Nuestra plataforma te permite crear tu propio menú digital en minutos. Agilizas la toma de pedidos, mejoras la experiencia de tus clientes y le das a tu negocio una imagen mucho más profesional y tecnológica."
+    answer: "Nuestra plataforma te permite crear tu propio menú digital en minutos. Agilizas la toma de pedidos, mejoras la experiencia de tus clientes y le das a tu negocio una imagen mucho más profesional."
   },
   {
     question: "¿Puedo personalizar el diseño de mi menú?",

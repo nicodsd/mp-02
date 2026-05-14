@@ -26,7 +26,7 @@ export default function Cards({
     }).format(value);
   }
   return (
-    <div className={`flex w-38 items-center ${template?.backgroundColor || "bg-background"} border ${template?.border || "border-gray-300/60"} rounded-lg justify-center`}>
+    <div className={`flex w-38 items-center ${food.is_archived ? "grayscale opacity-50" : template?.backgroundColor} ${template?.backgroundColor || "bg-background"} border ${template?.border || "border-gray-300/60"} rounded-lg justify-center`}>
       <div
         className={`flex flex-col w-full h-64 overflow-hidden rounded-lg p-2 items-center`}
       >
@@ -56,7 +56,8 @@ export default function Cards({
               example ? (
                 <AddFoodExample _id={_id} />
               ) : (
-                <AddFood _id={_id} />
+                context &&
+                <AddFood _id={String(_id)} />
               )
             }
           </div>

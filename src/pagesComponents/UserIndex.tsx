@@ -22,7 +22,7 @@ export default function UserIndex({ foods, user, template }: any) {
   };
 
   return (
-    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.backgroundColor}`}>
+    <main className={`w-full relative p-3 md:p-0 md:py-6 h-full ${template?.bgMenu || "bg-background"}`}>
       <SearchModal
         template={template}
         arrayFoods={filteredFoods}
@@ -39,8 +39,8 @@ export default function UserIndex({ foods, user, template }: any) {
           template={template}
         />
 
+        <AddDishButton template={template} />
         <AdminOffers foods={foods} template={template} />
-
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
 
           <AdminFoodCatalog
@@ -48,7 +48,6 @@ export default function UserIndex({ foods, user, template }: any) {
             user={user}
             template={template}
           />
-          <AddDishButton template={template} />
         </section>
       </article>
     </main>

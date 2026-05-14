@@ -28,7 +28,7 @@ export default function CartModalExample({ isOpen, onClose, template, allFoods }
     return (
         <div className={`fixed inset-0 z-1000 flex items-end justify-center ${template?.backgroundColor || "bg-background"} sm:items-center transition-all duration-300 bg-black/50 backdrop-blur-sm`} onClick={onClose}>
             <div
-                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-[500px] h-[80vh] sm:h-[600px] p-1 rounded-t-2xl pb-2 flex flex-col shadow-2xl relative`}
+                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-[500px] h-[80vh] sm:h-[600px] p-1 rounded-t-2xl lg:rounded-2xl pb-2 flex flex-col shadow-2xl relative`}
                 onClick={e => e.stopPropagation()}
             >
                 <div className={`flex justify-between items-center ${template?.textColor || "text-gray-700"} p-2`}>

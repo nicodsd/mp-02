@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     '192.168.0.10',
     'qmenu.com.ar',
     '*.qmenu.com.ar',
-    'obtaining-wages-observation-shine.trycloudflare.com',
+    'consists-effective-today-marine.trycloudflare.com',
     '*.trycloudflare.com'
   ],
   crossOrigin: 'anonymous',

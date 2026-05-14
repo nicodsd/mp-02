@@ -4,7 +4,7 @@ import { ConciergeBell } from "lucide-react";
 import { useCartStore } from "@/src/lib/useCartStore";
 import CartModal from "@/src/components/modals/CartModal";
 
-export default function Bell({ phone, template }: { phone: string, template: any }) {
+export default function Bell({ user, template }: { user: any, template: any }) {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const { selectedIds } = useCartStore();
     const [mounted, setMounted] = useState(false);
@@ -29,7 +29,7 @@ export default function Bell({ phone, template }: { phone: string, template: any
                     )}
                 </div>
             </button>
-            <CartModal phone={phone} isOpen={isCartOpen} template={template} onClose={() => setIsCartOpen(false)} />
+            <CartModal user={user} isOpen={isCartOpen} template={template} onClose={() => setIsCartOpen(false)} />
         </>
     );
 }

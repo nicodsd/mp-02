@@ -58,7 +58,7 @@ function Carousel({ foods, template }: { foods: any[]; template: any }) {
             </div>
 
             {slides.length > 1 && (
-                <div className="flex items-center h-4 gap-1 mt-3">
+                <div className="flex items-center h-4 gap-1 mt-2">
                     {slides.map((_, index) => (
                         <button
                             key={index}

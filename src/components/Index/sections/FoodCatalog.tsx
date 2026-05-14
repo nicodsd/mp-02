@@ -5,7 +5,7 @@ import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsBy
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import { Utensils, Martini, Dessert } from "lucide-react";
 
-export default function FoodCatalog({ allFoods = [], template, example }: any) {
+export default function FoodCatalog({ allFoods, template, example, user }: any) {
     const [selectedSubCategory, setSelectedSubCategory] = useState("0");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
 
@@ -19,15 +19,26 @@ export default function FoodCatalog({ allFoods = [], template, example }: any) {
         return base;
     }, [allFoods, sortOrder]);
 
-    if (allFoods.length === 0) return null;
+    if (allFoods?.length === 0) return null;
+
+    let enabledDrinks;
+    let enabledDesserts;
+
+    if (!example) {
+        enabledDrinks = user?.enable_bebidas;
+        enabledDesserts = user?.enable_postres;
+    } else {
+        enabledDrinks = true
+        enabledDesserts = true
+    }
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
 
                 {/* BEBIDAS */}
-                {processedFoods.some(f => f.category === "Bebidas") && (
-                    <div className="flex flex-col gap-2">
+                {enabledDrinks && processedFoods.some(f => f.sub_category === "Bebidas") && (
+                    <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Bebidas</h2>
                             <Martini className="w-5 h-5" />
@@ -35,7 +46,8 @@ export default function FoodCatalog({ allFoods = [], template, example }: any) {
                         <RenderCardsOptions
                             example={example}
                             template={template}
-                            foods={processedFoods.filter(f => f.category === "Bebidas")}
+                            context={true}
+                            foods={processedFoods.filter(f => f.sub_category === "Bebidas")}
                         />
                     </div>
                 )}
@@ -50,7 +62,7 @@ export default function FoodCatalog({ allFoods = [], template, example }: any) {
                     <div className="flex justify-between items-end mb-1">
                         <Categories
                             template={template}
-                            foods={allFoods}
+                            foods={allFoods.filter((f: any) => f.sub_category !== "Bebidas" && f.sub_category !== "Postres")}
                             selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                         />
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
@@ -60,15 +72,22 @@ export default function FoodCatalog({ allFoods = [], template, example }: any) {
                         example={example}
                         template={template}
                         arrayFoods={processedFoods.filter(f => {
-                            const isMain = f.category !== "Bebidas" && f.category !== "Postres";
+                            let isMain = true
+                            if (enabledDesserts && enabledDrinks) {
+                                isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                            } else if (enabledDesserts && !enabledDrinks) {
+                                isMain = f.sub_category !== "Postres";
+                            } else if (!enabledDesserts && enabledDrinks) {
+                                isMain = f.sub_category !== "Bebidas";
+                            }
                             return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                         })}
                     />
                 </div>
 
                 {/* POSTRES */}
-                {processedFoods.some(f => f.category === "Postres") && (
-                    <div className="flex flex-col gap-2">
+                {enabledDesserts && processedFoods.some(f => f.sub_category === "Postres") && (
+                    <div className="flex flex-col gap-1">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Dessert className="w-5 h-5" />
@@ -76,7 +95,8 @@ export default function FoodCatalog({ allFoods = [], template, example }: any) {
                         <RenderCardsOptions
                             example={example}
                             template={template}
-                            foods={processedFoods.filter(f => f.category === "Postres")}
+                            context={true}
+                            foods={processedFoods.filter(f => f.sub_category === "Postres")}
                         />
                     </div>
                 )}

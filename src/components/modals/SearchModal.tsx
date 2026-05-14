@@ -28,7 +28,7 @@ export default function SearchModal({ arrayFoods, setSearch, setShowModal, showM
     return (
         <div
             onClick={() => setShowModal(false)}
-            className={`fixed inset-0 z-100 ${template?.backgroundColor || "bg-background"} overflow-hidden`}
+            className={`fixed inset-0 z-100 ${template?.bgMenu || "bg-background"} overflow-hidden`}
         >
             <div onClick={(e) => e.stopPropagation()} className="flex flex-col h-full w-full px-3 pt-4">
                 <div className={`flex justify-between ${template?.textColor || "text-gray-700"} mx-1 items-center mb-4`}>

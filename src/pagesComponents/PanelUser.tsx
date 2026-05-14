@@ -7,7 +7,6 @@ import { logout } from "@/app/actions"
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   Tab,
-  TabPanel,
   TabPanels,
   TabGroup,
   TabList,
@@ -17,31 +16,29 @@ import {
   TransitionChild,
 } from "@headlessui/react";
 import { useRouter } from "next/navigation";
+import { MdStorefront } from "react-icons/md";
 import {
   HiOutlineUser,
-  HiOutlineClipboardList,
   HiOutlineColorSwatch,
   HiOutlineTicket,
   HiOutlineLogout,
   HiMenuAlt2,
   HiX,
+  HiOutlineAdjustments,
+  HiOutlineClipboardList,
 } from "react-icons/hi";
-import UserSettings from "@/src/components/dashboard/UserSettings";
-import MenuItems from "@/src/components/dashboard/MenuItems";
-import ConfigureMenu from "@/src/components/dashboard/Templates";
-import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 
 export default function PanelUser({
   user,
   token,
-  foods,
   template,
+  children,
 }: {
   user: any;
   token: string;
-  foods: any[];
   template: any;
+  children: React.ReactNode;
 }) {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -78,11 +75,14 @@ export default function PanelUser({
   const menuItems = [
     { name: "Usuario", icon: <HiOutlineUser size={20} /> },
     { name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
-    { name: "Personalización", icon: <HiOutlineColorSwatch size={20} /> },
     { name: "Promociones", icon: <HiOutlineTicket size={20} /> },
+    { name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
+    { name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
+    { name: "Sucursales", icon: <MdStorefront size={20} /> },
   ];
 
   if (user?.plan === "free") {
+    menuItems.pop();
     menuItems.pop();
     menuItems.pop();
   }
@@ -91,6 +91,7 @@ export default function PanelUser({
     <div className="h-screen relative">
       <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <button
+          aria-label="Abrir menú del panel de usuario"
           onClick={() => setIsSidebarOpen(true)}
           className="md:hidden fixed top-3 right-3 z-40 bg-background ring-7 ring-background text-gray-800 border-gray-800 border p-4 rounded-full active:scale-90 transition-all"
         >
@@ -146,6 +147,7 @@ export default function PanelUser({
                       </div>
                     </div>
                     <button
+                      aria-label="Cerrar menú de configuración"
                       onClick={() => setIsSidebarOpen(false)}
                       className="text-gray-400"
                     >
@@ -229,23 +231,7 @@ export default function PanelUser({
 
             <main className="flex-1 w-full">
               <TabPanels className="min-h-full w-full lg:w-[70%] overflow-hidden">
-                <div className="md:hidden py-1 px-2 md:px-0">
-                  <BttnBack />
-                </div>
-                <div className="pb-13 pt-8 md:pt-6 w-full max-w-full">
-                  <TabPanel className="focus:outline-none w-full">
-                    <UserSettings user={user} logout={handleLogout} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <MenuItems dataFoods={foods} template={template} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <ConfigureMenu user={user} />
-                  </TabPanel>
-                  <TabPanel className="focus:outline-none w-full">
-                    <PromoPanel />
-                  </TabPanel>
-                </div>
+                {children}
               </TabPanels>
             </main>
           </div>
