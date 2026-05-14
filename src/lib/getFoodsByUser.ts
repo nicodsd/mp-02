@@ -1,5 +1,6 @@
 'use server';
 export async function getFoodsByUser(apiUrl: string, userId: string) {
+    if (!userId) return [];
     try {
         const res = await fetch(`${apiUrl}/foods?user_id=${userId}`, {
             next: { tags: ['foods'], revalidate: 2 }

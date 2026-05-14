@@ -12,7 +12,6 @@ import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import TemplateSelector from "@/src/components/dashboard/Templates";
 import { cookies } from "next/headers";
 import BttnBack from "@/src/components/buttons/BttnBack";
-import { logout } from "@/app/actions";
 
 async function PlatosPanel({ userId, token, template }: any) {
   const foods = await getFoodsByUser(URI, userId);
@@ -32,13 +31,15 @@ export default async function DashboardPage() {
   let menu: any, user: any, foods, template, menus: any[] = [];
   if (token !== "{}" && userCookie !== "{}") {
     user = JSON.parse(userCookie);
-    if (menuCookie !== "{}") {
+    if (menuCookie) {
       menu = JSON.parse(menuCookie || "");
+      user = { ...user, ...menu };
     }
-    menus = await getMenus(user.id);
-    foods = await getFoodsByUser(URI, user.id);
-    template = templates.find((t) => t.template_id === menu?.template_id);
-    user = { ...user, ...menu };
+    if (userCookie) {
+      menus = await getMenus(user.id);
+      foods = await getFoodsByUser(URI, user.id);
+      template = templates.find((t) => t.template_id === user?.template_id);
+    }
   }
 
   return (
@@ -48,10 +49,10 @@ export default async function DashboardPage() {
       </div>
       <div className="pb-13 pt-8 md:pt-6 w-full max-w-full">
         <TabPanel className="focus:outline-none w-full">
-          <UserSettings user={user} logout={logout} />
+          <UserSettings user={user} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
-          <PlatosPanel userId={user.id} token={token} template={template} />
+          <PlatosPanel userId={user?.id} token={token} template={template} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
           <PromoPanel foods={foods} />
@@ -63,7 +64,7 @@ export default async function DashboardPage() {
           <TemplateSelector user={user} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
-          <SucursalesPanel userId={user.id} />
+          <SucursalesPanel userId={user?.id} />
         </TabPanel>
       </div>
     </PanelUser>

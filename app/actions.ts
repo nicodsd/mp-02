@@ -2,6 +2,7 @@
 import { cookies } from "next/headers";
 import { revalidateTag, revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
+import { URI } from "@/src/lib/const";
 
 export async function refreshPage() {
     // Marcamos los tags como "stale" usando el perfil recomendado

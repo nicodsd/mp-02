@@ -84,15 +84,19 @@ export default function Pricing() {
   return (
     <section id="planes" className="py-16 md:py-14 md:mt-20 w-full">
       <div className="w-full">
-        <div className="text-center md:text-start mb-8 md:mb-16 px-2">
+        <div className="text-center md:text-start mb-8 md:mb-12 px-2">
           <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
           <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
-          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex mt-6 text-stone-600 bg-white border border-gray-200 rounded-xl md:flex-row w-full justify-center items-center gap-1 px-2">
-            <p className="text-sm">Suscripciones a través de </p>
-            <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="logo-mercado-pago" width={300} height={300} className="w-23 md:w-30" />
-          </motion.div>
+          {/*           <div className='flex relative mt-6 justify-end items-center gap-4 w-full bg-[#00bbfe] shadow-inner p-2 rounded-2xl'>
+
+            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="text-xl font-bold text-white">Suscripciones a través de </motion.p>
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="flex bg-white text-gray-800 font-bold border border-gray-200 shadow-lg rounded-xl md:flex-row w-fit justify-center items-center gap-1 px-2">
+              <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="logo-mercado-pago" width={300} height={300} className="w-23 md:w-30" />
+            </motion.div>
+
+          </div> */}
         </div>
 
         {/* Grid: 1 col móvil, 3 cols desktop */}
@@ -127,23 +131,23 @@ export default function Pricing() {
 
               {
                 !plan.premium ?
-                  <ul className="space-y-3 md:space-y-4 mb-8 grow">
+                  <motion.ul initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="space-y-3 md:space-y-4 mb-8 grow">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
+                      <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} key={idx} className="flex items-start">
                         <Check className={`h-5 w-5 mr-3 shrink-0 ${plan.recommended ? 'text-primary' : 'text-stone-400'}`} />
                         <span className="text-stone-600 text-sm leading-tight">{feature}</span>
-                      </li>
+                      </motion.li>
                     ))}
-                  </ul>
+                  </motion.ul>
                   :
-                  <ul className="space-y-3 md:space-y-4 mb-8 grow">
+                  <motion.ul initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="space-y-3 md:space-y-4 mb-8 grow">
                     {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
+                      <motion.li initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} key={idx} className="flex items-start">
                         <Check className={`h-5 w-5 mr-3 shrink-0 text-stone-800`} />
                         <span className="text-stone-800 text-sm leading-tight">{feature}</span>
-                      </li>
+                      </motion.li>
                     ))}
-                  </ul>
+                  </motion.ul>
               }
 
               {
