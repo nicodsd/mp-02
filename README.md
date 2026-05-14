@@ -76,11 +76,11 @@ To run this project locally, follow these steps:
    ```
 
 3. **Configure environment variables:**
-  First, create a .env.local file in the project root with the following key:
+   First, create a .env.local file in the project root with the following key:
    ```env
     NEXT_PUBLIC_API_URL=http://localhost:[PORT]/
    ```
-  Then, create a .env.production file in the project root with the following key:
+   Then, create a .env.production file in the project root with the following key:
    ```env
     NEXT_PUBLIC_API_URL="[URL_BACKEND]"
    ```
