@@ -676,9 +676,9 @@ export default function Register() {
                       setServerMessage(null);
                     }}
                     disabled={step === 0 || isSubmitting}
-                    className={`inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
+                    className={`inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
                       ? "text-gray-300 cursor-not-allowed"
-                      : "text-gray-700 bg-background border border-gray-400"
+                      : "text-gray-700 cursor-pointer bg-background border border-gray-400"
                       }`}
                   >
                     Atrás

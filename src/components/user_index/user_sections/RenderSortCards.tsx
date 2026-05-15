@@ -8,8 +8,8 @@ import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, us
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 // Importamos los nuevos componentes
-import { SelectionToolbar } from "@/src/components/dashboard/SelectionToolbar";
-import { SortableRow } from "@/src/components/dashboard/SortableRow";
+import { SelectionToolbar } from "@/src/components/dashboard/components/dishComponents/SelectionToolbar";
+import { SortableRow } from "@/src/components/dashboard/components/dishComponents/SortableRow";
 
 export default function RenderSortCards({ foods: initialFoods, count, context, template }: any) {
     const { foods, setFoods, removeFoodLocal } = useFoodStore();

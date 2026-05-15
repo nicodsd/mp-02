@@ -1,18 +1,10 @@
 "use client";
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
-import { Camera, QrCode, Smartphone, CloudLightning, PieChart, Zap } from 'lucide-react';
 import { motion } from "framer-motion";
-import {
-    HiOutlineUser,
-    HiOutlineColorSwatch,
-    HiOutlineTicket,
-    HiOutlineLogout,
-    HiMenuAlt2,
-    HiX,
-    HiOutlineAdjustments,
-    HiOutlineClipboardList,
-} from "react-icons/hi";
+import BttnBack from "@/src/components/buttons/BttnBack";
+import { HiOutlineColorSwatch, HiOutlineAdjustments } from "react-icons/hi";
+import { Camera, QrCode, Smartphone, CloudLightning, PieChart, Zap } from 'lucide-react';
 
 const featuresList = [
     {
@@ -57,13 +49,14 @@ const featuresList = [
     }
 ];
 
-export default function ContactoPage() {
+export default function CaracteristicasPage() {
     return (
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
                 <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-20">
-                    <section id="caracteristicas" className="py-16 md:py-24 lg:pb-40 relative overflow-hidden w-full">
+                    <section id="caracteristicas" className="py-16 md:py-24 relative overflow-hidden w-full">
+                        <BttnBack />
                         <div className="w-full relative z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2">
                                 <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h1>

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { URI } from '@/src/lib/const';
 import Image from 'next/image';
-import { ConfigOptionCard, ConfigSwitch } from '@/src/components/dashboard/configComponents/ConfigComponents';
+import { ConfigOptionCard, ConfigSwitch } from '@/src/components/dashboard/components/configComponents/ConfigComponents';
 
 import ImgDefaultTemplate from "@/public/images/dashboard/default.png";
 import ImgListaDesplegable from "@/public/images/dashboard/lista-desplegable.png";
@@ -46,13 +46,13 @@ export default function ConfigureMenu({ user }: { user: any }) {
     const updateConfig = async (key: string, value: any) => {
 
         if (key === "presentation" && presentation !== value) {
-            setPresentation(value);
             setLoadingPresentation(true);
+            setPresentation(value);
         }
 
         if (key === "navBar" && navBar !== value) {
-            setNavBar(value);
             setLoadingNavbar(true);
+            setNavBar(value);
         }
 
         if (key === 'enable_bebidas') setEnableBebidas(value);
@@ -67,7 +67,15 @@ export default function ConfigureMenu({ user }: { user: any }) {
             whatsAppCart: key === 'whatsAppCart' ? value : whatsappOrders
         };
 
-        if ((navBar !== value && key === "navBar") || (presentation !== value && key === "presentation") || (enableBebidas !== value && key === "enable_bebidas") || (enablePostres !== value && key === "enable_postres") || (whatsappOrders !== value && key === "whatsAppCart")) {
+        if ((navBar !== value && key === "navBar")
+            ||
+            (presentation !== value && key === "presentation")
+            ||
+            (enableBebidas !== value && key === "enable_bebidas")
+            ||
+            (enablePostres !== value && key === "enable_postres")
+            ||
+            (whatsappOrders !== value && key === "whatsAppCart")) {
             if (key === 'navBar') setLoadingNavbar(true);
             if (key === 'presentation') setLoadingPresentation(true);
             try {
@@ -77,7 +85,6 @@ export default function ConfigureMenu({ user }: { user: any }) {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });
-
                 if (response.ok) {
                     await updateMenuCookie(payload)
                 } else {
@@ -88,6 +95,9 @@ export default function ConfigureMenu({ user }: { user: any }) {
             } finally {
                 if (key === 'navBar') setLoadingNavbar(false);
                 if (key === 'presentation') setLoadingPresentation(false);
+                if (key === 'enable_bebidas') setLoadingPresentation(false);
+                if (key === 'enable_postres') setLoadingPresentation(false);
+                if (key === 'whatsAppCart') setLoadingPresentation(false);
             }
         }
     };
@@ -107,10 +117,9 @@ export default function ConfigureMenu({ user }: { user: any }) {
             <div className="flex flex-col w-full items-start justify-start gap-10">
 
                 <section className="w-full flex flex-col gap-3">
-                    <div className="flex flex-col">
-                        <h2 className="font-bold text-gray-800">Encabezado</h2>
-                        <p className="text-xs text-gray-500">Selecciona un tipo de encabezado.</p>
-                    </div>
+
+                    <h2 className="font-bold text-gray-800">Encabezado</h2>
+
                     <div className="grid grid-cols-3 gap-2 h-38 w-full">
                         {navBarOptions.map((option) => (
                             <ConfigOptionCard key={option.id} id={option.id} label={option.label} format={"vertical"} selected={option.selected}

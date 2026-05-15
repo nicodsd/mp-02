@@ -42,7 +42,7 @@ export default function Features() {
       <div className="w-full relative z-10">
         <div className="text-center md:text-start mb-12 md:mb-16 px-2">
           <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h2>
-          <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg px-3">
+          <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg">
             Una herramienta potente y fácil de usar para digitalizar tu local gastronómico ahora mismo.
           </motion.p>
         </div>

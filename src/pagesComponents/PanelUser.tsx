@@ -1,9 +1,7 @@
 "use client";
 import { useState, Fragment } from "react";
 import Image from "next/image";
-import { logotipo } from "@/src/lib/const";
-import { URI } from "@/src/lib/const";
-import { logout } from "@/app/actions"
+import { logotipo, URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   Tab,
@@ -15,7 +13,6 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { useRouter } from "next/navigation";
 import { MdStorefront } from "react-icons/md";
 import {
   HiOutlineUser,
@@ -28,6 +25,8 @@ import {
   HiOutlineClipboardList,
 } from "react-icons/hi";
 import UserPlan from "@/src/components/user-plan/UserPlan";
+import { useRouter } from "next/navigation";
+import { logout } from "@/app/actions";
 
 export default function PanelUser({
   user,
@@ -40,30 +39,30 @@ export default function PanelUser({
   template: any;
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const router = useRouter();
 
-  const handleLogout = async () => {
+  const hadleLogoutUserAction = async (userId: string) => {
     try {
-      const res = await fetch(`${URI}/auth/signout`, {
+      const response = await fetch(`${URI}/auth/signout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: user.id }),
+        body: JSON.stringify({ user_id: userId }),
       });
-
-      if (res.status === 200) {
-        const result = await logout();
-
-        if (result.success) {
-          router.push("/");
-          router.refresh();
-        }
+      if (!response.ok) {
+        throw new Error("Error al cerrar sesión");
+      }
+      if (response.status === 200) {
+        await logout();
       }
     } catch (err) {
       console.error("Error en logout:", err);
+    } finally {
+      router.push("/");
+      router.refresh()
     }
-  };
+  }
 
   const tabClass = (selected: boolean) =>
     `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm font-bold transition-all outline-none
@@ -172,7 +171,7 @@ export default function PanelUser({
                     </div>
                     <div className="w-full pl-5">
                       <button
-                        onClick={() => { handleLogout() }}
+                        onClick={() => { hadleLogoutUserAction(user.id) }}
                         className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
                       >
                         <HiOutlineLogout size={20} /> Cerrar Sesión
@@ -220,7 +219,7 @@ export default function PanelUser({
                 </TabList>
                 <div className="w-full pl-5">
                   <button
-                    onClick={() => { handleLogout() }}
+                    onClick={() => { hadleLogoutUserAction(user.id) }}
                     className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors font-bold cursor-pointer"
                   >
                     <HiOutlineLogout size={20} /> Cerrar Sesión

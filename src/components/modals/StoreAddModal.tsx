@@ -107,11 +107,12 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-background backdrop-blur-sm" />
+                    <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm" />
                 </TransitionChild>
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">Agregar Menú</h2>
 
                 <div className="fixed inset-0 overflow-hidden">
-                    <div className="flex min-h-full items-center justify-end">
+                    <div className="flex h-full items-center justify-end">
                         <TransitionChild
                             enter="transform transition ease-in-out duration-500"
                             enterFrom="translate-x-full"
@@ -120,7 +121,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                             leaveFrom="translate-x-0"
                             leaveTo="translate-x-full"
                         >
-                            <DialogPanel className="pointer-events-auto relative w-screen p-4 sm:max-w-lg h-screen pb-26 pt-36 bg-background shadow-xl flex flex-col overflow-y-auto items-center justify-center">
+                            <DialogPanel className="pointer-events-auto relative w-screen p-4 sm:max-w-lg h-full pb-26 flex flex-col overflow-y-auto items-center justify-center bg-background">
                                 <Formik
                                     initialValues={initialValues}
                                     validationSchema={StoreSchema}
@@ -129,8 +130,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                     }}
                                 >
                                     {({ setFieldValue, isSubmitting, values }) => (
-                                        <Form className="flex flex-col gap-6 w-full">
-                                            <h2 className="text-xl font-semibold text-gray-700 mb-2">Agregar Menú</h2>
+                                        <Form className="flex flex-col gap-6 pt-10 w-full">
                                             <div className={`flex justify-evenly w-full mb-5`}>
                                                 {/* LOGO SECTION */}
                                                 <div className="relative flex items-center justify-center gap-2 flex-col">

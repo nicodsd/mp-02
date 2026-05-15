@@ -14,7 +14,7 @@ export default function Showcase() {
             text: "text-stone-800"
         },
         dark: {
-            name: 'Medianoche',
+            name: 'Fresco',
             primary: "bg-[#00b300]",
             primaryText: "text-[#00b300]",
             border: "border-[#006300]",
@@ -124,15 +124,15 @@ export default function Showcase() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.4 }} className="flex gap-5 flex-col items-center absolute md:-bottom-12 md:-right-5 bg-background w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 rounded-t-3xl border border-stone-200">
+                        transition={{ duration: 0.1, delay: 0.1 }} className="flex gap-5 flex-col items-center absolute md:-bottom-12 md:-right-5 bg-background w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 rounded-t-3xl border border-stone-200">
 
                         <div className="flex gap-5">
-                            {Object.values(templates).map((t) => (
+                            {Object.values(templates).map((t, index) => (
                                 <motion.button
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: 0.7 }}
+                                    transition={{ delay: index * 0.2 }}
                                     key={t.name}
                                     onClick={() => setActiveTheme(t)}
                                     className={`group cursor-pointer relative flex flex-col items-center gap-1`}
