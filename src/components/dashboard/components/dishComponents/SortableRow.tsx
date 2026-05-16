@@ -77,7 +77,7 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                         className={`
                             ${context ? "static z-50 h-full bg-background/50 rounded-none" : `${template?.icons} ${template?.backgroundColor2}`
                             }
-                            "w-fit h-fit text-lg p-2.5 ml-2 absolute top-2 right-2 z-30 active:scale-70 active:opacity-80 transition-transform duration-300 rounded-full flex items-center justify-center"`}
+                            w-fit h-fit text-lg p-2.5 ml-2 absolute top-2 right-2 z-30 active:scale-70 active:opacity-80 transition-transform duration-300 rounded-full flex items-center justify-center`}
                     >
                         <FaEdit />
                     </button>

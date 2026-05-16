@@ -33,9 +33,9 @@ export default function ConfigureMenu({ user }: { user: any }) {
     }, [user]);
 
     const navBarOptions = [
-        { id: "default", label: "Por defecto", format: "vertical", selected: navBar === "default", image: ImgPorDefecto, alt: "D", width: 150, height: 150 },
-        { id: "recortado", label: "Recortado", format: "vertical", selected: navBar === "recortado", image: ImgRecortado, alt: "R", width: 150, height: 150 },
-        { id: "horizontal", label: "Horizontal", format: "vertical", selected: navBar === "horizontal", image: ImgHorizontal, alt: "H", width: 150, height: 150 }
+        { id: "default", label: "Por defecto", format: "vertical", selected: navBar === "default", image: ImgPorDefecto, alt: "D", width: 200, height: 200 },
+        { id: "recortado", label: "Recortado", format: "vertical", selected: navBar === "recortado", image: ImgRecortado, alt: "R", width: 200, height: 200 },
+        { id: "horizontal", label: "Horizontal", format: "vertical", selected: navBar === "horizontal", image: ImgHorizontal, alt: "H", width: 200, height: 200 }
     ];
 
     const presentationOptions = [

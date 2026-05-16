@@ -20,7 +20,7 @@ export const ConfigOptionCard: React.FC<ConfigOptionCardProps> = ({ id, label, s
             className="cursor-pointer w-full group"
         >
             <div className={`relative ${isVertical ? 'flex-col items-center justify-between min-h-[140px] w-full' : 'flex-row items-center justify-between h-24'} flex-1 border-2 rounded-2xl py-3 px-4 flex bg-white transition-all duration-300 
-                ${selected ? 'border-gray-900 shadow-lg scale-[1.03] z-10' : 'border-gray-200 group-hover:border-gray-300'}`}>
+                ${selected ? 'border-gray-900 shadow-lg scale-[1.03] md:scale-102 z-10' : 'border-gray-200 group-hover:border-gray-300'}`}>
 
                 <div className={`flex items-center justify-center ${isVertical ? 'w-full flex-1' : 'w-20'}`}>
                     {children}
@@ -48,7 +48,7 @@ export const ConfigSwitch = ({ label, enabled, onChange }: any) => (
         <button
             type="button"
             onClick={() => onChange(!enabled)}
-            className={`${enabled ? 'bg-green-500' : 'bg-gray-300'} relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none focus:ring-0`}
+            className={`${enabled ? 'bg-green-500' : 'bg-gray-300'} cursor-pointer relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none focus:ring-0`}
         >
             <span className={`${enabled ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform duration-200`} />
         </button>

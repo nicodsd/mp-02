@@ -113,7 +113,7 @@ export default function EditFoodModal({
             enterTo="opacity-100 scale-100"
             leave="ease-in duration-200"
           >
-            <DialogPanel className={`w-full bg-white max-w-2xl rounded-xl shadow-2xl overflow-hidden`}>
+            <DialogPanel className={`w-full bg-background max-w-2xl rounded-xl shadow-2xl overflow-hidden`}>
               <form
                 onSubmit={handleUpdate}
                 className="flex flex-col md:flex-row h-full"
@@ -187,17 +187,23 @@ export default function EditFoodModal({
 
                   {/* Campo Precio */}
                   <div className="flex flex-col gap-1">
-                    <div className="w-full flex items-center justify-end gap-2">
-                      <label className="text-2xl text-gray-800 font-bold tracking-widest flex items-center justify-center gap-2"> <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Precio</span> $</label>
+                    <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest ml-1">Precio</label>
+                    <div className="relative">
                       <input
-                        type="number"
-                        className="border border-gray-200 w-30 p-2 text-3xl text-center outline-none focus:border-black rounded-lg transition-colors font-bold text-gray-800"
+                        className="w-full border border-gray-300 rounded-lg px-10 text-[2rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+
+                        id="price"
+                        name="price"
+                        maxLength={10}
                         placeholder="0.00"
+                        type="number"
+                        required
                         value={formData.price}
                         onChange={(e) =>
                           setFormData({ ...formData, price: e.target.value })
                         }
                       />
+                      <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
                     </div>
                   </div>
 
@@ -234,7 +240,7 @@ export default function EditFoodModal({
 
                   <button
                     disabled={loading}
-                    className={`mt-4 w-full py-3 rounded-xl font-bold text-white transition-all transform active:scale-95 shadow-gray-200
+                    className={`mt-4 w-full py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 shadow-gray-200
                       ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-red-800 cursor-pointer"}`}
                   >
                     {loading ? "Sincronizando..." : "Guardar Cambios"}

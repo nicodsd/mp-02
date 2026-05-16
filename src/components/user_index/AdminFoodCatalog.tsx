@@ -2,6 +2,7 @@ import React, { useState, useTransition, useMemo } from "react";
 import Categories from "@/src/components/Categories";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
+import ListCardsByCategory from "@/src/components/Index/sections/ListCardsByCategory";
 import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
 import { Dessert, Martini, Utensils } from "lucide-react";
 
@@ -57,7 +58,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                 <SortPriceButton onSortChange={setSortOrder} template={template} />
                             </div>
                         )}
-                        <SortableContext
+                        {user?.presentation === "default" ? (<SortableContext
                             arrayFoods={processedFoods.filter(f => {
                                 let isMain = true
                                 if (enabledDesserts && enabledDrinks) {
@@ -70,7 +71,22 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
                             template={template}
-                        />
+                        />) : (
+                            <ListCardsByCategory
+                                arrayFoods={processedFoods.filter(f => {
+                                    let isMain = true
+                                    if (enabledDesserts && enabledDrinks) {
+                                        isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                                    } else if (enabledDesserts && !enabledDrinks) {
+                                        isMain = f.sub_category !== "Postres";
+                                    } else if (!enabledDesserts && enabledDrinks) {
+                                        isMain = f.sub_category !== "Bebidas";
+                                    }
+                                    return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
+                                })}
+                                example={false}
+                                template={template}
+                            />)}
                     </div>
                 ) : (
                     null
