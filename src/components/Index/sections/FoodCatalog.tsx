@@ -3,6 +3,7 @@ import Categories from "@/src/components/Categories";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
+import ListCardsByCategory from "./ListCardsByCategory";
 import { Utensils, Martini, Dessert } from "lucide-react";
 
 export default function FoodCatalog({ allFoods, template, example, user }: any) {
@@ -69,10 +70,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
                     </div>
 
-                    <CardsFoodsByCategories
-                        whatsapp={user?.whatsAppCart}
-                        example={example}
-                        template={template}
+                    {user?.presentation === "default" ? (<CardsFoodsByCategories
                         arrayFoods={processedFoods.filter(f => {
                             let isMain = true
                             if (enabledDesserts && enabledDrinks) {
@@ -84,7 +82,26 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             }
                             return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                         })}
-                    />
+                        example={example}
+                        whatsapp={user?.whatsAppCart}
+                        template={template}
+                    />) : (
+                        <ListCardsByCategory
+                            arrayFoods={processedFoods.filter(f => {
+                                let isMain = true
+                                if (enabledDesserts && enabledDrinks) {
+                                    isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
+                                } else if (enabledDesserts && !enabledDrinks) {
+                                    isMain = f.sub_category !== "Postres";
+                                } else if (!enabledDesserts && enabledDrinks) {
+                                    isMain = f.sub_category !== "Bebidas";
+                                }
+                                return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
+                            })}
+                            example={false}
+                            template={template}
+                        />)}
+
                 </div>
 
                 {/* POSTRES */}

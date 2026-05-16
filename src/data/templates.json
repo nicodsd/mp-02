@@ -28,16 +28,16 @@
         "name": "Noche",
         "bgMenu": "bg-[#0a0a0a]",
         "backgroundColor": "bg-[#0a0a0a]",
-        "backgroundColor2": "bg-[#2c2e27]",
+        "backgroundColor2": "bg-[#111217]",
         "accentColors": [
             "bg-[#fff]",
-            "bg-[#495c49]",
+            "bg-[#5d6649]",
             "bg-[#262626]",
             "bg-[#0F0F0F]"
         ],
         "accentColors2": [
             "[#fff]",
-            "[#495c49]",
+            "[#5d6649]",
             "[#262626]",
             "[#0F0F0F]"
         ],

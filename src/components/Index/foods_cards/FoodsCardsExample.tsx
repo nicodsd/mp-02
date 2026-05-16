@@ -15,7 +15,8 @@ export default function FoodsCardsExample({
   example,
   promo_price,
   template,
-  whatsapp
+  whatsapp,
+  list
 }: {
   name: string;
   photo: string;
@@ -28,6 +29,7 @@ export default function FoodsCardsExample({
   template: any;
   example?: boolean;
   whatsapp?: boolean;
+  list?: boolean;
 }) {
 
   function formatearPrecio(precio: number | string) {
@@ -41,7 +43,7 @@ export default function FoodsCardsExample({
 
   return (
     <div
-      className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
+      className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border ${list ? "h-30 rounded-xl" : "h-26"} ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
     >
       {
         is_gluten_free && (
