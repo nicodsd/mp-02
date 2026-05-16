@@ -79,7 +79,7 @@ export default function BottomNavigation({
         isOpen={isOpen}
         openModal={() => setIsOpen(false)}
       />
-      <div className={`fixed bottom-0 inset-x-0 ${template?.backgroundColor2} pb-2 z-50`}>
+      <div className={`fixed bottom-3 w-[95%] md:w-[60%] lg:w-[40%] shadow-md shadow-black/20 border border-gray-300/70 backdrop-blur-sm mx-auto rounded-2xl inset-x-0 bg-background/95 z-50`}>
         <div className="flex justify-around items-center h-16 max-w-md mx-auto">
           {navItems.map((item, index) => (
             <button
@@ -88,10 +88,10 @@ export default function BottomNavigation({
               /* disabled={item.label === "Promociones"} */
               className="flex flex-col cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center flex-1 h-full gap-1.5 group active:scale-95 transition-transform"
             >
-              <div className={`${template?.textColor} group-hover:${template?.textColor2} group-active:${template?.textColor2} transition-colors`}>
+              <div className={`text-gray-900 group-hover:text-red-500 group-active:text-red-500 transition-colors`}>
                 {item.icon}
               </div>
-              <span className={`text-[10px] font-semibold ${template?.textColor} group-hover:${template?.textColor2} uppercase tracking-tighter leading-none`}>
+              <span className={`text-[10px] md:text-xs font-semibold text-gray-900 group-hover:text-red-500 uppercase tracking-tighter leading-none`}>
                 {item.label}
               </span>
             </button>

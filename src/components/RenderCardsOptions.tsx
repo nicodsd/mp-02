@@ -11,6 +11,7 @@ type RenderCardsProps = {
   context?: boolean;
   template?: any;
   example?: boolean;
+  whatsapp?: boolean;
 };
 
 export default function RenderCardsOptions({
@@ -19,6 +20,7 @@ export default function RenderCardsOptions({
   context,
   template,
   example,
+  whatsapp
 }: RenderCardsProps) {
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -56,6 +58,7 @@ export default function RenderCardsOptions({
                 food={food}
                 context={context}
                 example={example}
+                whatsapp={whatsapp}
               />
               {
                 !context && !example && (

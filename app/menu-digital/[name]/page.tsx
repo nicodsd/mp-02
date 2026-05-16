@@ -36,7 +36,9 @@ export default async function Page({
           "hidden"
         }`
       } />
-      <Bell user={user?.data} template={template} />
+      {user?.data?.whatsAppCart === true &&
+        <Bell user={user?.data} template={template} />
+      }
       <Menu data={user?.data} template={template} />
       <Footer template={template} />
     </div>

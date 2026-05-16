@@ -1,29 +1,33 @@
 "use client";
 import Image from "next/image";
 import AddFood from "@/src/components/buttons/AddFood";
+import IconFood from "@/public/images/icons-index/IconFood";
 import AddFoodExample from "@/src/components/buttons/AddFoodExample";
-import { FaEdit } from "react-icons/fa";
 
 export default function FoodsCardsExample({
   name,
   photo,
   description,
+  is_gluten_free,
   price,
   is_promo,
   _id,
   example,
   promo_price,
   template,
+  whatsapp
 }: {
   name: string;
   photo: string;
   _id: string;
   description: string;
+  is_gluten_free: boolean;
   price: number | string;
   is_promo: boolean;
   promo_price: number | string;
   template: any;
   example?: boolean;
+  whatsapp?: boolean;
 }) {
 
   function formatearPrecio(precio: number | string) {
@@ -37,8 +41,22 @@ export default function FoodsCardsExample({
 
   return (
     <div
-      className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
+      className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border h-26 ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
     >
+      {
+        is_gluten_free && (
+          <div className={`absolute w-full top-0 left-0 flex justify-between`}>
+            <div className="px-2 py-1.5 flex items-center gap-2 bg-[#c2361e] shadow-md shadow-black/40 text-white text-sm font-semibold rounded-br-2xl">
+              <span className={`font-semibold text-white oldstyle-nums`}>
+                Sin tacc
+              </span>
+              <IconFood
+                className="text-white"
+                size={18}
+              />
+            </div>
+          </div>
+        )}
       <Image
         quality={75}
         loading="lazy"
@@ -62,13 +80,12 @@ export default function FoodsCardsExample({
               {description}
             </p>
           </div>
-          {
-            example ? (
-              <AddFoodExample _id={_id} />
-            ) : (
-              <AddFood _id={String(_id)} />
-            )
-          }
+
+          {whatsapp !== false ? (example ? (
+            <AddFoodExample _id={_id} />
+          ) : (
+            <AddFood _id={String(_id)} />
+          )) : null}
         </div>
 
         <div
@@ -96,6 +113,6 @@ export default function FoodsCardsExample({
           )}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
