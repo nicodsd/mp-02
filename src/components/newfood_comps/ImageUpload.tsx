@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { PhotoCamera } from "@mui/icons-material";
+import {
+    FaCamera,
+} from "react-icons/fa";
+
 import { HiX } from "react-icons/hi";
 
 export const ImageUpload = ({ preview, file, onImageChange, onDelete, imgPlaceholder }: any) => {
@@ -40,7 +43,7 @@ export const ImageUpload = ({ preview, file, onImageChange, onDelete, imgPlaceho
                                         if (f) onImageChange(f);
                                     }}
                                 />
-                                <PhotoCamera sx={{ fontSize: 48 }} /> Agregar
+                                <FaCamera size={40} /> Adjuntar foto
                             </label>
                         )}
                 </div>

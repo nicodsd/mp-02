@@ -1,4 +1,5 @@
 "use client";
+import IconFood from "@/public/images/icons-index/IconFood";
 import Image from "next/image";
 
 export function SortableFoodCard({ food, context, template }: { food: any, context: boolean, template?: any }) {
@@ -20,6 +21,21 @@ export function SortableFoodCard({ food, context, template }: { food: any, conte
                     : `border h-27 ${template?.border} rounded-lg p-1 items-center`
                 }`}
         >
+            {
+                food.is_gluten_free && (
+                    <div className={`absolute w-full top-0 left-0 flex justify-between`}>
+                        <div className="px-2 py-1.5 flex items-center gap-2 bg-[#c2361e] shadow-md shadow-black/40 text-white text-sm font-semibold rounded-br-2xl">
+                            <span className={`font-semibold text-white oldstyle-nums`}>
+                                Sin tacc
+                            </span>
+                            <IconFood
+                                className="text-white"
+                                size={18}
+                            />
+                        </div>
+                    </div>
+                )
+            }
             <Image
                 quality={75}
                 loading="eager"

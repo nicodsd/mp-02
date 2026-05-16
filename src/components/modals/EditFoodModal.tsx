@@ -118,15 +118,15 @@ export default function EditFoodModal({
                 onSubmit={handleUpdate}
                 className="flex flex-col md:flex-row h-full"
               >
-                <div className="md:w-1/2 bg-black relative group h-fit">
+                <div className="md:w-1/2 md:h-80 bg-black relative group h-fit rounded-br-2xl">
                   <Image
                     width={500}
                     height={500}
                     src={preview || "/placeholder-food.png"}
                     alt="Preview"
-                    className="w-full h-40 object-cover"
+                    className="w-full md:h-full h-40 object-cover rounded-br-2xl"
                   />
-                  <label className={`absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-100 hover:bg-black/40 transition-opacity cursor-pointer text-white`}>
+                  <label className={`absolute inset-0 flex flex-col rounded-br-2xl items-center justify-center bg-black/30 opacity-100 hover:bg-black/40 transition-opacity cursor-pointer text-white`}>
                     <FaCloudUploadAlt size={30} />
                     <span className="font-bold text-xs mt-2 text-center px-4">
                       Click para cambiar imagen
@@ -169,7 +169,7 @@ export default function EditFoodModal({
 
                   <div className="flex flex-col gap-1">
                     <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest ml-1">
-                      Descripción / Ingredientes
+                      Descripción o Ingredientes
                     </label>
                     <textarea
                       className="border border-gray-200 p-2 outline-none text-lg focus:border-black rounded-lg transition-colors font-medium text-gray-700 leading-relaxed"
@@ -191,7 +191,7 @@ export default function EditFoodModal({
                       <label className="text-2xl text-gray-800 font-bold tracking-widest flex items-center justify-center gap-2"> <span className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Precio</span> $</label>
                       <input
                         type="number"
-                        className="border border-gray-200 w-30 p-2 text-3xl text-center outline-none focus:border-black rounded-2xl transition-colors font-bold text-gray-800"
+                        className="border border-gray-200 w-30 p-2 text-3xl text-center outline-none focus:border-black rounded-lg transition-colors font-bold text-gray-800"
                         placeholder="0.00"
                         value={formData.price}
                         onChange={(e) =>

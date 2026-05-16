@@ -47,6 +47,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             example={example}
                             template={template}
                             context={true}
+                            whatsapp={user?.whatsAppCart}
                             foods={processedFoods.filter(f => f.sub_category === "Bebidas")}
                         />
                     </div>
@@ -69,6 +70,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                     </div>
 
                     <CardsFoodsByCategories
+                        whatsapp={user?.whatsAppCart}
                         example={example}
                         template={template}
                         arrayFoods={processedFoods.filter(f => {
@@ -94,6 +96,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         </div>
                         <RenderCardsOptions
                             example={example}
+                            whatsapp={user?.whatsAppCart}
                             template={template}
                             context={true}
                             foods={processedFoods.filter(f => f.sub_category === "Postres")}
