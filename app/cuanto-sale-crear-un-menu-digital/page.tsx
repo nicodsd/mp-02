@@ -95,17 +95,13 @@ export default function PricingPage() {
                                     Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
                                 </motion.p>
                             </div>
-                            <div className="flex w-full justify-start text-stone-700 items-center gap-2 pl-2">
-                                <p className="text-sm">Suscripciones gestionadas a través de </p>
-                                <Image src="/images/icons-app/MP_RGB_HANDSHAKE_color_horizontal.png" alt="" width={300} height={300} className="w-30" />
-                            </div>
 
                             {/* Grid: 1 col móvil, 3 cols desktop */}
                             <div className="grid grid-cols-1 md:grid-cols-3 space-y-4 gap-3 items-start px-2">
                                 {plans.map((plan, index) => (
                                     <div
                                         key={index}
-                                        className={`relative flex flex-col p-6 md:p-8 rounded-2xl border
+                                        className={`relative flex flex-col p-6 md:p-8 md:h-172 rounded-2xl border
                 ${!plan.premium && !plan.recommended && 'border-gray-200'}
                 ${plan.premium && 'bg-linear-to-br from-white via-gray-300/80 to-white hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
                 ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
@@ -131,7 +127,7 @@ export default function PricingPage() {
 
                                         {
                                             !plan.premium ?
-                                                <ul className="space-y-3 md:space-y-4 mb-8 grow">
+                                                <ul className="space-y-3 md:space-y-2 mb-8 grow">
                                                     {plan.features.map((feature, idx) => (
                                                         <li key={idx} className="flex items-start">
                                                             <Check className={`h-5 w-5 mr-3 shrink-0 ${plan.recommended ? 'text-primary' : 'text-stone-400'}`} />
@@ -140,7 +136,7 @@ export default function PricingPage() {
                                                     ))}
                                                 </ul>
                                                 :
-                                                <ul className="space-y-3 md:space-y-4 mb-8 grow">
+                                                <ul className="space-y-3 md:space-y-2 mb-8 grow">
                                                     {plan.features.map((feature, idx) => (
                                                         <li key={idx} className="flex items-start">
                                                             <Check className={`h-5 w-5 mr-3 shrink-0 text-stone-800`} />
@@ -173,6 +169,11 @@ export default function PricingPage() {
                                 ))}
                             </div>
                         </div>
+                        <span className="flex text-center flex-col mt-26 justify-center items-center gap-1">
+                            <p className="text-stone-500 text-xs">Manejo seguro de suscripciones a través de Mercado Pago.</p>
+                            <p className="text-stone-500 text-xs">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
+                            <p className="text-stone-500 text-xs">Leé nuestros <a href="/terminos-y-condiciones" className="text-blue-500 underline">Términos y Condiciones</a>.</p>
+                        </span>
                     </section>
                 </main>
             </div>
