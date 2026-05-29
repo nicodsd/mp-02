@@ -12,6 +12,7 @@ import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import TemplateSelector from "@/src/components/dashboard/Templates";
 import { cookies } from "next/headers";
 import BttnBack from "@/src/components/buttons/BttnBack";
+import SubscriptionPanel from "@/src/components/dashboard/SubscriptionPanel";
 
 async function PlatosPanel({ userId, token, template }: any) {
   const foods = await getFoodsByUser(URI, userId);
@@ -65,6 +66,9 @@ export default async function DashboardPage() {
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
           <SucursalesPanel userId={user?.id} />
+        </TabPanel>
+        <TabPanel className="focus:outline-none w-full">
+          <SubscriptionPanel user={user} />
         </TabPanel>
       </div>
     </PanelUser>

@@ -22,7 +22,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
 
     if (foods?.length === 0) return null;
 
-    const isPremium = user.plan === "premium" || user.plan === "plus";
+    const isPremium = (user.plan === "premium" && user.mp_preapproval_id !== null) || (user.plan === "plus" && user.mp_preapproval_id !== null);
     const enabledDrinks = user?.enable_bebidas
     const enabledDesserts = user?.enable_postres
     return (

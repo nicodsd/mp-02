@@ -6,10 +6,10 @@ const CheronBttn = () => {
     return (
         <button
             type="button"
-            onClick={() => router.back()}
-            className="flex items-center cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+            onClick={() => router.replace('/', { scroll: false })}
+            className="flex  items-center cursor-pointer absolute top-1 -left-2 hover:opacity-80 transition-opacity"
         >
-            <MdChevronLeft className="text-2xl mr-1" />
+            <MdChevronLeft className="text-3xl mr-1" />
         </button>
     );
 };

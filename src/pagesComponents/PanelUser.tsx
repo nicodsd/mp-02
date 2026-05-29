@@ -1,13 +1,13 @@
 "use client";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { logotipo, URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
-  Tab,
-  TabPanels,
   TabGroup,
+  Tab,
   TabList,
+  TabPanels,
   Dialog,
   DialogPanel,
   Transition,
@@ -23,9 +23,10 @@ import {
   HiX,
   HiOutlineAdjustments,
   HiOutlineClipboardList,
+  HiOutlineCreditCard,
 } from "react-icons/hi";
 import UserPlan from "@/src/components/user-plan/UserPlan";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { logout } from "@/app/actions";
 
 export default function PanelUser({
@@ -42,6 +43,26 @@ export default function PanelUser({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const section = searchParams.get("section");
+
+  useEffect(() => {
+    const index = menuItems.findIndex(
+      item => item.key === section
+    );
+
+    setSelectedIndex(index >= 0 ? index : 0);
+  }, [section]);
+
+  const handleTabChange = (index: number) => {
+    if (index === undefined || !menuItems[index]) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("section", menuItems[index].key);
+
+    router.replace(`/panel-de-usuario?${params.toString()}`);
+  };
 
   const hadleLogoutUserAction = async (userId: string) => {
     try {
@@ -65,30 +86,30 @@ export default function PanelUser({
   }
 
   const tabClass = (selected: boolean) =>
-    `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm font-bold transition-all outline-none
+    `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-md font-bold transition-all outline-none disabled:opacity-40 disabled:pointer-events-none
     ${selected
       ? "text-white bg-black transform scale-[1.02]"
       : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
 
   const menuItems = [
-    { name: "Usuario", icon: <HiOutlineUser size={20} /> },
-    { name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
-    { name: "Promociones", icon: <HiOutlineTicket size={20} /> },
-    { name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
-    { name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
-    { name: "Sucursales", icon: <MdStorefront size={20} /> },
+    { key: "user", name: "Usuario", icon: <HiOutlineUser size={20} /> },
+    { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
+    { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
+    { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
+    { key: "paletas", name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
+    { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
+    { key: "plan", name: "Mi Plan", icon: <HiOutlineCreditCard size={20} /> },
   ];
 
-  if (user?.plan === "free") {
-    menuItems.pop();
-    menuItems.pop();
-    menuItems.pop();
-  }
 
   return (
     <div className="h-screen relative">
-      <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+      <TabGroup
+        manual
+        selectedIndex={selectedIndex}
+        onChange={handleTabChange}
+      >
         <button
           aria-label="Abrir menú del panel de usuario"
           onClick={() => setIsSidebarOpen(true)}
@@ -154,21 +175,21 @@ export default function PanelUser({
                     </button>
                   </div>
 
-                  <nav className="mt-10 px-4 space-y-2 flex flex-col justify-between h-full">
-                    <div>
+                  <nav className="px-4 space-y-2 flex flex-col justify-between h-full">
+                    <TabList>
                       {menuItems?.map((item, index) => (
-                        <button
-                          key={item?.name}
-                          onClick={() => {
-                            setSelectedIndex(index);
-                            setIsSidebarOpen(false);
-                          }}
-                          className={tabClass(selectedIndex === index)}
+                        <Tab
+                          disabled={user?.plan === "free" && (item?.name === "Promociones" || item?.name === "Configura tu menú" || item?.name === "Paletas de colores" || item?.name === "Sucursales")}
+                          key={item.name}
+                          className={({ selected }) =>
+                            tabClass(selected)
+                          }
+                          onClick={() => setIsSidebarOpen(false)}
                         >
                           {item?.icon} {item?.name}
-                        </button>
+                        </Tab>
                       ))}
-                    </div>
+                    </TabList>
                     <div className="w-full pl-5">
                       <button
                         onClick={() => { hadleLogoutUserAction(user.id) }}
@@ -184,10 +205,10 @@ export default function PanelUser({
           </Dialog>
         </Transition>
 
-        <div className="w-full h-screen md:mx-auto sm:px-4 lg:px-8 py-2">
+        <div className="w-full h-screen md:mx-auto sm:px-4 lg:px-8 py-2 relative">
           <div className="flex h-full w-full md:justify-between items-start flex-col md:flex-row gap-4 md:gap-8">
-            <aside className="hidden h-full md:block md:w-80 shrink-0">
-              <div className="sticky top-10">
+            <aside className="hidden h-full md:block md:w-80 shrink-0 mt-10">
+              <div className="">
                 <BttnBack />
                 <div className="flex ml-2 flex-col gap-2 mt-8">
                   <div className="flex items-center gap-2">
@@ -208,19 +229,30 @@ export default function PanelUser({
                   </div>
                 </div>
                 <TabList className="flex flex-col mt-16 gap-y-2">
-                  {menuItems?.map((item, index) => (
+                  {menuItems.map((item, index) => (
                     <Tab
-                      key={item?.name}
-                      className={({ selected }) => tabClass(selected)}
+                      key={item.name}
+                      disabled={
+                        user?.plan === "free" &&
+                        (
+                          item.name === "Promociones" ||
+                          item.name === "Configura tu menú" ||
+                          item.name === "Paletas de colores" ||
+                          item.name === "Sucursales"
+                        )
+                      }
+                      className={({ selected }) =>
+                        tabClass(selected)
+                      }
                     >
-                      {item?.icon} {item?.name}
+                      {item.icon} {item.name}
                     </Tab>
                   ))}
                 </TabList>
                 <div className="w-full pl-5">
                   <button
                     onClick={() => { hadleLogoutUserAction(user.id) }}
-                    className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors font-bold cursor-pointer"
+                    className="mt-10 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors font-bold cursor-pointer"
                   >
                     <HiOutlineLogout size={20} /> Cerrar Sesión
                   </button>

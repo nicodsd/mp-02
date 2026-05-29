@@ -3,7 +3,7 @@ import { Check, Link } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
-import Image from 'next/image';
+import BttnBack from '@/src/components/buttons/BttnBack';
 
 interface PricingPlan {
     name: string;
@@ -35,13 +35,13 @@ const plans: PricingPlan[] = [
         href: "/registro-de-usuario?plan=free"
     },
     {
-        name: "Plus",
+        name: "Plus+",
         price: "$14.900",
         before: "$19.900",
         period: "/mes",
         description: "Para restaurantes que quieren destacar su marca.",
         features: [
-            "Platos ilimitados",
+            "Platos ilimitados, permanente",
             "Códigos QR personalizables con tu logo",
             "Fotos de alta calidad",
             "Analíticas de visitas",
@@ -60,7 +60,7 @@ const plans: PricingPlan[] = [
         period: "/mes",
         description: "El plan más completo para locales con gran variedad de platos y que quieren destacar su marca.",
         features: [
-            "Platos ilimitados",
+            "Platos ilimitados, permanente",
             "Códigos QR personalizables con tu logo",
             "Fotos de alta calidad",
             "Analíticas de visitas",
@@ -86,12 +86,13 @@ export default function PricingPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-40 pb-20">
+                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-30 md:pt-60 pb-20">
                     <section id="planes" className="w-full">
-                        <div className="w-full">
+                        <BttnBack />
+                        <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2">
                                 <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
-                                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
+                                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
                                     Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
                                 </motion.p>
                             </div>

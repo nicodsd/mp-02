@@ -198,7 +198,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
         </div>
         {user && cookie && (
           <Link
-            className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user?.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full shadow-md`}
+            className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user?.plan === "free" ? "bg-gray-100 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
             <FaEdit size={14} /> Perfil
@@ -235,7 +235,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
           ]
             .filter(social => social.val)
             .map((social) => (
-              <span key={social.id} className="flex items-center gap-1 border-l border-white/50 pl-2">
+              <span key={social.id} className={`flex items-center gap-1 border-l ${user?.plan === "free" ? "border-gray-700" : "border-white/50"} pl-2`}>
                 {social.icon}
                 {social.val}
               </span>

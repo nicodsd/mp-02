@@ -15,12 +15,12 @@ const featuresList = [
     {
         icon: <HiOutlineAdjustments className="h-6 w-6" />,
         title: "Configura tu menú",
-        description: "Configura tu menú para destacarte del resto, cambia el tamaño del encabezado, como se presentan los platos, entre otras configuraciones."
+        description: "Destacá del resto, cambiá el tamaño del encabezado, la presentación de los platos, entre otras configuraciones."
     },
     {
         icon: <HiOutlineColorSwatch className="h-6 w-6" />,
         title: "Colores Personalizables",
-        description: "Diseña tu menú con la identidad de tu marca. Elige entre diferentes paletas de colores para que tu menú se vea único."
+        description: "Diseñá tu menú con la identidad de tu marca. Elegí entre diferentes paletas de colores para que tu menú se vea único."
     },
     {
         icon: <CloudLightning className="h-6 w-6" />,
@@ -54,13 +54,13 @@ export default function CaracteristicasPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-20">
+                <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 md:pt-40 pt-10">
                     <section id="caracteristicas" className="py-16 md:py-24 relative overflow-hidden w-full">
                         <BttnBack />
-                        <div className="w-full relative z-10">
+                        <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2">
                                 <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h1>
-                                <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg px-3">
+                                <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
                                     Una herramienta potente y fácil de usar para digitalizar tu local gastronómico ahora mismo.
                                 </motion.p>
                             </div>

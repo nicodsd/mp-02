@@ -6,6 +6,7 @@ import QrCode from "@/src/components/user-settings/QrCode";
 import { placeholder } from "@/src/lib/const";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { OctagonX } from "lucide-react";
 import {
   FaCamera,
@@ -272,10 +273,10 @@ const UserSettings = ({ user }: { user: any }) => {
               :
               <div className="flex items-center justify-center gap-2 flex-col">
                 <h3 className="text-lg text-gray-700">Fondo</h3>
-                <div className="w-45 px-5 opacity-30 cursor-not-allowed flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                <Link href="/panel-de-usuario?section=planes" className="w-45 px-5 opacity-70 cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
                   <OctagonX size={50} className="text-gray-400" />
-                  <p className="text-gray-500 text-sm text-center">Función disponible en plan de pago</p>
-                </div>
+                  <span className="text-gray-800 text-[12px] text-center">Mejora tu plan para agregar un fondo</span>
+                </Link>
               </div>
             }
           </div>
@@ -599,7 +600,7 @@ const UserSettings = ({ user }: { user: any }) => {
         )}
       </form>
       <div className="w-full mt-7 px-3 flex flex-col gap-y-1">
-        <h2 className="text-xl font-bold text-gray-800">Personaliza y Comparte</h2>
+        <h2 className="text-xl font-bold text-gray-800">{user.plan !== "free" ? "Personaliza y Comparte" : "Comparte"}</h2>
         <span className="text-gray-500 text-sm">
           Comparte el código QR para acceder a tu menú, o tambien puedes copiar el enlace para compartir en tus redes sociales.
         </span>

@@ -317,7 +317,38 @@ export default function Register() {
           }}
           validationSchema={validationSchemas[step]}
           onSubmit={async (values, { setSubmitting }) => {
-            if (step < steps.length - 1) {
+            if (step === 0) {
+              setServerMessage(null);
+              try {
+                const response = await fetch(`${URI}/auth/send-verification`, {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    email: values.email,
+                    name: values.name,
+                    password: values.password
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  credentials: 'include',
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                  setIsResponse(false);
+                  const msg = Array.isArray(data.message) ? data.message.join(". ") : (data.message || "Ocurrió un error al enviar el correo.");
+                  setServerMessage(msg);
+                  return;
+                }
+                setIsResponse(true);
+                setServerMessage("Se ha enviado un correo de verificación a tu email. Por favor, verifícalo para continuar.");
+                setStep(1);
+              } catch (error) {
+                setIsResponse(false);
+                setServerMessage("Error de conexión. Intente nuevamente.");
+              } finally {
+                setSubmitting(false);
+              }
+            } else if (step < steps.length - 1) {
               setStep(step + 1);
               setSubmitting(false);
               setServerMessage(null);
@@ -666,7 +697,7 @@ export default function Register() {
                 </div>
               )}
 
-              <div className="h-fit w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
+              <div className="h-fit z-100 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
                 <div className="flex items-center mb-2 w-full px-4 justify-end gap-3">
 
                   {!preapprovalId ? <button
