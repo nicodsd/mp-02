@@ -139,7 +139,7 @@ export const TestimonialsSection: React.FC = () => {
                                 <motion.div
                                     key={currentIndex}
                                     custom={direction}
-                                    variants={slideVariants}
+                                    variants={slideVariants as any}
                                     initial="enter"
                                     animate="center"
                                     exit="exit"
@@ -186,7 +186,7 @@ export const TestimonialsSection: React.FC = () => {
                                 <motion.div
                                     key={currentIndex}
                                     custom={direction}
-                                    variants={slideVariants}
+                                    variants={slideVariants as any}
                                     initial="enter"
                                     animate="center"
                                     exit="exit"
