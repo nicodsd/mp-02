@@ -40,7 +40,12 @@ export default function NavBar({
     setIsMounted(true);
   }, []);
 
-  const typeNavbar = user?.navBar || 'default';
+  let typeNavbar = 'default';
+  if (user?.plan !== "free") {
+    typeNavbar = user?.navBar || 'default';
+  } else {
+    typeNavbar = 'default';
+  }
   const isSpecialState = state === 1 || state === 2;
   const canShowCover = user && user.plan !== "free" && user.cover;
   const backgroundImage = canShowCover
@@ -136,7 +141,7 @@ export default function NavBar({
             ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-red-700 to-primary h-14 p-2 text-white"
             : "absolute top-2 italic"
           } items-center justify-between`}>
-          {user && (
+          {user && typeNavbar !== "horizontal" && (
             <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/">
               {user?.plan === "free" ? (
                 <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
@@ -198,7 +203,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
         </div>
         {user && cookie && (
           <Link
-            className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user?.plan === "free" ? "bg-gray-300 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full shadow-md`}
+            className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user?.plan === "free" ? "bg-gray-100 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
             <FaEdit size={14} /> Perfil
@@ -235,7 +240,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
           ]
             .filter(social => social.val)
             .map((social) => (
-              <span key={social.id} className="flex items-center gap-1 border-l border-white/50 pl-2">
+              <span key={social.id} className={`flex items-center gap-1 border-l ${user?.plan === "free" ? "border-gray-700" : "border-white/50"} pl-2`}>
                 {social.icon}
                 {social.val}
               </span>
@@ -362,41 +367,56 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
 
   return (
-    <div className="relative h-43 flex flex-col justify-center items-center">
-      <div className={`flex items-center h-18 text-white drop-shadow drop-shadow-gray-900/30 w-full`}>
-        <div className="w-[30%] flex flex-col items-center justify-center">
+    <div className="relative min-h-44 md:h-52 md:pt-10 flex flex-col justify-center items-center">
+      <div className={`flex relative items-center px-6 md:justify-center justify-center gap-3 h-18 text-white drop-shadow drop-shadow-gray-900/30 w-full`}>
+        <div className="absolute mx-auto -top-11">
+          <Link className="flex items-center gap-2 text-xs" href="/">
+            {user?.plan === "free" ? (
+              <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
+            ) : (
+              <Image priority src={logo_w} width={60} height={60} alt="Logo" className="w-13 h-13 md:w-24 md:h-16 object-contain" />
+            )}
+          </Link>
+        </div>
+
+        <div className="w-fit flex flex-col items-center justify-center md:ml-0">
           <div className={`rounded-full p-1 bg-white`}>
             <Image
               priority
               src={optimizedPhoto || logo}
-              width={100}
-              height={100}
-              className="rounded-full object-cover w-[60px] h-[60px]"
+              width={200}
+              height={200}
+              className="rounded-full object-cover md:w-20 md:h-auto w-[60px] h-[60px]"
               alt="Profile"
             />
           </div>
         </div>
 
-        <div className="w-[70%] flex relative">
-          <div className="w-full">
-            <h2 className="text-xl leading-none w-full font-bold mt-3 uppercase text-start">
-              {displayData.name}
-            </h2>
-            <p className="my-1 italic text-start text-sm opacity-90">
-              {displayData.description}
-            </p>
-          </div>
-          {user && cookie && (
-            <Link
-              className={`flex flex-col items-center absolute top-0 right-3 text-black active:scale-90 bg-white transition-all duration-100 mx-auto w-fit gap-1 text-sm px-3 py-2 rounded-xl shadow-md`}
-              href="/panel-de-usuario"
-            >
-              <FaEdit size={14} /> Perfil
-            </Link>
+        <div className="w-[55%]">
+          <h2 className="text-xl leading-none w-full font-bold uppercase text-start">
+            {displayData.name}
+          </h2>
+          <p className="my-1 text-start text-sm opacity-90">
+            {displayData.description}
+          </p>
+          {(displayData.address || !user) && (
+            <span className="flex text-xs items-center gap-1">
+              <FaMapMarkerAlt size={14} />
+              {displayData.address || "Santiago del Estero, Argentina"}
+            </span>
           )}
         </div>
+
+        {user && cookie && (
+          <Link
+            className={`flex flex-col items-center text-black active:scale-90 bg-white transition-all duration-100 w-fit gap-1 text-sm px-3 py-1 rounded-xl shadow-md`}
+            href="/panel-de-usuario"
+          >
+            Perfil
+          </Link>
+        )}
       </div>
-      <div className="flex items-center text-white gap-x-3 gap-y-1 mt-2 text-xs flex-wrap justify-start pr-2">
+      <div className="flex items-center text-white gap-x-3 gap-y-1 md:mt-4 mt-2 text-xs flex-wrap justify-start pr-2">
         {(displayData.phone || !user) && (
           <span className="flex items-center gap-1">
             <FaWhatsapp size={15} />

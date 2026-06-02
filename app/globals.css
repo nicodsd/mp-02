@@ -162,7 +162,7 @@ input[type="range"]::-webkit-slider-thumb {
         rgba(255, 0, 0, 0.74) 30%,
         rgba(255, 166, 0, 0.74) 55%,
         /* Núcleo rojo */
-        rgba(255, 218, 218, 0.918) 55%,
+        rgba(255, 218, 218, 0.808) 55%,
         /* Centro brillante */
         rgba(255, 123, 0, 0) 65%,
         transparent 80%);
@@ -171,19 +171,19 @@ input[type="range"]::-webkit-slider-thumb {
     filter: blur(1px);
 
     /* Animación de barrido de DERECHA a IZQUIERDA */
-    animation: sweep-right-to-left 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: sweep-right-to-left 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
   /* Animación: Desplazamiento lateral */
   @keyframes sweep-right-to-left {
     0% {
-      transform: translateX(-150%);
+      transform: translateX(-300%);
       /* Empieza fuera a la derecha */
       opacity: 0;
     }
 
     10% {
-      opacity: 1;
+      opacity: 0;
       /* Aparece rápido */
     }
 

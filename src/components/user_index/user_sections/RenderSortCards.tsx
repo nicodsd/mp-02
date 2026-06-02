@@ -11,7 +11,7 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import { SelectionToolbar } from "@/src/components/dashboard/components/dishComponents/SelectionToolbar";
 import { SortableRow } from "@/src/components/dashboard/components/dishComponents/SortableRow";
 
-export default function RenderSortCards({ foods: initialFoods, count, context, template }: any) {
+export default function RenderSortCards({ foods: initialFoods, count, user, context, template }: any) {
     const { foods, setFoods, removeFoodLocal } = useFoodStore();
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -26,7 +26,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
 
     // Filtrado de platos
     const platos = useMemo(() =>
-        foods.filter(f => f.category !== "Bebidas" && f.category !== "Postres"),
+        foods.filter(f => f.sub_category !== "Bebidas" && f.sub_category !== "Postres"),
         [foods]);
 
     useEffect(() => {
@@ -61,23 +61,35 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
         if (over && active.id !== over.id) {
-            const oldIndex = foods.findIndex((f) => f._id === active.id);
-            const newIndex = foods.findIndex((f) => f._id === over.id);
-            const updatedFoods = arrayMove(foods, oldIndex, newIndex);
-            setFoods(updatedFoods);
+            const oldIndex = platos.findIndex((f) => f._id === active.id);
+            const newIndex = platos.findIndex((f) => f._id === over.id);
 
-            try {
-                const response = await fetch(`${URI}/foods/update-order`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ order: updatedFoods.map((f, i) => ({ _id: f._id, order: i })) }),
-                    credentials: "include",
+            if (oldIndex !== -1 && newIndex !== -1) {
+                const updatedPlatos = arrayMove(platos, oldIndex, newIndex);
+
+                let platoIndex = 0;
+                const updatedFoods = foods.map((f) => {
+                    if (f.sub_category !== "Bebidas" && f.sub_category !== "Postres") {
+                        return updatedPlatos[platoIndex++];
+                    }
+                    return f;
                 });
-                if (response.status === 200) {
-                    refreshPage();
+
+                setFoods(updatedFoods);
+
+                try {
+                    const response = await fetch(`${URI}/foods/update-order`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ order: updatedFoods.map((f, i) => ({ _id: f._id, order: i })) }),
+                        credentials: "include",
+                    });
+                    if (response.status === 200) {
+                        refreshPage();
+                    }
+                } catch (error) {
+                    console.error("Error order", error);
                 }
-            } catch (error) {
-                console.error("Error order", error);
             }
         }
     };
@@ -95,7 +107,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
                 />
             )}
 
-            <div className={`flex flex-col overflow-y-auto overflow-x-hidden ${context ? " bg-gray-200/60 p-1" : ""} rounded-xl`}>
+            <div className={`flex flex-col overflow-y-auto overflow-x-hidden ${context ? "p-1 xl:grid lg:grid-cols-2 lg:gap-0.5" : ""} rounded-xl`}>
                 {foods.length === 0 ? (
                     <div className="flex justify-center items-center h-full">
                         <span className={`text-center ${context ? "text-gray-800 py-30" : template?.textColor} py-20`}>No hay platos que mostrar</span>
@@ -105,6 +117,7 @@ export default function RenderSortCards({ foods: initialFoods, count, context, t
                         <SortableContext items={platos.map(f => f._id)} strategy={verticalListSortingStrategy}>
                             {platos.map((food) => (
                                 <SortableRow
+                                    user={user}
                                     key={food._id}
                                     food={food}
                                     context={context}

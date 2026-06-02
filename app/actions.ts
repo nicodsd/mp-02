@@ -163,7 +163,6 @@ export async function activateRestaurantSubscription(data: {
     mp_preapproval_id?: string;
 }) {
     // Al no tener Prisma u ORM aquí (porque separas Front y Back), mandamos una petición a tu backend de datos.
-    console.log("🚀 Enviando activación de suscripción al Backend:", data);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/';
 
     try {

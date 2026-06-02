@@ -7,7 +7,12 @@ const BttnBack = () => {
   return (
     <button
       type="button"
-      onClick={() => router.back()}
+      onClick={() => {
+        const back = router.back();
+        if (typeof back === "string" && back === "/") {
+          router.replace("/");
+        }
+      }}
       className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
     >
       <MdChevronLeft className="text-xl mr-1" />

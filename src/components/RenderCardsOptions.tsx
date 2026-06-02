@@ -9,6 +9,7 @@ type RenderCardsProps = {
   foods: any[];
   count?: number;
   context?: boolean;
+  user: any;
   template?: any;
   example?: boolean;
   whatsapp?: boolean;
@@ -17,6 +18,7 @@ type RenderCardsProps = {
 export default function RenderCardsOptions({
   foods,
   count,
+  user,
   context,
   template,
   example,
@@ -54,6 +56,7 @@ export default function RenderCardsOptions({
                 )
               }
               <FoodsCardsOptions
+                user={user}
                 template={template}
                 food={food}
                 context={context}

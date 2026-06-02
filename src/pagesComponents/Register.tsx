@@ -37,6 +37,7 @@ type FormValues = {
   instagram: string;
   facebook: string;
   tiktok: string;
+  verificationCode: string;
 };
 
 const validationSchemas = [
@@ -49,6 +50,12 @@ const validationSchemas = [
       .test("len", "Mínimo 3 caracteres", (val) => !val || val.length >= 3)
       .test("len", "Máximo 20 caracteres", (val) => !val || val.length <= 20)
       .required("Ingrese un nombre"),
+  }),
+  Yup.object({
+    verificationCode: Yup.string()
+      .length(4, "Debe tener 4 dígitos")
+      .matches(/^[0-9]+$/, "Solo se permiten números")
+      .required("Ingrese el código"),
   }),
   Yup.object({
     plan: Yup.string().optional(),
@@ -76,8 +83,9 @@ const validationSchemas = [
 
 const steps = [
   { page: 0, label: "Cuenta" },
-  { page: 1, label: "Planes" },
-  { page: 2, label: "Perfil" },
+  { page: 1, label: "Verificación" },
+  { page: 2, label: "Planes" },
+  { page: 3, label: "Menú" },
 ];
 
 export default function Register() {
@@ -158,7 +166,6 @@ export default function Register() {
       setServerMessage(null);
     }, 8000);
   }
-
   const handleFinalSubmit = async (values: FormValues) => {
     setServerMessage(null);
 
@@ -193,6 +200,7 @@ export default function Register() {
     body.append("instagram", values.instagram || "");
     body.append("facebook", values.facebook || "");
     body.append("tiktok", values.tiktok || "");
+    body.append("productsVisibilityPay", preapprovalId ? "1" : "0");
     // ARCHIVOS (Cloudinary)
     if (values.logo instanceof File) {
       body.append("photo", values.logo);
@@ -314,10 +322,72 @@ export default function Register() {
             instagram: "",
             facebook: "",
             tiktok: "",
+            verificationCode: "",
           }}
           validationSchema={validationSchemas[step]}
           onSubmit={async (values, { setSubmitting }) => {
-            if (step < steps.length - 1) {
+            if (step === 0) {
+              setServerMessage(null);
+              try {
+                const response = await fetch(`${URI}/auth/send-verification`, {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    email: values.email,
+                    name: values.name,
+                    password: values.password
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  credentials: 'include',
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                  setIsResponse(false);
+                  const msg = Array.isArray(data.message) ? data.message.join(". ") : (data.message || "Ocurrió un error al enviar el correo.");
+                  setServerMessage(msg);
+                  return;
+                }
+                setIsResponse(true);
+                setServerMessage("Se ha enviado un correo de verificación a tu email. Por favor, verifícalo para continuar.");
+                setStep(1);
+              } catch (error) {
+                setIsResponse(false);
+                setServerMessage("Error de conexión. Intente nuevamente.");
+              } finally {
+                setSubmitting(false);
+              }
+            } else if (step === 1) {
+              setServerMessage(null);
+              try {
+                const response = await fetch(`${URI}/auth/verify-email`, {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    email: sessionEmail || email || values.email,
+                    code: values.verificationCode
+                  }),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  credentials: 'include',
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                  setIsResponse(false);
+                  setServerMessage(data.message || "Código incorrecto.");
+                  setSubmitting(false);
+                  return;
+                }
+                // Si la verificación es exitosa, avanzamos al siguiente paso
+                setServerMessage(null);
+                setStep(2);
+              } catch (error) {
+                setIsResponse(false);
+                setServerMessage("Error de conexión. Intente nuevamente.");
+              } finally {
+                setSubmitting(false);
+              }
+            } else if (step < steps.length - 1) {
               setStep(step + 1);
               setSubmitting(false);
               setServerMessage(null);
@@ -335,8 +405,7 @@ export default function Register() {
                     Ingrese su email y contraseña
                   </h3>
                   <p className="text-xs font-light text-gray-500">
-                    Tu email nos sirve para restablecer tu contraseña por si te
-                    olvidas o la pierdes.
+                    Ingrese sus datos, verifique y crea tu Menú.
                   </p>
                   <div className="flex flex-col justify-start h-70 mt-7">
                     <div className="flex flex-col w-full mb-4">
@@ -344,7 +413,7 @@ export default function Register() {
                         htmlFor="name"
                         className="text-md text-gray-700"
                       >
-                        Nombre de tu local*
+                        Nombre de tu local
                       </label>
                       <div className="flex items-center mt-1 justify-end relative w-full">
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -372,7 +441,7 @@ export default function Register() {
                         htmlFor="email"
                         className="text-md text-gray-700"
                       >
-                        Email*
+                        Email
                       </label>
                       <div className="flex items-center mt-1 justify-end relative w-full">
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -391,6 +460,9 @@ export default function Register() {
                           className="text-xs mr-1 text-red-500 font-medium absolute"
                         />
                       </div>
+                      <span className="text-xs text-gray-500 font-medium mt-1">
+                        Te enviaremos un correo para confirmar tu cuenta.
+                      </span>
                     </div>
 
                     <div className="flex flex-col w-full">
@@ -398,7 +470,7 @@ export default function Register() {
                         htmlFor="password"
                         className="text-md text-gray-700"
                       >
-                        Contraseña*
+                        Contraseña
                       </label>
                       <div className="flex items-center mt-1 justify-end relative w-full">
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -432,6 +504,43 @@ export default function Register() {
                 <div className="space-y-8">
                   <div className="animate-in space-y-2 fade-in slide-in-from-right-4 duration-300">
                     <h3 className="text-gray-600 font-semibold h-5 text-lg">
+                      Verificación de Email
+                    </h3>
+                    <p className="text-sm font-light text-gray-500">
+                      Ingresa el código numérico de 4 dígitos que enviamos a tu correo para verificar tu cuenta.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col w-full mb-4">
+                    <div className="flex items-center mt-1 justify-center relative w-full">
+                      <Field
+                        id="verificationCode"
+                        name="verificationCode"
+                        type="text"
+                        maxLength={4}
+                        placeholder="1234"
+                        className="block w-32 text-center text-3xl tracking-widest pl-4 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none font-bold"
+                      />
+                    </div>
+                    <ErrorMessage
+                      name="verificationCode"
+                      component="div"
+                      className="text-xs text-red-500 font-medium text-center mt-2"
+                    />
+                  </div>
+
+                  <span className="text-xs lg:text-sm text-gray-500 font-light mt-1">
+                    <p>
+                      Si no recibes el correo, revisa tu carpeta de spam o <Link className="cursor-pointer underline font-semibold text-blue-500" href="/contacto">contáctanos</Link>.
+                    </p>
+                  </span>
+                </div>
+              )}
+
+              {step === 2 && (
+                <div className="space-y-8">
+                  <div className="animate-in space-y-2 fade-in slide-in-from-right-4 duration-300">
+                    <h3 className="text-gray-600 font-semibold h-5 text-lg">
                       Elige tu plan
                     </h3>
                     <p className="text-sm font-light text-gray-500">
@@ -452,7 +561,7 @@ export default function Register() {
                 </div>
               )}
 
-              {step === 2 && (
+              {step === 3 && (
                 <div className="space-y-2  animate-in flex flex-col fade-in slide-in-from-right-4 duration-300">
                   <h3 className="text-gray-600 text-lg font-semibold h-5">
                     Creá tu marca
@@ -666,24 +775,34 @@ export default function Register() {
                 </div>
               )}
 
-              <div className="h-fit w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
+              <div className="h-fit z-100 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
                 <div className="flex items-center mb-2 w-full px-4 justify-end gap-3">
 
-                  {!preapprovalId ? <button
-                    type="button"
-                    onClick={() => {
-                      setStep((s) => Math.max(0, s - 1));
-                      setServerMessage(null);
-                    }}
-                    disabled={step === 0 || isSubmitting}
-                    className={`inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
-                      ? "text-gray-300 cursor-not-allowed"
-                      : "text-gray-700 cursor-pointer bg-background border border-gray-400"
-                      }`}
-                  >
-                    Atrás
-                  </button>
-                    :
+                  {step === 3 ? (
+                    <button
+                      type="button"
+                      onClick={() => router.push('/login')}
+                      disabled={isSubmitting}
+                      className="inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
+                    >
+                      Omitir
+                    </button>
+                  ) : !preapprovalId ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStep((s) => Math.max(0, s - 1));
+                        setServerMessage(null);
+                      }}
+                      disabled={step === 0 || isSubmitting}
+                      className={`inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
+                        ? "text-gray-300 cursor-not-allowed"
+                        : "text-gray-700 cursor-pointer bg-background border border-gray-400"
+                        }`}
+                    >
+                      Atrás
+                    </button>
+                  ) : (
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -691,7 +810,7 @@ export default function Register() {
                     >
                       Omitir
                     </button>
-                  }
+                  )}
                   <button
                     type="submit"
                     disabled={isSubmitting}

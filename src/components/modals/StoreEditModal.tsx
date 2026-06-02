@@ -33,72 +33,69 @@ const StoreSchema = Yup.object().shape({
     phone: Yup.number().optional().min(7, "Mínimo 7 dígitos")
 });
 
-export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }: { user_id: string, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, menusCount: number }) {
-    const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-    const [coverPreview, setCoverPreview] = useState<string | null>(null);
+export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { user_id: string, menu: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) {
+    const [photoPreview, setPhotoPreview] = useState<string | null>(menu?.photo || null);
+    const [coverPreview, setCoverPreview] = useState<string | null>(menu?.cover || null);
 
     useEffect(() => {
-        return () => {
-            if (photoPreview) URL.revokeObjectURL(photoPreview);
-            if (coverPreview) URL.revokeObjectURL(coverPreview);
-        };
-    }, [photoPreview, coverPreview]);
+        if (menu) {
+            setPhotoPreview(menu.photo || null);
+            setCoverPreview(menu.cover || null);
+        }
+    }, [menu]);
 
-    const handleAddStore = async (values: any) => {
+    const handleEditStore = async (values: any) => {
         setIsOpen(false);
         const formData = new FormData();
-        if (values.photo) {
+        if (values.photo instanceof File) {
             formData.append("photo", values.photo);
         }
-        if (values.cover) {
+        if (values.cover instanceof File) {
             formData.append("cover", values.cover);
         }
+        formData.append("menu_id", menu._id);
         formData.append("location", values.location);
-        formData.append("menuEnlisted", String(menusCount));
         formData.append("phonePrefix", values.phonePrefix);
         formData.append("phone", String((values.phonePrefix || "") + (values.phone || "")));
         formData.append("description", values.description);
         formData.append("instagram", values.instagram);
         formData.append("facebook", values.facebook);
         formData.append("tiktok", values.tiktok);
+
         try {
-            const response = await fetch(`${URI}/menu/create-menu/${user_id}`, {
-                method: "POST",
+            const response = await fetch(`${URI}/menu/update/info/${user_id}`, {
+                method: "PUT",
                 body: formData,
                 credentials: "include",
             });
             if (response.ok) {
-                alert(`Tienda agregada exitosamente`);
+                alert(`Tienda actualizada exitosamente`);
                 setIsOpen(false);
                 refreshPage();
             } else {
-                console.log("Error al agregar la tienda");
-                alert(`Tienda no agregada`);
+                console.log("Error al actualizar la tienda");
+                alert(`Error al actualizar la tienda`);
             }
-            const data = await response.json();
-            console.log(data);
         } catch (error) {
-            console.error("Error al agregar la tienda:", error);
+            console.error("Error al actualizar la tienda:", error);
         }
     }
 
     const initialValues = {
         photo: null,
-        menuEnlisted: menusCount,
         cover: null,
-        location: '',
-        phonePrefix: '',
-        phone: '',
-        description: '',
-        instagram: '',
-        facebook: '',
-        tiktok: '',
+        location: menu?.location || '',
+        phonePrefix: menu?.phone ? menu.phone.slice(0, 3) : '', // A simple heuristic to extract prefix if possible, adjust if needed
+        phone: menu?.phone ? menu.phone.slice(3) : '',
+        description: menu?.description || '',
+        instagram: menu?.instagram || '',
+        facebook: menu?.facebook || '',
+        tiktok: menu?.tiktok || '',
     };
 
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={() => setIsOpen(false)}>
-                {/* Backdrop (Fondo oscuro) */}
                 <TransitionChild
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
@@ -109,7 +106,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                 >
                     <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm" />
                 </TransitionChild>
-                <h2 className="text-xl font-semibold text-gray-700 mb-2">Agregar Menú</h2>
+                <h2 className="text-xl font-semibold text-gray-700 mb-2">Editar Menú</h2>
 
                 <div className="fixed inset-0 overflow-hidden">
                     <div className="flex h-full items-center justify-end">
@@ -126,7 +123,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                     initialValues={initialValues}
                                     validationSchema={StoreSchema}
                                     onSubmit={(values) => {
-                                        handleAddStore(values);
+                                        handleEditStore(values);
                                     }}
                                 >
                                     {({ setFieldValue, isSubmitting, values }) => (
@@ -158,7 +155,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                                                     if (file) setPhotoPreview(URL.createObjectURL(file));
                                                                 }}
                                                             />
-                                                            {!photoPreview && <FaCamera />}
+                                                            <FaCamera />
                                                             {!photoPreview && "Agregar"}
                                                         </label>
                                                     </div>
@@ -191,7 +188,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                                                         if (file) setCoverPreview(URL.createObjectURL(file));
                                                                     }}
                                                                 />
-                                                                {!coverPreview && <FaCamera />}
+                                                                <FaCamera />
                                                                 {!coverPreview && "Agregar"}
                                                             </label>
                                                         </div>

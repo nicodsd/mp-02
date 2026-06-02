@@ -1,4 +1,4 @@
-import UserSettings from "@/src/components/dashboard/UserSettings";
+import MenuSettings from "@/src/components/dashboard/UserSettings";
 import PanelUser from "@/src/pagesComponents/PanelUser";
 import { TabPanel } from "@headlessui/react";
 import { getFoodsByUser } from "@/src/lib/getFoodsByUser";
@@ -12,15 +12,16 @@ import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import TemplateSelector from "@/src/components/dashboard/Templates";
 import { cookies } from "next/headers";
 import BttnBack from "@/src/components/buttons/BttnBack";
+import SubscriptionPanel from "@/src/components/dashboard/SubscriptionPanel";
 
-async function PlatosPanel({ userId, token, template }: any) {
+async function PlatosPanel({ userId, token, template, user }: any) {
   const foods = await getFoodsByUser(URI, userId);
-  return <MenuItems dataFoods={foods} template={template} token={token} />;
+  return <MenuItems dataFoods={foods} template={template} user={user} token={token} />;
 }
 
-async function SucursalesPanel({ userId }: any) {
+async function SucursalesPanel({ userId, user }: any) {
   const menus = await getMenus(userId);
-  return <Sucursales menus={menus?.menus} user_id={userId} />;
+  return <Sucursales menus={menus?.menus} user_id={userId} user={user} />;
 }
 
 export default async function DashboardPage() {
@@ -49,10 +50,10 @@ export default async function DashboardPage() {
       </div>
       <div className="pb-13 pt-8 md:pt-6 w-full max-w-full">
         <TabPanel className="focus:outline-none w-full">
-          <UserSettings user={user} />
+          <MenuSettings user={user} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
-          <PlatosPanel userId={user?.id} token={token} template={template} />
+          <PlatosPanel userId={user?.id} token={token} template={template} user={user} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
           <PromoPanel foods={foods} />
@@ -64,7 +65,10 @@ export default async function DashboardPage() {
           <TemplateSelector user={user} />
         </TabPanel>
         <TabPanel className="focus:outline-none w-full">
-          <SucursalesPanel userId={user?.id} />
+          <SucursalesPanel userId={user?.id} user={user} />
+        </TabPanel>
+        <TabPanel className="focus:outline-none w-full">
+          <SubscriptionPanel user={user} />
         </TabPanel>
       </div>
     </PanelUser>

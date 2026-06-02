@@ -1,5 +1,4 @@
 "use client";
-import { useFoodStore } from '@/src/lib/useFoodStore';
 import FoodCard from '@/src/components/modals/cards/FoodCard';
 import { FaWhatsapp, FaPlus, FaMinus } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
@@ -36,13 +35,13 @@ export default function CartModal({ user, isOpen, onClose, template }: { user: a
                 <div className={`flex justify-between items-center ${template?.textColor || "text-gray-700"} p-2`}>
                     <div className="flex items-center gap-2">
                         <h2 className={`text-2xl font-bold ${template?.textColor || "text-gray-700"}`}>Mis Pedidos</h2>
-                        <span className={`text-sm font-bold ${template?.backgroundColor2 || "bg-gray-300"} ${template?.accentColors?.[1] || "text-gray-700"} rounded-full w-7 h-7 flex items-center justify-center`}>{Object.keys(quantities).length}</span>
+                        <span className={`text-sm font-bold ${template?.backgroundColor2 || "bg-gray-300"} rounded-full w-7 h-7 flex items-center justify-center`}>{Object.keys(quantities).length}</span>
                     </div>
                     <div className="flex justify-end gap-2">
-                        <button disabled={Object.keys(quantities).length === 0} onClick={() => clearCart()} className={`rounded-full text-sm flex items-center justify-center disabled:text-gray-400 disabled:cursor-not-allowed font-bold hover:bg-gray-200 transition-colors ${template?.textColor || "text-primary"}`}>
+                        <button disabled={Object.keys(quantities).length === 0} onClick={() => clearCart()} className={`rounded-full text-sm flex items-center justify-center disabled:text-gray-400 disabled:cursor-not-allowed font-bold hover:bg-gray-200/20 transition-colors ${template?.textColor || "text-primary"}`}>
                             Borrar todo
                         </button>
-                        <button onClick={onClose} className={`rounded-full w-10 h-10 text-xl flex items-center justify-center font-bold hover:bg-gray-200 transition-colors ${template?.textColor || "text-gray-700"}`}>
+                        <button onClick={onClose} className={`rounded-full w-10 h-10 text-xl flex items-center justify-center font-bold  ${template?.textColor || "text-gray-700"}`}>
                             <IoClose className="text-2xl" />
                         </button>
                     </div>
@@ -80,7 +79,7 @@ export default function CartModal({ user, isOpen, onClose, template }: { user: a
                                     </div>
                                     <button
                                         onClick={() => removeId(food._id)}
-                                        className={`text-red-500 cursor-pointer text-[13px] uppercase tracking-wider w-fit h-fit flex items-center justify-center font-black transition-colors pointer-events-auto hover:text-red-600`}
+                                        className={`cursor-pointer text-[13px] uppercase tracking-wider w-fit h-fit flex items-center justify-center font-black transition-colors pointer-events-auto hover:opacity-70 ${template?.textColor || "text-gray-700"}`}
                                         title="Quitar del carrito"
                                     >
                                         Eliminar

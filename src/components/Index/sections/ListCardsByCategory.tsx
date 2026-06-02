@@ -7,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
 import { refreshPage } from "@/app/actions";
 
-export default function ListCardsByCategory({ arrayFoods, example, template }: { arrayFoods: any, example: boolean, template: any }) {
+export default function ListCardsByCategory({ arrayFoods, user, example, template }: { arrayFoods: any, user: any, example: boolean, template: any }) {
     const [selectedFood, setSelectedFood] = useState<any>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const groupedFoods = useMemo(() => {
@@ -26,9 +26,9 @@ export default function ListCardsByCategory({ arrayFoods, example, template }: {
         setIsEditOpen(true);
     };
     return (
-        <section className="flex min-h-full flex-col gap-8 md:mx-[12vw] md:pb-8 md:pt-3 lg:mx-[27vw]">
+        <section className="flex min-h-full flex-col gap-8 md:pb-8 md:pt-3">
             <div className="flex flex-col gap-1">
-                <div className="flex flex-col gap-">
+                <div className="flex flex-col">
                     {Object.entries(groupedFoods).map(([category, foods]: [string, any], index: number) => (
                         <motion.details
                             initial={{ opacity: 0, x: -20 }}
@@ -47,7 +47,7 @@ export default function ListCardsByCategory({ arrayFoods, example, template }: {
                             <div className="flex flex-col gap-0.5">
                                 {Array.isArray(foods) && foods.map((food: any, index: number) => (
                                     <div className="relative" key={index}>
-                                        <FoodsCardsExample list={true} example={example} whatsapp={false} {...food} template={template} context={false} edit={handleEditClick} />
+                                        <FoodsCardsExample user={user} list={true} example={example} whatsapp={false} {...food} template={template} context={false} edit={handleEditClick} />
                                         {
                                             !example && (
                                                 <button

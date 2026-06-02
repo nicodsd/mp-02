@@ -45,7 +45,15 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
-          await setMenuCookie(data.menu);
+          
+          const activeMenu = data.menus && data.menus.length > 0 
+              ? (data.menus.find((m: any) => m._id === data.user.active_menu_id) || data.menus[0]) 
+              : data.menu;
+              
+          if (activeMenu) {
+            await setMenuCookie(activeMenu);
+          }
+          
           router.push("/mi-menu");
         } else {
           if (data.alreadyLoggedIn) {

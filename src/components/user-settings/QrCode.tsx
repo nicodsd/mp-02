@@ -154,16 +154,18 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
           )}
         </div>
 
-        {user?.plan !== "free" && <div className="flex justify-center relative gap-5 mb-6">
-          <span className="text-[11px] absolute -top-5 left-1 text-slate-700">Elige un color:</span>
+        <div className="flex justify-center relative gap-5 mb-6">
+          {user?.plan !== "free" && <span className="text-[11px] absolute -top-5 left-1 text-slate-700">Elige un color:</span>}
+          {user?.plan === "free" && <span className="text-[13px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-700">Actualiza tu plan para disfrutar de esta función</span>}
           {TEMPLATES.map((t) => (
             <button
+              disabled={user?.plan === "free"}
               key={t.id}
               onClick={() => setSelectedTemplate(t)}
               className={`group cursor-pointer relative w-12 h-12 rounded-full border-2 transition-all ${selectedTemplate.id === t.id
                 ? "border-blue-600 scale-110"
                 : "border-transparent"
-                }`}
+                } ${user?.plan === "free" ? "opacity-20 cursor-not-allowed" : ""}`}
               style={{ backgroundColor: t.bg }}
               title={t.name}
             >
@@ -178,7 +180,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
               )}
             </button>
           ))}
-        </div>}
+        </div>
 
         <span className="text-[11px] w-full text-right text-slate-700 mb-1">Copiar Enlace</span>
         <div className="gap-2 rounded-lg p-2 w-full flex items-center mb-4 bg-white border border-slate-200">

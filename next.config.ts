@@ -78,6 +78,26 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/como-crear-un-menu-digital',
+        destination: '/guias/como-crear-un-menu-digital',
+        permanent: true,
+      },
+      {
+        source: '/caracteristicas-menu-digital',
+        destination: '/guias/caracteristicas-menu-digital',
+        permanent: true,
+      },
+      {
+        source: '/cuanto-sale-crear-un-menu-digital',
+        destination: '/guias/cuanto-sale-crear-un-menu-digital',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

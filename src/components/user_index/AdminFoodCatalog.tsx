@@ -22,7 +22,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
 
     if (foods?.length === 0) return null;
 
-    const isPremium = user.plan === "premium" || user.plan === "plus";
+    const isPremium = (user.plan === "premium" && user.mp_preapproval_id !== null) || (user.plan === "plus" && user.mp_preapproval_id !== null);
     const enabledDrinks = user?.enable_bebidas
     const enabledDesserts = user?.enable_postres
     return (
@@ -35,6 +35,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             <Martini className="w-5 h-5" />
                         </div>
                         <RenderCardsOptions
+                            user={user}
                             foods={foods.filter((f: any) => f.sub_category === "Bebidas")}
                             template={template}
                             context={false}
@@ -59,6 +60,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             </div>
                         )}
                         {user?.presentation === "default" ? (<SortableContext
+                            user={user}
                             arrayFoods={processedFoods.filter(f => {
                                 let isMain = true
                                 if (enabledDesserts && enabledDrinks) {
@@ -73,6 +75,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             template={template}
                         />) : (
                             <ListCardsByCategory
+                                user={user}
                                 arrayFoods={processedFoods.filter(f => {
                                     let isMain = true
                                     if (enabledDesserts && enabledDrinks) {
@@ -97,7 +100,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             <h2 className="text-xl font-normal">Postres</h2>
                             <Dessert className="w-5 h-5" />
                         </div>
-                        <RenderCardsOptions foods={foods.filter((f: any) => f.sub_category === "Postres")} template={template} />
+                        <RenderCardsOptions user={user} foods={foods.filter((f: any) => f.sub_category === "Postres")} template={template} />
                     </div>
                 }
             </div>

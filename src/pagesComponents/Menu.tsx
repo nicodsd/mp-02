@@ -4,6 +4,7 @@ import SearchModal from "@/src/components/modals/SearchModal";
 import FilterHeader from "@/src/components/Index/sections/FilterHeader";
 import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
+import ShareDishModal from "@/src/components/modals/ShareDishModal";
 import { URI } from "@/src/lib/const";
 
 type Food = {
@@ -14,6 +15,9 @@ type Food = {
   price: number;
   category: string;
   sub_category: string;
+  is_gluten_free?: boolean;
+  is_promo?: boolean;
+  promo_price?: number;
 };
 
 type SubCategory = {
@@ -39,7 +43,48 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
   const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(activeFoods);
+  const [sharingFood, setSharingFood] = useState<any>(null);
 
+  // Auto-scroll and highlight shared dish
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const dishId = params.get("dish");
+      if (dishId) {
+        const timer = setTimeout(() => {
+          const element = document.getElementById(`dish-${dishId}`);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+            
+            // Premium glowing outline effect
+            const accentColor = template?.icons || "#e28743";
+            element.style.outline = `3px solid ${accentColor}`;
+            element.style.boxShadow = `0 0 25px ${accentColor}80`;
+            element.style.transform = "scale(1.02)";
+            
+            setTimeout(() => {
+              element.style.outline = "none";
+              element.style.boxShadow = "none";
+              element.style.transform = "none";
+            }, 3500);
+          }
+        }, 1000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [template?.icons]);
+
+  // Listen to the 'share-dish' event
+  useEffect(() => {
+    const handleShareEvent = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setSharingFood(customEvent.detail);
+    };
+    document.addEventListener("share-dish", handleShareEvent);
+    return () => {
+      document.removeEventListener("share-dish", handleShareEvent);
+    };
+  }, []);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token") || localStorage.getItem("token");
@@ -90,6 +135,15 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
         showModal={showModal}
       />
 
+      <ShareDishModal
+        isOpen={!!sharingFood}
+        onClose={() => setSharingFood(null)}
+        food={sharingFood}
+        restaurantName={data.name}
+        restaurantSlug={data.name}
+        template={template}
+      />
+
       <article className="flex min-h-[calc(90vh-100px)] flex-col gap-3 sm:px-[10vw] md:px-[20vw] lg:px-[30vw] md:pb-8 md:pt-3 -translate-y-10">
         <FilterHeader
           template={template}
@@ -114,6 +168,7 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
     </main>
   );
 }
+
 
 
 

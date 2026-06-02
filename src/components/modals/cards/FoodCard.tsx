@@ -49,7 +49,7 @@ export default function FoodCard({
                             </span>
 
                             <div className="flex items-center">
-                                <span className="font-black text-primary oldstyle-nums text-xl md:text-2xl">
+                                <span className={`font-black ${template?.textColor || "text-gray-700"} oldstyle-nums text-xl md:text-2xl`}>
                                     {formatearPrecio(food.promo_price)}
                                 </span>
                             </div>
