@@ -99,14 +99,17 @@ export const TestimonialsSection: React.FC = () => {
     };
 
     return (
-        <div className='relative'>
+        <div className='relative w-full'>
+            {/* Elipses decorativas sutiles en los laterales */}
             <div className='relative hidden md:block'>
-                <div className='absolute top-20 rounded-3xl -bottom-60 -right-30 blur-3xl h-100 z-0 w-full bg-yellow-400/10'></div>
-                <div className='absolute top-20 rounded-3xl -bottom-60 -left-30 blur-3xl h-100 z-0 w-full bg-primary/10'></div>
+                <div className='absolute top-20 rounded-3xl -bottom-60 -right-30 blur-3xl h-100 z-0 w-full bg-yellow-400/5'></div>
+                <div className='absolute top-20 rounded-3xl -bottom-60 -left-30 blur-3xl h-100 z-0 w-full bg-red-600/5'></div>
             </div>
-            <section id="testimonios" className="py-30 z-10 md:pt-10 md:pb-20 relative overflow-hidden w-full">
-                <div className="w-full relative z-10 max-w-6xl mx-auto">
-                    {/* Cabecera de sección - Títulos alineados a la izquierda estilo QMenú */}
+
+            <section id="testimonios" className="py-20 z-10 relative overflow-hidden w-full">
+                <div className="w-full relative z-10 max-w-6xl mx-auto md:px-0">
+
+                    {/* Cabecera de sección */}
                     <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
                         <div>
                             <motion.h2
@@ -114,7 +117,7 @@ export const TestimonialsSection: React.FC = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.1 }}
-                                className="text-4xl md:text-5xl font-bold text-stone-900 mb-4"
+                                className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-left"
                             >
                                 Opiniones de nuestros <span className="text-red-600">usuarios</span>
                             </motion.h2>
@@ -123,18 +126,18 @@ export const TestimonialsSection: React.FC = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2 }}
-                                className="text-sm text-zinc-500"
+                                className="text-sm text-zinc-500 text-left"
                             >
                                 Los dueños de restaurantes eliminaron la fricción en la promoción de sus platos.
                             </motion.p>
                         </div>
                     </div>
 
-                    {/* Contenedor del Carrusel Estilo Tarjeta QMenú */}
-                    <div className="relative w-full bg-linear-to-t from-primary/50 to-transparent rounded-xl pb-2 md:pb-0 md:p-3">
+                    {/* Contenedor del Carrusel */}
+                    <div className="relative w-full rounded-xl overflow-hidden">
 
-                        {/* VISTA DESKTOP: Muestra 3 tarjetas con rotación controlada */}
-                        <div className="hidden md:flex justify-end relative w-full overflow-hidden min-h-[330px]">
+                        {/* VISTA DESKTOP: Carrusel corregido por ID único desplazando bloques estables */}
+                        <div className="hidden md:block relative w-full min-h-[320px]">
                             <AnimatePresence initial={false} custom={direction} mode="popLayout">
                                 <motion.div
                                     key={currentIndex}
@@ -143,20 +146,22 @@ export const TestimonialsSection: React.FC = () => {
                                     initial="enter"
                                     animate="center"
                                     exit="exit"
-                                    className="grid grid-cols-3 gap-4 w-full"
+                                    className="grid grid-cols-3 gap-3 w-full"
                                 >
                                     {[0, 1, 2].map((offset) => {
                                         const itemIndex = (currentIndex + offset) % testimonials.length;
                                         const item = testimonials[itemIndex];
                                         return (
                                             <div
-                                                key={itemIndex}
-                                                className="flex flex-col justify-between p-6 bg-background rounded-xl border border-zinc-500 text-left h-fit min-h-[300px]"
+                                                key={`${currentIndex}-${offset}`}
+                                                className="flex flex-col justify-between p-6 bg-white rounded-xl border border-zinc-100 text-left min-h-[280px] shadow-xs"
                                             >
                                                 <div>
                                                     <div className="flex space-x-0.5 mb-3 text-red-600">
                                                         {Array.from({ length: item.rating }).map((_, i) => (
-                                                            <svg className="w-5 h-5 fill-current" key={i} viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z" /></svg>
+                                                            <svg className="w-5 h-5 fill-current" key={i} viewBox="0 0 20 20">
+                                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z" />
+                                                            </svg>
                                                         ))}
                                                     </div>
                                                     <p className="text-zinc-600 text-sm leading-relaxed select-none">
@@ -168,9 +173,7 @@ export const TestimonialsSection: React.FC = () => {
                                                     <span className="text-xl select-none" role="img" aria-label="Avatar">{item.avatar}</span>
                                                     <div className="ml-3">
                                                         <h4 className="text-xs font-bold text-zinc-950 leading-tight">{item.name}</h4>
-                                                        <p className="text-[11px] text-zinc-400 mt-0.5">
-                                                            {item.role}
-                                                        </p>
+                                                        <p className="text-[11px] text-zinc-400 mt-0.5">{item.role}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -180,8 +183,8 @@ export const TestimonialsSection: React.FC = () => {
                             </AnimatePresence>
                         </div>
 
-                        {/* VISTA MOBILE: Altura automática para que NUNCA se rompa el texto largo */}
-                        <div className="md:hidden flex flex-col justify-end relative w-full overflow-hidden h-[300px]">
+                        {/* VISTA MOBILE: Slider adaptativo y limpio */}
+                        <div className="md:hidden relative w-full min-h-[240px]">
                             <AnimatePresence initial={false} custom={direction} mode="popLayout">
                                 <motion.div
                                     key={currentIndex}
@@ -190,12 +193,14 @@ export const TestimonialsSection: React.FC = () => {
                                     initial="enter"
                                     animate="center"
                                     exit="exit"
-                                    className="w-full p-3.5 bg-white rounded-xl border border-zinc-500 text-left flex flex-col justify-between min-h-[200px]"
+                                    className="w-full p-6 bg-white rounded-xl border border-zinc-100 text-left flex flex-col justify-between"
                                 >
                                     <div>
                                         <div className="flex space-x-0.5 mb-3 text-red-600">
                                             {Array.from({ length: testimonials[currentIndex].rating }).map((_, i) => (
-                                                <svg className="w-5 h-5 fill-current" key={i} viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z" /></svg>
+                                                <svg className="w-5 h-5 fill-current" key={i} viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z" />
+                                                </svg>
                                             ))}
                                         </div>
                                         <p className="text-zinc-600 text-sm leading-relaxed">
@@ -207,20 +212,20 @@ export const TestimonialsSection: React.FC = () => {
                                         <span className="text-xl" role="img" aria-label="Avatar">{testimonials[currentIndex].avatar}</span>
                                         <div className="ml-3">
                                             <h4 className="text-xs font-bold text-zinc-950 leading-tight">{testimonials[currentIndex].name}</h4>
-                                            <p className="text-[11px] text-zinc-400 mt-0.5">
-                                                {testimonials[currentIndex].role}
-                                            </p>
+                                            <p className="text-[11px] text-zinc-400 mt-0.5">{testimonials[currentIndex].role}</p>
                                         </div>
                                     </div>
                                 </motion.div>
                             </AnimatePresence>
                         </div>
                     </div>
-                    <div className="flex w-full justify-end mt-2 items-center">
+
+                    {/* Botones de Navegación Manual */}
+                    <div className="flex w-full justify-end mt-4 items-center">
                         <div className="flex space-x-3 shrink-0">
                             <button
                                 onClick={prevSlide}
-                                className="w-10 h-10 cursor-pointer rounded-full border border-zinc-500 bg-white flex items-center justify-center text-zinc-600 hover:border-red-600 hover:text-red-600 active:bg-zinc-50 transition-all duration-200 focus:outline-none"
+                                className="w-10 h-10 cursor-pointer rounded-full border border-zinc-200 bg-white flex items-center justify-center text-zinc-600 hover:border-red-600 hover:text-red-600 active:bg-zinc-50 transition-all duration-200 focus:outline-none"
                                 aria-label="Testimonio anterior"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,10 +234,12 @@ export const TestimonialsSection: React.FC = () => {
                             </button>
                             <button
                                 onClick={nextSlide}
-                                className="w-10 h-10 cursor-pointer rounded-full border border-zinc-500 bg-white flex items-center justify-center text-zinc-600 hover:border-red-600 hover:text-red-600 active:bg-zinc-50 transition-all duration-200 focus:outline-none"
+                                className="w-10 h-10 cursor-pointer rounded-full border border-zinc-200 bg-white flex items-center justify-center text-zinc-600 hover:border-red-600 hover:text-red-600 active:bg-zinc-50 transition-all duration-200 focus:outline-none"
                                 aria-label="Siguiente testimonio"
                             >
-                                <svg fill="none" stroke="currentColor" className="w-5 h-5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" /></svg>
+                                <svg fill="none" stroke="currentColor" className="w-5 h-5" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
+                                </svg>
                             </button>
                         </div>
                     </div>
