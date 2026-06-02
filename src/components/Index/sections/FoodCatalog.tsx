@@ -45,6 +45,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             <Martini className="w-5 h-5" />
                         </div>
                         <RenderCardsOptions
+                            user={user}
                             example={example}
                             template={template}
                             context={true}
@@ -71,6 +72,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                     </div>
 
                     {user?.presentation === "default" ? (<CardsFoodsByCategories
+                        user={user}
                         arrayFoods={processedFoods.filter(f => {
                             let isMain = true
                             if (enabledDesserts && enabledDrinks) {
@@ -87,6 +89,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         template={template}
                     />) : (
                         <ListCardsByCategory
+                            user={user}
                             arrayFoods={processedFoods.filter(f => {
                                 let isMain = true
                                 if (enabledDesserts && enabledDrinks) {
@@ -112,6 +115,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             <Dessert className="w-5 h-5" />
                         </div>
                         <RenderCardsOptions
+                            user={user}
                             example={example}
                             whatsapp={user?.whatsAppCart}
                             template={template}

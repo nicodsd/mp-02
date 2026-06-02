@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import { HiOutlinePlus } from "react-icons/hi";
 import { URI } from "@/src/lib/const";
 import StoreAddModal from "@/src/components/modals/StoreAddModal";
+import StoreEditModal from "@/src/components/modals/StoreEditModal";
 import { SelectionToolbar } from "@/src/components/dashboard/components/storeComponents/SelectionToolbarStoreDelete";
 import { SucursalCard } from "@/src/components/dashboard/components/storeComponents/SucursalCard";
 import { refreshPage } from "@/app/actions";
 import SelectStoreModal from "./components/storeComponents/SelectStoreModal";
 
-export default function Sucursales({ menus, user_id }: { menus: any[], user_id: string }) {
+export default function Sucursales({ menus, user_id, user }: { menus: any[], user_id: string, user: any }) {
     const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [openSelectStore, setOpenSelectStore] = useState(false);
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const [storeId, setStoreId] = useState("");
@@ -31,8 +33,9 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
     };
 
     const handleEditStore = async () => {
-
-    }
+        setOpenSelectStore(false);
+        setIsEditModalOpen(true);
+    };
 
     const handleBulkDelete = async () => {
         if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
@@ -74,6 +77,7 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                     isOpen={openSelectStore}
                     storeId={storeId}
                     menu={menu}
+                    user={user}
                     onClose={() => setOpenSelectStore(false)}
                     handleBulkDelete={handleBulkDelete}
                     handleEditStore={handleEditStore}
@@ -95,7 +99,7 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                         onBulkDelete={handleBulkDelete}
                     />
 
-                    <div className="gap-4 grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 px-2 py-2">
+                    <div className="gap-4 grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 py-2">
 
                         {menus?.map((m) => (
                             !isSelectionMode ? (
@@ -132,6 +136,14 @@ export default function Sucursales({ menus, user_id }: { menus: any[], user_id: 
                     </div>
                 </div>
             </div>
+            {isEditModalOpen && (
+                <StoreEditModal
+                    user_id={user_id}
+                    menu={menu}
+                    isOpen={isEditModalOpen}
+                    setIsOpen={setIsEditModalOpen}
+                />
+            )}
         </div>
     );
 }

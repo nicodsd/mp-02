@@ -6,6 +6,8 @@ import Pricing from "@/src/components/land_page/Pricing";
 import Contact from "@/src/components/land_page/Contact";
 import Footer from "@/src/components/land_page/Footer";
 import FAQ from "@/src/components/land_page/FAQ";
+import MetricsSection from "@/src/components/land_page/MetricsSection";
+import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 //import Testimonials from "@/src/components/land_page/Testimonials";
 
 export default function Page() {
@@ -13,11 +15,13 @@ export default function Page() {
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
-        <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
+        <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
           <Hero />
           <Features />
           <Showcase />
           <Pricing />
+          <MetricsSection />
+          <TestimonialsSection />
           <FAQ />
           <Contact />
         </main>

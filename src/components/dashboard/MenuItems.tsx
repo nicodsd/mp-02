@@ -5,7 +5,7 @@ import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 import RenderSortCards from "../user_index/user_sections/RenderSortCards";
 import { URI } from "@/src/lib/const";
 import { useEffect } from "react";
-export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; template: any; token?: string }) {
+export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any[]; template: any; user: any; token?: string }) {
   const activeDataFoods = useMemo(() => dataFoods.filter((f) => !f.is_archived), [dataFoods]);
   const archivedDataFoods = useMemo(() => dataFoods.filter((f) => f.is_archived), [dataFoods]);
 
@@ -57,7 +57,7 @@ export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; te
     <div className="flex p-3 w-full flex-col gap-6 relative">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-gray-800">Platos</h1>
-        <p className="text-gray-500 text-sm">Gestiona tus platos.</p>
+        <p className="text-gray-500 text-sm">Gestiona tus platos, crea, edita entre otras cosas.</p>
       </header>
 
       <div className="grid grid-cols-3 lg:grid-cols-3 gap-2">
@@ -73,22 +73,33 @@ export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; te
             <span className="text-lg text-white mb-1 font-semibold leading-tight">Promos</span>
             <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
           </div>
-          <span className="text-xs font-medium text-white/80">Promociones activas</span>
+          <span className="text-xs font-medium leading-3 text-white/80">Promociones activas</span>
         </div>
-        <div className="flex flex-col items-start p-3 rounded-xl bg-indigo-500 justify-between">
-          <div className="flex flex-col items-start ">
-            <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
-            <span className="text-[3rem] font-bold text-white">{analytics.visits}</span>
-          </div>
-          <span className="text-xs font-medium text-white/80">Vistas al menú</span>
-        </div>
+        {
+          user.plan !== "free" ?
+            <div className="flex flex-col items-start p-3 rounded-xl bg-indigo-500 justify-between">
+              <div className="flex flex-col items-start ">
+                <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
+                <span className="text-[3rem] font-bold text-white">{analytics.visits}</span>
+              </div>
+              <span className="text-xs font-medium text-white/80">Vistas al menú</span>
+            </div>
+            :
+            <div className="flex flex-col items-start gap-2 p-3 rounded-xl bg-indigo-500 justify-between">
+              <div className="flex flex-col items-start">
+                <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
+                <span className="md:text-[1.8rem] text-xl font-bold leading-none text-white">Función paga</span>
+              </div>
+              <span className="md:text-sm text-xs font-medium leading-3 text-white/80">Mejora tu plan para ver en tiempo real quienes entran a tu menú </span>
+            </div>
+        }
       </div>
       <div className="flex flex-col gap-3 w-full pt-4">
 
         <div className="flex items-center gap-2 pl-2">
           <button
             onClick={() => setView("active")}
-            className={`px-4 py-2 font-semibold text-sm rounded-lg transition-colors 
+            className={`px-4 py-2 font-semibold cursor-pointer text-sm rounded-lg transition-colors 
               ${view === "active" ? "bg-orange-400 text-white"
                 :
                 "bg-transparent text-gray-500 hover:bg-gray-100"
@@ -102,9 +113,11 @@ export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; te
                 "bg-gray-200/60 text-orange-400 hover:bg-gray-100"
               }  rounded-full`}>{activeDataFoods.length}</span>
           </button>
+
           <button
+            disabled={(user.plan === "free")}
             onClick={() => setView("archived")}
-            className={`px-4 py-2 font-semibold text-sm rounded-lg transition-colors 
+            className={`px-4 py-2 disabled:opacity-50 cursor-pointer disabled:pointer-events-none font-semibold text-sm rounded-lg transition-colors 
               ${view === "archived" ? "bg-slate-500 text-white"
                 :
                 "bg-transparent text-gray-500 hover:bg-gray-100"
@@ -117,13 +130,14 @@ export function MenuItems({ dataFoods, template, token }: { dataFoods: any[]; te
               } 
               rounded-full`}>{archivedDataFoods.length}</span>
           </button>
+
         </div>
 
         <div className="flex items-center gap-1 w-full">
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />
         </div>
-        <div className="flex w-full h-110 relative">
+        <div className="flex w-full h-130 relative bg-gray-200/60 md:p-1 rounded-xl">
           {
             view === "active" ? (
               <div className="bg-orange-300/40 absolute top-10 left-1/2 -translate-x-1/2 blur-lg w-[80%] h-2/3"></div>

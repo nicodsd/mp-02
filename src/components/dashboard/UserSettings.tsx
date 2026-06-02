@@ -208,7 +208,7 @@ const UserSettings = ({ user }: { user: any }) => {
   return (
     <div className="w-full overflow-x-hidden">
       <header className="p-3 w-full flex flex-col">
-        <h1 className="text-2xl font-bold text-gray-800">Perfil</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Tu Menú</h1>
         <p className="text-gray-500 text-sm">Edita la información de tu negocio.</p>
       </header>
       <form
@@ -273,7 +273,7 @@ const UserSettings = ({ user }: { user: any }) => {
               :
               <div className="flex items-center justify-center gap-2 flex-col">
                 <h3 className="text-lg text-gray-700">Fondo</h3>
-                <Link href="/panel-de-usuario?section=planes" className="w-45 px-5 opacity-70 cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                <Link href="/panel-de-usuario?seccion=plan" className="w-45 px-5 opacity-70 cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
                   <OctagonX size={50} className="text-gray-400" />
                   <span className="text-gray-800 text-[12px] text-center">Mejora tu plan para agregar un fondo</span>
                 </Link>

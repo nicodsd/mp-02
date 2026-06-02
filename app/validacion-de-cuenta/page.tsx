@@ -5,7 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight } from "lucide-react";
 import { URI } from "@/src/lib/const";
-import logo from "@/public/images/logo/LOGOTIPO.svg";
+import BttnBack from '@/src/components/buttons/BttnBack';
+import logo from "@/public/images/logo/logo-rojo.png";
 import Image from "next/image";
 
 function ValidationContent() {
@@ -48,125 +49,172 @@ function ValidationContent() {
   }, [code]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-full max-w-md p-8 md:p-10 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-[0_20px_50px_rgba(255,30,0,0.08)] flex flex-col items-center text-center relative overflow-hidden"
-    >
-      {/* Decorative God Ray background light */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-red-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-      {/* Brand Logo */}
-      <div className="w-16 h-16 mb-8 relative z-10 flex items-center justify-center p-2 bg-stone-50 border border-stone-100 rounded-2xl shadow-sm">
-        <Image src={logo} alt="QMenú Logo" width={100} height={100} className="w-full h-full object-contain" />
+    <div className="w-full py-8 pt-14 relative mt-2">
+      {/* Brand Logo in top circle */}
+      <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+        <div className="w-24 h-24 rounded-full ring-1 bg-background border-white ring-gray-300 flex items-center justify-center">
+          <Image
+            src={logo}
+            alt="User"
+            width={100}
+            height={100}
+            className="w-full h-full rounded-full"
+          />
+        </div>
       </div>
 
       {status === "loading" && (
-        <div className="flex flex-col items-center relative z-10">
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-            className="text-red-500 mb-6"
-          >
-            <Loader2 className="w-16 h-16 stroke-[1.5]" />
-          </motion.div>
-          <h2 className="text-2xl font-black text-stone-800 mb-3 tracking-tight">Validando Cuenta</h2>
-          <p className="text-stone-500 text-sm leading-relaxed">{message}</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center"
+        >
+          <div className="text-start mb-5 px-5 flex flex-col gap-2 w-full">
+            <h1 className="text-stone-800 text-3xl leading-none font-extrabold tracking-tight text-center">
+              Validando Cuenta
+            </h1>
+            <p className="text-gray-600 text-sm font-semibold text-center mt-2">
+              {message}
+            </p>
+          </div>
+
+          <div className="flex justify-center mt-6">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              className="text-primary"
+            >
+              <Loader2 className="w-12 h-12 stroke-[1.5]" />
+            </motion.div>
+          </div>
+        </motion.div>
       )}
 
       {status === "success" && (
-        <div className="flex flex-col items-center relative z-10 w-full">
-          <motion.div
-            initial={{ scale: 0, rotate: -45 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: "spring", stiffness: 100, damping: 10 }}
-            className="w-20 h-20 bg-green-500/10 text-green-600 rounded-full flex items-center justify-center mb-6 shadow-inner"
-          >
-            <CheckCircle2 className="w-12 h-12 stroke-[1.75]" />
-          </motion.div>
-
-          <div className="flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1 rounded-full text-xs font-semibold mb-4 shadow-sm border border-green-100">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Cuenta Verificada</span>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="px-3"
+        >
+          <div className="text-start mb-5 px-5 flex flex-col gap-2">
+            <h1 className="text-stone-800 text-3xl leading-none font-extrabold tracking-tight text-center">
+              ¡Excelente!
+            </h1>
+            <div className="flex items-center justify-center gap-1.5 text-green-600 text-md font-semibold mt-2">
+              <Sparkles className="w-4 h-4" />
+              <span>Cuenta Verificada</span>
+            </div>
+            <p className="text-gray-600 text-sm font-semibold text-center mt-2">
+              {message}
+            </p>
           </div>
 
-          <h2 className="text-3xl font-black text-stone-800 mb-3 tracking-tight">¡Excelente!</h2>
-          <p className="text-stone-500 text-sm leading-relaxed mb-8 px-2">{message}</p>
+          <div className="flex justify-center mb-6">
+            <motion.div
+              initial={{ scale: 0, rotate: -45 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 100, damping: 10 }}
+              className="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center shadow-inner"
+            >
+              <CheckCircle2 className="w-12 h-12 stroke-[1.75]" />
+            </motion.div>
+          </div>
 
           <motion.button
-            whileHover={{ scale: 1.02, boxShadow: "0 10px 20px rgba(255, 30, 0, 0.15)" }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push("/login")}
-            className="w-full bg-primary text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 hover:bg-[#e01a00] transition-colors duration-300 shadow-lg shadow-primary/20 cursor-pointer"
+            className="w-full bg-primary active:scale-90 text-white font-bold py-4 px-3 rounded-lg cursor-pointer uppercase tracking-wide transition-all flex items-center justify-center gap-2"
           >
             <span>Iniciar Sesión</span>
             <ArrowRight className="w-4 h-4" />
           </motion.button>
-        </div>
+        </motion.div>
       )}
 
       {status === "error" && (
-        <div className="flex flex-col items-center relative z-10 w-full">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 120, damping: 12 }}
-            className="w-20 h-20 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mb-6 shadow-inner"
-          >
-            <XCircle className="w-12 h-12 stroke-[1.75]" />
-          </motion.div>
-
-          <div className="flex items-center gap-1.5 bg-red-50 text-red-600 px-3 py-1 rounded-full text-xs font-semibold mb-4 shadow-sm border border-red-100">
-            <span>Validación Fallida</span>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="px-3"
+        >
+          <div className="text-start mb-5 px-5 flex flex-col gap-2">
+            <h1 className="text-stone-800 text-3xl leading-none font-extrabold tracking-tight text-center">
+              Algo salió mal
+            </h1>
+            <div className="flex items-center justify-center gap-1.5 text-red-600 text-md font-semibold mt-2">
+              <XCircle className="w-4 h-4" />
+              <span>Validación Fallida</span>
+            </div>
+            <p className="text-gray-600 text-sm font-semibold text-center mt-2">
+              {message}
+            </p>
           </div>
 
-          <h2 className="text-2xl font-black text-stone-800 mb-3 tracking-tight">Vaya, algo salió mal</h2>
-          <p className="text-red-600/80 text-sm leading-relaxed mb-8 px-2 font-medium bg-red-50/50 py-3 rounded-xl border border-red-100/50 w-full">{message}</p>
-
-          <div className="flex flex-col gap-3 w-full">
+          <div className="flex flex-col gap-2 mt-6">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push("/registro-de-usuario")}
-              className="w-full bg-stone-900 text-white font-bold py-4 px-6 rounded-2xl hover:bg-stone-800 transition-colors duration-300 shadow-md cursor-pointer"
+              className="w-full bg-stone-900 active:scale-90 text-white font-bold py-4 px-3 rounded-lg cursor-pointer uppercase tracking-wide transition-all"
             >
               Regresar al Registro
             </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push("/contacto")}
-              className="w-full bg-white text-stone-600 border border-stone-200 font-bold py-4 px-6 rounded-2xl hover:bg-stone-50 transition-colors duration-300 cursor-pointer"
+              className="w-full bg-white border border-gray-300 text-gray-700 font-bold py-4 px-3 rounded-lg cursor-pointer uppercase tracking-wide transition-all"
             >
               Contactar Soporte
             </motion.button>
           </div>
-        </div>
+        </motion.div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
 export default function AccountValidationPage() {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center p-4 bg-background relative overflow-hidden font-sans">
-      {/* Dynamic Background Circles */}
-      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[80px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-red-500/5 rounded-full blur-[80px] pointer-events-none" />
-
-      <Suspense
-        fallback={
-          <div className="w-full max-w-md p-10 rounded-3xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-lg flex flex-col items-center text-center">
-            <Loader2 className="w-16 h-16 animate-spin text-red-500 stroke-[1.5] mb-6" />
-            <h2 className="text-2xl font-black text-stone-800 mb-3 tracking-tight">Cargando verificación...</h2>
-          </div>
-        }
-      >
-        <ValidationContent />
-      </Suspense>
+    <div className="min-h-screen flex flex-col justify-between">
+      <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
+        <div className="w-full py-3 z-10">
+          <BttnBack />
+        </div>
+        <main className="flex-1 w-full flex flex-col items-end justify-start mt-18">
+          <Suspense
+            fallback={
+              <div className="w-full py-8 pt-14 relative mt-2 flex flex-col items-center">
+                <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                  <div className="w-24 h-24 rounded-full ring-1 bg-background border-white ring-gray-300 flex items-center justify-center">
+                    <Image
+                      src={logo}
+                      alt="User"
+                      width={100}
+                      height={100}
+                      className="w-full h-full rounded-full"
+                    />
+                  </div>
+                </div>
+                <Loader2 className="w-12 h-12 animate-spin text-primary stroke-[1.5] mt-6" />
+                <h2 className="text-xl font-bold text-stone-800 mt-4 tracking-tight">Cargando verificación...</h2>
+              </div>
+            }
+          >
+            <ValidationContent />
+          </Suspense>
+        </main>
+      </div>
+      <footer className="w-full h-fit flex flex-col items-center justify-between bg-background space-y-5 py-2">
+        <div className="text-center py-2 text-xs">
+          <p>© {new Date().getFullYear()} QMenu.</p>
+        </div>
+      </footer>
     </div>
   );
 }

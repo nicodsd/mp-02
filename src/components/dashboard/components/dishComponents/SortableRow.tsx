@@ -6,7 +6,7 @@ import { FaEdit, FaCheckSquare, FaRegSquare, FaArchive } from "react-icons/fa";
 import { GripVertical } from "lucide-react";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 
-export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected, onToggleSelect, template }: any) {
+export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSelected, onToggleSelect, template }: any) {
     const {
         attributes,
         listeners,
@@ -67,6 +67,7 @@ export function SortableRow({ food, context, onEdit, isSelectionMode, isSelected
                     </>
                 )}
                 <SortableFoodCard
+                    user={user}
                     food={food}
                     context={!!context}
                     template={template}

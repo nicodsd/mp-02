@@ -7,9 +7,9 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <div id="inicio" className="relative w-full pt-28 md:pt-40 pb-16 overflow-hidden">
+    <div id="inicio" className="relative w-full pt-30 md:pt-60 pb-16 md:pb-0 md:h-screen overflow-hidden">
       <div className="relative flex flex-col md:flex-row md:grid md:grid-cols-2 items-center md:items-end justify-between z-10">
-        <div className="text-start w-full z-10 flex md:pb-5 flex-col items-start md:items-start">
+        <div className="text-center w-full z-10 flex md:pb-5 flex-col items-center md:justify-start">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className='w-full flex items-center justify-center'>
             <Image
               src={HeroImage}
@@ -20,7 +20,7 @@ export default function Hero() {
               priority
             />
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-[2.8rem] sm:text-[3rem] md:text-6xl font-extrabold text-primary leading-none mb-4 md:mb-8">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-[2.8rem] sm:text-[3rem] md:text-7xl font-extrabold text-primary leading-none mb-4 md:mb-8">
             Tu menú digital
             <br className="block" />
             rápido y gratis.

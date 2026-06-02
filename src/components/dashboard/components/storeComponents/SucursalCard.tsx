@@ -19,11 +19,11 @@ export const SucursalCard = ({ m, isSelected, isSelectionMode, onToggle }: any) 
             >
                 {m.cover && <Image priority src={m.cover} alt="Cover" fill className={`object-cover z-0 transition-opacity ${isSelected ? "opacity-60" : "opacity-100"}`} />}
 
-                <div className={`flex flex-col pb-3 text-stone-800 items-center border-2 border-white backdrop-blur-sm justify-end relative z-10 min-h-[50%] w-full ${isSelected ? "bg-blue-50/70" : "bg-white/80"} rounded-t-xl`}>
+                <div className={`flex flex-col pb-3 text-stone-800 items-center border border-white backdrop-blur-sm justify-end relative z-10 min-h-[50%] w-full ${isSelected ? "bg-blue-50/70" : "bg-white/70"} rounded-t-xl`}>
                     <div className={`w-18 h-18 bg-gray-300 absolute -top-10 shadow-lg rounded-full border-4 overflow-hidden transition-all ${isSelected ? "border-blue-500" : "border-white"}`}>
                         {m.photo && <Image priority src={m.photo} alt="Logo" fill className="object-cover" />}
                     </div>
-                    <span className="font-bold text-md mt-6">Menu #{m.menuEnlisted}</span>
+                    <span className="font-bold text-md mt-6">Sucursal #{m.menuEnlisted}</span>
                     <div className="flex items-center mt-1 text-stone-700 justify-center gap-1 px-2">
                         <FaMapMarkerAlt size={14} className="text-primary" />
                         <span className="text-[10px] truncate leading-none uppercase font-semibold ">{m.location}</span>

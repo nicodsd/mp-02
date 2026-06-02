@@ -5,6 +5,7 @@ interface SelectStoreModalProps {
     isOpen: boolean;
     storeId: string;
     menu: any;
+    user: any;
     onClose: () => void;
     handleBulkDelete: () => void;
     handleEditStore: () => void;
@@ -14,12 +15,26 @@ export default function SelectStoreModal({
     isOpen,
     storeId,
     menu,
+    user,
     onClose,
     handleBulkDelete,
     handleEditStore
 }: SelectStoreModalProps) {
 
     if (!isOpen) return null;
+
+    const handleShare = () => {
+        const identifier = menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id;
+        const link = `${window.location.origin}/menu-digital/${user?.name}/${identifier}`;
+        navigator.clipboard.writeText(link);
+        alert("¡Enlace de la sucursal copiado al portapapeles!");
+    };
+
+    const handleEnter = () => {
+        const identifier = menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id;
+        const link = `/menu-digital/${user?.name}/${identifier}`;
+        window.open(link, "_blank");
+    };
     //console.log("menu", menu);
     return (
         <div className="fixed backdrop-blur-sm top-0 left-0 w-full h-full z-50 flex items-center justify-center">
@@ -47,13 +62,13 @@ export default function SelectStoreModal({
                     {/* Contenedor de los 3 botones principales */}
                     <div className="flex flex-col w-full gap-2 mt-2">
                         <button
-                            onClick={onClose}
+                            onClick={handleEnter}
                             className="w-full py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-200 active:scale-95 transition-transform"
                         >
                             Entrar a la sucursal
                         </button>
                         <button
-                            onClick={onClose}
+                            onClick={handleShare}
                             className="w-full py-3 bg-gray-100 text-gray-800 border border-gray-200 rounded-lg font-semibold hover:bg-gray-200 active:scale-95 transition-transform"
                         >
                             Compartir

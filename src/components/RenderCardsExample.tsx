@@ -11,6 +11,7 @@ import { useCartStore } from "@/src/lib/useCartStore";
 
 type RenderCardsProps = {
   foods: any[];
+  user?: any;
   count?: number;
   context?: boolean;
   template?: any;
@@ -18,7 +19,7 @@ type RenderCardsProps = {
   whatsapp?: boolean;
 };
 
-export default function RenderCards({ foods: initialFoods, count, context, template, example, whatsapp }: RenderCardsProps) {
+export default function RenderCards({ foods: initialFoods, count, context, template, example, whatsapp, user }: RenderCardsProps) {
   const { foods, setFoods, removeFoodLocal } = useFoodStore();
   const [selectedFood, setSelectedFood] = useState<any>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -80,7 +81,7 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
               }`}
           >
             <div className="w-full h-full">
-              <FoodsCardsExample example={example} whatsapp={whatsapp} {...food} template={template} context={context} edit={() => handleEditClick} />
+              <FoodsCardsExample user={user} example={example} whatsapp={whatsapp} {...food} template={template} context={context} edit={() => handleEditClick} />
             </div>
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">

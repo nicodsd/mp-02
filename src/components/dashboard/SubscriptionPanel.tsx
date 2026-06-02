@@ -131,20 +131,23 @@ export default function SubscriptionPanel({ user }: { user: any }) {
       </header>
 
       {/* Plan actual info widget */}
-      <div className="mx-3 mb-8 p-5 bg-linear-to-r from-gray-50 to-gray-100 rounded-2xl border border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className={`mx-3 mb-8 p-5 rounded-2xl border border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${user?.plan === "premium" ? "bg-black" : "bg-linear-to-r from-gray-50 to-gray-100"}`
+      }>
         <div>
-          <span className="text-xs uppercase font-bold text-gray-400 tracking-wider">Plan Activo</span>
+          <span className={`text-xs uppercase font-bold tracking-wider ${user?.plan === "premium" ? "text-gray-200" : "text-gray-400"}`}>Plan Activo</span>
           <div className="flex items-center gap-2 mt-1">
-            <h2 className="text-xl font-bold text-gray-800 capitalize">
+            <h2 className={`text-xl font-bold capitalize ${user?.plan === "premium" ? "text-white" : "text-gray-800"}`}>
               {user?.plan === "free" ? "Gratuito" : user?.plan}
             </h2>
             {user?.plan !== "free" && (
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1 
+                ${user?.plan === "premium" ? "bg-white text-black" : "bg-green-100 text-green-700"}`
+              }>
                 <ShieldCheck className="w-3.5 h-3.5" /> Activo
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className={`text-xs mt-1 ${user?.plan === "premium" ? "text-gray-300" : "text-gray-500"}`}>
             {user?.plan === "free"
               ? "Tienes acceso a las herramientas básicas para iniciar tu menú digital."
               : "Disfrutas de todas las ventajas de tu plan. Los pagos se administran en Mercado Pago."}
@@ -160,7 +163,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
       </div>
 
       {/* Cards list */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-3">
         {plans.map((plan) => {
           const isActive = user?.plan === plan.id;
           const isDowngrade =

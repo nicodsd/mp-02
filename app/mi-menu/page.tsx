@@ -18,14 +18,13 @@ export default async function Page() {
         user = { ...user, ...menu };
         foods = await getFoodsByUser(URI, user.id);
     }
-    if (user?.isEmailVerified && user?.plan !== "free") {
+    if (user?.plan !== "free") {
         template = templates.find((t) => t.template_id === user?.template_id);
     } else {
         template = templates.find((t) => t.template_id === "default");
         user.presentation = "default"
         user.navBar = "default"
     }
-    console.log(user)
     return (
         <div className="flex relative flex-col min-h-screen">
             <NavBar

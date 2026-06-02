@@ -249,7 +249,7 @@ export default function FormFoods({ initialCategories, user }: any) {
       <div className="flex flex-col lg:flex-row gap-4 pb-10 w-full max-w-6xl md:px-4 mt-5 flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
-        <form onSubmit={handleAddFoodToList} className="w-full lg:w-1/2 md:bg-white p-3 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
+        <form onSubmit={handleAddFoodToList} className="w-full lg:w-1/2 md:bg-background p-3 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
           <h2 className="text-lg font-bold text-gray-700 pb-2">Datos del Plato</h2>
 
           <ImageUpload
@@ -410,7 +410,7 @@ export default function FormFoods({ initialCategories, user }: any) {
       <div className="w-full items-center h-fit md:min-h-24 justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-40 flex gap-3 px-4 md:px-7 py-3">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={() => router.replace("/mi-menu")}
           className="text-gray-700 cursor-pointer bg-background border border-gray-400 inline-flex active:scale-95 transition-all items-center px-8 py-3 text-md font-bold rounded-lg"
         >
           Cancelar

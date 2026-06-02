@@ -36,7 +36,7 @@ export default function FAQ() {
   return (
     <section id="faq" className="w-full py-5 md:py-14 md:mt-10 relative overflow-hidden flex flex-col items-center justify-center bg-background">
 
-      <div className="text-start w-full mx-auto relative z-10 px-2">
+      <div className="text-start w-full mx-auto relative z-10">
         <div className="text-center md:text-start mb-10 md:mb-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

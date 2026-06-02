@@ -15,6 +15,7 @@ import {
 } from "@headlessui/react";
 import { MdStorefront } from "react-icons/md";
 import {
+  HiPencil,
   HiOutlineUser,
   HiOutlineColorSwatch,
   HiOutlineTicket,
@@ -44,22 +45,22 @@ export default function PanelUser({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const section = searchParams.get("section");
+  const seccion = searchParams.get("seccion");
 
   useEffect(() => {
     const index = menuItems.findIndex(
-      item => item.key === section
+      item => item.key === seccion
     );
 
     setSelectedIndex(index >= 0 ? index : 0);
-  }, [section]);
+  }, [seccion]);
 
   const handleTabChange = (index: number) => {
     if (index === undefined || !menuItems[index]) return;
 
     const params = new URLSearchParams(searchParams.toString());
 
-    params.set("section", menuItems[index].key);
+    params.set("seccion", menuItems[index].key);
 
     router.replace(`/panel-de-usuario?${params.toString()}`);
   };
@@ -86,14 +87,14 @@ export default function PanelUser({
   }
 
   const tabClass = (selected: boolean) =>
-    `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-md font-bold transition-all outline-none disabled:opacity-40 disabled:pointer-events-none
+    `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm md:text-md font-bold transition-all outline-none disabled:opacity-40 disabled:pointer-events-none
     ${selected
       ? "text-white bg-black transform scale-[1.02]"
       : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
 
   const menuItems = [
-    { key: "user", name: "Usuario", icon: <HiOutlineUser size={20} /> },
+    { key: "menu", name: "Tu Menú", icon: <HiPencil size={20} /> },
     { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
     { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
     { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
@@ -176,24 +177,25 @@ export default function PanelUser({
                   </div>
 
                   <nav className="px-4 space-y-2 flex flex-col justify-between h-full">
-                    <TabList>
+                    <div className="flex flex-col gap-2">
                       {menuItems?.map((item, index) => (
-                        <Tab
+                        <button
                           disabled={user?.plan === "free" && (item?.name === "Promociones" || item?.name === "Configura tu menú" || item?.name === "Paletas de colores" || item?.name === "Sucursales")}
                           key={item.name}
-                          className={({ selected }) =>
-                            tabClass(selected)
-                          }
-                          onClick={() => setIsSidebarOpen(false)}
+                          onClick={() => {
+                            handleTabChange(index);
+                            setIsSidebarOpen(false);
+                          }}
+                          className={tabClass(selectedIndex === index)}
                         >
                           {item?.icon} {item?.name}
-                        </Tab>
+                        </button>
                       ))}
-                    </TabList>
+                    </div>
                     <div className="w-full pl-5">
                       <button
                         onClick={() => { hadleLogoutUserAction(user.id) }}
-                        className="mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
+                        className="mt-20 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
                       >
                         <HiOutlineLogout size={20} /> Cerrar Sesión
                       </button>
@@ -228,7 +230,7 @@ export default function PanelUser({
                     <UserPlan plan={user?.plan} />
                   </div>
                 </div>
-                <TabList className="flex flex-col mt-16 gap-y-2">
+                <TabList className="h-auto md:flex flex-col mt-16 gap-y-2">
                   {menuItems.map((item, index) => (
                     <Tab
                       key={item.name}
@@ -261,7 +263,7 @@ export default function PanelUser({
             </aside>
 
             <main className="flex-1 w-full">
-              <TabPanels className="min-h-full w-full lg:w-[70%] overflow-hidden">
+              <TabPanels className="min-h-full w-full lg:w-[80%] xl:w-[90%] overflow-hidden">
                 {children}
               </TabPanels>
             </main>
