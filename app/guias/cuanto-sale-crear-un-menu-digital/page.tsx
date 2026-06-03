@@ -86,7 +86,7 @@ export default function PricingPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-30 md:pt-60 pb-20">
+                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-30 pb-20">
                     <section id="planes" className="w-full">
                         <BttnBack />
                         <div className="w-full relative mt-10 z-10">

@@ -22,6 +22,7 @@ const StoreSchema = Yup.object().shape({
         .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
         .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
         .optional(),
+    schedule: Yup.string().optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
@@ -58,6 +59,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
         formData.append("phonePrefix", values.phonePrefix);
         formData.append("phone", String((values.phonePrefix || "") + (values.phone || "")));
         formData.append("description", values.description);
+        formData.append("schedule", values.schedule);
         formData.append("instagram", values.instagram);
         formData.append("facebook", values.facebook);
         formData.append("tiktok", values.tiktok);
@@ -90,6 +92,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
         phonePrefix: '',
         phone: '',
         description: '',
+        schedule: '',
         instagram: '',
         facebook: '',
         tiktok: '',
@@ -256,6 +259,20 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                                                 />
                                                 <ErrorMessage name="description" component="div" className="mt-0.5 text-sm text-red-500 font-medium absolute" />
+                                            </div>
+
+                                            {/* SCHEDULE */}
+                                            <div className="relative">
+                                                <label htmlFor="schedule" className="block text-md text-gray-700 mb-1">Horarios de Atención</label>
+                                                <Field
+                                                    id="schedule"
+                                                    name="schedule"
+                                                    type="text"
+                                                    maxLength={50}
+                                                    placeholder="Ej. Lun a Vie: 10:00 a 22:00 hs"
+                                                    className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                                                />
+                                                <ErrorMessage name="schedule" component="div" className="mt-0.5 text-sm text-red-500 font-medium absolute" />
                                             </div>
 
                                             {/* SOCIAL MEDIA */}

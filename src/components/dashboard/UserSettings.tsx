@@ -7,7 +7,7 @@ import { placeholder } from "@/src/lib/const";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { OctagonX } from "lucide-react";
+import { OctagonX, Store } from "lucide-react";
 import {
   FaCamera,
   FaInstagram,
@@ -16,8 +16,8 @@ import {
   FaWhatsapp,
   FaMapMarkerAlt,
   FaTimes,
-  FaUser,
   FaSpinner,
+  FaClock,
 } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
 import { URI } from "@/src/lib/const";
@@ -26,7 +26,6 @@ import { motion } from "framer-motion";
 const UserSettings = ({ user }: { user: any }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
   const [name, setName] = useState(user?.name);
   const [previewPhoto, setPreviewPhoto] = useState<string>(user?.photo);
   const [previewBackground, setPreviewBackground] = useState<string>(user?.cover);
@@ -35,6 +34,7 @@ const UserSettings = ({ user }: { user: any }) => {
   const [description, setDescription] = useState(
     user?.description || "Bar de comida.",
   );
+  const [schedule, setSchedule] = useState(user?.schedule || "");
   const [location, setLocation] = useState(user?.location || "");
   const [phone, setPhone] = useState(user?.phone || "");
   const [instagram, setInstagram] = useState(user?.instagram || "");
@@ -44,6 +44,7 @@ const UserSettings = ({ user }: { user: any }) => {
   const [editStates, setEditStates] = useState({
     name: false,
     description: false,
+    schedule: false,
     location: false,
     phone: false,
     photo: false,
@@ -60,6 +61,7 @@ const UserSettings = ({ user }: { user: any }) => {
     setPreviewPhoto(user?.photo || placeholder);
     setPreviewBackground(user?.cover || placeholder);
     setDescription(user?.description || "");
+    setSchedule(user?.schedule || "");
     setLocation(user?.location || "");
     setPhone(user?.phone || "");
     setInstagram(user?.instagram || "");
@@ -69,6 +71,7 @@ const UserSettings = ({ user }: { user: any }) => {
     setEditStates({
       name: false,
       description: false,
+      schedule: false,
       location: false,
       phone: false,
       photo: false,
@@ -88,6 +91,7 @@ const UserSettings = ({ user }: { user: any }) => {
     setPreviewPhoto(user?.photo || placeholder);
     setPreviewBackground(user?.cover || placeholder);
     setDescription(user?.description || "");
+    setSchedule(user?.schedule || "");
     setLocation(user?.location || "");
     setPhone(user?.phone || "");
     setInstagram(user?.instagram || "");
@@ -97,6 +101,7 @@ const UserSettings = ({ user }: { user: any }) => {
     setEditStates({
       name: false,
       description: false,
+      schedule: false,
       location: false,
       phone: false,
       photo: false,
@@ -154,6 +159,7 @@ const UserSettings = ({ user }: { user: any }) => {
     if (fileBackground) formData.append("cover", fileBackground);
     if (editStates.name) formData.append("name", name);
     if (editStates.description) formData.append("description", description);
+    if (editStates.schedule) formData.append("schedule", schedule);
     if (editStates.location) formData.append("location", location);
     if (editStates.phone) formData.append("phone", phone);
     if (editStates.instagram) formData.append("instagram", instagram);
@@ -188,6 +194,7 @@ const UserSettings = ({ user }: { user: any }) => {
         setEditStates({
           name: false,
           description: false,
+          schedule: false,
           location: false,
           phone: false,
           photo: false,
@@ -280,12 +287,12 @@ const UserSettings = ({ user }: { user: any }) => {
               </div>
             }
           </div>
-          <div className="w-full flex flex-col gap-y-5">
+          <div className="w-full flex flex-col gap-y-8">
             <div className="w-full">
               {editStates.name ? (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaUser /> Nombre
+                    Nombre
                   </label>
                   <div className="relative">
                     <input
@@ -305,11 +312,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaUser /> Nombre
-                    </label>
-                    <p className="text-lg">{name}</p>
+                  <div className="flex items-center gap-4">
+                    <Store size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Nombre
+                      </label>
+                      <p className="text-lg">{name}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -345,11 +355,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold">
-                      <TbNotes /> Descripción
-                    </label>
-                    <p className="text-lg line-clamp-1">{description}</p>
+                  <div className="flex items-center gap-4">
+                    <TbNotes size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold text-gray-500">
+                        Descripción
+                      </label>
+                      <p className="text-lg line-clamp-1">{description}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -357,6 +370,50 @@ const UserSettings = ({ user }: { user: any }) => {
                     className={`text-xs font-bold cursor-pointer ${!user?.description ? "text-blue-500" : "text-gray-500"}`}
                   >
                     {!user?.description ? "Agregar" : "Editar"}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full">
+              {editStates.schedule ? (
+                <div className="relative">
+                  <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
+                    <FaClock /> Horarios de Atención
+                  </label>
+                  <div className="relative">
+                    <input
+                      className="w-full border p-3 rounded-lg"
+                      maxLength={50}
+                      value={schedule}
+                      onChange={(e) => setSchedule(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => cancelChanges()}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between items-center text-gray-500">
+                  <div className="flex items-center gap-4">
+                    <FaClock size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Horarios de Atención
+                      </label>
+                      <p className="text-lg line-clamp-1">{schedule}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => toggleEdit("schedule")}
+                    className={`text-xs font-bold cursor-pointer ${!user?.schedule ? "text-blue-500" : "text-gray-500"}`}
+                  >
+                    {!user?.schedule ? "Agregar" : "Editar"}
                   </button>
                 </div>
               )}
@@ -386,11 +443,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold">
-                      <FaMapMarkerAlt /> Ubicación
-                    </label>
-                    <p className="text-lg">{location}</p>
+                  <div className="flex items-center gap-4">
+                    <FaMapMarkerAlt size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Ubicación
+                      </label>
+                      <p className="text-lg">{location}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -426,11 +486,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaWhatsapp /> WhatsApp
-                    </label>
-                    <p className="text-lg">{prefix} {number}</p>
+                  <div className="flex items-center gap-4">
+                    <FaWhatsapp size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Whatsapp
+                      </label>
+                      <p className="text-lg">{prefix} {number}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -466,11 +529,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaInstagram /> Instagram
-                    </label>
-                    <p className="text-lg">{instagram}</p>
+                  <div className="flex items-center gap-4">
+                    <FaInstagram size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Instagram
+                      </label>
+                      <p className="text-lg">{user?.instagram}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -506,11 +572,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaFacebook /> Facebook
-                    </label>
-                    <p className="text-lg">{facebook}</p>
+                  <div className="flex items-center gap-4">
+                    <FaFacebook size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        Facebook
+                      </label>
+                      <p className="text-lg">{user?.facebook}</p>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -546,11 +615,14 @@ const UserSettings = ({ user }: { user: any }) => {
                 </div>
               ) : (
                 <div className="flex justify-between items-center text-gray-500">
-                  <div>
-                    <label className="flex items-center gap-1 text-xs font-bold ">
-                      <FaTiktok /> TikTok
-                    </label>
-                    <p className="text-lg">{tiktok}</p>
+                  <div className="flex items-center gap-4">
+                    <FaTiktok size={20} />
+                    <div className="flex flex-col items-start">
+                      <label className="flex items-center gap-1 text-xs font-bold ">
+                        TikTok
+                      </label>
+                      <p className="text-lg">{user?.tiktok}</p>
+                    </div>
                   </div>
                   <button
                     type="button"

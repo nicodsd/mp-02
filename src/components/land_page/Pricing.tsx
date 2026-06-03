@@ -25,7 +25,7 @@ const plans: PricingPlan[] = [
     description: "Para pequeños locales o food trucks que inician.",
     features: [
       "Hasta 10 platos",
-      "Código QR para compartir",
+      "Código QR con tu logo",
       "Fotos básicas",
       "Actualización en tiempo real",
       "Los pedidos te llegan al WhatsApp"
@@ -40,15 +40,13 @@ const plans: PricingPlan[] = [
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
-      "Platos ilimitados",
+      "Platos ilimitados, permanente",
       "Códigos QR personalizables con tu logo",
       "Fotos de alta calidad",
       "Analíticas de visitas",
-      "Paleta de colores que mejor se adapte a tu marca",
-      "Pedidos por WhatsApp",
-      "Gestión de promociones",
-      "Botón de 'Descanso' para vacaciones",
-      "Soporte prioritario"
+      "Menú personalizable según estética",
+      "Compras por WhatsApp",
+      "Gestión de promociones"
     ],
     cta: "Elegir Plan Plus",
     href: "/registro-de-usuario?plan=plus",
@@ -61,12 +59,12 @@ const plans: PricingPlan[] = [
     period: "/mes",
     description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
     features: [
-      "Platos ilimitados",
+      "Platos ilimitados, permanente",
       "Códigos QR personalizables con tu logo",
       "Fotos de alta calidad",
       "Analíticas de visitas",
       "Menú altamente personalizable, diferenciate de la competencia",
-      "Pedidos por WhatsApp",
+      "Compras por WhatsApp",
       "Seccion para gestión de pedidos",
       "Multi sucursal",
       "Botón de 'Descanso' para vacaciones",
@@ -82,7 +80,7 @@ const plans: PricingPlan[] = [
 
 export default function Pricing() {
   return (
-    <section id="planes" className="py-16 md:py-14 md:mt-20 w-full">
+    <section id="planes" className="py-20 md:py-0 md:pb-30 w-full">
       <div className="w-full">
         <div className="text-center md:text-start mb-8 md:mb-12 px-2">
           <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>

@@ -2,7 +2,8 @@
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import { motion } from "framer-motion";
-import BttnBack from "@/src/components/buttons/BttnBack";
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import { HiOutlineColorSwatch, HiOutlineAdjustments } from "react-icons/hi";
 import { Camera, QrCode, Smartphone, CloudLightning, PieChart, Zap } from 'lucide-react';
 
@@ -52,11 +53,14 @@ const featuresList = [
 export default function CaracteristicasPage() {
     return (
         <>
-            <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
+            <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 md:pt-40 pt-10">
-                    <section id="caracteristicas" className="py-16 md:py-24 relative overflow-hidden w-full">
-                        <BttnBack />
+                <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
+                    <section id="caracteristicas" className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
+                        <Link href="/guias" className="inline-flex items-center text-primary hover:text-orange-600 font-medium mb-8 transition-colors">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Volver a Guías
+                        </Link>
                         <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2">
                                 <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h1>
@@ -65,7 +69,7 @@ export default function CaracteristicasPage() {
                                 </motion.p>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
                                 {featuresList.map((feature, index) => (
                                     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
                                         <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">

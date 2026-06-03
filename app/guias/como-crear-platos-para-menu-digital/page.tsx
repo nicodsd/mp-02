@@ -14,8 +14,8 @@ export default function CrearPlatosPage() {
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
-        
-        <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex-grow">
+
+        <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
           <Link href="/guias" className="inline-flex items-center text-primary hover:text-orange-600 font-medium mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver a Guías
@@ -86,7 +86,7 @@ export default function CrearPlatosPage() {
               </ul>
 
               <hr className="my-10 border-slate-100" />
-              
+
               <div className="text-center">
                 <h3 className="text-xl font-bold mb-4">¿Listo para cargar tus platos?</h3>
                 <Link href="/panel-de-usuario" className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary text-white font-bold hover:bg-orange-600 transition-colors">

@@ -76,20 +76,18 @@ export default function ContactoPage() {
                                             />
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-                                            <div>
-                                                <label htmlFor="email" className="block text-sm font-bold text-stone-700 mb-2">Email</label>
-                                                <input
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
-                                                    required
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                                    placeholder="email@ejemplo.com"
-                                                />
-                                            </div>
+                                        <div>
+                                            <label htmlFor="email" className="block text-sm font-bold text-stone-700 mb-2">Email</label>
+                                            <input
+                                                type="email"
+                                                id="email"
+                                                name="email"
+                                                required
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
+                                                placeholder="email@ejemplo.com"
+                                            />
                                         </div>
 
                                         <div>

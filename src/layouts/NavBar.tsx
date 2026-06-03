@@ -8,6 +8,7 @@ import {
   FaFacebook,
   FaTiktok,
   FaEdit,
+  FaClock,
 } from "react-icons/fa";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
@@ -180,6 +181,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
     address: user?.location,
+    schedule: user?.schedule,
     phone: user?.phone,
     instagram: user?.instagram,
     facebook: user?.facebook,
@@ -225,6 +227,12 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
             {displayData.address || "Santiago del Estero, Argentina"}
           </span>
         )}
+        {displayData.schedule && (
+          <span className="flex text-xs items-center gap-1 mt-1">
+            <FaClock size={14} />
+            {displayData.schedule}
+          </span>
+        )}
         <div className="flex items-center gap-x-3 mt-1 text-xs flex-wrap justify-center px-4">
           {(displayData.phone || !user) && (
             <span className="flex items-center gap-1">
@@ -255,6 +263,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
     address: user?.location,
+    schedule: user?.schedule,
     phone: user?.phone,
     instagram: user?.instagram,
     facebook: user?.facebook,
@@ -314,6 +323,12 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
               {displayData.address || "Santiago del Estero, Argentina"}
             </span>
           )}
+          {displayData.schedule && (
+            <span className="flex text-xs items-center gap-1 mt-1">
+              <FaClock size={14} />
+              {displayData.schedule}
+            </span>
+          )}
           <div className="flex items-center gap-x-3 mt-1 text-xs flex-wrap justify-center px-4">
             {(displayData.phone || !user) && (
               <span className="flex items-center gap-1">
@@ -359,6 +374,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
     address: user?.location,
+    schedule: user?.schedule,
     phone: user?.phone,
     instagram: user?.instagram,
     facebook: user?.facebook,
@@ -403,6 +419,12 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
             <span className="flex text-xs items-center gap-1">
               <FaMapMarkerAlt size={14} />
               {displayData.address || "Santiago del Estero, Argentina"}
+            </span>
+          )}
+          {displayData.schedule && (
+            <span className="flex text-xs items-center gap-1 mt-1">
+              <FaClock size={14} />
+              {displayData.schedule}
             </span>
           )}
         </div>

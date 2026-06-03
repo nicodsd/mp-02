@@ -38,6 +38,7 @@ type FormValues = {
   facebook: string;
   tiktok: string;
   verificationCode: string;
+  schedule: string;
 };
 
 const validationSchemas = [
@@ -72,6 +73,7 @@ const validationSchemas = [
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
+    schedule: Yup.string().optional(),
     phonePrefix: Yup.number().when('phone', {
       is: (val: string) => val && val.length > 0,
       then: (schema) => schema.required('Ingrese un prefijo'),
@@ -193,6 +195,7 @@ export default function Register() {
     // MENU -------------------------------------------------------------------------
     // DATOS DE PERFIL (Vienen siempre del Formulario)
     body.append("description", values.description || "");
+    body.append("schedule", values.schedule || "");
     body.append("phone", String((values.phonePrefix || "") + (values.phone || "")));
     body.append("template_id", "default");
     body.append("location", values.location || "");
@@ -322,6 +325,7 @@ export default function Register() {
             instagram: "",
             facebook: "",
             tiktok: "",
+            schedule: "",
             verificationCode: "",
           }}
           validationSchema={validationSchemas[step]}
@@ -731,6 +735,24 @@ export default function Register() {
                         className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
                       <ErrorMessage name="description" component="div" className="mt-0.5 text-sm text-red-500 font-medium absolute" />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="schedule"
+                        className="block text-md text-gray-700 mb-1"
+                      >
+                        Horarios de Atención
+                      </label>
+                      <Field
+                        id="schedule"
+                        name="schedule"
+                        type="text"
+                        maxLength={50}
+                        placeholder="Ej. Lun a Vie: 10:00 a 22:00 hs"
+                        className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
+                      />
+                      <ErrorMessage name="schedule" component="div" className="mt-0.5 text-sm text-red-500 font-medium absolute" />
                     </div>
 
                     <div className="border-t border-gray-300 pt-2">

@@ -99,14 +99,14 @@ export const TestimonialsSection: React.FC = () => {
     };
 
     return (
-        <div className='relative w-full'>
+        <div className='py-10 md:py-0 md:pb-30 relative w-full'>
             {/* Elipses decorativas sutiles en los laterales */}
             <div className='relative hidden md:block'>
                 <div className='absolute top-20 rounded-3xl -bottom-60 -right-30 blur-3xl h-100 z-0 w-full bg-yellow-400/5'></div>
                 <div className='absolute top-20 rounded-3xl -bottom-60 -left-30 blur-3xl h-100 z-0 w-full bg-red-600/5'></div>
             </div>
 
-            <section id="testimonios" className="py-20 z-10 relative overflow-hidden w-full">
+            <section id="testimonios" className="z-10 relative overflow-hidden w-full">
                 <div className="w-full relative z-10 max-w-6xl mx-auto md:px-0">
 
                     {/* Cabecera de sección */}
@@ -117,7 +117,7 @@ export const TestimonialsSection: React.FC = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.1 }}
-                                className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-left"
+                                className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-center md:text-left"
                             >
                                 Opiniones de nuestros <span className="text-red-600">usuarios</span>
                             </motion.h2>
@@ -126,7 +126,7 @@ export const TestimonialsSection: React.FC = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2 }}
-                                className="text-sm text-zinc-500 text-left"
+                                className="text-sm text-zinc-500 text-center md:text-left"
                             >
                                 Los dueños de restaurantes eliminaron la fricción en la promoción de sus platos.
                             </motion.p>
