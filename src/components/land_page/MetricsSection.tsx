@@ -66,14 +66,14 @@ const AnimatedCounter: React.FC<{ value: string }> = ({ value }) => {
 
 export const MetricsSection: React.FC = () => {
     return (
-        <section id="metricas" className="pt-20 md:py-40 relative overflow-hidden w-full">
+        <section id="metricas" className="py-20 md:py-0 md:pb-30 relative overflow-hidden w-full">
             <div className="w-full relative z-10">
                 {/* Título alineado a la izquierda según la estructura de la web */}
-                <div className="mb-8">
+                <div className="mb-8 text-center md:text-left">
                     <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                         El impacto de <span className="text-red-600">QMenú</span> en números
                     </motion.h2>
-                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="mt-2 text-sm text-zinc-500 max-w-2xl">
+                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="mt-2 text-sm text-zinc-500 max-w-2xl text-pretty">
                         Ayudamos a los negocios gastronómicos a optimizar su atención y potenciar sus ventas desde el primer día.
                     </motion.p>
                 </div>

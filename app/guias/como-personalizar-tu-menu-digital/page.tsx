@@ -14,19 +14,18 @@ export default function PersonalizarMenuPage() {
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
-        
-        <main className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex-grow">
-          <Link href="/guias" className="inline-flex items-center text-primary hover:text-orange-600 font-medium mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Volver a Guías
-          </Link>
 
+        <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
           <article className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
+            <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Guías / Personalización
+            </Link>
             <header className="mb-10 text-center md:text-left">
               <div className="inline-block px-4 py-1.5 rounded-full bg-green-50 text-green-600 font-semibold text-sm mb-6">
                 Personalización
               </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 text-pretty">
                 Haz que el menú <span className="text-primary">Grite el Nombre de tu Marca</span>
               </h1>
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
@@ -65,7 +64,7 @@ export default function PersonalizarMenuPage() {
                 Diseñado para Móviles
               </h2>
               <p>
-                Recuerda que el 90% de tus clientes verán el menú en su celular. Mientras personalizas tu menú, revisa constantemente la vista previa móvil. 
+                Recuerda que el 90% de tus clientes verán el menú en su celular. Mientras personalizas tu menú, revisa constantemente la vista previa móvil.
               </p>
               <div className="bg-blue-50 border border-blue-100 rounded-xl p-6 my-6">
                 <p className="font-medium text-blue-800 mb-0">

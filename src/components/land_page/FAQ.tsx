@@ -34,7 +34,7 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="w-full py-5 md:py-14 md:mt-10 relative overflow-hidden flex flex-col items-center justify-center bg-background">
+    <section id="faq" className="w-full py-20 md:py-0 md:pb-30 relative overflow-hidden flex flex-col items-center justify-center bg-background">
 
       <div className="text-start w-full mx-auto relative z-10">
         <div className="text-center md:text-start mb-10 md:mb-12">
@@ -51,7 +51,7 @@ export default function FAQ() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-stone-600 text-base md:text-lg mx-auto"
+            className="text-stone-600 text-base md:text-lg mx-auto text-pretty"
           >
             Resolvemos tus dudas más comunes de forma rápida y sencilla para que empieces a digitalizar tu menú de inmediato.
           </motion.p>

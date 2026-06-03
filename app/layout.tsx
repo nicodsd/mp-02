@@ -16,8 +16,36 @@ const asap = Asap({
 });
 
 export const metadata: Metadata = {
-  title: "QMenú",
-  description: "Tu menú en tus manos.",
+  title: "QMenú | Tu Menú Digital Rápido y Gratis",
+  description: "Crea el menú digital QR para tu restaurante o bar en minutos. Sube tus platos, actualiza precios en tiempo real y recibe pedidos directo en WhatsApp sin comisiones.",
+  keywords: ["menú digital", "carta qr", "menu qr gratis", "restaurantes", "pedidos whatsapp", "qmenu", "digitalizar bar", "carta digital online", "menú digital para restaurantes"],
+  authors: [{ name: "QMenú Team" }],
+  openGraph: {
+    title: "QMenú | Tu Menú Digital Rápido y Gratis",
+    description: "Moderniza la experiencia de tu restaurante. Actualizaciones en tiempo real y pedidos por WhatsApp.",
+    url: "https://qmenu.digital",
+    siteName: "QMenú",
+    images: [
+      {
+        url: "https://qmenu.digital/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "QMenú - Plataforma de Menús Digitales",
+      },
+    ],
+    locale: "es_AR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QMenú | Tu Menú Digital Rápido y Gratis",
+    description: "Moderniza la experiencia de tu restaurante con códigos QR.",
+    images: ["https://qmenu.digital/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({

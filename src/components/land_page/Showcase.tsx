@@ -45,7 +45,7 @@ export default function Showcase() {
     const [activeTheme, setActiveTheme] = useState(templates.naranja);
 
     return (
-        <div id="demo" className="my-10 pb-20 md:pb-10 overflow-hidden md:rounded-4xl w-full relative">
+        <div id="demo" className="pt-20 mb-20 md:pt-0 pb-10 md:mb-40 overflow-hidden md:rounded-4xl w-full relative">
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 rounded-full translate-y-[60%] translate-x-[-5%] h-full absolute top-0 left-0 z-0`}></div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="w-[180vw] hidden md:block bg-gray-200/80 -rotate-30 rounded-full translate-y-[50%] md:translate-y-[80%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></motion.div>
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 md:opacity-20 rounded-full translate-y-[50%] md:translate-y-[80%] md:translate-x-[-2%] h-full absolute top-0 left-0 z-0`}></div>

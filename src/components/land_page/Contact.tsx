@@ -52,20 +52,20 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="pt-20 pb-10 md:py-24 relative w-full">
+    <section id="contacto" className="py-10 md:py-0 md:pb-20 relative w-full">
       <div className="w-full">
         {/* Layout: Stack en móvil, 2 columnas en LG */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 md:p-6 shadow items-start bg-white rounded-2xl pt-6">
 
           <div className="text-center md:text-start md:mb-16 px-2">
-            <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Contacto</motion.h1>
-            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-md mb-8 lg:mx-0">
+            <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl leading-none md:text-5xl font-bold text-stone-900 mb-4">Crea tu menú QR hoy mismo o agenda una asesoría</motion.h2>
+            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-md mb-8 lg:mx-0 text-pretty">
               Únete a miles de restaurantes que ya usan QMenú. Si tienes dudas o necesitas un plan personalizado, escríbenos.
             </motion.p>
           </div>
 
           {/* Form Card */}
-          <div className="p-6 md:p-8 rounded-2xl border border-gray-300">
+          <div>
             <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-semibold text-stone-700 mb-2">Nombre</label>

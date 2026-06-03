@@ -36,7 +36,7 @@ export default function Footer() {
               <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/crea-tu-propio-qr-para-tu-menu" className="hover:text-primary-400 transition-colors">Generador QR</a></motion.li>
               <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/personaliza-tu-menu-digital-qr" className="hover:text-primary-400 transition-colors">Plantillas</a></motion.li>
               <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/cuanto-sale-crear-un-menu-digital" className="hover:text-primary-400 transition-colors">Precios</a></motion.li>
-              <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/como-crear-un-menu-digital" className="hover:text-primary-400 transition-colors">Guías</a></motion.li>
+              <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/guias" className="hover:text-primary-400 transition-colors">Guías</a></motion.li>
             </motion.ul>
           </div>
 
