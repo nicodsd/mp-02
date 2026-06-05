@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { BookOpen, Settings, Tag, Utensils, Zap, HelpCircle, ArrowRight } from 'lucide-react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
-import BttnBack from '@/src/components/buttons/BttnBack';
+import { useRouter } from 'next/navigation';
+import { MdChevronLeft } from 'react-icons/md';
 
 const guides = [
   {
@@ -58,12 +59,22 @@ const guides = [
 ];
 
 export default function GuiasPage() {
+  const router = useRouter();
   return (
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
         <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-40 pt-28 grow">
-          <BttnBack />
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/");
+            }}
+            className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+          >
+            <MdChevronLeft className="text-xl mr-1" />
+            Volver
+          </button>
           <div className="text-center mb-16 mt-5">
             <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
               Guías y Recursos de <span className="text-primary">QMenu</span>

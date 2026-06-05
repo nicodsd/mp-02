@@ -44,6 +44,11 @@ const featuresList = [
         description: "Sube fotos de tus platos en alta calidad. La comida entra por los ojos y aumenta el ticket promedio."
     },
     {
+        icon: <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.82 3.98m0-10.98-6.82 3.98" /></svg>,
+        title: "Comparte tus platos",
+        description: "Comparte tus platos con quien quieras, tambien puedes descargar la plantilla para subirla a redes."
+    },
+    {
         icon: <PieChart className="h-6 w-6" />,
         title: "Analíticas",
         description: "Lleva la cuenta de tus platos cargados, tu gestión de promociones y también los pedidos que recibas."
@@ -55,11 +60,11 @@ export default function CaracteristicasPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full">
                 <Navbar isIndex={false} />
-                <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
+                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
                     <section id="caracteristicas" className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
-                        <Link href="/guias" className="inline-flex items-center text-primary hover:text-orange-600 font-medium mb-8 transition-colors">
+                        <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Volver a Guías
+                            Guías / Características
                         </Link>
                         <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2">

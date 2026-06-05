@@ -14,7 +14,7 @@ export default function CrearMenuDigitalPage() {
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
-        <main className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
+        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
           <article className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
             <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
