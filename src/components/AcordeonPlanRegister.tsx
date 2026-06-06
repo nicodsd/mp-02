@@ -191,9 +191,9 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                             </motion.div>
                                         ))}
                                     </div>
-                                    <button type='button' className={`w-full cursor-pointer mt-3 ${plan.id !== 'free' ? 'font-bold' : 'font-medium'} ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'} ${plan.id !== 'free' ? 'border border-transparent' : 'border border-gray-300'} ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
-                                        {plan.btn ? 'Proceder al pago' : 'Seleccionar Plan'}
-                                    </button>
+                                    {plan.btn && <button type='button' className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
+                                        Proceder al pago
+                                    </button>}
                                 </div>
                             </motion.div>
                         );

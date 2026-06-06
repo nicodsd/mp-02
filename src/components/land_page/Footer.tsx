@@ -33,8 +33,8 @@ export default function Footer() {
           <div>
             <motion.h4 className="text-stone-600 font-bold mb-4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>Producto</motion.h4 >
             <motion.ul className="space-y-2 text-stone-600 text-sm" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-              <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/crea-tu-propio-qr-para-tu-menu" className="hover:text-primary-400 transition-colors">Generador QR</a></motion.li>
-              <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/personaliza-tu-menu-digital-qr" className="hover:text-primary-400 transition-colors">Plantillas</a></motion.li>
+              {/* <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/crea-tu-propio-qr-para-tu-menu" className="hover:text-primary-400 transition-colors">Generador QR</a></motion.li> */}
+              {/* <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/personaliza-tu-menu-digital-qr" className="hover:text-primary-400 transition-colors">Plantillas</a></motion.li> */}
               <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/cuanto-sale-crear-un-menu-digital" className="hover:text-primary-400 transition-colors">Precios</a></motion.li>
               <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/guias" className="hover:text-primary-400 transition-colors">Guías</a></motion.li>
             </motion.ul>
@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-300 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className=" pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-stone-500 w-full text-sm flex flex-col md:flex-row items-center justify-center text-center gap-2">
             <p>© {new Date().getFullYear()} QMenú.</p>
             <div className="flex items-center text-left">

@@ -55,7 +55,7 @@ export default function Contact() {
     <section id="contacto" className="py-10 md:py-0 md:pb-20 relative w-full">
       <div className="w-full">
         {/* Layout: Stack en móvil, 2 columnas en LG */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 md:p-6 shadow items-start bg-white rounded-2xl pt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 md:p-6 px-2 shadow items-start bg-white rounded-2xl pt-6">
 
           <div className="text-center md:text-start md:mb-16 px-2">
             <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl leading-none md:text-5xl font-bold text-stone-900 mb-4">Crea tu menú QR hoy mismo o agenda una asesoría</motion.h2>

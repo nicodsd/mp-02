@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Plus } from 'lucide-react';
 
 export default function Showcase() {
     const templates = {
@@ -12,15 +13,6 @@ export default function Showcase() {
             appBg: "bg-background/40",
             cardBg: "bg-white",
             text: "text-stone-800"
-        },
-        dark: {
-            name: 'Fresco',
-            primary: "bg-[#00b300]",
-            primaryText: "text-[#00b300]",
-            border: "border-[#006300]",
-            appBg: "bg-[#012400]/60",
-            cardBg: "bg-[#0d360d]",
-            text: "text-white"
         },
         azul: {
             name: 'Cielo',
@@ -45,7 +37,7 @@ export default function Showcase() {
     const [activeTheme, setActiveTheme] = useState(templates.naranja);
 
     return (
-        <div id="demo" className="pt-20 mb-20 md:pt-0 pb-10 md:mb-40 overflow-hidden md:rounded-4xl w-full relative">
+        <div id="demo" className="pt-20 mb-20 md:pt-0 pb-20 md:mb-40 overflow-hidden md:rounded-4xl w-full relative">
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 rounded-full translate-y-[60%] translate-x-[-5%] h-full absolute top-0 left-0 z-0`}></div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="w-[180vw] hidden md:block bg-gray-200/80 -rotate-30 rounded-full translate-y-[50%] md:translate-y-[80%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></motion.div>
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 md:opacity-20 rounded-full translate-y-[50%] md:translate-y-[80%] md:translate-x-[-2%] h-full absolute top-0 left-0 z-0`}></div>
@@ -124,25 +116,34 @@ export default function Showcase() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.1, delay: 0.1 }} className="flex gap-5 flex-col items-center absolute md:-bottom-12 md:-right-5 bg-background w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 rounded-t-3xl border border-stone-200">
+                        transition={{ duration: 0.1, delay: 0.1 }} className="flex flex-col items-center absolute md:-bottom-12 md:-right-5 bg-white/40 backdrop-blur-md w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 md:rounded-3xl rounded-t-3xl border border-white">
 
-                        <div className="flex gap-5">
-                            {Object.values(templates).map((t, index) => (
-                                <motion.button
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.2 }}
-                                    key={t.name}
-                                    onClick={() => setActiveTheme(t)}
-                                    className={`group cursor-pointer relative flex flex-col items-center gap-1`}
-                                >
-                                    <div
-                                        className={`w-10 h-10 md:w-13 md:h-13 rounded-full border-4 transition-all ${activeTheme.name === t.name ? 'border-stone-800 scale-110' : 'border-transparent'} ${t.primary}`}
-                                    />
-                                    <span className="text-[10px] text-black uppercase">{t.name}</span>
-                                </motion.button>
-                            ))}
+                        <div className="flex flex-row md:flex-col gap-5 items-start">
+                            <span className='text-sm font-semibold text-gray-900'>Personaliza el estilo</span>
+                            <div className='flex gap-2'>
+                                {Object.values(templates).map((t, index) => (
+                                    <motion.button
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.2 }}
+                                        key={t.name}
+                                        onClick={() => setActiveTheme(t)}
+                                        className={`group cursor-pointer relative flex flex-col items-center gap-1`}
+                                    >
+                                        <div
+                                            className={`w-10 h-10 md:w-13 md:h-13 rounded-full border-4 transition-all ${activeTheme.name === t.name ? 'border-stone-800 scale-110' : 'border-transparent'} ${t.primary}`}
+                                        />
+                                        <span className="text-[10px] text-black uppercase">{t.name}</span>
+                                    </motion.button>
+                                ))}
+                                <div className='flex flex-col drop-shadow items-center gap-1'>
+                                    <span className='w-10 h-10 md:w-13 bg-gray-100 flex items-center border-white border justify-center md:h-13 rounded-full transition-all text-3xl'>
+                                        <Plus className='text-stone-800' />
+                                    </span>
+                                    <span className="text-[10px] text-black uppercase flex justify-center items-center"> +10 paletas</span>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 </motion.div>

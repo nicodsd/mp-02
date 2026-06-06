@@ -11,6 +11,7 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import { Store } from "lucide-react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 interface EditFoodModalProps {
@@ -260,8 +261,8 @@ export default function EditFoodModal({
                   </div>
 
                   {/* Menús */}
-                  <div className="flex flex-col gap-1 mt-2">
-                    <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Mostrar en los siguientes Menús:</label>
+                  <div className="flex flex-col gap-1 mt-3">
+                    <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest cursor-pointer">Mostrar en los siguientes Menús:</label>
                     <div className="flex flex-wrap gap-2 p-1">
                       {userMenus.length === 0 ? (
                         <p className="text-[10px] text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
@@ -279,12 +280,12 @@ export default function EditFoodModal({
                                   setFormData({ ...formData, menus: [...formData.menus, m._id] });
                                 }
                               }}
-                              className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all border ${isSelected
+                              className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all border flex items-center gap-2 ${isSelected
                                 ? "bg-black text-white border-black shadow-sm"
                                 : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50"
                                 }`}
                             >
-                              {m.location || 'Menú Principal'}
+                              <Store size={14} /> {m.location || 'Menú Principal'}
                             </button>
                           )
                         })
