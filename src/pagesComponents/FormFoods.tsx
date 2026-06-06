@@ -5,6 +5,7 @@ import { URI } from "@/src/lib/const";
 import Categories from "@/src/components/newfood_comps/Categories";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
+import { Store } from "lucide-react";
 import { FaSpinner, FaTrash, FaTimes, FaList, FaCheckCircle } from "react-icons/fa";
 // 1. IMPORTAR FRAMER MOTION
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,7 +48,7 @@ export default function FormFoods({ initialCategories, user }: any) {
   const [price, setPrice] = useState("");
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
-  
+
   // --- ESTADOS Y EFECTO PARA LOS MENÚS DEL USUARIO ---
   const [userMenus, setUserMenus] = useState<any[]>([]);
 
@@ -351,20 +352,19 @@ export default function FormFoods({ initialCategories, user }: any) {
                             setSelectedMenus(prev => [...prev, m._id]);
                           }
                         }}
-                        className={`px-4 py-2 rounded-full text-sm font-bold transition-all border ${
-                          isSelected 
-                            ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/30" 
-                            : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
-                        }`}
+                        className={`px-4 py-2 rounded-full text-sm font-bold transition-all border flex gap-2 items-center ${isSelected
+                          ? "bg-black text-white border-black shadow-md"
+                          : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
+                          }`}
                       >
-                        {m.location || 'Menú Principal'}
+                        <Store size={14} /> {m.location || 'Menú Principal'}
                       </button>
                     )
                   })
                 )}
               </div>
             </div>
-            
+
             <button
               type="submit"
               disabled={!name || !price || !description || !subCategories.length}

@@ -71,7 +71,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
                     </div>
 
-                    {user?.presentation === "default" ? (<CardsFoodsByCategories
+                    {example || user?.presentation === "default" ? (<CardsFoodsByCategories
                         user={user}
                         arrayFoods={processedFoods.filter(f => {
                             let isMain = true

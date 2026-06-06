@@ -353,7 +353,7 @@ export default function Register() {
                   return;
                 }
                 setIsResponse(true);
-                setServerMessage("Se ha enviado un correo de verificación a tu email. Por favor, verifícalo para continuar.");
+                setServerMessage("Se ha enviado un correo de verificación a tu email.");
                 setStep(1);
               } catch (error) {
                 setIsResponse(false);
@@ -813,8 +813,7 @@ export default function Register() {
                     <button
                       type="button"
                       onClick={() => {
-                        setStep((s) => Math.max(0, s - 1));
-                        setServerMessage(null);
+                        router.push('/');
                       }}
                       disabled={step === 0 || isSubmitting}
                       className={`inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg ${step === 0
@@ -822,7 +821,7 @@ export default function Register() {
                         : "text-gray-700 cursor-pointer bg-background border border-gray-400"
                         }`}
                     >
-                      Atrás
+                      Cancelar
                     </button>
                   ) : (
                     <button
