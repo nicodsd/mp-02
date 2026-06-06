@@ -63,6 +63,26 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
         setOpenSelectStore(true);
     }
 
+    const handleDeleteSingleStore = async () => {
+        if (confirm(`¿Eliminar la sucursal actual?`)) {
+            try {
+                const res = await fetch(`${URI}/menu/delete-menus/${storeId}`, {
+                    method: 'DELETE',
+                    credentials: 'include',
+                });
+                if (!res.ok) throw new Error('Error al eliminar');
+                const data = await res.json();
+                if (data.success) {
+                    alert("Menú eliminado correctamente");
+                    setOpenSelectStore(false);
+                    await refreshPage();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
             <StoreAddModal
@@ -79,7 +99,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                     menu={menu}
                     user={user}
                     onClose={() => setOpenSelectStore(false)}
-                    handleBulkDelete={handleBulkDelete}
+                    handleBulkDelete={handleDeleteSingleStore}
                     handleEditStore={handleEditStore}
                 />
             )}

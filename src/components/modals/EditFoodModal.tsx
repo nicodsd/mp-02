@@ -37,7 +37,24 @@ export default function EditFoodModal({
     description: "",
     price: "",
     is_archived: false,
+    menus: [] as string[],
   });
+
+  const [userMenus, setUserMenus] = useState<any[]>([]);
+
+  useEffect(() => {
+    const foodUserId = food?.user_id || food?.user;
+    if (foodUserId) {
+      fetch(`${URI}/menu/get-menus/${foodUserId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.menus) {
+            setUserMenus(data.menus);
+          }
+        })
+        .catch(err => console.error("Error fetching menus:", err));
+    }
+  }, [food]);
 
   useEffect(() => {
     if (food) {
@@ -46,6 +63,7 @@ export default function EditFoodModal({
         description: food.description || "",
         price: food.price || "",
         is_archived: food.is_archived || false,
+        menus: food.menus || [],
       });
       setPreview(food.photo || null);
     }
@@ -61,6 +79,9 @@ export default function EditFoodModal({
     dataToSend.append("description", formData.description);
     dataToSend.append("price", formData.price);
     dataToSend.append("is_archived", String(formData.is_archived));
+    if (formData.menus && formData.menus.length > 0) {
+      dataToSend.append("menus", JSON.stringify(formData.menus));
+    }
 
     try {
       const res = await fetch(
@@ -238,13 +259,70 @@ export default function EditFoodModal({
 
                   </div>
 
+                  {/* Menús */}
+                  <div className="flex flex-col gap-1 mt-2">
+                    <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest">Mostrar en los siguientes Menús:</label>
+                    <div className="flex flex-wrap gap-2 p-1">
+                      {userMenus.length === 0 ? (
+                        <p className="text-[10px] text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
+                      ) : (
+                        userMenus.map(m => {
+                          const isSelected = formData.menus.includes(m._id);
+                          return (
+                            <button
+                              type="button"
+                              key={m._id}
+                              onClick={() => {
+                                if (isSelected) {
+                                  setFormData({ ...formData, menus: formData.menus.filter(id => id !== m._id) });
+                                } else {
+                                  setFormData({ ...formData, menus: [...formData.menus, m._id] });
+                                }
+                              }}
+                              className={`px-3 py-1.5 rounded-full text-[11px] font-bold transition-all border ${isSelected
+                                ? "bg-black text-white border-black shadow-sm"
+                                : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50"
+                                }`}
+                            >
+                              {m.location || 'Menú Principal'}
+                            </button>
+                          )
+                        })
+                      )}
+                    </div>
+                  </div>
+
                   <button
-                    disabled={loading}
+                    disabled={
+                      loading ||
+                      (
+                        formData.name === (food?.name || "") &&
+                        formData.description === (food?.description || "") &&
+                        String(formData.price) === String(food?.price || "") &&
+                        formData.is_archived === (food?.is_archived || false) &&
+                        formData.menus.length === (food?.menus || []).length &&
+                        formData.menus.every(id => (food?.menus || []).includes(id)) &&
+                        file === null
+                      )
+                    }
                     className={`mt-4 w-full py-3 rounded-lg font-bold text-white transition-all transform active:scale-95 shadow-gray-200
-                      ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-red-800 cursor-pointer"}`}
+                      ${loading ||
+                        (
+                          formData.name === (food?.name || "") &&
+                          formData.description === (food?.description || "") &&
+                          String(formData.price) === String(food?.price || "") &&
+                          formData.is_archived === (food?.is_archived || false) &&
+                          formData.menus.length === (food?.menus || []).length &&
+                          formData.menus.every(id => (food?.menus || []).includes(id)) &&
+                          file === null
+                        )
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-primary hover:bg-red-800 cursor-pointer"
+                      }`}
                   >
                     {loading ? "Sincronizando..." : "Guardar Cambios"}
                   </button>
+
                   <button
                     type="button"
                     onClick={onClose}
@@ -252,6 +330,7 @@ export default function EditFoodModal({
                   >
                     Cancelar
                   </button>
+
                 </div>
               </form>
             </DialogPanel>
