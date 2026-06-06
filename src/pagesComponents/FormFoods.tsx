@@ -19,7 +19,8 @@ interface LocalFood {
   subCategories: string;
   file: File | null;
   preview: string;
-  isGlutenFree: boolean; // Propiedad añadida al tipado
+  isGlutenFree: boolean;
+  menus: string[];
 }
 
 export default function FormFoods({ initialCategories, user }: any) {
@@ -44,7 +45,25 @@ export default function FormFoods({ initialCategories, user }: any) {
   const [description, setDescription] = useState("");
   const [subCategories, setSubCategories] = useState<string>("");
   const [price, setPrice] = useState("");
-  const [isGlutenFree, setIsGlutenFree] = useState(false); // Estado para el Switch TACC
+  const [isGlutenFree, setIsGlutenFree] = useState(false);
+  const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
+  
+  // --- ESTADOS Y EFECTO PARA LOS MENÚS DEL USUARIO ---
+  const [userMenus, setUserMenus] = useState<any[]>([]);
+
+  useEffect(() => {
+    const userId = user?.id || user?._id;
+    if (userId) {
+      fetch(`${URI}/menu/get-menus/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.menus) {
+            setUserMenus(data.menus);
+          }
+        })
+        .catch(err => console.error("Error fetching menus:", err));
+    }
+  }, [user]);
 
   useEffect(() => {
     return () => { if (preview !== imgPlaceholder) URL.revokeObjectURL(preview); };
@@ -63,7 +82,8 @@ export default function FormFoods({ initialCategories, user }: any) {
     setSubCategories("");
     setFile(null);
     setPreview(imgPlaceholder);
-    setIsGlutenFree(false); // Resetear el switch
+    setIsGlutenFree(false);
+    setSelectedMenus([]);
   };
 
   const handleAddFoodToList = (e: React.FormEvent) => {
@@ -82,7 +102,8 @@ export default function FormFoods({ initialCategories, user }: any) {
       subCategories,
       file,
       preview,
-      isGlutenFree // Guardamos la propiedad en el objeto
+      isGlutenFree,
+      menus: selectedMenus
     };
 
     setFoodList([...foodList, newFood]);
@@ -119,7 +140,10 @@ export default function FormFoods({ initialCategories, user }: any) {
         formData.append("category", "Comidas");
         formData.append("promo_price", "0");
         formData.append("is_promo", "false");
-        formData.append("is_gluten_free", String(food.isGlutenFree)); // Enviado a la API
+        formData.append("is_gluten_free", String(food.isGlutenFree));
+        if (food.menus && food.menus.length > 0) {
+          formData.append("menus", JSON.stringify(food.menus));
+        }
 
         const res = await fetch(`${URI}/foods/postfood/${user?.id}`, {
           method: "POST",
@@ -308,6 +332,39 @@ export default function FormFoods({ initialCategories, user }: any) {
                 />
               </button>
             </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Mostrar en los Menús</label>
+              <div className="flex flex-wrap gap-2 p-1">
+                {userMenus.length === 0 ? (
+                  <p className="text-xs text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
+                ) : (
+                  userMenus.map(m => {
+                    const isSelected = selectedMenus.includes(m._id);
+                    return (
+                      <button
+                        type="button"
+                        key={m._id}
+                        onClick={() => {
+                          if (isSelected) {
+                            setSelectedMenus(prev => prev.filter(id => id !== m._id));
+                          } else {
+                            setSelectedMenus(prev => [...prev, m._id]);
+                          }
+                        }}
+                        className={`px-4 py-2 rounded-full text-sm font-bold transition-all border ${
+                          isSelected 
+                            ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/30" 
+                            : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
+                        }`}
+                      >
+                        {m.location || 'Menú Principal'}
+                      </button>
+                    )
+                  })
+                )}
+              </div>
+            </div>
+            
             <button
               type="submit"
               disabled={!name || !price || !description || !subCategories.length}
