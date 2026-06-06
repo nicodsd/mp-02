@@ -74,7 +74,7 @@ export default function GuidePreview() {
                     {guide.date}
                   </span>
                   <div className="w-8 h-8 rounded-full bg-stone-50 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-colors text-stone-400">
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </Link>

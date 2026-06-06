@@ -20,11 +20,6 @@ const featuresList = [
     description: "Modifica precios, oculta platos agotados o cambia descripciones al instante."
   },
   {
-    icon: <Camera className="h-6 w-6" />,
-    title: "Galería de Fotos HD",
-    description: "Sube fotos de tus platos en alta calidad. La comida entra por los ojos y aumenta el ticket promedio."
-  },
-  {
     icon: <Smartphone className="h-6 w-6" />,
     title: "Para todos los dispositivos",
     description: "Diseño optimizado para usarse en cualquier dispositivo, fluidez sin necesidad de instalar apps."
@@ -61,13 +56,16 @@ export default function Features() {
               </div>
             </motion.div>
           ))}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="gap-3 flex md:flex-col md:items-center justify-center h-36 md:h-full rounded-xl bg-primary">
+            <div className="flex flex-col justify-center">
+              <h4 className="text-xl text-center font-bold text-white mb-4">¿Quieres ver mas?</h4>
+              <Link href="/caracteristicas-menu-digital" className="w-full md:w-fit group  cursor-pointer text-center bg-white px-6 py-3 hover:bg-gray-100 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
+                <span className="text-md font-bold text-primary ">Ver Todas las Caracteristicas</span>
+                <ArrowRight className="text-primary group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+          </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.6 }} className="w-full flex items-center justify-center mt-4">
-          <Link href="/caracteristicas-menu-digital" className="w-full md:w-[50%] cursor-pointer bg-primary px-2 py-3 hover:bg-primary/60 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
-            <span className="text-md font-bold text-white ">Ver Todas las Caracteristicas</span>
-            <ArrowRight className="text-white" />
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
