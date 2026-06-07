@@ -22,6 +22,7 @@
     "@mercadopago/sdk-js": "^0.0.3",
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
+    "@react-pdf/renderer": "^4.5.1",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^2.0.0",
     "animate.css": "^4.1.1",

@@ -116,11 +116,11 @@ export default function Showcase() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.1, delay: 0.1 }} className="flex flex-col items-center absolute md:-bottom-12 md:-right-5 bg-white/40 backdrop-blur-md w-fit md:w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-6 md:px-8 md:rounded-3xl rounded-t-3xl border border-white">
+                        transition={{ duration: 0.1, delay: 0.1 }} className="flex flex-col items-center absolute md:-bottom-12 md:-right-5 md:bg-white/40 bg-background backdrop-blur-md w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-10 md:px-8 md:rounded-3xl rounded-t-3xl border border-white">
 
-                        <div className="flex flex-row md:flex-col gap-5 items-start">
+                        <div className="flex flex-col gap-5 items-center justify-center">
                             <span className='text-sm font-semibold text-gray-900'>Personaliza el estilo</span>
-                            <div className='flex gap-2'>
+                            <div className='flex gap-2 items-center'>
                                 {Object.values(templates).map((t, index) => (
                                     <motion.button
                                         initial={{ opacity: 0, y: 20 }}
@@ -137,11 +137,11 @@ export default function Showcase() {
                                         <span className="text-[10px] text-black uppercase">{t.name}</span>
                                     </motion.button>
                                 ))}
-                                <div className='flex flex-col drop-shadow items-center gap-1'>
-                                    <span className='w-10 h-10 md:w-13 bg-gray-100 flex items-center border-white border justify-center md:h-13 rounded-full transition-all text-3xl'>
-                                        <Plus className='text-stone-800' />
+                                <div className='flex flex-col drop-shadow ml-3 items-center gap-1'>
+                                    <span className='w-10 h-10 md:w-13 flex items-center border-white border bg-background justify-center md:h-13 rounded-full text-stone-500 transition-all font-bold text-lg'>
+                                        <Plus className='' size={18} /> 10
                                     </span>
-                                    <span className="text-[10px] text-black uppercase flex justify-center items-center"> +10 paletas</span>
+                                    <span className="text-[10px] text-black uppercase flex justify-center items-center"> estilos</span>
                                 </div>
                             </div>
                         </div>
