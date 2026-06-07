@@ -45,7 +45,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             id: "premium",
             name: "Premium",
             btn: true,
-            price: 100,
+            price: 1000,
             color: "bg-black",
             textColor: "text-white",
             features: [
@@ -164,8 +164,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                     </div>
 
                                     <div className="flex items-center gap-1">
-                                        <span className="font-black text-xl tracking-">
-                                            {plan.id !== "free" && <span className="text-gray-200 font-normal line-through text-sm decoration-primary"> ${new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(plan.price as number + 5000)}</span>} $
+                                        <span className="font-black text-xl tracking-"> $
                                             {new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(plan.price as number)}<span className="text-[10px] opacity-70">/mes</span>
                                         </span>
                                         <ChevronDown onClick={() => handlePlanClick(plan.id)} className={`w-7 h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />

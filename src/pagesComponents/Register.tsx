@@ -439,7 +439,6 @@ export default function Register() {
                         />
                       </div>
                     </div>
-
                     <div className="flex flex-col w-full mb-4">
                       <label
                         htmlFor="email"
