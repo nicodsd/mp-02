@@ -35,8 +35,8 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Plus",
-    price: "$100", //14900
-    before: "$14.900", //19.900
+    price: "$13.900", //14900
+    before: "$19.900", //19.900
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
@@ -54,8 +54,8 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Premium",
-    price: "$1.000", //19900
-    before: "$19.900", //24900
+    price: "$19.900", //19900
+    before: "$24.900", //24900
     period: "/mes",
     description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
     features: [

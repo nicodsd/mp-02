@@ -215,7 +215,7 @@ const UserSettings = ({ user }: { user: any }) => {
   return (
     <div className="w-full overflow-x-hidden">
       <header className="p-3 w-full flex flex-col">
-        <h1 className="text-2xl font-bold text-gray-800">Tu Menú</h1>
+        <h1 className="text-2xl font-bold text-gray-800">Tu local</h1>
         <p className="text-gray-500 text-sm">Edita la información de tu negocio.</p>
       </header>
       <form
