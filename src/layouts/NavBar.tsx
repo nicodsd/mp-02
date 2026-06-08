@@ -283,7 +283,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         ||
         template?.template_id === "mint"
         ||
-        template?.template_id === "lavanda"
+        template?.template_id === "lavender"
         ||
         template?.template_id === "sakura"
         ? `${template?.textColor}` : "text-white"} w-full`}>
@@ -347,6 +347,8 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
                 <span key={social.id} className={`flex items-center gap-1 border-l 
                 ${template?.template_id === "default"
                     ||
+                    template?.template_id === "lavender"
+                    ||
                     template?.template_id === "gold"
                     ||
                     template?.template_id === "lemon"
@@ -354,8 +356,6 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
                     template?.template_id === "cherry"
                     ||
                     template?.template_id === "mint"
-                    ||
-                    template?.template_id === "lavanda"
                     ||
                     template?.template_id === "sakura"
                     ? "border-gray-600" : "border-white/50"} pl-2`}>

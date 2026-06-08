@@ -55,13 +55,13 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
           const element = document.getElementById(`dish-${dishId}`);
           if (element) {
             element.scrollIntoView({ behavior: "smooth", block: "center" });
-            
+
             // Premium glowing outline effect
             const accentColor = template?.icons || "#e28743";
             element.style.outline = `3px solid ${accentColor}`;
             element.style.boxShadow = `0 0 25px ${accentColor}80`;
             element.style.transform = "scale(1.02)";
-            
+
             setTimeout(() => {
               element.style.outline = "none";
               element.style.boxShadow = "none";
