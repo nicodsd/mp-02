@@ -64,26 +64,32 @@ export default function GuiasPage() {
     <>
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
-        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-40 pt-28 grow">
-          <button
-            type="button"
-            onClick={() => {
-              router.push("/");
-            }}
-            className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
-          >
-            <MdChevronLeft className="text-xl mr-1" />
-            Volver
-          </button>
-          <div className="text-center mb-16 mt-5">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
-              Guías y Recursos de <span className="text-primary">QMenu</span>
-            </h1>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Todo lo que necesitas saber para sacarle el máximo provecho a tu menú digital, aumentar tus ventas y mejorar la experiencia de tus clientes.
-            </p>
+        <main className="w-full relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-40 pt-28 grow">
+          <div className='relative bg-blue-700 w-full h-150 md:h-100 bg-radial rounded-3xl p-5 md:p-10 mb-3'>
+            <button
+              type="button"
+              onClick={() => {
+                router.push("/");
+              }}
+              className="flex items-center text-white text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+            >
+              <MdChevronLeft className="text-xl mr-1" />
+              Inicio
+            </button>
+            <div className='flex flex-col md:flex-row justify-between'>
+              <div className="text-center w-full md:w-[70%] md:text-start md:mb-16 mt-5">
+                <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
+                  Guías y Recursos de <span className="text-orange-400">QMenu</span>
+                </h1>
+                <p className="text-xl text-white/80">
+                  Todo lo que necesitas saber para sacarle el máximo provecho a tu menú digital, aumentar tus ventas y mejorar la experiencia de tus clientes.
+                </p>
+              </div>
+              <video className='w-30 border-3 md:-translate-y-27 mt-6 border-white md:w-50 rounded-3xl shadow-lg object-cover relative top-0 left-0 right-0 mx-auto' autoPlay loop muted>
+                <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
+              </video>
+            </div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {guides.map((guide, idx) => (
               <Link
@@ -112,8 +118,8 @@ export default function GuiasPage() {
               </Link>
             ))}
           </div>
-        </main>
-      </div>
+        </main >
+      </div >
       <Footer />
     </>
   );
