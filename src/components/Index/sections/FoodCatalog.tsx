@@ -89,6 +89,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         template={template}
                     />) : (
                         <ListCardsByCategory
+                            Ath={false}
                             user={user}
                             arrayFoods={processedFoods.filter(f => {
                                 let isMain = true
