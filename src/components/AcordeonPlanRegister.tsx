@@ -26,7 +26,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             id: "plus",
             name: "Plus+",
             btn: true,
-            price: 100,
+            price: 13900,
             color: "bg-primary",
             textColor: "text-white",
             features: [
@@ -45,7 +45,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
             id: "premium",
             name: "Premium",
             btn: true,
-            price: 1000,
+            price: 19900,
             color: "bg-black",
             textColor: "text-white",
             features: [

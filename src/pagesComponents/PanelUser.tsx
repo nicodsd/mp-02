@@ -94,7 +94,7 @@ export default function PanelUser({
     }`;
 
   const menuItems = [
-    { key: "menu", name: "Tu Menú", icon: <HiPencil size={20} /> },
+    { key: "negocio", name: "Tu local", icon: <HiPencil size={20} /> },
     { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
     { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
     { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },

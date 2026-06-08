@@ -36,7 +36,7 @@ const plans: PricingPlan[] = [
     },
     {
         name: "Plus+",
-        price: "$14.900",
+        price: "$13.900",
         before: "$19.900",
         period: "/mes",
         description: "Para restaurantes que quieren destacar su marca.",
