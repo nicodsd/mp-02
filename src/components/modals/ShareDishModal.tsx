@@ -49,9 +49,10 @@ export default function ShareDishModal({
     }).format(val);
   };
 
+  const cleanSlug = restaurantSlug ? restaurantSlug.trim().replace(/\s+/g, "-") : "";
   const shareUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/menu-digital/${restaurantSlug}?dish=${food._id}`
-    : `https://menudigital.com/menu-digital/${restaurantSlug}?dish=${food._id}`;
+    ? `${window.location.origin}/menu-digital/${cleanSlug}?dish=${food._id}`
+    : `https://menudigital.com/menu-digital/${cleanSlug}?dish=${food._id}`;
 
   const handleCopyLink = async () => {
     try {

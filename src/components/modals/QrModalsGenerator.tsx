@@ -30,7 +30,7 @@ export default function QrModalsGenerator({
   const [selectedTemplate, setSelectedTemplate] = useState(TEMPLATES[0]);
 
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
-  const url = `${NEXT_PUBLIC_URL}/menu-digital/${encodeURIComponent(user.name.replace(" ", "-"))}`;
+  const url = `${NEXT_PUBLIC_URL}/menu-digital/${encodeURIComponent(user.name.trim().replace(/\s+/g, "-"))}`;
 
   const handleCopyUrl = async () => {
     try {
