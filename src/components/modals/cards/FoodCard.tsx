@@ -1,6 +1,18 @@
 "use client";
 import Image from "next/image";
 
+// Instanciamos el formateador fuera del componente para que no impacte en el scroll
+const priceFormatter = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+    minimumFractionDigits: 0,
+});
+
+function formatearPrecio(precio: number | string) {
+    const value = typeof precio === "string" ? Number(precio) : precio;
+    return priceFormatter.format(value);
+}
+
 export default function FoodCard({
     food,
     template
@@ -8,28 +20,21 @@ export default function FoodCard({
     food: any;
     template: any;
 }) {
-    function formatearPrecio(precio: number | string) {
-        const value = typeof precio === "string" ? Number(precio) : precio;
-        return new Intl.NumberFormat("es-AR", {
-            style: "currency",
-            currency: "ARS",
-            minimumFractionDigits: 0,
-        }).format(value);
-    }
 
     return (
         <div
             className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"} border ${template?.border || "border-gray-200"} h-20 shadow-sm rounded-lg p-2 items-end`}
         >
-            <div className="h-full">
+            {/* Contenedor de la imagen ajustado a un cuadrado perfecto (aspect-square) */}
+            <div className="h-full aspect-square shrink-0 relative rounded-[7px] overflow-hidden">
                 <Image
                     quality={75}
                     loading="lazy"
                     src={food.photo}
                     alt={food.name}
-                    className={`md:max-w-25 md:max-h-36 object-cover rounded-[7px] md:h-full md:w-full h-full w-16`}
-                    width={70}
-                    height={70}
+                    fill
+                    sizes="70px"
+                    className="object-cover"
                 />
             </div>
             <div className="flex flex-col relative justify-between items-start pl-2 pt-0.5 w-full h-full">

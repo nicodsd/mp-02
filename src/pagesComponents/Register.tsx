@@ -1,14 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { setAuthCookie, setUserCookie, setMenuCookie } from "@/app/actions";
 import * as Yup from "yup";
 import logo from "@/public/images/logo/LOGOTIPO.svg";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { URI } from "@/src/lib/const";
-import { useParams, useSearchParams } from "next/navigation";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import PlanSelector from "@/src/components/AcordeonPlanRegister";
 import { OctagonX, Mail, KeyRound, Store } from "lucide-react";
@@ -19,6 +17,7 @@ import {
   FaCamera,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { MdChevronLeft } from "react-icons/md";
 
 type FormValues = {
   email: string;
@@ -96,7 +95,6 @@ export default function Register() {
   const preapprovalId = searchParams.get("preapproval_id");
   const email = searchParams.get("email");
   const router = useRouter();
-  const password = searchParams.get("password");
   const [step, setStep] = useState(0);
   const [sessionPlan, setSessionPlan] = useState<string>("");
   const [sessionEmail, setSessionEmail] = useState<string>("");
@@ -108,49 +106,99 @@ export default function Register() {
   const [isResponse, setIsResponse] = useState<boolean | null>(null);
   const [isPayActive, setIsPayActive] = useState<boolean | null>(false);
 
+  const notificationTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // Sincronización del paso actual
   useEffect(() => {
-    if (params.page) {
+    if (preapprovalId) {
+      setStep(3);
+    } else if (params?.page) {
       setStep(Number(params.page));
     }
-    const fetchSessionData = async () => {
+  }, [params?.page, preapprovalId]);
+
+  // Manejador seguro para notificaciones en pantalla
+  const showNotification = useCallback((message: string, success: boolean) => {
+    setServerMessage(message);
+    setIsResponse(success);
+    if (notificationTimer.current) clearTimeout(notificationTimer.current);
+    notificationTimer.current = setTimeout(() => {
+      setServerMessage(null);
+    }, 8000);
+  }, []);
+
+  // Limpieza preventiva de timers al desmontar
+  useEffect(() => {
+    return () => {
+      if (notificationTimer.current) clearTimeout(notificationTimer.current);
+    };
+  }, []);
+
+  // Workflow combinado para evitar condiciones de carrera al consultar la sesión y actualizar plan de pago
+  useEffect(() => {
+    const processSessionAndPayment = async () => {
+      if (!preapprovalId) {
+        setSessionPlan("");
+        setSessionEmail("");
+        setSessionPassword("");
+        setSessionUsername("");
+        return;
+      }
+
       try {
-        const response = await fetch(`${URI}/auth/check-session`, {
+        const responseSession = await fetch(`${URI}/auth/check-session`, {
           method: 'GET',
           credentials: 'include'
         });
-        const result = await response.json();
-        if (result.success) {
-          setSessionPlan(result.data.plan);
-          setSessionPassword(result.data.password);
-          setSessionUsername(result.data.name);
-          setSessionEmail(result.data.email);
-          if (preapprovalId) {
-            setIsPayActive(true);
-          }
-        } else {
-          // Si no hay sesión (pero hay ID), quizás expiró
-          setSessionPlan("");
-          setSessionEmail("");
-          setSessionPassword("");
-          setSessionUsername("");
+        const resultSession = await responseSession.json();
+
+        let finalEmail = sessionEmail || email || localStorage.getItem("registerEmail") || "";
+        let finalPlan = sessionPlan || "free";
+
+        if (resultSession.success) {
+          setSessionPlan(resultSession.data.plan);
+          setSessionPassword(resultSession.data.password);
+          setSessionUsername(resultSession.data.name);
+          setSessionEmail(resultSession.data.email);
+          setIsPayActive(true);
+
+          finalEmail = resultSession.data.email || finalEmail;
+          finalPlan = resultSession.data.plan || finalPlan;
         }
-      } catch (error) {
-        console.error("❌ Error recuperando sesión:", error);
+
+        if (!finalEmail) {
+          showNotification("Error: No se pudo recuperar el email para asignar el pago.", false);
+          return;
+        }
+
+        const responseUpdate = await fetch(`${URI}/auth/update-plan`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: finalEmail,
+            plan: finalPlan,
+            mp_preapproval_id: preapprovalId,
+            productsVisibilityPay: finalPlan !== "free"
+          }),
+          credentials: 'include'
+        });
+
+        const dataUpdate = await responseUpdate.json();
+        if (!responseUpdate.ok) {
+          showNotification("Error BD: " + (dataUpdate.message || "No se pudo actualizar el plan"), false);
+        } else {
+          console.log("Plan actualizado correctamente");
+        }
+      } catch (e: any) {
+        console.error(e);
+        showNotification("Error de conexión al actualizar el plan: " + e.message, false);
       }
     };
 
-    // Solo buscamos sesión si hay un ID de Mercado Pago en la URL
-    if (preapprovalId) {
-      fetchSessionData();
-    } else {
-      // Si no hay preapprovalId, nos aseguramos de que los estados de sesión estén vacíos (Plan Free)
-      setSessionPlan("");
-      setSessionEmail("");
-      setSessionPassword("");
-      setSessionUsername("");
-    }
-  }, [preapprovalId, params]);
+    processSessionAndPayment();
+  }, [preapprovalId, email, showNotification]);
 
+  // Liberación explícita de URLs de imágenes para evitar fugas de memoria
   useEffect(() => {
     return () => {
       if (logoPreview) URL.revokeObjectURL(logoPreview);
@@ -158,92 +206,66 @@ export default function Register() {
   }, [logoPreview]);
 
   useEffect(() => {
-    if (serverMessage) {
-      outNotification();
-    }
-  }, [serverMessage]);
+    return () => {
+      if (coverPhotoPreview) URL.revokeObjectURL(coverPhotoPreview);
+    };
+  }, [coverPhotoPreview]);
 
-  const outNotification = () => {
-    setTimeout(() => {
-      setServerMessage(null);
-    }, 8000);
-  }
   const handleFinalSubmit = async (values: FormValues) => {
     setServerMessage(null);
 
     const body = new FormData();
-    // USER -------------------------------------------------------------------------
-    // 1. PRIORIDAD DE IDENTIDAD: Sesión > Estado Directo > Formulario
-    // Si sessionEmail existe, usamos ese. Si no, usamos el del input del form.
-    const finalEmail = sessionEmail || email || values.email;
+    const finalEmail = sessionEmail || email || values.email || localStorage.getItem("registerEmail") || "";
     body.append("email", finalEmail);
-    // CONTRASEÑA: Solo se envía si NO hay sesión (Registro Free)
-    // Si el usuario pagó, la password ya está hasheada en la sesión del servidor.
 
-    const finalPassword = sessionPassword || password || values.password;
-    body.append("password", finalPassword);
-
-    // MERCADO PAGO ID
-    body.append("mp_preapproval_id", preapprovalId || "");
-    // PLAN: Prioridad a la sesión de pago, sino lo que eligió en el form o "free"
-    body.append("plan", sessionPlan || values.plan || "free");
-    const finalUsername = sessionUsername || values.name;
-    body.append("name", finalUsername);
-    body.append("is_active", values.is_active ? "1" : "0");
-    body.append("is_online", values.is_online ? "1" : "0");
-
-    // MENU -------------------------------------------------------------------------
-    // DATOS DE PERFIL (Vienen siempre del Formulario)
     body.append("description", values.description || "");
     body.append("schedule", values.schedule || "");
     body.append("phone", String((values.phonePrefix || "") + (values.phone || "")));
     body.append("template_id", "default");
     body.append("location", values.location || "");
-    // ESTADOS Y REDES
     body.append("instagram", values.instagram || "");
     body.append("facebook", values.facebook || "");
     body.append("tiktok", values.tiktok || "");
-    body.append("productsVisibilityPay", preapprovalId ? "1" : "0");
-    // ARCHIVOS (Cloudinary)
+
     if (values.logo instanceof File) {
       body.append("photo", values.logo);
     }
     if (values.cover instanceof File) {
       body.append("cover", values.cover);
     }
-    if (isPayActive) {
-      body.append("paymentCreated", new Date().toISOString());
-    }
+
     try {
-      const response = await fetch(`${URI}/auth/signup`, {
+      const response = await fetch(`${URI}/auth/create-menu`, {
         method: "POST",
         body: body,
         credentials: "include",
       });
       const data = await response.json();
-      const { token } = data;
-      await setAuthCookie(token);
       if (!response.ok) {
-        setIsResponse(data?.success);
-        setServerMessage(data?.message || "Ocurrió un error al registrarse.");
+        showNotification(data?.message || "Ocurrió un error al crear el menú.", false);
         return;
       }
       if (data.success) {
-        if (data.user) {
-          await setUserCookie(data.user);
-          await setMenuCookie(data.menu);
-        }
-        router.push("/");
+        router.push("/login");
       }
     } catch (err) {
-      setServerMessage("Error de conexión. Intente nuevamente.");
+      showNotification("Error de conexión. Intente nuevamente.", false);
     }
   };
 
   return (
     <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
       <div className="w-full py-3 z-10">
-        <BttnBack />
+        <button
+          type="button"
+          onClick={() => {
+            router.push("/");
+          }}
+          className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+        >
+          <MdChevronLeft className="text-xl mr-1" />
+          inicio
+        </button>
       </div>
       {serverMessage && (
         <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${isResponse === false ? "bg-red-500" : "bg-green-500"} ${isResponse === false ? "border-red-500" : "border-green-500"} ${isResponse === false ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 rounded-xl`}>
@@ -347,17 +369,15 @@ export default function Register() {
                 });
                 const data = await response.json();
                 if (!response.ok) {
-                  setIsResponse(false);
                   const msg = Array.isArray(data.message) ? data.message.join(". ") : (data.message || "Ocurrió un error al enviar el correo.");
-                  setServerMessage(msg);
+                  showNotification(msg, false);
                   return;
                 }
-                setIsResponse(true);
-                setServerMessage("Se ha enviado un correo de verificación a tu email.");
+                showNotification("Se ha enviado un correo de verificación a tu email.", true);
+                localStorage.setItem("registerEmail", values.email);
                 setStep(1);
               } catch (error) {
-                setIsResponse(false);
-                setServerMessage("Error de conexión. Intente nuevamente.");
+                showNotification("Error de conexión. Intente nuevamente.", false);
               } finally {
                 setSubmitting(false);
               }
@@ -377,18 +397,41 @@ export default function Register() {
                 });
                 const data = await response.json();
                 if (!response.ok) {
-                  setIsResponse(false);
-                  setServerMessage(data.message || "Código incorrecto.");
+                  showNotification(data.message || "Código incorrecto.", false);
                   setSubmitting(false);
                   return;
                 }
-                // Si la verificación es exitosa, avanzamos al siguiente paso
                 setServerMessage(null);
                 setStep(2);
               } catch (error) {
-                setIsResponse(false);
-                setServerMessage("Error de conexión. Intente nuevamente.");
+                showNotification("Error de conexión. Intente nuevamente.", false);
               } finally {
+                setSubmitting(false);
+              }
+            } else if (step === 2) {
+              setServerMessage(null);
+              try {
+                const finalEmail = sessionEmail || email || values.email || localStorage.getItem("registerEmail");
+                const finalPlan = localStorage.getItem("registerPlan") || "free";
+                const response = await fetch(`${URI}/auth/update-plan`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    email: finalEmail,
+                    plan: finalPlan
+                  }),
+                  credentials: 'include'
+                });
+                const data = await response.json();
+                if (!response.ok) {
+                  showNotification(data.message || "Error al actualizar plan", false);
+                  setSubmitting(false);
+                  return;
+                }
+                setStep(3);
+                setSubmitting(false);
+              } catch (error) {
+                showNotification("Error de conexión. Intente nuevamente.", false);
                 setSubmitting(false);
               }
             } else if (step < steps.length - 1) {
@@ -597,6 +640,7 @@ export default function Register() {
                               onChange={(e) => {
                                 const file = e.currentTarget.files?.[0] || null;
                                 setFieldValue("logo", file);
+                                if (logoPreview) URL.revokeObjectURL(logoPreview);
                                 if (file) {
                                   const url = URL.createObjectURL(file);
                                   setLogoPreview(url);
@@ -633,9 +677,9 @@ export default function Register() {
                                   accept="image/*"
                                   className="sr-only"
                                   onChange={(e) => {
-                                    const file =
-                                      e.currentTarget.files?.[0] || null;
+                                    const file = e.currentTarget.files?.[0] || null;
                                     setFieldValue("cover", file);
+                                    if (coverPhotoPreview) URL.revokeObjectURL(coverPhotoPreview);
                                     if (file) {
                                       const url = URL.createObjectURL(file);
                                       setCoverPhotoPreview(url);
@@ -664,23 +708,12 @@ export default function Register() {
                       )}
                     </div>
 
-                    <div className="flex w-full space-x-5 justify-between">
-                      <div className="flex flex-col items-start justify-around">
-                        <label
-                          htmlFor="location"
-                          className="block text-md text-gray-700"
-                        >
+                    <div className="flex flex-col gap-4">
+                      {/* Fila Ubicación */}
+                      <div className="flex items-center justify-between w-full space-x-5">
+                        <label htmlFor="location" className="block text-md text-gray-700 w-24">
                           Ubicación
                         </label>
-                        <label
-                          htmlFor="phone"
-                          className="block text-md text-gray-700"
-                        >
-                          WhatsApp
-                        </label>
-                      </div>
-
-                      <div className="flex gap-3 w-full flex-col items-center justify-between">
                         <div className="flex items-center justify-end relative w-full">
                           <FaMapMarkerAlt className="absolute left-3 text-gray-400" />
                           <Field
@@ -693,9 +726,16 @@ export default function Register() {
                           />
                           <ErrorMessage name="location" component="div" className="text-xs mr-1 text-red-500 font-medium absolute" />
                         </div>
+                      </div>
+
+                      {/* Fila WhatsApp */}
+                      <div className="flex items-center justify-between w-full space-x-5">
+                        <label htmlFor="phone" className="block text-md text-gray-700 w-24">
+                          WhatsApp
+                        </label>
                         <div className="flex items-center justify-end relative w-full">
                           <Field
-                            id="phone"
+                            id="phonePrefix"
                             name="phonePrefix"
                             maxLength={3}
                             type="tel"
@@ -804,7 +844,7 @@ export default function Register() {
                       type="button"
                       onClick={() => router.push('/login')}
                       disabled={isSubmitting}
-                      className="inline-flex active:scale-95 transition-all items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
+                      className="inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
                     >
                       Omitir
                     </button>
@@ -824,7 +864,8 @@ export default function Register() {
                     </button>
                   ) : (
                     <button
-                      type="submit"
+                      type="button"
+                      onClick={() => router.push('/login')}
                       disabled={isSubmitting}
                       className="inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
                     >
@@ -861,7 +902,7 @@ export default function Register() {
                         Procesando...
                       </span>
                     ) : step === steps.length - 1 ? (
-                      "Finalizar"
+                      "Guardar"
                     ) : (
                       "Siguiente"
                     )}
