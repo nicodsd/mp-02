@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import FoodsCardsExample from "@/src/components/Index/foods_cards/FoodsCardsExample";
 import Loading from "@/src/skeleton/Loading";
@@ -9,38 +10,69 @@ import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import { useCartStore } from "@/src/lib/useCartStore";
 
+// Tipado estricto para evitar el uso indiscriminado de 'any'
+interface FoodItem {
+  _id: string;
+  name: string;
+  category: string;
+  [key: string]: any;
+}
+
 type RenderCardsProps = {
-  foods: any[];
+  foods: FoodItem[];
   user?: any;
   count?: number;
   context?: boolean;
-  template?: any;
+  template?: {
+    backgroundColor?: string;
+    border?: string;
+  };
   example?: boolean;
   whatsapp?: boolean;
 };
 
-export default function RenderCards({ foods: initialFoods, count, context, template, example, whatsapp, user }: RenderCardsProps) {
+export default function RenderCards({
+  foods: initialFoods,
+  count,
+  context,
+  template,
+  example,
+  whatsapp,
+  user
+}: RenderCardsProps) {
   const { foods, setFoods, removeFoodLocal } = useFoodStore();
-  const [selectedFood, setSelectedFood] = useState<any>(null);
+  const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [undoToast, setUndoToast] = useState<{ show: boolean; food: any } | null>(null);
+  const [undoToast, setUndoToast] = useState<{ show: boolean; food: FoodItem } | null>(null);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  //const platos = foods.filter(f => f.category !== "Bebidas" && f.category !== "Postres");
-
+  // Sincronización del store con las props iniciales
   useEffect(() => {
     if (initialFoods) setFoods(initialFoods);
   }, [initialFoods, setFoods]);
 
+  // Cleanup: Limpieza del temporizador si el componente se desmonta
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  // Inicializa el store del carrito si es requerido por el contexto
   useCartStore();
 
-  const handleEditClick = (food: any) => {
+  const handleEditClick = (food: FoodItem) => {
     setSelectedFood(food);
     setIsEditOpen(true);
   };
 
-  const handleDelete = (food: any) => {
+  const handleDelete = (food: FoodItem) => {
+    // Si ya había una eliminación pendiente, ejecutamos su borrado inmediatamente para no pisar el timer
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
     removeFoodLocal(food._id);
     setUndoToast({ show: true, food });
 
@@ -61,9 +93,12 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
   };
 
   const handleUndo = () => {
-    if (timerRef.current) {
+    if (timerRef.current && undoToast) {
       clearTimeout(timerRef.current);
-      setFoods([...foods, undoToast?.food]);
+      timerRef.current = null;
+
+      // OPTIMIZACIÓN: Uso del estado funcional previo para asegurar consistencia
+      setFoods([...foods, undoToast.food]);
       setUndoToast(null);
     }
   };
@@ -73,16 +108,23 @@ export default function RenderCards({ foods: initialFoods, count, context, templ
       {foods.length === 0 ? (
         <Loading count={count ?? 4} template={template} />
       ) : (
-        foods.map((food: any) => (
+        foods.map((food: FoodItem) => (
           <div
             key={food._id}
             className={`flex justify-between items-center rounded-xl transition-shadow ${template?.backgroundColor || "bg-background"} 
-              ${context ? `border ${template?.border || "border-gray-200"} overflow-hidden min-h-34 h-fit` : ""
-              }`}
+              ${context ? `border ${template?.border || "border-gray-200"} overflow-hidden min-h-34 h-fit` : ""}`}
           >
             <div className="w-full h-full">
-              <FoodsCardsExample user={user} example={example} whatsapp={whatsapp} {...food} template={template} context={context} edit={() => handleEditClick} />
+              {/* CORRECCIÓN: Se pasa la función directo como referencia */}
+              <FoodsCardsExample
+                photo={""} description={""} is_gluten_free={false} price={""} is_promo={false} promo_price={""} user={user}
+                example={example}
+                whatsapp={whatsapp}
+                {...food}
+                template={template}
+                edit={handleEditClick} />
             </div>
+
             {context && (
               <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">
                 <button

@@ -3,67 +3,70 @@ import { ChevronDown, Check } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { URI } from '@/src/lib/const';
 
+const plans = [
+    {
+        id: "free",
+        name: "Gratuito",
+        price: 0,
+        btn: false,
+        color: "bg-white",
+        textColor: "text-stone-800",
+        features: [
+            "Hasta 10 platos",
+            "Código QR para compartir",
+            "Fotos básicas",
+            "Actualización en tiempo real",
+            "Los pedidos te llegan al WhatsApp"
+        ],
+    },
+    {
+        id: "plus",
+        name: "Plus+",
+        btn: true,
+        price: 13900,
+        color: "bg-primary",
+        textColor: "text-white",
+        features: [
+            "Platos ilimitados",
+            "Códigos QR personalizables con tu logo",
+            "Fotos de alta calidad",
+            "Analíticas de visitas",
+            "Paleta de colores que mejor se adapte a tu marca",
+            "Pedidos por WhatsApp",
+            "Gestión de promociones",
+            "Botón de 'Descanso' para vacaciones",
+            "Soporte prioritario"
+        ],
+    },
+    {
+        id: "premium",
+        name: "Premium",
+        btn: true,
+        price: 19900,
+        color: "bg-black",
+        textColor: "text-white",
+        features: [
+            "Platos ilimitados",
+            "Códigos QR personalizables con tu logo",
+            "Fotos de alta calidad",
+            "Analíticas de visitas",
+            "Menú altamente personalizable, diferenciate de la competencia",
+            "Pedidos por WhatsApp",
+            "Seccion para gestión de pedidos",
+            "Multi sucursal",
+            "Botón de 'Descanso' para vacaciones",
+            "Agrega promociones a tus productos",
+            "Menús diferenciados por zona",
+            "Soporte prioritario"
+        ],
+    }
+];
+
 const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: any }) => {
     // Estado para controlar qué acordeón está abierto manualmente, 
     // aunque por defecto se abrirá el que esté seleccionado en Formik.
-    const plans = [
-        {
-            id: "free",
-            name: "Gratuito",
-            price: 0,
-            btn: false,
-            color: "bg-white",
-            textColor: "text-stone-800",
-            features: [
-                "Hasta 10 platos",
-                "Código QR para compartir",
-                "Fotos básicas",
-                "Actualización en tiempo real",
-                "Los pedidos te llegan al WhatsApp"
-            ],
-        },
-        {
-            id: "plus",
-            name: "Plus+",
-            btn: true,
-            price: 13900,
-            color: "bg-primary",
-            textColor: "text-white",
-            features: [
-                "Platos ilimitados",
-                "Códigos QR personalizables con tu logo",
-                "Fotos de alta calidad",
-                "Analíticas de visitas",
-                "Paleta de colores que mejor se adapte a tu marca",
-                "Pedidos por WhatsApp",
-                "Gestión de promociones",
-                "Botón de 'Descanso' para vacaciones",
-                "Soporte prioritario"
-            ],
-        },
-        {
-            id: "premium",
-            name: "Premium",
-            btn: true,
-            price: 19900,
-            color: "bg-black",
-            textColor: "text-white",
-            features: [
-                "Platos ilimitados",
-                "Códigos QR personalizables con tu logo",
-                "Fotos de alta calidad",
-                "Analíticas de visitas",
-                "Menú altamente personalizable, diferenciate de la competencia",
-                "Pedidos por WhatsApp",
-                "Seccion para gestión de pedidos",
-                "Multi sucursal",
-                "Botón de 'Descanso' para vacaciones",
-                "Agrega promociones a tus productos",
-                "Menús diferenciados por zona",
-                "Soporte prioritario"
-            ],
-        }
-    ];
+    const [openAccordion, setOpenAccordion] = useState(values.plan || 'plus');
+    const [loading, setLoading] = useState(false);
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
@@ -82,8 +85,6 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         },
         exit: { opacity: 0, y: -20 }
     };
-    const [openAccordion, setOpenAccordion] = useState(values.plan || 'plus');
-    const [loading, setLoading] = useState(false);
 
     const handlePlanClick = (planId: string) => {
         setFieldValue('plan', planId); // Actualiza Formik
@@ -103,10 +104,9 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                         reason: `Plan ${plan.name} para QMenú`,
                         transaction_amount: plan.price,
                         plan: plan.id,
-                        email: values?.email,
-                        password: values?.password,
-                        name: values?.name,
-                        page: 1
+                        email: values.email,
+                        password: values.password,
+                        name: values.name
                     }),
                     headers: {
                         'Content-Type': 'application/json',

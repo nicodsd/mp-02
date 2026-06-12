@@ -9,6 +9,7 @@ import Image from "next/image";
 import logo from "@/public/images/logo/logo-rojo.png";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import { URI } from "@/src/lib/const";
+import { MdChevronLeft } from "react-icons/md";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -45,15 +46,15 @@ export default function LoginPage() {
         if (response.ok) {
           await setAuthCookie(data.token);
           await setUserCookie(data.user);
-          
-          const activeMenu = data.menus && data.menus.length > 0 
-              ? (data.menus.find((m: any) => m._id === data.user.active_menu_id) || data.menus[0]) 
-              : data.menu;
-              
+
+          const activeMenu = data.menus && data.menus.length > 0
+            ? (data.menus.find((m: any) => m._id === data.user.active_menu_id) || data.menus[0])
+            : data.menu;
+
           if (activeMenu) {
             await setMenuCookie(activeMenu);
           }
-          
+
           router.push("/mi-menu");
         } else {
           if (data.alreadyLoggedIn) {
@@ -108,7 +109,16 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col justify-between">
       <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
         <div className="w-full py-3 z-10">
-          <BttnBack />
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/");
+            }}
+            className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+          >
+            <MdChevronLeft className="text-xl mr-1" />
+            inicio
+          </button>
         </div>
         {serverMessage && (
           <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${serverMessage === "Error de conexión" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "border-red-500" : "border-green-500"} ${serverMessage === "Error de conexión" ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 ${alreadyLoggedIn && "text-orange-600"} ${alreadyLoggedIn && "bg-orange-50"} ${alreadyLoggedIn && "border-orange-300"} rounded-xl`}>
