@@ -11,9 +11,13 @@ import MiddleSection from "@/src/components/land_page/MiddleSection";
 import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 import MPRedirect from '@/src/components/navigation/MPRedirect';
+import { cookies } from "next/headers";
 //import Testimonials from "@/src/components/land_page/Testimonials";
 
-export default function Page() {
+export default async function Page() {
+  const cookieStore = await cookies();
+  const userCookie = cookieStore.get("user")?.value || '{}';
+  const token = cookieStore.get('token')?.value || '{}';
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -66,7 +70,7 @@ export default function Page() {
       />
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
-        <MPRedirect />
+        <MPRedirect userCookie={userCookie} token={token} />
         <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
           <Hero />
           <MiddleSection />

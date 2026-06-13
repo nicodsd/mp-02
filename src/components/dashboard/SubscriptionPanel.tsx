@@ -87,6 +87,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
 
   const handleSubscribe = async (planId: "plus" | "premium", amount: number) => {
     setLoadingPlan(planId);
+    localStorage.setItem("plan", planId);
     try {
       const response = await fetch(`${URI}/auth/subscribe`, {
         method: "POST",
