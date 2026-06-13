@@ -23,7 +23,7 @@ const plans = [
         id: "plus",
         name: "Plus+",
         btn: true,
-        price: 100,
+        price: 13900,
         color: "bg-primary",
         textColor: "text-white",
         features: [
