@@ -2,6 +2,7 @@
 import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { logotipo, URI } from "@/src/lib/const";
+import { refreshPage, updateUserCookie } from "@/app/actions";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   TabGroup,
@@ -43,23 +44,82 @@ export default function PanelUser({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
+  const preapprovalId = searchParams.get("preapproval_id");
+
+  // Definición estática del menú para evitar que cambie su referencia
+  const menuItems = [
+    { key: "negocio", name: "Tu local", icon: <HiPencil size={20} /> },
+    { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
+    { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
+    { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
+    { key: "paletas", name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
+    { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
+    { key: "plan", name: "Mi Plan", icon: <HiOutlineCreditCard size={20} /> },
+  ];
+
+  // CORRECCIÓN 1 Y 2: Movemos la lógica de localStorage adentro del useEffect
+  useEffect(() => {
+    if (!preapprovalId || !user?.email) return;
+
+    const processSessionAndPayment = async () => {
+      const planLocalStorage = localStorage.getItem("plan");
+
+      if (planLocalStorage) {
+        try {
+          const responseUpdate = await fetch(`${URI}/auth/update-plan`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: user.email,
+              plan: planLocalStorage,
+              mp_preapproval_id: preapprovalId,
+              productsVisibilityPay: planLocalStorage !== "free"
+            }),
+            credentials: 'include'
+          });
+
+          const dataUpdate = await responseUpdate.json();
+          if (!responseUpdate.ok) {
+            setServerMessage("Error BD: " + (dataUpdate.message || "No se pudo actualizar el plan"));
+          } else {
+            await updateUserCookie(dataUpdate.user);
+            // CORRECCIÓN 3: Limpiamos el preapproval_id de la URL para evitar bucles al recargar (F5)
+            const params = new URLSearchParams(window.location.search);
+            params.delete("preapproval_id");
+            localStorage.removeItem("plan"); // Limpiamos el storage también
+            router.replace(`/panel-de-usuario?${params.toString()}`);
+          }
+        } catch (e: any) {
+          console.error(e);
+          setServerMessage("Error de conexión al actualizar el plan: " + e.message);
+        }
+      }
+    };
+
+    processSessionAndPayment();
+  }, [preapprovalId, user?.email, router]);
 
   useEffect(() => {
-    const index = menuItems.findIndex(
-      item => item.key === seccion
-    );
-
+    const index = menuItems.findIndex(item => item.key === seccion);
     setSelectedIndex(index >= 0 ? index : 0);
   }, [seccion]);
 
   const handleTabChange = (index: number) => {
     if (index === undefined || !menuItems[index]) return;
+
+    // 1. Actualizamos el estado de manera inmediata (Mejora la respuesta visual instantánea)
+    setSelectedIndex(index);
+
+    // 2. Modificamos la URL de forma local sin disparar peticiones al servidor de Next.js
     const params = new URLSearchParams(searchParams.toString());
     params.set("seccion", menuItems[index].key);
-    router.replace(`/panel-de-usuario?${params.toString()}`);
+
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, "", newUrl);
   };
 
   const hadleLogoutUserAction = async (userId: string) => {
@@ -79,9 +139,9 @@ export default function PanelUser({
       console.error("Error en logout:", err);
     } finally {
       router.push("/");
-      router.refresh()
+      router.refresh();
     }
-  }
+  };
 
   const tabClass = (selected: boolean) =>
     `w-full flex items-center gap-3 rounded-lg cursor-pointer py-3.5 px-5 text-sm md:text-md font-bold transition-all outline-none disabled:opacity-40 disabled:pointer-events-none
@@ -89,17 +149,6 @@ export default function PanelUser({
       ? "text-white bg-black transform scale-[1.02]"
       : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
-
-  const menuItems = [
-    { key: "negocio", name: "Tu local", icon: <HiPencil size={20} /> },
-    { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
-    { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
-    { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
-    { key: "paletas", name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
-    { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
-    { key: "plan", name: "Mi Plan", icon: <HiOutlineCreditCard size={20} /> },
-  ];
-
 
   return (
     <div className="h-screen relative">
@@ -177,8 +226,8 @@ export default function PanelUser({
                     <div className="flex flex-col gap-2">
                       {menuItems?.map((item, index) => (
                         <button
-                          disabled={user?.plan === "free" && (item?.name === "Promociones" || item?.name === "Configura tu menú" || item?.name === "Paletas de colores" || item?.name === "Sucursales")}
-                          key={item.name}
+                          disabled={user?.plan === "free" && (item?.key === "promociones" || item?.key === "configuraciones" || item?.key === "paletas" || item?.key === "sucursales")}
+                          key={item.key}
                           onClick={() => {
                             handleTabChange(index);
                             setIsSidebarOpen(false);
@@ -230,14 +279,14 @@ export default function PanelUser({
                 <TabList className="h-auto md:flex flex-col mt-16 gap-y-2">
                   {menuItems.map((item, index) => (
                     <Tab
-                      key={item.name}
+                      key={item.key}
                       disabled={
                         user?.plan === "free" &&
                         (
-                          item.name === "Promociones" ||
-                          item.name === "Configura tu menú" ||
-                          item.name === "Paletas de colores" ||
-                          item.name === "Sucursales"
+                          item.key === "promociones" ||
+                          item.key === "configuraciones" ||
+                          item.key === "paletas" ||
+                          item.key === "sucursales"
                         )
                       }
                       className={({ selected }) =>
