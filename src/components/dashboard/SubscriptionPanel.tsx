@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Check, Loader2, CreditCard, Sparkles, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { URI } from "@/src/lib/const";
+import Link from "next/link";
 
 interface PlanFeature {
   text: string;
@@ -43,7 +44,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
     {
       id: "plus",
       name: "Plus",
-      price: "$13.900",
+      price: "$14.900",
       before: "$19.900",
       description: "Para restaurantes que quieren destacar su marca.",
       features: [
@@ -132,12 +133,17 @@ export default function SubscriptionPanel({ user }: { user: any }) {
       </header>
 
       {/* Plan actual info widget */}
-      <div className={`mx-3 mb-8 p-5 rounded-2xl border border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${user?.plan === "premium" ? "bg-black" : "bg-linear-to-r from-gray-50 to-gray-100"}`
-      }>
+      <div className={`mx-3 mb-8 p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 
+        ${user?.plan === "premium" && "bg-black"}
+        ${user?.plan === "plus" && "bg-linear-to-r from-white via-gray-50 to-gray-100/50 border-primary border"}
+        ${user?.plan === "free" && "bg-linear-to-r from-gray-50 to-gray-100"}
+      `}>
         <div>
           <span className={`text-xs uppercase font-bold tracking-wider ${user?.plan === "premium" ? "text-gray-200" : "text-gray-400"}`}>Plan Activo</span>
           <div className="flex items-center gap-2 mt-1">
-            <h2 className={`text-xl font-bold capitalize ${user?.plan === "premium" ? "text-white" : "text-gray-800"}`}>
+            <h2 className={`text-xl font-bold capitalize 
+              ${user?.plan === "premium" && "text-white"}
+              ${user?.plan === "plus" && "text-primary"}`}>
               {user?.plan === "free" ? "Gratuito" : user?.plan}
             </h2>
             {user?.plan !== "free" && (
@@ -151,16 +157,9 @@ export default function SubscriptionPanel({ user }: { user: any }) {
           <p className={`text-xs mt-1 ${user?.plan === "premium" ? "text-gray-300" : "text-gray-500"}`}>
             {user?.plan === "free"
               ? "Tienes acceso a las herramientas básicas para iniciar tu menú digital."
-              : "Disfrutas de todas las ventajas de tu plan. Los pagos se administran en Mercado Pago."}
+              : "Disfrutá de las ventajas de tu plan. Los pagos se administran en Mercado Pago."}
           </p>
         </div>
-
-        {user?.plan !== "premium" && (
-          <div className="flex items-center gap-1 bg-yellow-50 text-yellow-800 text-xs font-semibold px-3 py-2 rounded-xl border border-yellow-200">
-            <Sparkles className="w-4 h-4 text-yellow-600 animate-pulse" />
-            <span>¡Impulsa tus ventas actualizando tu plan hoy!</span>
-          </div>
-        )}
       </div>
 
       {/* Cards list */}
@@ -263,11 +262,12 @@ export default function SubscriptionPanel({ user }: { user: any }) {
           Manejo seguro de suscripciones a través de Mercado Pago.
         </p>
         <p className="text-gray-400 text-[10px]">
-          En caso de dudas, reembolsos o anulación de suscripción, puedes ingresar al panel de{" "}
-          <a href="https://www.mercadopago.com" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+          En caso de dudas o para realizar la anulación de suscripción, puedes ingresar desde aquí al panel de{" "}
+          <a href="https://www.mercadopago.com.ar/subscriptions#from-section=menu" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">
             Mercado Pago
           </a>
-          .
+          . <br />
+          Si quieres solicitar un reembolso, <Link href="/contacto" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">contactate</Link> con nosotros.
         </p>
       </footer>
     </div>
