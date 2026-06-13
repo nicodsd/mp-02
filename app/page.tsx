@@ -10,6 +10,7 @@ import FAQ from "@/src/components/land_page/FAQ";
 import MiddleSection from "@/src/components/land_page/MiddleSection";
 import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
+import MPRedirect from '@/src/components/navigation/MPRedirect';
 //import Testimonials from "@/src/components/land_page/Testimonials";
 
 export default function Page() {
@@ -65,6 +66,7 @@ export default function Page() {
       />
       <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
+        <MPRedirect />
         <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
           <Hero />
           <MiddleSection />
