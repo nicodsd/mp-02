@@ -57,11 +57,8 @@ export default function PanelUser({
 
   const handleTabChange = (index: number) => {
     if (index === undefined || !menuItems[index]) return;
-
     const params = new URLSearchParams(searchParams.toString());
-
     params.set("seccion", menuItems[index].key);
-
     router.replace(`/panel-de-usuario?${params.toString()}`);
   };
 
