@@ -84,7 +84,13 @@ export default function Pricing() {
       <div className="w-full">
         <div className="text-center md:text-start mb-8 md:mb-12 md:pl-12">
           <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
-          <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 px-3 md:px-0 text-base md:text-lg">
+          <motion.p
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-base text-zinc-500"
+          >
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
         </div>

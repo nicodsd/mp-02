@@ -6,6 +6,12 @@ import UserIndex from "@/src/pagesComponents/UserIndex";
 import NavBar from "@/src/layouts/NavBar";
 import templates from "@/src/data/templates.json"
 
+
+export const metadata = {
+  title: "Mi Menú | QMenú",
+  description: "Gestiona los platos y categorías de tu menú digital de forma sencilla.",
+};
+
 export default async function Page() {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value || '{}';

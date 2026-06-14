@@ -2,6 +2,12 @@ import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 
+
+export const metadata = {
+  title: "Políticas de Privacidad | QMenú",
+  description: "Lee nuestras políticas de privacidad y cómo protegemos tus datos.",
+};
+
 export default function PoliticasPage() {
     return (
         <>

@@ -48,7 +48,13 @@ export default function Showcase() {
                         <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">
                             Personalización Total, <span className={` ${activeTheme.primaryText}`}>Experiencia Premium</span>
                         </motion.h2>
-                        <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg">
+                        <motion.p
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="text-base text-zinc-500"
+                        >
                             Cambia el estilo de tu restaurante con un solo clic <strong>desde el panel</strong>.
                         </motion.p>
                     </div>

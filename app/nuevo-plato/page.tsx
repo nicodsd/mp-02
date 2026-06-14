@@ -3,6 +3,12 @@ import FormFoods from "@/src/pagesComponents/FormFoods";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import { cookies } from "next/headers";
 import Image from "next/image";
+
+export const metadata = {
+  title: "Nuevo Plato | QMenú",
+  description: "Añade un nuevo plato a tu menú digital rápidamente.",
+};
+
 export default async function NewFood() {
   const cookieStore = cookies();
   const userCookie = (await cookieStore).get("user")?.value;

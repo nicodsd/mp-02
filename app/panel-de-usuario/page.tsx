@@ -24,6 +24,12 @@ async function SucursalesPanel({ userId, user }: any) {
   return <Sucursales menus={menus?.menus} user_id={userId} user={user} />;
 }
 
+
+export const metadata = {
+  title: "Panel de Usuario | QMenú",
+  description: "Administra tu cuenta y tus menús digitales desde el panel de control.",
+};
+
 export default async function DashboardPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value || '{}';

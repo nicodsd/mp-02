@@ -1,6 +1,12 @@
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 
+
+export const metadata = {
+  title: "Términos y Condiciones | QMenú",
+  description: "Revisa los términos y condiciones de uso de la plataforma QMenú.",
+};
+
 export default function TerminosPage() {
     return (
         <>

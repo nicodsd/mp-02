@@ -73,7 +73,13 @@ export const MetricsSection: React.FC = () => {
                     <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                         El impacto de <span className="text-red-600">QMenú</span> en números
                     </motion.h2>
-                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="mt-2 text-sm text-zinc-500 max-w-2xl text-pretty">
+                    <motion.p
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-base text-zinc-500 max-"
+                    >
                         Ayudamos a los negocios gastronómicos a optimizar su atención y potenciar sus ventas desde el primer día.
                     </motion.p>
                 </div>

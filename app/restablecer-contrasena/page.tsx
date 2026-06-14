@@ -10,6 +10,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { URI } from '@/src/lib/const';
 
+
+export const metadata = {
+  title: "Restablecer Contraseña | QMenú",
+  description: "Cambia tu contraseña para mantener tu cuenta segura.",
+};
+
 export default function ResetPasswordPage() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const searchParams = useSearchParams();

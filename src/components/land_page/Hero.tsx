@@ -20,7 +20,7 @@ export default function Hero() {
               priority
             />
           </motion.div>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-[3.5rem] md:text-7xl leading-none text-primary px-2 text-balance font-black mb-4 md:mb-8">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-[3.5rem] md:text-[5rem] leading-none text-primary px-2 text-balance font-black mb-4 md:mb-8">
             Tu menú digital gratis
             <br />
             <span className='text-red-900 leading-none text-[1.5rem] md:text-3xl'>y con QR para tu restaurante</span>

@@ -47,11 +47,11 @@ export default function FAQ() {
             Preguntas Frecuentes
           </motion.h2>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-stone-600 text-base md:text-lg mx-auto text-pretty"
+            className="text-base text-zinc-500"
           >
             Resolvemos tus dudas más comunes de forma rápida y sencilla para que empieces a digitalizar tu menú de inmediato.
           </motion.p>

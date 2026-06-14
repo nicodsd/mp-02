@@ -43,7 +43,13 @@ export default function GuidePreview() {
                 <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                   Nuestras <span className="text-blue-700">guías</span>
                 </motion.h2>
-                <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg">
+                <motion.p
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="text-base text-zinc-500"
+                >
                   Recursos útiles para sacar el máximo provecho de tu menú digital.
                 </motion.p>
               </div>
@@ -60,8 +66,8 @@ export default function GuidePreview() {
             </div>
             {topGuides.map((guide, idx) => (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: 100 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 key={idx}
@@ -69,7 +75,7 @@ export default function GuidePreview() {
               >
                 <Link
                   href={guide.href}
-                  className="group relative hover:bg-background-2 rounded-lg py-2 px-4 hover:shadow-xl gap-2 md:gap-4 transition-all duration-300 border border-gray-200 hover:border-blue-600 flex flex-col md:flex-row h-full transform hover:-translate-y-1"
+                  className="group relative hover:bg-background-2 rounded-xl py-2 px-4 hover:shadow-xl gap-2 md:gap-4 transition-all duration-300 border border-gray-300 hover:border-blue-600 flex flex-col md:flex-row h-full transform hover:-translate-y-1"
                 >
                   <div className='flex w-full md:w-40 justify-between'>
 
@@ -95,7 +101,7 @@ export default function GuidePreview() {
                 </Link>
               </motion.div>
             ))}
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex md:my-8 mt-2 justify-center">
+            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex md:my-8 mt-2 justify-center">
               <Link href="/guias" className="w-full cursor-pointer bg-blue-700 px-6 py-3 hover:bg-blue-900 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
                 <span className="text-md font-bold text-white">Ver todas las guías</span>
                 <ArrowRight className="text-white w-5 h-5" />
@@ -103,7 +109,7 @@ export default function GuidePreview() {
             </motion.div>
           </div>
           {/* Columna Izquierda: Video (Ocupa 1 columna en escritorio) */}
-          <div className="p-8 bg-background-2/70 shadow-inner w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
+          <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-8 bg-background-2/70 shadow-inner w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
             <video
               className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
               autoPlay
@@ -112,7 +118,7 @@ export default function GuidePreview() {
             >
               <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
             </video>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
