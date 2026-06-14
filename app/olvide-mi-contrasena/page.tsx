@@ -10,11 +10,6 @@ import * as Yup from "yup";
 import { URI } from '@/src/lib/const';
 
 
-export const metadata = {
-  title: "Olvidé mi contraseña | QMenú",
-  description: "Recupera el acceso a tu cuenta de QMenú.",
-};
-
 export default function OlvideMiContrasenaPage() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 

@@ -7,11 +7,6 @@ import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 
 
-export const metadata = {
-  title: "Contacto | QMenú",
-  description: "Comunícate con nosotros para cualquier consulta sobre QMenú.",
-};
-
 export default function ContactoPage() {
     const [formData, setFormData] = useState({
         name: '',
