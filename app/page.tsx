@@ -68,18 +68,18 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
+      <div className="flex selection:bg-primary selection:text-white relative flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
         <MPRedirect userCookie={userCookie} token={token} />
-        <main className="grow md:rounded-b-2xl md:border-x border-gray-300 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4 border-b md:px-14">
+        <main className="grow md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
           <Hero />
           <MiddleSection />
           <Features />
           <GuidePreview />
-          <Showcase />
-          <Pricing />
           <MetricsSection />
           <TestimonialsSection />
+          <Showcase />
+          <Pricing />
           <FAQ />
           <Contact />
         </main>
