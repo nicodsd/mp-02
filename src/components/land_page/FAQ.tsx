@@ -34,10 +34,10 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="w-full py-20 md:py-0 md:pb-30 relative overflow-hidden flex flex-col items-center justify-center bg-background">
+    <section id="faq" className="w-full pb-18 relative overflow-hidden flex flex-col items-center justify-center bg-background">
 
       <div className="text-start w-full mx-auto relative z-10">
-        <div className="text-center md:text-start mb-10 md:mb-12">
+        <div className="text-center md:text-start mb-10 md:mb-12 md:pl-12">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export default function FAQ() {
           </motion.p>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-2 md:px-12">
           {faqs.map((faq, index) => (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -65,11 +65,11 @@ export default function FAQ() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               key={index}
-              className={`border rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform scale-[1.01]' : 'bg-background border-gray-300 hover:bg-gray-50 hover:border-gray-300'}`}
+              className={`border rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform' : 'bg-background border-gray-300 hover:bg-background-2 hover:border-gray-300'}`}
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-5 text-left focus:outline-none"
+                className="w-full flex justify-between items-center p-5 md:px-12 text-left focus:outline-none"
               >
                 <span className="font-bold text-lg text-stone-700 pr-4">{faq.question}</span>
                 <span
@@ -87,7 +87,7 @@ export default function FAQ() {
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <div className="px-6 pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base">
+                    <div className="px-6 md:px-12 md:pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base">
                       {faq.answer}
                     </div>
                   </motion.div>

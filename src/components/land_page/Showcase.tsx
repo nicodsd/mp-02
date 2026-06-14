@@ -37,13 +37,13 @@ export default function Showcase() {
     const [activeTheme, setActiveTheme] = useState(templates.naranja);
 
     return (
-        <div id="demo" className="pt-20 mb-20 md:pt-0 pb-20 md:mb-40 overflow-hidden md:rounded-4xl w-full relative">
+        <div id="demo" className="pt-20 mb-20 md:pt-0 pb-20 md:pb-10 md:mb-40 overflow-hidden md:rounded-2xl w-full relative">
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 rounded-full translate-y-[60%] translate-x-[-5%] h-full absolute top-0 left-0 z-0`}></div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="w-[180vw] hidden md:block bg-gray-200/80 -rotate-30 rounded-full translate-y-[50%] md:translate-y-[80%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></motion.div>
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 md:opacity-20 rounded-full translate-y-[50%] md:translate-y-[80%] md:translate-x-[-2%] h-full absolute top-0 left-0 z-0`}></div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.10, delay: 0.5 }} className="w-[180vw] hidden md:block bg-background-2 -rotate-16 rounded-full translate-y-[90%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></motion.div>
             <div className="w-full relative z-10">
-                <div className="text-center md:text-start mb-8 md:mb-12 px-2 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="text-center md:text-start mb-8 md:mb-12 md:pl-12 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
                         <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">
                             Personalización Total, <span className={` ${activeTheme.primaryText}`}>Experiencia Premium</span>
@@ -116,7 +116,7 @@ export default function Showcase() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.1, delay: 0.1 }} className="flex flex-col items-center absolute md:-bottom-12 md:-right-5 md:bg-white/40 bg-background backdrop-blur-md w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-10 md:px-8 md:rounded-3xl rounded-t-3xl border border-white">
+                        transition={{ duration: 0.1, delay: 0.1 }} className="flex flex-col items-center absolute md:-bottom-12 md:-right-5 md:bg-white/40 bg-background backdrop-blur-md w-fit -bottom-20 mx-auto md:mx-0 p-2 md:p-4 px-10 md:px-8 md:rounded-tl-3xl rounded-t-3xl border border-white">
 
                         <div className="flex flex-col gap-5 items-center justify-center">
                             <span className='text-sm font-semibold text-gray-900'>Personaliza el estilo</span>

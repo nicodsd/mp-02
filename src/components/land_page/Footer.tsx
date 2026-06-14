@@ -18,7 +18,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-background-2 selection:bg-primary selection:text-white pt-16 pb-8 text-stone-600">
+    <footer className="bg-background selection:bg-primary selection:text-white pt-10 pb-8 text-stone-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
@@ -51,15 +51,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className=" pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-stone-500 w-full text-sm flex flex-col md:flex-row items-center justify-center text-center gap-2">
-            <p>© {new Date().getFullYear()} QMenú.</p>
             <div className="flex items-center text-left">
               <div className="mr-2 shrink-0">
                 <MapPin className="h-3.5 w-3.5 text-primary" />
               </div>
               <p className="text-stone-500 text-xs">Santiago del Estero, Argentina.</p>
             </div>
+            <p>© {new Date().getFullYear()} QMenú.</p>
           </div>
           {/* <div className="flex space-x-6">
             <a href="#" className="text-stone-500 hover:text-white transition-colors"><Instagram className="h-5 w-5" /></a>
