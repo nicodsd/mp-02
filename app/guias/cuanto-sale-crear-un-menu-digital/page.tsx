@@ -1,9 +1,10 @@
 "use client";
-import { Check, Link } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import BttnBack from '@/src/components/buttons/BttnBack';
+import Link from 'next/link';
 
 interface PricingPlan {
     name: string;
@@ -36,7 +37,7 @@ const plans: PricingPlan[] = [
     },
     {
         name: "Plus+",
-        price: "$13.900",
+        price: "$14.900",
         before: "$19.900",
         period: "/mes",
         description: "Para restaurantes que quieren destacar su marca.",
@@ -84,13 +85,16 @@ export default function PricingPage() {
 
     return (
         <>
-            <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
+            <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-auto mb-20 md:mb-0">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-30 pb-20">
-                    <section id="planes" className="w-full">
-                        <BttnBack />
+                <main className="grow pt-30 md:pt-40 pb-4 md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+                    <section id="planes" className="">
+                        <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors md:pl-12">
+                            <ArrowLeft className="w-4 h-4 mr-2" />
+                            Guías / Cuanto sale crear un menú digital
+                        </Link>
                         <div className="w-full relative mt-10 z-10">
-                            <div className="text-center md:text-start mb-12 md:mb-16 px-2">
+                            <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">
                                 <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
                                 <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
                                     Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
@@ -170,7 +174,7 @@ export default function PricingPage() {
                                 ))}
                             </div>
                         </div>
-                        <span className="flex text-center flex-col mt-26 justify-center items-center gap-1">
+                        <span className="flex text-center flex-col mt-16 justify-center items-center gap-1">
                             <p className="text-stone-500 text-xs">Manejo seguro de suscripciones a través de Mercado Pago.</p>
                             <p className="text-stone-500 text-xs">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
                             <p className="text-stone-500 text-xs">Leé nuestros <a href="/terminos-y-condiciones" className="text-blue-500 underline">Términos y Condiciones</a>.</p>

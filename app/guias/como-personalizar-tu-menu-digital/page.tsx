@@ -12,11 +12,11 @@ export const metadata = {
 export default function PersonalizarMenuPage() {
   return (
     <>
-      <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
+      <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen mb-20">
         <Navbar isIndex={false} />
 
-        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
-          <article className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
+        <main className="grow pt-30 pb-4 md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+          <article className="bg-white rounded-3xl p-2 md:p-12 shadow-sm border border-slate-100">
             <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Guías / Personalización

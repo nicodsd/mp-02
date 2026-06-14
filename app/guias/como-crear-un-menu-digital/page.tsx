@@ -12,10 +12,10 @@ export const metadata = {
 export default function CrearMenuDigitalPage() {
   return (
     <>
-      <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
+      <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
         <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
-          <article className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
+          <article className="bg-white rounded-3xl p-2 md:p-12 shadow-sm border border-slate-100">
             <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Guías / Empezar
@@ -35,7 +35,7 @@ export default function CrearMenuDigitalPage() {
             <div className="prose prose-lg prose-slate max-w-none">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex items-start">
-                  <MonitorPlay className="w-8 h-8 text-primary mr-4 shrink-0" />
+                  <MonitorPlay className="w-8 h-8  text-primary mr-4 shrink-0" />
                   <div>
                     <h4 className="font-bold text-slate-900 m-0">100% Autogestionable</h4>
                     <p className="text-sm text-slate-600 m-0 mt-1">Sube tus platos y cambia precios cuando quieras.</p>
@@ -51,7 +51,7 @@ export default function CrearMenuDigitalPage() {
               </div>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">1</span>
+                <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">1</span>
                 Registro y Configuración Básica
               </h2>
               <p>
@@ -63,7 +63,7 @@ export default function CrearMenuDigitalPage() {
               </ul>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">2</span>
+                <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">2</span>
                 Creación de Categorías
               </h2>
               <p>
@@ -77,7 +77,7 @@ export default function CrearMenuDigitalPage() {
               </div>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">3</span>
+                <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">3</span>
                 Carga de Platos
               </h2>
               <p>
@@ -90,7 +90,7 @@ export default function CrearMenuDigitalPage() {
               </ul>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <span className="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">4</span>
+                <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">4</span>
                 Genera tu Código QR y Empieza a Vender
               </h2>
               <p>

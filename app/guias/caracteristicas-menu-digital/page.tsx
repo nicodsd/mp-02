@@ -58,25 +58,25 @@ const featuresList = [
 export default function CaracteristicasPage() {
     return (
         <>
-            <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full">
+            <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full mb-20 md:mb-0">
                 <Navbar isIndex={false} />
-                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
-                    <section id="caracteristicas" className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100">
-                        <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
+                <main className="grow pt-30 md:pt-40 pb-4 md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+                    <section id="caracteristicas" className="">
+                        <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors md:pl-12">
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Guías / Características
                         </Link>
                         <div className="w-full relative mt-10 z-10">
-                            <div className="text-center md:text-start mb-12 md:mb-16 px-2">
+                            <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">
                                 <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h1>
                                 <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
                                     Una herramienta potente y fácil de usar para digitalizar tu local gastronómico ahora mismo.
                                 </motion.p>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {featuresList.map((feature, index) => (
-                                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
+                                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 md:h-60 flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
                                         <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                                             {feature.icon}
                                         </div>

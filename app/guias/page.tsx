@@ -12,7 +12,7 @@ const guides = [
     title: "¿Cómo crear un menú digital?",
     description: "La guía definitiva para digitalizar el menú de tu restaurante paso a paso.",
     href: "/guias/como-crear-un-menu-digital",
-    icon: <BookOpen className="w-8 h-8 text-primary" />,
+    icon: <BookOpen className="w-8 h-8 text-blue-900" />,
     color: "bg-orange-50",
     date: "Actualizado hoy"
   },
@@ -20,7 +20,7 @@ const guides = [
     title: "Creación de Platos",
     description: "Aprende a cargar platos con fotos atractivas, descripciones, precios y variantes/adicionales para potenciar tus ventas.",
     href: "/guias/como-crear-platos-para-menu-digital",
-    icon: <Utensils className="w-8 h-8 text-primary" />,
+    icon: <Utensils className="w-8 h-8 text-blue-900" />,
     color: "bg-blue-50",
     date: "Actualizado recientemente"
   },
@@ -28,7 +28,7 @@ const guides = [
     title: "Personalización Visual",
     description: "Configura colores, tipografías y el logo de tu marca para que tu menú sea único.",
     href: "/guias/como-personalizar-tu-menu-digital",
-    icon: <Settings className="w-8 h-8 text-primary" />,
+    icon: <Settings className="w-8 h-8 text-blue-900" />,
     color: "bg-green-50",
     date: "Actualizado recientemente"
   },
@@ -36,7 +36,7 @@ const guides = [
     title: "Creación de Promociones",
     description: "Descubre cómo crear combos, aplicar descuentos y destacar ofertas especiales en la cabecera de tu menú.",
     href: "/guias/como-crear-promociones-en-tu-restaurante",
-    icon: <Tag className="w-8 h-8 text-primary" />,
+    icon: <Tag className="w-8 h-8 text-blue-900" />,
     color: "bg-yellow-50",
     date: "Actualizado recientemente"
   },
@@ -44,7 +44,7 @@ const guides = [
     title: "Características del Menú",
     description: "Conoce a fondo todas las funcionalidades que ofrece nuestra plataforma para tu local gastronómico.",
     href: "/guias/caracteristicas-menu-digital",
-    icon: <Zap className="w-8 h-8 text-primary" />,
+    icon: <Zap className="w-8 h-8 text-blue-900" />,
     color: "bg-purple-50",
     date: "Artículo clásico"
   },
@@ -52,7 +52,7 @@ const guides = [
     title: "¿Cuánto sale crear un menú?",
     description: "Análisis de costos y planes para adaptar la tecnología a tu presupuesto.",
     href: "/guias/cuanto-sale-crear-un-menu-digital",
-    icon: <HelpCircle className="w-8 h-8 text-primary" />,
+    icon: <HelpCircle className="w-8 h-8 text-blue-900" />,
     color: "bg-red-50",
     date: "Artículo clásico"
   }
@@ -62,7 +62,7 @@ export default function GuiasPage() {
   const router = useRouter();
   return (
     <>
-      <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-screen">
+      <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen mb-20">
         <Navbar isIndex={false} />
         <main className="w-full relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:pt-40 pt-28 grow">
           <div className='relative bg-blue-700 w-full h-150 md:h-100 bg-radial rounded-3xl p-5 md:p-10 mb-3'>
@@ -79,7 +79,7 @@ export default function GuiasPage() {
             <div className='flex flex-col md:flex-row justify-between'>
               <div className="text-center w-full md:w-[70%] md:text-start md:mb-16 mt-5">
                 <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-                  Guías y Recursos de <span className="text-orange-400">QMenu</span>
+                  Guías y Recursos de <span className="text-orange-400">QMenú</span>
                 </h1>
                 <p className="text-xl text-white/80">
                   Todo lo que necesitas saber para sacarle el máximo provecho a tu menú digital, aumentar tus ventas y mejorar la experiencia de tus clientes.
