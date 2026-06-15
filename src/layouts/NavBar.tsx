@@ -181,11 +181,11 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
     address: user?.location,
-    schedule: user?.schedule,
-    phone: user?.phone,
-    instagram: user?.instagram,
-    facebook: user?.facebook,
-    tiktok: user?.tiktok,
+    schedule: user?.schedule || "Horario 24/7",
+    phone: user?.phone || "",
+    instagram: user?.instagram || "@EJEMPLO",
+    facebook: user?.facebook || "EJEMPLO",
+    tiktok: user?.tiktok || "",
   };
 
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
@@ -221,16 +221,16 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
       </p>
 
       <div className="flex flex-col items-center gap-1 mt-0.5">
+        {displayData.schedule && (
+          <span className="flex text-xs items-center gap-1">
+            <FaClock size={14} />
+            {displayData.schedule}
+          </span>
+        )}
         {(displayData.address || !user) && (
           <span className="flex text-xs items-center gap-1">
             <FaMapMarkerAlt size={14} />
             {displayData.address || "Santiago del Estero, Argentina"}
-          </span>
-        )}
-        {displayData.schedule && (
-          <span className="flex text-xs items-center gap-1 mt-1">
-            <FaClock size={14} />
-            {displayData.schedule}
           </span>
         )}
         <div className="flex items-center gap-x-3 mt-1 text-xs flex-wrap justify-center px-4">

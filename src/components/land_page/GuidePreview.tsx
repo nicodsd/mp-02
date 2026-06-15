@@ -35,10 +35,19 @@ export default function GuidePreview() {
   return (
     <section className="py-20 md:py-0 md:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-start">
-          {/* Columna Derecha: Contenedor vertical de tarjetas (Toma las 2 columnas restantes en escritorio `md:col-span-2`) */}
-          <div className="flex items-end flex-col gap-2 md:col-span-2 md:pl-12 justify-end h-full w-full">
-            <div className="text-center w-full md:text-start mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-end gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:px-8 items-start">
+          <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-12 w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
+            <video
+              className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
+              autoPlay
+              loop
+              muted
+            >
+              <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
+            </video>
+          </motion.div>
+          <div className="flex items-end flex-col gap-2 md:col-span-2 justify-end h-full w-full">
+            <div className="text-center w-full md:text-start mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-end gap-4">
               <div>
                 <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                   Nuestras <span className="text-blue-700">guías</span>
@@ -75,7 +84,7 @@ export default function GuidePreview() {
               >
                 <Link
                   href={guide.href}
-                  className="group relative hover:bg-background-2 rounded-xl py-2 px-4 hover:shadow-xl gap-2 md:gap-4 transition-all duration-300 border border-gray-300 hover:border-blue-600 flex flex-col md:flex-row h-full transform hover:-translate-y-1"
+                  className="group relative hover:bg-background-2 rounded-xl py-2 px-4 hover:shadow-xl gap-2 transition-all duration-300 border border-gray-300 hover:border-blue-600 flex flex-col md:flex-row h-full transform hover:-translate-y-1"
                 >
                   <div className='flex w-full md:w-40 justify-between'>
 
@@ -108,17 +117,7 @@ export default function GuidePreview() {
               </Link>
             </motion.div>
           </div>
-          {/* Columna Izquierda: Video (Ocupa 1 columna en escritorio) */}
-          <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-8 bg-background-2/70 shadow-inner w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
-            <video
-              className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
-              autoPlay
-              loop
-              muted
-            >
-              <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
-            </video>
-          </motion.div>
+
         </div>
       </div>
     </section>

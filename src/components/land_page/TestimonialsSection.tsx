@@ -89,7 +89,7 @@ export default function TestimonialsSlider() {
     return (
         <section className="w-full max-w-7xl md:mb-30 mx-auto py-16 text-left">
             {/* Cabecera de sección - Estilo QMenú */}
-            <div className="flex flex-col md:pl-12 md:flex-row md:items-end md:justify-between mb-12 gap-6">
+            <div className="text-center w-full md:text-start mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
                     <motion.h2
                         initial={{ opacity: 0, x: -20 }}

@@ -45,8 +45,8 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 px-4 ${scrolled
-      ? 'md:bg-background-2 bg-background md:backdrop-blur-sm border-b border-gray-300 py-2'
-      : 'border-b bg-background border-transparent md:border-gray-300 py-5'
+      ? 'md:bg-background-2 shadow-md md:shadow-none bg-background md:backdrop-blur-lg py-2'
+      : ' bg-background border-transparent py-5'
       }`}>
       {/* Contenedor con Padding Lateral de seguridad (px-4) */}
       <div className="max-w-7xl mx-auto md:px-14">

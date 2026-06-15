@@ -43,7 +43,7 @@ export default function Showcase() {
             <div className={`w-[130vw] ${activeTheme.primary} transition-colors duration-500 rotate-12 md:opacity-20 rounded-full translate-y-[50%] md:translate-y-[80%] md:translate-x-[-2%] h-full absolute top-0 left-0 z-0`}></div>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.10, delay: 0.5 }} className="w-[180vw] hidden md:block bg-background-2 -rotate-16 rounded-full translate-y-[90%] backdrop-blur-xl translate-x-[-40%] h-full absolute top-0 left-0 z-0"></motion.div>
             <div className="w-full relative z-10">
-                <div className="text-center md:text-start mb-8 md:mb-12 md:pl-12 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="text-center md:text-start mb-8 md:mb-12 md:pl-3 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div>
                         <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">
                             Personalización Total, <span className={` ${activeTheme.primaryText}`}>Experiencia Premium</span>

@@ -35,7 +35,7 @@ export default function Features() {
   return (
     <section id="caracteristicas" className="pt-30 pb-10 lg:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
-        <div className="text-center md:text-start mb-12 md:pl-12">
+        <div className="text-center md:text-start mb-12 md:pl-3">
           <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Ventajas de nuestro menú digital</motion.h2>
           <motion.p
             initial={{ opacity: 0, x: -20 }}

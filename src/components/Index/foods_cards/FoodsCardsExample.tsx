@@ -60,10 +60,12 @@ export default function FoodsCardsExample({
   list
 }: FoodCardProps) {
 
+  const quality = example ? 10 : 10;
+
   return (
     <div
       id={`dish-${_id}`}
-      className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border ${list ? "h-30 rounded-xl" : "h-26"} ${template?.border || "border-gray-200"} rounded-lg p-1 items-center transition-all duration-500`}
+      className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border ${list ? "h-30 rounded-xl" : "h-26"} ${template?.border || "border-gray-200"} rounded-lg p-1 items-center`}
     >
       {is_gluten_free && (
         <div className="absolute w-full z-10 top-0 left-0 flex justify-between">
@@ -77,7 +79,7 @@ export default function FoodsCardsExample({
       )}
 
       <div className="relative shrink-0 md:max-w-25 md:max-h-36 md:h-full md:w-full h-full min-w-20 w-20 max-w-20 rounded-[7px] overflow-hidden">
-        {user?.plan !== "free" && (
+        {user?.plan !== "free" && example && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -96,7 +98,7 @@ export default function FoodsCardsExample({
                 })
               );
             }}
-            className={`${template?.textColor || "text-gray-700"} absolute bottom-1 left-1 flex items-center justify-center p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md active:scale-90 transition-all z-20`}
+            className={`${template?.textColor || "text-gray-700"} absolute bottom-1 left-1 flex items-center justify-center p-2 rounded-full bg-black/60 hover:bg-black/80 text-white active:scale-90 transition-transform z-20`}
             title="Compartir plato"
           >
             {/* CORRECCIÓN: Agregamos el icono Share2 que estaba importado pero ausente */}
