@@ -97,7 +97,7 @@ export default function Cards({
               })
             );
           }}
-          className="absolute top-2 right-2 flex items-center justify-center p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md active:scale-90 transition-all z-20"
+          className="absolute top-2 right-2 flex items-center justify-center p-2 rounded-full bg-black/60 hover:bg-black/80 text-white active:scale-90 transition-all z-20"
           title="Compartir plato"
         >
           <Share2 className="text-white" size={15} />

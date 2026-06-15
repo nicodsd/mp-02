@@ -12,10 +12,10 @@ export const metadata = {
 export default function CrearPromocionesPage() {
   return (
     <>
-      <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen mb-20">
+      <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
 
-        <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-30 grow">
+        <main className="w-full max-w-7xl mx-auto pt-30 grow">
 
           <article className="bg-white rounded-3xl p-2 md:p-12 shadow-sm border border-slate-100">
             <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors">
@@ -36,7 +36,7 @@ export default function CrearPromocionesPage() {
 
             <div className="prose prose-lg prose-slate max-w-none">
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <Gift className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
+                <Gift className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
                 1. Creación de Combos Irresistibles
               </h2>
               <p>
@@ -48,7 +48,7 @@ export default function CrearPromocionesPage() {
               </ul>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <Clock className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
+                <Clock className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
                 2. Ofertas por Tiempo Limitado (Happy Hour)
               </h2>
               <p>
@@ -61,7 +61,7 @@ export default function CrearPromocionesPage() {
               </div>
 
               <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
-                <Megaphone className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
+                <Megaphone className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
                 3. Cómo destacar las promociones en QMenu
               </h2>
               <p>

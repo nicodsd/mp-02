@@ -69,7 +69,7 @@ export const MetricsSection: React.FC = () => {
         <section id="metricas" className="py-20 md:py-0 md:pb-30 relative overflow-hidden w-full">
             <div className="w-full relative z-10">
                 {/* Título alineado a la izquierda según la estructura de la web */}
-                <div className="mb-8 md:pl-12 text-center md:text-left">
+                <div className="mb-8 md:pl-3 text-center md:text-left">
                     <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                         El impacto de <span className="text-red-600">QMenú</span> en números
                     </motion.h2>
@@ -85,7 +85,7 @@ export const MetricsSection: React.FC = () => {
                 </div>
 
                 {/* Grilla de métricas */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 logo-god-rays bg-black rounded-xl">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 logo-god-rays bg-linear-to-bl from-stone-900 via-slate-900 to-black rounded-xl">
                     {metrics.map((metric, index) => (
                         <motion.div
                             key={index}

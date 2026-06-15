@@ -88,11 +88,11 @@ export default function PricingPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-auto mb-20 md:mb-0">
                 <Navbar isIndex={false} />
-                <main className="grow pt-30 md:pt-40 pb-4 md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+                <main className="grow pt-30 md:pt-40 pb-4 md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
                     <section id="planes" className="">
                         <Link href="/guias" className="inline-flex items-center hover:text-orange-600 font-medium mb-8 transition-colors md:pl-12">
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Guías / Cuanto sale crear un menú digital
+                            Guías / Cuanto cuesta crear un menú digital
                         </Link>
                         <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">

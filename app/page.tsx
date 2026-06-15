@@ -63,7 +63,7 @@ export default async function Page() {
   };
 
   return (
-    <>
+    <div className="overflow-x-hidden w-full max-w-[100vw]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -71,7 +71,7 @@ export default async function Page() {
       <div className="flex selection:bg-primary selection:text-white relative flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
         <MPRedirect userCookie={userCookie} token={token} />
-        <main className="grow md:rounded-b-2xl md:shadow-[4px_20px_50px_4px] md:shadow-gray-200/60 bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+        <main className="grow md:rounded-b-2xl   bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
           <Hero />
           <MiddleSection />
           <Features />
@@ -85,6 +85,6 @@ export default async function Page() {
         </main>
       </div>
       <Footer />
-    </>
+    </div>
   );
 } 

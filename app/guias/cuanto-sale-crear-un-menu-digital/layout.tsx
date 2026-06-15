@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "¿Cuánto cuesta crear un menú digital? | QMenú",
+  title: "Precios | QMenú",
   description: "Conoce los precios y planes para crear un menú digital QR.",
 };
 
