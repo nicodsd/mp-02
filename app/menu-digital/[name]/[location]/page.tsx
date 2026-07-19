@@ -39,7 +39,7 @@ export default async function Page({
       {user?.data?.whatsAppCart === true &&
         <Bell user={user?.data} template={template} />
       }
-      <Menu data={user?.data} template={template} />
+      <Menu example={false} data={user?.data} template={template} />
       <Footer template={template} />
     </div>
   );
