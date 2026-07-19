@@ -26,7 +26,7 @@ export const ImageUpload = ({ preview, file, onImageChange, onDelete, imgPlaceho
                             <button
                                 type="button"
                                 onClick={onDelete}
-                                className="absolute top-2 right-2 z-10 p-2 text-black bg-gray-300/40 backdrop-blur-sm rounded-full transition-colors active:scale-90"
+                                className="absolute top-2 right-2 z-10 p-2 text-white bg-black/60 rounded-full transition-colors active:scale-90"
                             >
                                 <HiX size={30} />
                             </button>

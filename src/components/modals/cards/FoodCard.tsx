@@ -39,7 +39,7 @@ export default function FoodCard({
             </div>
             <div className="flex flex-col relative justify-between items-start pl-2 pt-0.5 w-full h-full">
                 <h2
-                    className={`font-semibold ${template?.textColor || "text-gray-700"} leading-none`}
+                    className={`text-sm ${template?.textColor || "text-gray-700"} leading-none`}
                 >
                     {food.name}
                 </h2>

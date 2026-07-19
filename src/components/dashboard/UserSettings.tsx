@@ -223,10 +223,10 @@ const UserSettings = ({ user }: { user: any }) => {
         className="flex w-full mt-3 relative flex-col items-center justify-center border-b border-gray-200 pb-6"
       >
         <div className="w-full px-4 flex flex-col">
-          <div className={`flex justify-center md:justify-start gap-5 md:gap-4 mb-4 pb-6`}>
+          <div className={`flex justify-center md:justify-start gap-5 lg:gap-10 mb-4 pb-6`}>
             <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Logo</h3>
-              <div className="w-30 md:w-40 h-30 md:h-40 relative rounded-full overflow-hidden">
+              <div className="w-30 md:w-40 h-30 md:h-40 lg:w-60 lg:h-60 relative rounded-full overflow-hidden">
                 <Image
                   src={previewPhoto}
                   alt="Profile"
@@ -253,7 +253,7 @@ const UserSettings = ({ user }: { user: any }) => {
 
             {user?.plan !== "free" ? <div className="relative flex items-center justify-center gap-2 flex-col">
               <h3 className="text-lg text-gray-700">Fondo</h3>
-              <div className="w-45 md:w-60 h-30 md:h-40 relative rounded-lg overflow-hidden">
+              <div className="w-45 md:w-60 h-30 md:h-40 lg:w-80 lg:h-60 relative rounded-lg overflow-hidden">
                 <Image
                   src={previewBackground || placeholder}
                   alt="background"
@@ -280,9 +280,9 @@ const UserSettings = ({ user }: { user: any }) => {
               :
               <div className="flex items-center justify-center gap-2 flex-col">
                 <h3 className="text-lg text-gray-700">Fondo</h3>
-                <Link href="/panel-de-usuario?seccion=plan" className="w-45 px-5 opacity-70 cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 md:w-60 h-30 bg-gray-200/70 md:h-40 relative rounded-lg overflow-hidden">
+                <Link href="/panel-de-usuario?seccion=plan" className="px-5 opacity-70 cursor-pointer flex flex-col btn-god-rays items-center border-2 border-gray-400 justify-center gap-1 w-45 md:w-60 h-30 md:h-40 lg:w-80 lg:h-60 bg-gray-200/70 relative rounded-lg overflow-hidden">
                   <OctagonX size={50} className="text-gray-400" />
-                  <span className="text-gray-800 text-[12px] text-center">Mejora tu plan para agregar un fondo</span>
+                  <span className="text-gray-800 text-[12px] lg:text-md text-center">Mejora tu plan para agregar un fondo</span>
                 </Link>
               </div>
             }

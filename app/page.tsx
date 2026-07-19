@@ -1,3 +1,4 @@
+import WelcomeModal from "@/src/components/land_page/WelcomeModal";
 import Navbar from "@/src/components/land_page/Navbar";
 import Hero from "@/src/components/land_page/Hero";
 import Features from "@/src/components/land_page/Features";
@@ -71,7 +72,8 @@ export default async function Page() {
       <div className="flex selection:bg-primary selection:text-white relative flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
         <MPRedirect userCookie={userCookie} token={token} />
-        <main className="grow md:rounded-b-2xl   bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+        <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
+          <WelcomeModal />
           <Hero />
           <MiddleSection />
           <Features />

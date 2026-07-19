@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <div id="inicio" className="relative w-full pt-30 md:pt-50 pb-30 overflow-hidden">
+    <div id="inicio" className="relative w-full pt-40 md:pt-50 pb-30 overflow-hidden">
       <div className="relative w-full flex flex-col md:flex-row items-center md:items-end justify-between z-10">
         <div className="text-center w-full z-10 flex md:pb-5 flex-col items-center md:justify-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className='w-full flex items-center justify-center'>

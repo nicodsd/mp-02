@@ -39,7 +39,7 @@ type MenuProps = {
   categories: SubCategory[];
 };
 
-export default function Menu({ data, template }: { data: MenuProps, template: any }) {
+export default function Menu({ data, template, example }: { data: MenuProps, template: any, example: boolean }) {
   const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(activeFoods);
@@ -156,7 +156,7 @@ export default function Menu({ data, template }: { data: MenuProps, template: an
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
           <FoodCatalog
-            example={false}
+            example={example}
             template={template}
             allFoods={activeFoods}
             initialSubCategories={data.categories}

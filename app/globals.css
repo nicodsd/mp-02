@@ -195,3 +195,52 @@ input[type="range"]::-webkit-slider-thumb {
     }
   }
 }
+
+@layer utilities {
+  @keyframes text-sweep-outline {
+    0% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .effect-outline-sweep {
+    /* Agregamos !important para ganarle a cualquier color de Tailwind */
+    background: linear-gradient(-45deg, #fff 40%, #3b82f6 50%, #fff 60%) !important;
+    background-size: 300% !important;
+
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+
+    /* Forzamos la transparencia del texto */
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+
+    /* Efecto de borde */
+    -webkit-text-stroke: 1px rgba(0, 89, 255, 0.6);
+
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+
+    animation: text-sweep-outline 2.5s ease-in-out forwards !important;
+  }
+
+  @keyframes flag-wave {
+
+    0%,
+    100% {
+      transform: perspective(500px) rotateY(25deg) rotateX(5deg) skewY(-8deg) translateY(0);
+    }
+
+    50% {
+      transform: perspective(500px) rotateY(-25deg) rotateX(-5deg) skewY(8deg) translateY(-10px);
+    }
+  }
+
+  .animate-flag-wave {
+    animation: flag-wave 2.5s ease-in-out infinite;
+    transform-origin: left center;
+  }
+}

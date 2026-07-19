@@ -45,10 +45,13 @@ export default function ContactoPage() {
 
     return (
         <>
-            <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
+            {/* Contenedor principal: ahora incluye al Footer dentro de su estructura Flexbox */}
+            <div className="flex flex-col items-center w-full min-h-screen selection:bg-primary selection:text-white relative">
                 <Navbar isIndex={false} />
-                <main className="grow md:rounded-b-2xl border-x border-gray-300 bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 border-b md:px-14 pt-30 pb-20">
-                    <section id="contacto" className="w-full relative">
+
+                {/* 'grow' hace que el main ocupe todo el espacio disponible, empujando al footer al fondo */}
+                <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 pt-30">
+                    <section id="contacto" className="w-full p-6 relative border rounded-2xl border-gray-300">
                         <div className="w-full">
                             {/* Layout: Stack en móvil, 2 columnas en LG */}
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
@@ -63,32 +66,33 @@ export default function ContactoPage() {
                                 {/* Form Card */}
                                 <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-6 md:p-8 rounded-2xl border border-gray-300">
                                     <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                                        <div>
-                                            <label htmlFor="name" className="block text-sm font-bold text-stone-700 mb-2">Nombre</label>
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                name="name"
-                                                required
-                                                value={formData.name}
-                                                onChange={handleChange}
-                                                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                                placeholder="Tu nombre"
-                                            />
-                                        </div>
-
-                                        <div>
-                                            <label htmlFor="email" className="block text-sm font-bold text-stone-700 mb-2">Email</label>
-                                            <input
-                                                type="email"
-                                                id="email"
-                                                name="email"
-                                                required
-                                                value={formData.email}
-                                                onChange={handleChange}
-                                                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
-                                                placeholder="email@ejemplo.com"
-                                            />
+                                        <div className='flex flex-col md:flex-row gap-4'>
+                                            <div className='md:flex-1'>
+                                                <label htmlFor="name" className="block text-sm font-bold text-stone-700 mb-2">Nombre</label>
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    required
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none"
+                                                    placeholder="Pizzería La Esquina"
+                                                />
+                                            </div>
+                                            <div className='md:flex-1'>
+                                                <label htmlFor="email" className="block text-sm font-bold text-stone-700 mb-2">Email</label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    required
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base text-stone-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none"
+                                                    placeholder="email@ejemplo.com"
+                                                />
+                                            </div>
                                         </div>
 
                                         <div>
@@ -130,8 +134,8 @@ export default function ContactoPage() {
                         </div>
                     </section>
                 </main>
+                <Footer />
             </div>
-            <Footer />
         </>
     );
 }

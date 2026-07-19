@@ -102,7 +102,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                                 }
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
-                            example={false}
+                            example={example}
                             template={template}
                         />)}
 

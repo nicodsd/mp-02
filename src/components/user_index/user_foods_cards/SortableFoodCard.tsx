@@ -88,7 +88,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                                 })
                             );
                         }}
-                        className={`${template?.textColor || "text-gray-700"} absolute bottom-1 left-1 flex items-center justify-center p-2 rounded-full bg-black/40 hover:bg-black/60 text-white backdrop-blur-md active:scale-90 transition-all z-20 shadow-md`}
+                        className={`${template?.textColor || "text-gray-700"} absolute bottom-1 left-1 flex items-center justify-center p-2 rounded-full bg-black/60 hover:bg-black/80 text-white active:scale-90 transition-all z-20 shadow-md`}
                         title="Compartir plato"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.82 3.98m0-10.98-6.82 3.98" /></svg>

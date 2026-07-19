@@ -3,8 +3,8 @@ import Footer from "@/src/components/land_page/Footer";
 
 
 export const metadata = {
-  title: "Términos y Condiciones | QMenú",
-  description: "Revisa los términos y condiciones de uso de la plataforma QMenú.",
+    title: "Términos y Condiciones | QMenú",
+    description: "Revisa los términos y condiciones de uso de la plataforma QMenú.",
 };
 
 export default function TerminosPage() {
@@ -12,7 +12,7 @@ export default function TerminosPage() {
         <>
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
-                <main className="grow md:border-gray-300 w-full relative flex flex-col items-start justify-start md:max-w-7xl mx-auto px-4 sm:px-6 md:border-b md:px-14 pt-40 pb-20">
+                <main className="grow w-full relative flex flex-col items-start justify-start md:max-w-7xl mx-auto px-4 sm:px-6 md:px-14 pt-40 pb-20">
                     <h1 className="text-5xl font-bold text-stone-900 mb-8">Términos y Condiciones</h1>
 
                     <div className="space-y-8 text-stone-600 text-base md:text-lg">

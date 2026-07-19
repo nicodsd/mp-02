@@ -61,7 +61,6 @@ export default function FoodsCardsExample({
 }: FoodCardProps) {
 
   const quality = example ? 10 : 10;
-
   return (
     <div
       id={`dish-${_id}`}
@@ -79,7 +78,7 @@ export default function FoodsCardsExample({
       )}
 
       <div className="relative shrink-0 md:max-w-25 md:max-h-36 md:h-full md:w-full h-full min-w-20 w-20 max-w-20 rounded-[7px] overflow-hidden">
-        {user?.plan !== "free" && example && (
+        {user?.plan !== "free" && (
           <button
             onClick={(e) => {
               e.stopPropagation();

@@ -186,6 +186,24 @@ export default function FormFoods({ initialCategories, user }: any) {
     setLoading(false);
   };
 
+  {/*             <div className="flex flex-col gap-2">
+              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
+              <div className="relative">
+                <input
+                  className="w-full border bg-background border-gray-300 rounded-lg px-10 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                  id="price"
+                  name="price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  maxLength={10}
+                  placeholder="0.00"
+                  type="number"
+                  required
+                />
+                <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
+              </div>
+            </div> */}
+
   return (
     <div className="min-h-screen pb-24 relative w-full flex flex-col items-center bg-background-2">
 
@@ -263,18 +281,18 @@ export default function FormFoods({ initialCategories, user }: any) {
       </button>
 
       {/* Header General */}
-      <header className="p-4 bg-background mt-3 flex flex-col gap-2 text-center md:text-left w-[90%] max-w-6xl border border-gray-300 rounded-2xl">
-        <h1 className="text-2xl font-bold text-gray-800">Carga de Platos</h1>
+      <header className="px-4 pb-10 mt-10 flex flex-col gap-2 text-center md:text-left w-full lg:w-[90%] max-w-6xl">
+        <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-gray-800">Carga de Platos</h1>
         <p className="text-gray-500 text-sm">
           Completa los datos, agrega los platos a tu lista temporal y luego cárgalos al menú.
         </p>
       </header>
 
       {/* --- CONTENEDOR PRINCIPAL --- */}
-      <div className="flex flex-col lg:flex-row gap-4 pb-10 w-full max-w-6xl md:px-4 mt-5 flex-1 items-start">
+      <div className="flex flex-col lg:flex-row gap-4 md:pb-10 w-full max-w-6xl flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
-        <form onSubmit={handleAddFoodToList} className="w-full lg:w-1/2 md:bg-background p-3 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
+        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
           <h2 className="text-lg font-bold text-gray-700 pb-2">Datos del Plato</h2>
 
           <ImageUpload
@@ -286,26 +304,27 @@ export default function FormFoods({ initialCategories, user }: any) {
           />
 
           <div className="space-y-8">
-            <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
-            <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
-              <div className="relative">
-                <input
-                  className="w-full border bg-background border-gray-300 rounded-lg px-10 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                  id="price"
-                  name="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  maxLength={10}
-                  placeholder="0.00"
-                  type="number"
-                  required
-                />
-                <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
+            <div className="flex gap-8 w-full">
+              <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
+              <div className="flex flex-col gap-1 w-full">
+                <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
+                <div className="relative">
+                  <input
+                    className="w-full border bg-background border-gray-300 rounded-lg pl-10 pr-2 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                    id="price"
+                    name="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    maxLength={10}
+                    placeholder="0.00"
+                    type="number"
+                    required
+                  />
+                  <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
+                </div>
               </div>
             </div>
+            <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
 
             <div className="flex flex-col gap-2">
               <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Categorías</label>
@@ -416,7 +435,7 @@ export default function FormFoods({ initialCategories, user }: any) {
                         alt={food.name}
                         className="w-13 h-13 rounded-lg object-cover bg-gray-100"
                       />
-                      <div>
+                      <div className="w-[250px] truncate">
                         <div className="flex items-center gap-1.5">
                           <h4 className="font-bold text-gray-800 text-sm">{food.name}</h4>
                           {food.isGlutenFree && (
@@ -463,8 +482,7 @@ export default function FormFoods({ initialCategories, user }: any) {
         </>
       </div>
 
-      {/* --- FOOTER FIJO PRINCIPAL --- */}
-      <div className="w-full items-center h-fit md:min-h-24 justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-40 flex gap-3 px-4 md:px-7 py-3">
+      {foodList.length > 0 && <div className="w-full items-center h-fit md:min-h-24 justify-end bg-background border-t border-gray-200 fixed bottom-0 left-0 right-0 z-40 flex gap-3 px-4 md:px-7 py-3">
         <button
           type="button"
           onClick={() => router.replace("/mi-menu")}
@@ -486,13 +504,13 @@ export default function FormFoods({ initialCategories, user }: any) {
             `Cargar Platos ${foodList.length > 0 ? foodList.length : ''}`
           )}
         </button>
-      </div>
+      </div>}
     </div>
   );
 }
 
 const InputGroup = ({ label, id, isTextArea, isPrice, onChange, ...props }: any) => (
-  <div className="flex flex-col gap-1.5">
+  <div className="flex flex-col gap-1.5 w-full">
     <label htmlFor={id} className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">{label}</label>
     <div className="relative">
       {isTextArea ? (
