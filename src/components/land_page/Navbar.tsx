@@ -52,7 +52,7 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
         <span className='text-xs'>
           ⭐⭐⭐
         </span>
-        <p>¡Prepará tu local para la Gran Final! Creá tu menú mundialista gratis en 5 minutos 🏆</p>
+        <p>Creá tu menú mundialista gratis en 5 minutos</p>
         <span className='text-xs'>
           ⭐⭐⭐
         </span>

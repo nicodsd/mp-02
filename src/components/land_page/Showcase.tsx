@@ -7,8 +7,8 @@ export default function Showcase() {
     const templates = {
         naranja: {
             name: 'Clasico',
-            primary: "bg-[#FF1E00]",
-            primaryText: "text-[#FF1E00]",
+            primary: "bg-[#00ccff]",
+            primaryText: "text-[#00ccff]",
             border: "border-stone-200",
             appBg: "bg-background/40",
             cardBg: "bg-white",
