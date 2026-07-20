@@ -42,7 +42,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
     },
     {
       id: "plus",
-      name: "Plus",
+      name: "Plus+",
       price: "$24.000",
       before: "$29.900",
       description: "Para restaurantes que quieren destacar su marca.",
