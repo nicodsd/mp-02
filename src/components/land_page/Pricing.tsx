@@ -27,7 +27,6 @@ const plans: PricingPlan[] = [
       "Hasta 10 platos",
       "Código QR con tu logo",
       "Fotos básicas",
-      "Actualización en tiempo real",
       "Los pedidos te llegan al WhatsApp"
     ],
     cta: "Crear Menú Gratis",
@@ -35,8 +34,8 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Plus",
-    price: "$14.900", //14900
-    before: "$19.900", //19.900
+    price: "$24.000", //24000
+    before: "$29.900", //29.900
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
@@ -54,8 +53,8 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Premium",
-    price: "$19.900", //19900
-    before: "$24.900", //24900
+    price: "$34.900", //34900
+    before: "$39.900", //39900
     period: "/mes",
     description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
     features: [

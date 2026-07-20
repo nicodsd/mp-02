@@ -34,7 +34,6 @@ export default function SubscriptionPanel({ user }: { user: any }) {
         "Hasta 10 platos",
         "Código QR con tu logo",
         "Fotos básicas",
-        "Actualización en tiempo real",
         "Los pedidos te llegan al WhatsApp"
       ],
       color: "text-gray-600",
@@ -44,8 +43,8 @@ export default function SubscriptionPanel({ user }: { user: any }) {
     {
       id: "plus",
       name: "Plus",
-      price: "$14.900",
-      before: "$19.900",
+      price: "$24.000",
+      before: "$29.900",
       description: "Para restaurantes que quieren destacar su marca.",
       features: [
         "Platos ilimitados, permanente",
@@ -63,8 +62,8 @@ export default function SubscriptionPanel({ user }: { user: any }) {
     {
       id: "premium",
       name: "Premium",
-      price: "$19.900",
-      before: "$24.900",
+      price: "$34.900",
+      before: "$39.900",
       description: "Gestión avanzada con multi sucursal y pedidos en línea.",
       features: [
         "Platos ilimitados, permanente",

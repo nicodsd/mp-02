@@ -15,7 +15,6 @@ const plans = [
             "Hasta 10 platos",
             "Código QR para compartir",
             "Fotos básicas",
-            "Actualización en tiempo real",
             "Los pedidos te llegan al WhatsApp"
         ],
     },
@@ -23,7 +22,7 @@ const plans = [
         id: "plus",
         name: "Plus+",
         btn: true,
-        price: 13900,
+        price: 24000,
         color: "bg-primary",
         textColor: "text-white",
         features: [
@@ -42,7 +41,7 @@ const plans = [
         id: "premium",
         name: "Premium",
         btn: true,
-        price: 19900,
+        price: 34900,
         color: "bg-black",
         textColor: "text-white",
         features: [

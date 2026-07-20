@@ -14,7 +14,7 @@ const Pricing = () => {
                     method: 'POST',
                     body: JSON.stringify({
                         reason: 'Plan Premium - QMENU',
-                        transaction_amount: 20,
+                        transaction_amount: 34900,
                         plan: 'premium',
                     }),
                     headers: {
@@ -39,7 +39,7 @@ const Pricing = () => {
         <div className="p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold">Plan Premium</h2>
             <p className="text-gray-600">Gestión de pedidos por WhatsApp y pagos online.</p>
-            <div className="my-4 text-4xl font-bold">$10.000<span className="text-sm">/mes</span></div>
+            <div className="my-4 text-4xl font-bold">$34.900<span className="text-sm">/mes</span></div>
 
             <button
                 onClick={handleSubscribe}
