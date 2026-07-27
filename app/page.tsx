@@ -1,6 +1,7 @@
 import WelcomeModal from "@/src/components/land_page/WelcomeModal";
 import Navbar from "@/src/components/land_page/Navbar";
 import Hero from "@/src/components/land_page/Hero";
+import VideoSection from "@/src/components/land_page/VideoSection";
 import Features from "@/src/components/land_page/Features";
 import GuidePreview from "@/src/components/land_page/GuidePreview";
 import Showcase from "@/src/components/land_page/Showcase";
@@ -73,9 +74,10 @@ export default async function Page() {
         <Navbar isIndex={true} />
         <MPRedirect userCookie={userCookie} token={token} />
         <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
-          <WelcomeModal />
+          {/*  <WelcomeModal /> */}
           <Hero />
           <MiddleSection />
+          <VideoSection />
           <Features />
           <GuidePreview />
           <MetricsSection />
