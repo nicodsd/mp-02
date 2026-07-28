@@ -312,7 +312,7 @@ export default function PanelUser({
                     <div className="mx-auto w-16 h-16 bg-blue-50 text-amber-500 rounded-full flex items-center justify-center mb-4">
                       <HiOutlineCurrencyDollar size={40} />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Función Premium</h3>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Función de pago</h3>
                     <p className="text-gray-600 mb-6">Mejora tu plan para acceder a esta y más configuraciones.</p>
                     <button
                       onClick={() => handleTabChange(menuItems.findIndex(m => m.key === 'plan'))}

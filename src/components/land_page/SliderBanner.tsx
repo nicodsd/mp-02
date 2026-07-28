@@ -35,7 +35,8 @@ const slidesData: Slide[] = [
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
         image: "/images/placeholders/image-background-foods.png",
-        imageAlt: "comida-volando"
+
+        imageAlt: "hamburguesa-deliciosa"
     },
     {
         title: "Pedidos directos al WhatsApp",
@@ -44,18 +45,18 @@ const slidesData: Slide[] = [
         ctaText: "Empieza ahora",
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
-        image: "/images/placeholders/image-background-foods.png",
-        imageAlt: "comida-volando"
+        image: "/images/placeholders/woman-phone.webp",
+        imageAlt: "mujer-usando-celular"
     },
     {
         title: "Actualiza en tiempo real",
         subtitle: "Cambia precios, oculta platos agotados y agrega promociones al instante. Tus clientes siempre verán la versión más reciente.",
-        bgClass: "from-purple-600 to-fuchsia-400",
+        bgClass: "from-slate-800 to-black",
         ctaText: "Empieza ahora",
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
-        image: "/images/placeholders/image-background-foods.png",
-        imageAlt: "comida-volando"
+        image: "/images/placeholders/burger.webp",
+        imageAlt: "hamburguesa"
     }
 ];
 
@@ -69,7 +70,7 @@ export default function SliderBanner() {
     const prevSlide = () => setCurrent((prev) => (prev - 1 + slidesData.length) % slidesData.length);
 
     useEffect(() => {
-        autoPlayRef.current = setInterval(nextSlide, 5000);
+        autoPlayRef.current = setInterval(nextSlide, 7000);
         return () => {
             if (autoPlayRef.current) clearInterval(autoPlayRef.current);
         };
@@ -92,7 +93,7 @@ export default function SliderBanner() {
         <section className="relative w-full overflow-hidden md:my-10">
             {/* Fondo en gradiente ocupando estrictamente 100% de ancho y alto del slide */}
             <div className={`absolute inset-0 w-full rounded-2xl h-full bg-linear-to-br ${slidesData[current].bgClass} z-0 pointer-events-none`} />
-            <div className="w-full relative min-h-145 md:min-h-0 md:h-90 overflow-hidden shadow-2xl group flex flex-col justify-between">
+            <div className="w-full relative min-h-100 md:min-h-0 md:h-90 overflow-hidden shadow-2xl group flex flex-col justify-between">
                 <div
                     className="flex w-full h-full cursor-grab active:cursor-grabbing transition-transform duration-500 ease-in-out"
                     style={{ transform: `translateX(-${current * 100}%)` }}
@@ -101,14 +102,14 @@ export default function SliderBanner() {
                     onTouchEnd={onTouchEnd}
                 >
                     {slidesData.map((slide, index) => (
-                        <div key={index} className="min-w-full w-full h-full min-h-full p-10 md:p-0 relative flex items-center justify-center overflow-hidden">
+                        <div key={index} className="min-w-full rounded-2xl w-full h-full min-h-full p-10 md:p-0 relative flex items-center justify-center overflow-hidden">
 
 
                             {/* Contenido principal */}
-                            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between w-full md:max-w-6xl mx-auto gap-6 md:gap-8">
+                            <div className="relative h-full z-10 flex flex-col md:flex-row items-center justify-between rounded-2xl w-full md:max-w-6xl mx-auto gap-6 md:gap-8">
 
-                                {/* Textos */}
-                                <div className="text-center md:text-left flex-1 z-10 w-full flex flex-col items-center md:items-start">
+                                {/* Textos y Botón (Capa superior z-20) */}
+                                <div className="text-center relative md:text-left flex-1 z-20 w-full flex flex-col items-center md:items-start">
                                     <motion.h2
                                         initial={{ opacity: 0, x: 20 }}
                                         whileInView={{ opacity: 1, x: 0 }}
@@ -124,29 +125,10 @@ export default function SliderBanner() {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: 0.2 }}
-                                        className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6 mb-4 md:mb-0"
+                                        className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6 mb-6 md:mb-0"
                                     >
                                         {slide.subtitle}
                                     </motion.p>
-
-                                    {/* Imagen Mobile */}
-                                    {slide.image && (
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            whileInView={{ opacity: 1, scale: 1 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.25 }}
-                                            className="md:hidden my-2 w-full flex justify-center"
-                                        >
-                                            <Image
-                                                src={slide.image}
-                                                alt={slide.imageAlt || "banner-image"}
-                                                width={300}
-                                                height={300}
-                                                className="w-56 sm:w-64 h-auto object-contain drop-shadow-xl -rotate-2"
-                                            />
-                                        </motion.div>
-                                    )}
 
                                     {/* Botón CTA */}
                                     <motion.div
@@ -166,22 +148,41 @@ export default function SliderBanner() {
                                     </motion.div>
                                 </div>
 
+                                {/* Imagen Mobile absoluta en el fondo inferior */}
+                                {slide.image && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: 0.25 }}
+                                        className="md:hidden absolute inset-x-0 -bottom-10 w-full flex items-end justify-center z-0 pointer-events-none overflow-hidden rounded-b-2xl"
+                                    >
+                                        <Image
+                                            src={slide.image}
+                                            alt={slide.imageAlt || "banner-image"}
+                                            width={600}
+                                            height={600}
+                                            className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
+                                        />
+                                    </motion.div>
+                                )}
+
                                 {/* Lado Derecho: Imagen Desktop */}
                                 {slide.image && (
-                                    <div className="hidden md:flex flex-1 justify-end relative z-20">
+                                    <div className="hidden md:flex flex-1 rounded-2xl justify-end relative z-20">
                                         <motion.div
                                             initial={{ opacity: 0, x: -20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.4 }}
-                                            className="w-112.5 lg:w-130 -mr-12"
+                                            className="w-112.5 lg:w-180 rounded-2xl -mr-50"
                                         >
                                             <Image
                                                 src={slide.image}
                                                 alt={slide.imageAlt || "banner-image"}
                                                 width={500}
                                                 height={500}
-                                                className="w-full drop-shadow-xl -rotate-3 h-auto object-contain"
+                                                className="w-full drop-shadow-xl aspect-square h-auto object-contain"
                                             />
                                         </motion.div>
                                     </div>
