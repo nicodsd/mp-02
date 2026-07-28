@@ -84,7 +84,7 @@ export default function PromoPanel({
 
   return (
     <div className="fixed inset-0 backdrop-blur bg-gray-700/40 flex items-center h-screen justify-center z-50 overflow-hidden">
-      <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-[95%] px-4 py-6 flex flex-col gap-7 rounded-xl">
+      <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-full md:max-w-3xl px-4 py-6 flex flex-col gap-3 rounded-xl">
         <h3 className="text-xl text-gray-800">Agregar Promociones</h3>
 
         <div className="relative flex items-center w-full">
@@ -113,7 +113,7 @@ export default function PromoPanel({
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat!)}
-                className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${selectedCategory === cat
+                className={`py-0.5 no-underline px-2 rounded-[7px] cursor-pointer font-bold ${selectedCategory === cat
                   ? "bg-red-600 text-white border"
                   : "text-gray-800 border border-gray-300"
                   }`}
@@ -123,7 +123,7 @@ export default function PromoPanel({
             ))}
           </div>
 
-          <div className="flex flex-col gap-1 h-50 bg-gray-100/60 p-1 rounded-xl overflow-auto">
+          <div className="flex flex-col gap-0.5 h-62 md:h-100 bg-gray-100/60 p-1 rounded-xl overflow-auto">
             {filteredFoods.map((food) => (
               <div
                 key={food._id}
@@ -140,13 +140,13 @@ export default function PromoPanel({
                 <img
                   src={food.photo}
                   alt={food.name}
-                  className="w-16 h-16 object-cover rounded-md"
+                  className="w-10 h-10 aspect-square object-cover rounded-md"
                 />
                 <div className="flex flex-col justify-between h-full">
-                  <h3 className="text-lg tracking-thin leading-4 text-gray-800">
+                  <h3 className="text-sm tracking-thin leading-4 text-gray-800">
                     {food.name}
                   </h3>
-                  <p className="text-xl font-bold text-gray-600">
+                  <p className="text-lg font-bold text-gray-600">
                     {priceFormatter.format(food.price)}
                   </p>
                   {isFoodInPromo(food._id) && (

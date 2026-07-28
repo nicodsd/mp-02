@@ -124,7 +124,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
     <div className="w-full pb-10">
       <header className="p-3 w-full flex flex-col mb-6">
         <div className="flex items-center gap-2 text-gray-800 mb-1">
-          <h1 className="text-2xl font-bold">Mi Suscripción</h1>
+          <h1 className="text-2xl font-bold">Suscripciones</h1>
         </div>
         <p className="text-gray-500 text-sm">
           Administra tu plan de facturación y descubre características prémium para potenciar tu menú digital.

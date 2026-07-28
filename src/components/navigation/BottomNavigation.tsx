@@ -8,8 +8,20 @@ import {
   FaTag,
   FaPlusCircle,
   FaUserEdit,
-  FaHome,
 } from "react-icons/fa";
+
+import {
+  HiPencil,
+  HiOutlineCurrencyDollar,
+  HiOutlineColorSwatch,
+  HiOutlineTicket,
+  HiOutlineLogout,
+  HiMenuAlt2,
+  HiX,
+  HiOutlineAdjustments,
+  HiOutlineClipboardList,
+  HiOutlineCreditCard,
+} from "react-icons/hi";
 
 interface BottomNavigationProps {
   user: any;
@@ -30,7 +42,7 @@ export default function BottomNavigation({
   const navItems = [
     {
       label: "Compartir QR",
-      icon: <FaQrcode size={20} />,
+      icon: <FaQrcode size={22} />,
       action: () => {
         if (isOpen === true) {
           setIsOpen(false);
@@ -39,17 +51,6 @@ export default function BottomNavigation({
         }
       },
     },
-    /*     {
-          label: "Promociones",
-          icon: <FaTag size={20} />,
-          action: () => {
-            if (openDiscount === true) {
-              setOpenDiscount(false);
-            } else {
-              setOpenDiscount(true);
-            }
-          },
-        }, */
     {
       label: "Agregar Plato",
       icon: <FaPlusCircle size={22} />,
@@ -57,8 +58,19 @@ export default function BottomNavigation({
     },
     {
       label: "Editar Perfil",
-      icon: <FaUserEdit size={20} />,
+      icon: <FaUserEdit size={22} />,
       action: () => router.push("/panel-de-usuario"),
+    },
+    {
+      label: "Promocionar",
+      icon: <HiOutlineTicket size={22} />,
+      action: () => {
+        if (openDiscount === true) {
+          setOpenDiscount(false);
+        } else {
+          setOpenDiscount(true);
+        }
+      },
     },
     /* {
       label: "Inicio",

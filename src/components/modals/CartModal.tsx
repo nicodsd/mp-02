@@ -75,17 +75,17 @@ export default function CartModal({ user, isOpen, onClose, template }: CartModal
             onClick={handleClose}
         >
             <div
-                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-[500px] h-[88vh] sm:h-[700px] p-1 rounded-t-2xl sm:rounded-2xl pb-2 flex flex-col shadow-2xl relative`}
+                className={`${template?.backgroundColor || "bg-background"} w-full sm:w-125 h-[88vh] sm:h-175 p-1 rounded-t-2xl sm:rounded-2xl pb-2 flex flex-col shadow-2xl relative`}
                 onClick={e => e.stopPropagation()}
             >
                 {/* Header dinámico */}
-                <div className={`flex justify-between items-center ${template?.textColor || "text-gray-700"} p-2`}>
+                <div className={`flex justify-between items-center ${template?.textColor || "text-gray-700"} p-2 md:p-4`}>
                     <div className="flex items-center gap-2">
-                        <h2 className={`text-2xl font-bold ${template?.textColor || "text-gray-700"} transition-all duration-200`}>
+                        <h2 className={`text-2xl md:text-3xl font-bold ${template?.textColor || "text-gray-700"} transition-all duration-200`}>
                             {step === 1 ? "Mis Pedidos" : "¿A dónde te lo enviamos?"}
                         </h2>
                         {step === 1 && (
-                            <span className={`text-sm font-bold ${template?.backgroundColor2 || "bg-gray-300"} ${template?.accentColors?.[1] || "text-gray-700"} rounded-full w-7 h-7 flex items-center justify-center`}>
+                            <span className={`text-sm font-bold bg-green-600 text-white rounded-full w-7 h-7 flex items-center justify-center`}>
                                 {totalItemsCount}
                             </span>
                         )}
@@ -120,7 +120,7 @@ export default function CartModal({ user, isOpen, onClose, template }: CartModal
                                     <div className="flex-1 min-w-0">
                                         <FoodCard food={food} template={template} />
                                     </div>
-                                    <div className="flex flex-col items-center justify-center gap-1 min-w-[70px]">
+                                    <div className="flex flex-col items-center justify-center gap-1 min-w-17.5">
                                         <div className={`flex items-center gap-2 ${template?.backgroundColor2 || "bg-background"} rounded-lg px-1 py-1 shadow-inner`}>
                                             <button
                                                 onClick={() => decrementQuantity(food._id)}
@@ -217,7 +217,7 @@ export default function CartModal({ user, isOpen, onClose, template }: CartModal
 
                     <div className="flex gap-4 justify-center items-center w-full">
                         {step === 2 && (
-                            <button onClick={() => setStep(1)} className={`px-6 h-14 flex items-center justify-center gap-2 text-lg cursor-pointer bg-gray-200 border-2 ${template?.border || "border-gray-400"} ${template?.textColor || "text-gray-700"} font-bold rounded-lg hover:bg-gray-300 transition-colors`}>
+                            <button onClick={() => setStep(1)} className={`px-6 h-14 flex items-center justify-center gap-2 text-lg cursor-pointer border-2 ${template?.border || "border-gray-400"} bg-gray-900 text-white font-bold rounded-lg hover:bg-gray-300 transition-colors`}>
                                 Volver
                             </button>
                         )}
@@ -234,7 +234,7 @@ export default function CartModal({ user, isOpen, onClose, template }: CartModal
                         </button>
                     </div>
                     <span className={`text-center text-[10px] leading-none sm:px-10 sm:text-xs ${template?.textColorOpacity || "text-gray-700/50"}`}>
-                        1. Al presionar "Encargar comida" te enviaremos a la aplicación de WhatsApp para tomar tu pedido.
+                        1. Al presionar "Encargar comida" te enviaremos al WhatsApp para tomar tu pedido.
                         <br />
                         2. Una vez en WhatsApp, solo debes presionar el botón de enviar para confirmar tu pedido.
                     </span>

@@ -3,6 +3,7 @@ import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { logotipo, URI } from "@/src/lib/const";
 import { refreshPage, updateUserCookie } from "@/app/actions";
+import { MdChevronLeft } from "react-icons/md";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   TabGroup,
@@ -59,7 +60,7 @@ export default function PanelUser({
     { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
     { key: "paletas", name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
     { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
-    { key: "plan", name: "Mi Plan", icon: <HiOutlineCreditCard size={20} /> },
+    { key: "plan", name: "Suscripciones", icon: <HiOutlineCreditCard size={20} /> },
   ];
 
   // CORRECCIÓN 1 Y 2: Movemos la lógica de localStorage adentro del useEffect
@@ -194,7 +195,17 @@ export default function PanelUser({
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
                   <div className="flex items-start justify-between px-6 py-8">
                     <div className="flex flex-col">
-                      <BttnBack />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          router.replace("/mi-menu");
+
+                        }}
+                        className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+                      >
+                        <MdChevronLeft className="text-xl mr-1" />
+                        Volver
+                      </button>
                       <div className="flex ml-2 flex-col gap-2 mt-10">
                         <div className="flex items-center gap-2">
                           <Image
