@@ -26,7 +26,7 @@ const plans = [
         color: "bg-primary",
         textColor: "text-white",
         features: [
-            "Platos ilimitados",
+            "Platos ilimitados, permanente",
             "Códigos QR personalizables con tu logo",
             "Fotos de alta calidad",
             "Analíticas de visitas",
@@ -45,18 +45,29 @@ const plans = [
         color: "bg-black",
         textColor: "text-white",
         features: [
-            "Platos ilimitados",
+            "Platos ilimitados, permanente",
             "Códigos QR personalizables con tu logo",
             "Fotos de alta calidad",
             "Analíticas de visitas",
             "Menú altamente personalizable, diferenciate de la competencia",
-            "Pedidos por WhatsApp",
+            "Compras por WhatsApp",
             "Seccion para gestión de pedidos",
             "Multi sucursal",
             "Botón de 'Descanso' para vacaciones",
             "Agrega promociones a tus productos",
             "Menús diferenciados por zona",
             "Soporte prioritario"
+        ],
+    },
+    {
+        id: "lifetime",
+        name: "Pago Único",
+        btn: false,
+        price: 0,
+        color: "bg-blue-800",
+        textColor: "text-white",
+        features: [
+            "Muchas gracias por usar QMenú, ahora creá tu cuenta gratis, en breve nos pondremos en contacto contigo."
         ],
     }
 ];
@@ -132,7 +143,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                 animate="visible"
                 role="group"
                 aria-labelledby="checkbox-group"
-                className="space-y-2"
+                className="space-y-1"
             >
                 <AnimatePresence>
                     {plans.map((plan) => {
@@ -151,10 +162,9 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                             >
                                 {/* Card Header */}
                                 <div onClick={() => handlePlanClick(plan.id)}
-                                    className={`w-full flex items-center ${plan.id === 'premium' ? 'btn-god-rays' : ''} justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2' : 'py-5 px-3'} ${plan.textColor}`}
+                                    className={`w-full flex items-center justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2' : 'py-5 px-3'} ${plan.textColor}`}
                                 >
                                     <div className="flex items-center gap-3">
-
                                         <div className="text-start">
                                             <span className={`text-lg ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
                                                 {plan.name}
@@ -163,32 +173,54 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                     </div>
 
                                     <div className="flex items-center gap-1">
-                                        <span className="font-black text-xl tracking-"> $
-                                            {new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(plan.price as number)}<span className="text-[10px] opacity-70">/mes</span>
-                                        </span>
+                                        {plan.id === 'lifetime' ? (
+                                            <span className="font-black text-xl tracking-">Cotizar</span>
+                                        ) : (
+                                            <span className="font-black text-xl tracking-"> $
+                                                {new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(plan.price as number)}<span className="text-[10px] opacity-70">/mes</span>
+                                            </span>
+                                        )}
                                         <ChevronDown onClick={() => handlePlanClick(plan.id)} className={`w-7 h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                                     </div>
                                 </div>
 
                                 {/* Cuerpo Desplegable */}
                                 <div
-                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-[600px] px-4 pb-4 border-t border-stone-100' : 'max-h-0'
+                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-150 px-4 pb-4 border-t border-stone-100' : 'max-h-0'
                                         } overflow-hidden`}
                                 >
-                                    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                                    <div className={`p-3 md:p-6 grid grid-cols-1 gap-x-4 gap-y-1`}>
                                         {plan.features.map((feature, idx) => (
-                                            <motion.div
-                                                key={idx}
-                                                initial={{ opacity: 0, x: -10 }}
-                                                animate={isOpen ? { opacity: 1, x: 0 } : {}}
-                                                transition={{ delay: idx * 0.05 }}
-                                                className="flex items-center gap-2 text-[13px] leading-3 text-stone-600"
-                                            >
-                                                <div className={`h-1.5 ${plan.id === 'premium' ? 'bg-black' : 'bg-stone-400'} w-1.5 rounded-full shrink-0`} />
-                                                {feature}
-                                            </motion.div>
+                                            <div key={idx} className='flex flex-col'>
+                                                {plan.name === "Pago Único" && <span className="text-[10px] bg-indigo-100 text-indigo-700 px-2 py-1 w-fit rounded-full font-bold uppercase tracking-wider">Negocios internacionales</span>}
+                                                <motion.div
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={isOpen ? { opacity: 1, x: 0 } : {}}
+                                                    transition={{ delay: idx * 0.05 }}
+                                                    className={`flex items-center gap-2 ${plan.id === 'lifetime' ? 'text-sm' : 'text-xs'} leading-3 text-stone-600 ${plan.id === 'lifetime' ? 'col-span-1 mt-2 leading-relaxed' : ''}`}
+                                                >
+                                                    {plan.id !== 'lifetime' && <div className={`h-1.5 ${plan.id === 'premium' ? 'bg-black' : 'bg-stone-400'} w-1.5 rounded-full shrink-0`} />}
+                                                    {feature}
+                                                </motion.div>
+                                            </div>
                                         ))}
                                     </div>
+                                    {plan.id === 'lifetime' && (
+                                        <div className="px-4 pb-2">
+                                            <label className="flex items-center gap-2 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={values.lifetime_accepted || false}
+                                                    onChange={(e) => setFieldValue('lifetime_accepted', e.target.checked)}
+                                                    className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded"
+                                                />
+                                                <span className="text-xs text-stone-600 font-medium">Entiendo que crearé mi cuenta y luego seré contactado para cotizar.</span>
+                                            </label>
+                                            {values.plan === 'lifetime' && !values.lifetime_accepted && (
+                                                <p className="text-red-500 text-[10px] font-bold mt-1">Debes aceptar para continuar</p>
+                                            )}
+                                        </div>
+                                    )}
                                     {plan.btn && <button type='button' className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
                                         Proceder al pago
                                     </button>}

@@ -10,6 +10,7 @@ import Contact from "@/src/components/land_page/Contact";
 import Footer from "@/src/components/land_page/Footer";
 import FAQ from "@/src/components/land_page/FAQ";
 import MiddleSection from "@/src/components/land_page/MiddleSection";
+import SliderBanner from "@/src/components/land_page/SliderBanner";
 import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 import MPRedirect from '@/src/components/navigation/MPRedirect';
@@ -76,7 +77,7 @@ export default async function Page() {
         <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
           {/*  <WelcomeModal /> */}
           <Hero />
-          <MiddleSection />
+          <SliderBanner />
           <VideoSection />
           <Features />
           <GuidePreview />

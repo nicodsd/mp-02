@@ -33,6 +33,8 @@ export default function EditFoodModal({
 
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [userPlan, setUserPlan] = useState("free");
+  
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -54,6 +56,14 @@ export default function EditFoodModal({
           }
         })
         .catch(err => console.error("Error fetching menus:", err));
+    }
+
+    const cookieUser = document.cookie.split('; ').find(row => row.startsWith('user='));
+    if (cookieUser) {
+      try {
+        const u = JSON.parse(decodeURIComponent(cookieUser.split('=')[1]));
+        if (u && u.plan) setUserPlan(u.plan);
+      } catch(e) {}
     }
   }, [food]);
 
@@ -79,9 +89,13 @@ export default function EditFoodModal({
     dataToSend.append("name", formData.name);
     dataToSend.append("description", formData.description);
     dataToSend.append("price", formData.price);
-    dataToSend.append("is_archived", String(formData.is_archived));
-    if (formData.menus && formData.menus.length > 0) {
-      dataToSend.append("menus", JSON.stringify(formData.menus));
+
+    const finalIsArchived = userPlan === "free" ? Boolean(food.is_archived) : formData.is_archived;
+    const finalMenus = userPlan === "free" ? (food.menus || []) : formData.menus;
+
+    dataToSend.append("is_archived", String(finalIsArchived));
+    if (finalMenus && finalMenus.length > 0) {
+      dataToSend.append("menus", JSON.stringify(finalMenus));
     }
 
     try {
@@ -100,6 +114,8 @@ export default function EditFoodModal({
         const updatedObj = data.food || {
           ...food,
           ...formData,
+          is_archived: finalIsArchived,
+          menus: finalMenus,
           photo: preview,
         };
         updateFoodInStore(updatedObj);
@@ -229,7 +245,7 @@ export default function EditFoodModal({
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between gap-2 mt-2 pt-2 border-t border-gray-100">
+                  <div className={`relative group flex items-center justify-between gap-2 mt-2 pt-2 border-t border-gray-100 ${userPlan === "free" ? "opacity-50 pointer-events-none" : ""}`}>
                     <div className="flex flex-col w-[65%]">
                       <label
                         htmlFor="archive-checkbox"
@@ -257,11 +273,15 @@ export default function EditFoodModal({
                           }`}
                       />
                     </button>
-
+                    {userPlan === "free" && (
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                        Disponible en planes Plus o Premium
+                      </div>
+                    )}
                   </div>
 
                   {/* Menús */}
-                  <div className="flex flex-col gap-1 mt-3">
+                  <div className={`relative group flex flex-col gap-1 mt-3 ${userPlan === "free" ? "opacity-50 pointer-events-none" : ""}`}>
                     <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest cursor-pointer">Mostrar en los siguientes Menús:</label>
                     <div className="flex flex-wrap gap-2 p-1">
                       {userMenus.length === 0 ? (
@@ -291,6 +311,11 @@ export default function EditFoodModal({
                         })
                       )}
                     </div>
+                    {userPlan === "free" && (
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                        Disponible en planes Plus o Premium
+                      </div>
+                    )}
                   </div>
 
                   <button

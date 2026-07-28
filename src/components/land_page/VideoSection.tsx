@@ -89,14 +89,10 @@ export default function VideoSection() {
           </video>
 
           <div
-            className="absolute md:hidden bottom-4 left-4 right-4 sm:top-6 sm:left-6 flex flex-col gap-2.5 items-start pointer-events-none"
+            className="absolute md:hidden bottom-4 left-3 right-4 sm:top-6 sm:left-6 flex flex-col gap-2.5 items-start pointer-events-none"
           >
             {/* Pill 1 */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+            <div
               className="pointer-events-auto flex items-center gap-3 bg-white/85 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full shadow-md border border-red-100 hover:scale-105 transition-transform cursor-default w-fit max-w-[85%] sm:max-w-xs">
               <div className="bg-red-600 rounded-full p-2 flex items-center justify-center shrink-0 shadow-sm shadow-red-200">
                 <MousePointerClick className="text-white w-4 h-4 sm:w-5 sm:h-5" />
@@ -104,14 +100,10 @@ export default function VideoSection() {
               <span className="text-sm sm:text-base font-bold text-gray-900 tracking-tight truncate">
                 Accesible
               </span>
-            </motion.div>
+            </div>
 
             {/* Pill 2 */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+            <div
               className="pointer-events-auto flex items-center gap-3 bg-white/85 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full shadow-md border border-red-100 hover:scale-105 transition-transform cursor-default w-fit max-w-[85%] sm:max-w-xs">
               <div className="bg-red-600 rounded-full p-2 flex items-center justify-center shrink-0 shadow-sm shadow-red-200">
                 <Zap className="text-white w-4 h-4 sm:w-5 sm:h-5" />
@@ -119,14 +111,10 @@ export default function VideoSection() {
               <span className="text-sm sm:text-base font-bold text-gray-900 tracking-tight truncate">
                 Fácil y rápido
               </span>
-            </motion.div>
+            </div>
 
             {/* Pill 3 */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
+            <div
               className="pointer-events-auto flex items-center gap-3 bg-white/85 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-full shadow-md border border-red-100 hover:scale-105 transition-transform cursor-default w-fit max-w-[85%] sm:max-w-xs">
               <div className="bg-red-600 rounded-full p-2 flex items-center justify-center shrink-0 shadow-sm shadow-red-200">
                 <Smartphone className="text-white w-4 h-4 sm:w-5 sm:h-5" />
@@ -134,7 +122,7 @@ export default function VideoSection() {
               <span className="text-sm sm:text-base font-bold text-gray-900 tracking-tight leading-snug">
                 Desde cualquier dispositivo
               </span>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
       </div>

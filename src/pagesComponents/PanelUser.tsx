@@ -17,7 +17,7 @@ import {
 import { MdStorefront } from "react-icons/md";
 import {
   HiPencil,
-  HiOutlineUser,
+  HiOutlineCurrencyDollar,
   HiOutlineColorSwatch,
   HiOutlineTicket,
   HiOutlineLogout,
@@ -30,6 +30,7 @@ import {
 import UserPlan from "@/src/components/user-plan/UserPlan";
 import { useRouter, useSearchParams } from "next/navigation";
 import { logout } from "@/app/actions";
+import { motion } from "framer-motion";
 
 export default function PanelUser({
   user,
@@ -226,7 +227,6 @@ export default function PanelUser({
                     <div className="flex flex-col gap-2">
                       {menuItems?.map((item, index) => (
                         <button
-                          disabled={user?.plan === "free" && (item?.key === "promociones" || item?.key === "configuraciones" || item?.key === "paletas" || item?.key === "sucursales")}
                           key={item.key}
                           onClick={() => {
                             handleTabChange(index);
@@ -280,15 +280,6 @@ export default function PanelUser({
                   {menuItems.map((item, index) => (
                     <Tab
                       key={item.key}
-                      disabled={
-                        user?.plan === "free" &&
-                        (
-                          item.key === "promociones" ||
-                          item.key === "configuraciones" ||
-                          item.key === "paletas" ||
-                          item.key === "sucursales"
-                        )
-                      }
                       className={({ selected }) =>
                         tabClass(selected)
                       }
@@ -308,14 +299,34 @@ export default function PanelUser({
               </div>
             </aside>
 
-            <main className="flex-1 w-full">
-              <TabPanels className="min-h-full w-full lg:w-[80%] xl:w-[90%] overflow-hidden">
-                {children}
-              </TabPanels>
+            <main className="flex-1 w-full relative">
+              <div className={user?.plan === "free" && ["promociones", "configuraciones", "paletas", "sucursales"].includes(menuItems[selectedIndex]?.key) ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
+                <TabPanels className="min-h-full w-full lg:w-[80%] xl:w-[90%] overflow-hidden">
+                  {children}
+                </TabPanels>
+              </div>
+
+              {user?.plan === "free" && ["promociones", "configuraciones", "paletas", "sucursales"].includes(menuItems[selectedIndex]?.key) && (
+                <div className="fixed inset-0 flex items-center justify-center z-10 p-4 pointer-events-none">
+                  <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="pointer-events-auto backdrop-blur-sm bg-white border border-gray-200 p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-auto animate-in fade-in zoom-in duration-300">
+                    <div className="mx-auto w-16 h-16 bg-blue-50 text-amber-500 rounded-full flex items-center justify-center mb-4">
+                      <HiOutlineCurrencyDollar size={40} />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Función Premium</h3>
+                    <p className="text-gray-600 mb-6">Mejora tu plan para acceder a esta y más configuraciones.</p>
+                    <button
+                      onClick={() => handleTabChange(menuItems.findIndex(m => m.key === 'plan'))}
+                      className="w-full btn-god-rays bg-black cursor-pointer text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl active:scale-95"
+                    >
+                      Ver Planes
+                    </button>
+                  </motion.div>
+                </div>
+              )}
             </main>
           </div>
-        </div>
-      </TabGroup>
-    </div>
+        </div >
+      </TabGroup >
+    </div >
   );
 }

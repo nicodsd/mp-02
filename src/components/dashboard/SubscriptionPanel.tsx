@@ -10,7 +10,7 @@ interface PlanFeature {
 }
 
 interface Plan {
-  id: "free" | "plus" | "premium";
+  id: "free" | "plus" | "premium" | "lifetime";
   name: string;
   price: string;
   before?: string;
@@ -25,21 +25,6 @@ export default function SubscriptionPanel({ user }: { user: any }) {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
   const plans: Plan[] = [
-    {
-      id: "free",
-      name: "Gratuito",
-      price: "$0",
-      description: "Para pequeños locales o food trucks que inician.",
-      features: [
-        "Hasta 10 platos",
-        "Código QR con tu logo",
-        "Fotos básicas",
-        "Los pedidos te llegan al WhatsApp"
-      ],
-      color: "text-gray-600",
-      bgClass: "bg-white border-gray-200",
-      buttonClass: "bg-gray-100 hover:bg-gray-200 text-gray-800",
-    },
     {
       id: "plus",
       name: "Plus+",
@@ -64,7 +49,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
       name: "Premium",
       price: "$34.900",
       before: "$39.900",
-      description: "Gestión avanzada con multi sucursal y pedidos en línea.",
+      description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
       features: [
         "Platos ilimitados, permanente",
         "Códigos QR personalizables con tu logo",
@@ -80,7 +65,22 @@ export default function SubscriptionPanel({ user }: { user: any }) {
         "Soporte prioritario"
       ],
       color: "text-black",
-      bgClass: "bg-gradient-to-br from-white via-gray-50 to-gray-100/50 border-black border-2 shadow-xl",
+      bgClass: "bg-linear-to-br from-white via-gray-50 to-gray-100/50 border-black border-2 shadow-xl",
+      buttonClass: "bg-black hover:bg-gray-800 text-white shadow-md",
+    },
+    {
+      id: "lifetime",
+      name: "Pago Único",
+      price: "A cotizar",
+      description: "Un plan de pago único con todas las funcionalidades premium incluidas. Ideal para menús fuera de Argentina que buscan destacar con las funcionalidades más completas.",
+      features: [
+        "Todas las funcionalidades Premium",
+        "Ideal para negocios fuera de Argentina",
+        "Te armamos tu menú (Opcional)",
+        "Soporte prioritario"
+      ],
+      color: "text-blue-800",
+      bgClass: "bg-linear-to-br from-white to-blue-200/40 border-blue-800 border-2 shadow-xl",
       buttonClass: "bg-black hover:bg-gray-800 text-white shadow-md",
     },
   ];
@@ -162,7 +162,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
       </div>
 
       {/* Cards list */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 px-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-3 max-w-5xl mx-auto">
         {plans.map((plan) => {
           const isActive = user?.plan === plan.id;
           const isDowngrade =
@@ -174,22 +174,25 @@ export default function SubscriptionPanel({ user }: { user: any }) {
               key={plan.id}
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300 }}
-              className={`relative flex flex-col p-6 rounded-2xl border ${plan.bgClass} min-h-[460px]`}
+              className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115`}
             >
               {plan.id === "plus" && (
                 <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[10px] md:text-xs font-extrabold uppercase px-3.5 py-1 rounded-full tracking-wider whitespace-nowrap shadow-sm">
                   Recomendado
                 </div>
               )}
-              {plan.id === "premium" && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-black text-white text-[10px] md:text-xs font-extrabold uppercase px-3.5 py-1 rounded-full tracking-wider whitespace-nowrap shadow-sm">
-                  El más completo
+
+              {plan.id === "lifetime" && (
+                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-purple-100 text-blue-800 text-[10px] md:text-xs font-extrabold uppercase px-3.5 py-1 rounded-full tracking-wider whitespace-nowrap shadow-sm">
+                  Negocios internacionales
                 </div>
               )}
 
               <div className="mb-4">
-                <h3 className={`text-xl font-bold ${plan.color}`}>{plan.name}</h3>
-                <p className="text-gray-500 text-xs mt-1.5 min-h-[35px] leading-relaxed">
+                <h3 className={`text-xl font-bold ${plan.color} flex items-center flex-wrap gap-2`}>
+                  {plan.name}
+                </h3>
+                <p className="text-gray-500 text-xs mt-1.5 min-h-8.75 leading-relaxed">
                   {plan.description}
                 </p>
               </div>
@@ -201,11 +204,11 @@ export default function SubscriptionPanel({ user }: { user: any }) {
                     {plan.before}
                   </span>
                 )}
-                <span className="text-gray-500 text-xs">/mes</span>
+                {plan.id !== "lifetime" && <span className="text-gray-500 text-xs">/mes</span>}
               </div>
 
               <div className="mb-6 grow">
-                <ul className="space-y-2.5">
+                <ul className="space-y-1">
                   {plan.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <Check className={`w-4 h-4 mt-0.5 shrink-0 ${plan.id === "free" ? "text-gray-400" : plan.id === "plus" ? "text-primary" : "text-black"}`} />
@@ -236,6 +239,13 @@ export default function SubscriptionPanel({ user }: { user: any }) {
                 >
                   Plan Gratuito
                 </button>
+              ) : plan.id === "lifetime" ? (
+                <Link
+                  href="/contacto"
+                  className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
+                >
+                  Cotizar Plan
+                </Link>
               ) : (
                 <button
                   onClick={() => handleSubscribe(plan.id as "plus" | "premium", getAmountFromPrice(plan.price))}

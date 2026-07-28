@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function MiddleSection() {
     return (
@@ -11,8 +12,13 @@ export default function MiddleSection() {
                 <div className="text-center px-4 md:text-start flex flex-col z-10 w-full items-start justify-center">
                     <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-[3rem] leading-none md:text-[3.5rem] font-bold text-white mb-4 md:mb-6">¿Te imaginas tener tu <span className="bg-clip-text text-transparent bg-lime-200">local en internet?</span></motion.h2>
                     <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-white text-base md:text-lg w-fit">
-                        Ahora es posible, y gratis, con <span className="font-black">QMenu</span> puedes crear un menú digital profesional en minutos y compartirlo con tus clientes a través de un código QR o un enlace personalizado.
+                        Ahora es posible, y gratis, con <span className="font-black">QMenu</span> puedes crear un menú digital profesional en minutos y compartirlo con tus clientes.
                     </motion.p>
+                    <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="mt-8 w-full flex justify-center md:justify-start">
+                        <Link href="/registro-de-usuario" className="bg-lime-300 hover:bg-lime-400 text-green-900 font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 active:translate-y-0 text-lg md:text-xl">
+                            Empieza ahora
+                        </Link>
+                    </motion.div>
                 </div>
 
                 <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="absolute -bottom-10 md:hidden w-full flex justify-center">

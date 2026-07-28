@@ -9,6 +9,7 @@ import Link from "next/link";
 import { URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import PlanSelector from "@/src/components/AcordeonPlanRegister";
+import emailjs from '@emailjs/browser';
 import { OctagonX, Mail, KeyRound, Store } from "lucide-react";
 import {
   FaInstagram,
@@ -38,6 +39,7 @@ type FormValues = {
   tiktok: string;
   verificationCode: string;
   schedule: string;
+  lifetime_accepted: boolean;
 };
 
 const validationSchemas = [
@@ -60,6 +62,11 @@ const validationSchemas = [
   Yup.object({
     plan: Yup.string().optional(),
     mp_preapproval_id: Yup.string().optional(),
+    lifetime_accepted: Yup.boolean().when('plan', {
+      is: (val: string) => val === 'lifetime',
+      then: (schema) => schema.oneOf([true], "Debes aceptar para continuar"),
+      otherwise: (schema) => schema.optional()
+    })
   }),
   Yup.object({
     logo: Yup.mixed().nullable().optional(),
@@ -246,6 +253,22 @@ export default function Register() {
         return;
       }
       if (data.success) {
+        if (values.plan === 'lifetime') {
+          try {
+            await emailjs.send(
+              process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+              process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+              {
+                name: "Sistema QMenú",
+                email: "qmenuofi@gmail.com",
+                message: `Cuenta creada con exito: ${finalEmail} requiere de atención para cotizar precio de menú`
+              },
+              process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
+          } catch(e) {
+            console.error("Error sending email:", e);
+          }
+        }
         router.push("/login");
       }
     } catch (err) {
@@ -349,6 +372,7 @@ export default function Register() {
             tiktok: "",
             schedule: "",
             verificationCode: "",
+            lifetime_accepted: false,
           }}
           validationSchema={validationSchemas[step]}
           onSubmit={async (values, { setSubmitting }) => {

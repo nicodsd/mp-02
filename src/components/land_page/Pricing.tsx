@@ -74,6 +74,21 @@ const plans: PricingPlan[] = [
     cta: "Elegir Plan Premium",
     href: "/registro-de-usuario?plan=premium",
     premium: true
+  },
+  {
+    name: "Pago Único",
+    price: "A cotizar",
+    period: "",
+    description: "Un plan de pago único con todas las funcionalidades premium incluidas. Ideal para menús fuera de Argentina que buscan destacar con las funcionalidades más completas.",
+    features: [
+      "Todas las funcionalidades Premium",
+      "Ideal para negocios fuera de Argentina",
+      "Te armamos tu menú (Opcional)",
+      "Soporte prioritario"
+    ],
+    cta: "Cotizar Plan",
+    href: "/cotizar-menu",
+    premium: true
   }
 ];
 
@@ -94,51 +109,56 @@ export default function Pricing() {
           </motion.p>
         </div>
 
-        {/* Grid: 1 col móvil, 3 cols desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 space-y-4 gap-3 items-start px-2">
+        {/* Grid: 1 col móvil, 4 cols desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 space-y-4 xl:space-y-0 gap-2 items-start px-2">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative flex flex-col p-6 md:p-8 md:h-172 rounded-2xl border
+              className={`relative flex flex-col p-6 md:p-3 md:h-130 rounded-xl border
                 ${!plan.premium && !plan.recommended && 'border-gray-200'}
-                ${plan.premium && 'bg-linear-to-br from-white via-gray-300/80 to-white hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
+                ${plan.name === "Pago Único" && 'bg-linear-to-br from-white to-blue-200/40 border-blue-800 border-2 shadow-xl'}
+                ${plan.premium && 'bg-gray-100 hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
                 ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
             >
               {plan.recommended && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-2 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
                   Recomendado
                 </div>
               )}
 
-              <div className="mb-6">
-                <h3 className={`text-xl font-bold ${plan.recommended ? 'text-primary' : 'text-stone-900'}`}>{plan.name === "Plus" ? plan.name + "+" : plan.name}</h3>
-                <p className="text-stone-500 text-sm mt-2 min-h-auto md:min-h-[40px]">{plan.description}</p>
+              {plan.name === "Pago Único" && <span className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[10px] md:text-xs bg-purple-100 text-blue-800 px-2 py-1 rounded-full font-bold tracking-wide uppercase whitespace-nowrap">Negocios internacionales</span>}
+
+              <div className="mb-1 p-3">
+                <h3 className={`text-xl font-bold ${plan.recommended ? 'text-primary' : 'text-gray-900'} flex items-center flex-wrap gap-2`}>
+                  {plan.name === "Plus" ? plan.name + "+" : plan.name}
+                </h3>
+                <p className="text-gray-500 text-xs mt-2 min-h-auto md:min-h-10">{plan.description}</p>
               </div>
 
-              <div className="mb-6 flex items-baseline">
-                <span className="text-4xl font-extrabold text-black">{plan.price}</span>
+              <div className="mb-4 flex items-baseline">
+                <span className="text-3xl font-extrabold pl-3 text-black">{plan.price}</span>
                 {plan.before && (
-                  <span className="text-stone-500 ml-2 text-md line-through decoration-red-500">{plan.before}</span>
+                  <span className="text-gray-500 ml-2 text-md line-through decoration-red-500">{plan.before}</span>
                 )}
-                <span className="text-stone-500 ml-2 text-sm">{plan.period}</span>
+                <span className="text-gray-500 ml-2 text-xs">{plan.period}</span>
               </div>
 
               {
                 !plan.premium ?
-                  <ul className="space-y-3 md:space-y-2 mb-8 grow">
+                  <ul className="space-y-1 grow">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">
-                        <Check className={`h-5 w-5 mr-3 shrink-0 ${plan.recommended ? 'text-primary' : 'text-stone-400'}`} />
-                        <span className="text-stone-600 text-sm leading-tight">{feature}</span>
+                        <Check className={`h-4 w-4 mr-2 shrink-0 ${plan.recommended ? 'text-primary' : 'text-gray-400'}`} />
+                        <span className="text-gray-600 text-xs leading-tight">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   :
-                  <ul className="space-y-3 md:space-y-2 mb-8 grow">
+                  <ul className="space-y-1 grow">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">
-                        <Check className={`h-5 w-5 mr-3 shrink-0 text-black`} />
-                        <span className="text-stone-800 text-sm leading-tight">{feature}</span>
+                        <Check className={`h-4 w-4 mr-2 shrink-0 text-black`} />
+                        <span className="text-gray-800 text-xs leading-tight">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -146,10 +166,10 @@ export default function Pricing() {
               {
                 !plan.premium ?
                   <a href={plan.href}
-                    className={`w-full text-center py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all 
+                    className={`w-full text-center py-3 px-4 rounded-xl font-bold text-sm cursor-pointer transition-all 
                   ${plan.recommended
                         ? 'bg-primary hover:bg-primary-500 hover:shadow-md text-white'
-                        : 'hover:bg-gray-100 text-stone-700 border border-gray-300'
+                        : 'hover:bg-gray-100 text-gray-700 border border-gray-300'
                       }
                  `}
                   >
@@ -157,7 +177,7 @@ export default function Pricing() {
                   </a>
                   :
                   <a href={plan.href}
-                    className={`w-full text-center btn-god-rays py-4 px-4 rounded-xl font-bold text-base cursor-pointer transition-all bg-black hover:bg-gray-800 hover:shadow-md text-white`}
+                    className={`w-full text-center py-3 px-4 rounded-xl font-bold text-sm cursor-pointer transition-all bg-black hover:bg-gray-800 hover:shadow-md text-white`}
                   >
                     {plan.cta}
                   </a>
@@ -167,9 +187,9 @@ export default function Pricing() {
         </div>
       </div>
       <span className="flex text-center flex-col mt-8 justify-center items-center gap-1">
-        <p className="text-stone-500 text-xs">Manejo seguro de suscripciones a través de Mercado Pago.</p>
-        <p className="text-stone-500 text-xs">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
-        <p className="text-stone-500 text-xs">Leé nuestros <a href="/terminos-y-condiciones" className="text-blue-500 underline">Términos y Condiciones</a>.</p>
+        <p className="text-gray-500 text-xs">Manejo seguro de suscripciones a través de Mercado Pago.</p>
+        <p className="text-gray-500 text-xs">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
+        <p className="text-gray-500 text-xs">Leé nuestros <a href="/terminos-y-condiciones" className="text-blue-500 underline">Términos y Condiciones</a>.</p>
       </span>
     </section>
   );

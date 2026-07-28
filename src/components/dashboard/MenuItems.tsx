@@ -68,13 +68,29 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
           </div>
           <span className="text-xs font-medium text-white/80">Platos activos</span>
         </div>
-        <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
-          <div className="flex flex-col items-start ">
-            <span className="text-lg text-white mb-1 font-semibold leading-tight">Promos</span>
-            <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
-          </div>
-          <span className="text-xs font-medium leading-3 text-white/80">Promociones activas</span>
-        </div>
+        {
+          user.plan !== "free" ?
+            <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
+              <div className="flex flex-col items-start ">
+                <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
+                <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
+              </div>
+              <span className="text-xs font-medium leading-3 text-white/80">Promociones activas</span>
+            </div>
+            :
+            <div className="relative group flex flex-col items-start gap-2 p-3 rounded-xl bg-gray-300 justify-between">
+              <div className="flex flex-col items-start">
+                <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
+                <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
+              </div>
+              <span className="md:text-sm text-xs font-medium leading-4 text-white">¿Se viene el día de la madre? Con tu plan <span className="font-bold text-white">Plus+</span> puedes agregar promociones especiales y destacar tu menú.</span>
+              
+              {/* Tooltip */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                Disponible en planes Plus o Premium
+              </div>
+            </div>
+        }
         {
           user.plan !== "free" ?
             <div className="flex flex-col items-start p-3 rounded-xl bg-indigo-500 justify-between">
@@ -85,12 +101,17 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
               <span className="text-xs font-medium text-white/80">Vistas al menú</span>
             </div>
             :
-            <div className="flex flex-col items-start gap-2 p-3 rounded-xl bg-indigo-500 justify-between">
+            <div className="relative group flex flex-col items-start gap-2 p-3 rounded-xl bg-gray-300 justify-between">
               <div className="flex flex-col items-start">
                 <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
-                <span className="md:text-[1.8rem] text-xl font-bold leading-none text-white">Función paga</span>
+                <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
               </div>
-              <span className="md:text-sm text-xs font-medium leading-3 text-white/80">Mejora tu plan para ver en tiempo real quienes entran a tu menú </span>
+              <span className="md:text-sm text-xs font-medium leading-4 text-white">¿Quieres saber en tiempo real quienes entran a tu menú?</span>
+              
+              {/* Tooltip */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                Disponible en planes Plus o Premium
+              </div>
             </div>
         }
       </div>
@@ -114,22 +135,31 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
               }  rounded-full`}>{activeDataFoods.length}</span>
           </button>
 
-          <button
-            disabled={(user.plan === "free")}
-            onClick={() => setView("archived")}
-            className={`px-4 py-2 disabled:opacity-50 cursor-pointer disabled:pointer-events-none font-semibold text-sm rounded-lg transition-colors 
-              ${view === "archived" ? "bg-slate-500 text-white"
-                :
-                "bg-transparent text-gray-500 hover:bg-gray-100"
-              }`}
-          >
-            Archivados <span className={`ml-1 p-1 px-2 
-            ${view !== "archived" ? "bg-gray-200/60 text-gray-800 hover:bg-gray-100"
-                :
-                "bg-white text-gray-800 hover:bg-gray-100"
-              } 
-              rounded-full`}>{archivedDataFoods.length}</span>
-          </button>
+          <div className="relative group flex items-center">
+            <button
+              disabled={(user.plan === "free")}
+              onClick={() => setView("archived")}
+              className={`px-4 py-2 disabled:opacity-50 cursor-pointer disabled:pointer-events-none font-semibold text-sm rounded-lg transition-colors 
+                ${view === "archived" ? "bg-slate-500 text-white"
+                  :
+                  "bg-transparent text-gray-500 hover:bg-gray-100"
+                }`}
+            >
+              Archivados <span className={`ml-1 p-1 px-2 
+              ${view !== "archived" ? "bg-gray-200/60 text-gray-800 hover:bg-gray-100"
+                  :
+                  "bg-white text-gray-800 hover:bg-gray-100"
+                } 
+                rounded-full`}>{archivedDataFoods.length}</span>
+            </button>
+            {user.plan === "free" && (
+              <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                Disponible en planes Plus o Premium
+                {/* Triángulo del tooltip */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-gray-800"></div>
+              </div>
+            )}
+          </div>
 
         </div>
 
