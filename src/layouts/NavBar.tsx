@@ -181,11 +181,11 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
     address: user?.location,
-    schedule: user?.schedule || "Horario 24/7",
+    schedule: user?.schedule || (!user ? "Horario 24/7" : ""),
     phone: user?.phone || "",
-    instagram: user?.instagram || "@EJEMPLO",
-    facebook: user?.facebook || "EJEMPLO",
-    tiktok: user?.tiktok || "",
+    instagram: user?.instagram || (!user ? "@qmenu_digital" : ""),
+    facebook: user?.facebook || (!user ? "@qmenu" : ""),
+    tiktok: user?.tiktok || (!user ? "@qmenu" : ""),
   };
 
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
@@ -248,7 +248,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
           ]
             .filter(social => social.val)
             .map((social) => (
-              <span key={social.id} className={`flex items-center gap-1 border-l ${user?.plan === "free" ? "border-gray-700" : "border-white/50"} pl-2`}>
+              <span key={social.id} className={`flex items-center gap-1 ${user?.plan === "free" ? "border-gray-700" : "border-white/50"} pl-2`}>
                 {social.icon}
                 {social.val}
               </span>
@@ -344,7 +344,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
             ]
               .filter(social => social.val)
               .map((social) => (
-                <span key={social.id} className={`flex items-center gap-1 border-l 
+                <span key={social.id} className={`flex items-center gap-1
                 ${template?.template_id === "default"
                     ||
                     template?.template_id === "lavender"
@@ -453,7 +453,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
         ]
           .filter(social => social.val)
           .map((social) => (
-            <span key={social.id} className="flex items-center gap-1 border-l border-white/50 pl-2">
+            <span key={social.id} className="flex items-center gap-1 border-white/50 pl-2">
               {social.icon}
               {social.val}
             </span>
