@@ -65,7 +65,7 @@ export function Categories({
                 : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
               }`}
           >
-            {category} especiales
+            {category}
           </button>
         ))}
       </div>
