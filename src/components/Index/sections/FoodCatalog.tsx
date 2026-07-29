@@ -66,7 +66,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         <Utensils className="w-5 h-5" />
                     </div>
 
-                    <div className="flex justify-between h-10 max-h-10 items-end mb-1">
+                    <div className="flex justify-between h-9 max-h-9 items-end mb-1">
                         <Categories
                             template={template}
                             foods={allFoods.filter((f: any) => !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres"))}

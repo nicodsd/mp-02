@@ -41,7 +41,7 @@ export function Categories({
               e.preventDefault();
               handleClick("0");
             }}
-            className={`py-1 no-underline px-3 cursor-pointer rounded-[7px] font-semibold
+            className={`py-1 no-underline px-3 text-center cursor-pointer leading-none text-[16px] rounded-[7px] font-semibold
               ${activeCategory === "0"
                 ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
                 : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
@@ -59,7 +59,7 @@ export function Categories({
               e.preventDefault();
               handleClick(category);
             }}
-            className={`py-1 no-underline px-3 text-center cursor-pointer leading-none md:text-xs rounded-[7px] font-semibold
+            className={`py-1 no-underline px-3 text-center cursor-pointer leading-none text-[16px] rounded-[7px] font-semibold
                 ${activeCategory === category
                 ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
                 : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
