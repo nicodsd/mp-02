@@ -384,7 +384,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <div className="relative">
                     <input
                       className="w-full border p-3 rounded-lg"
-                      maxLength={50}
+                      maxLength={30}
                       value={schedule}
                       onChange={(e) => setSchedule(e.target.value)}
                     />
