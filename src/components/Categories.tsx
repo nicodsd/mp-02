@@ -27,7 +27,7 @@ export function Categories({
   return (
     <section className="w-[82%] h-full text-[16px]">
       <div
-        className={`flex gap-1 pl-2 overflow-x-auto`}
+        className={`flex gap-1 pl-2 h-full overflow-x-auto`}
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
@@ -65,7 +65,7 @@ export function Categories({
                 : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
               }`}
           >
-            {category} especiales
+            {category}
           </button>
         ))}
       </div>

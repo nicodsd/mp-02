@@ -321,7 +321,7 @@ export default function FormFoods({ initialCategories, user }: any) {
                     id="price"
                     name="price"
                     value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) => setPrice(e.target.value.slice(0, 10))}
                     maxLength={10}
                     placeholder="0.00"
                     type="number"
