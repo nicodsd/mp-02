@@ -8,8 +8,8 @@ import templates from "@/src/data/templates.json"
 
 
 export const metadata = {
-  title: "Mi Menú | QMenú",
-  description: "Gestiona los platos y categorías de tu menú digital de forma sencilla.",
+    title: "Mi Menú | QMenú",
+    description: "Gestiona los platos y categorías de tu menú digital de forma sencilla.",
 };
 
 export default async function Page() {
@@ -42,7 +42,7 @@ export default async function Page() {
                 user={user}
             />
             <div className={`
-                ${user?.navBar === "recortado"
+                ${user.plan !== "free" && user?.navBar === "recortado"
                     ?
                     `absolute top-34 rounded-t-full h-60 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
                     :

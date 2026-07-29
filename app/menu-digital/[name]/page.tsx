@@ -29,7 +29,7 @@ export default async function Page({
         user={user?.data}
       />
       <div className={`
-        ${user?.data?.navBar === "recortado"
+        ${user?.data?.plan !== "free" && user?.data?.navBar === "recortado"
           ?
           `absolute top-34 rounded-t-full h-60 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
           :

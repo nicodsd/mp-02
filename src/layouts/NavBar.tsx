@@ -166,7 +166,7 @@ export default function NavBar({
         style={inlineStyle}
       >
         {!isSpecialState && (
-          <div className={`absolute inset-0 ${canShowCover ? "bg-black/65" : ""}`} />
+          <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : ""}`} />
         )}
         <nav className="relative z-10 w-full">
           {renderNavContent()}
@@ -370,6 +370,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
   );
 }
 function HorizontalNavUser({ user, photo, cookie, template }: any) {
+  console.log(user)
   const displayData = {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
@@ -380,85 +381,107 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
     facebook: user?.facebook,
     tiktok: user?.tiktok,
   };
+
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
 
-  return (
-    <div className="relative min-h-44 md:h-52 md:pt-10 flex flex-col justify-center items-center">
-      <div className={`flex relative items-center px-6 md:justify-center justify-center gap-3 h-18 text-white drop-shadow drop-shadow-gray-900/30 w-full`}>
-        <div className="absolute mx-auto -top-11">
-          <Link className="flex items-center gap-2 text-xs" href="/">
-            {user?.plan === "free" ? (
-              <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
-            ) : (
-              <Image priority src={logo_w} width={60} height={60} alt="Logo" className="w-13 h-13 md:w-24 md:h-16 object-contain" />
-            )}
-          </Link>
-        </div>
+  const socialLinks = [
+    { id: "ig", val: displayData.instagram, icon: <FaInstagram size={14} /> },
+    { id: "fb", val: displayData.facebook, icon: <FaFacebook size={14} /> },
+    { id: "tk", val: displayData.tiktok, icon: <FaTiktok size={14} /> },
+  ].filter((s) => s.val);
 
-        <div className="w-fit flex flex-col items-center justify-center md:ml-0">
-          <div className={`rounded-full p-1 bg-white`}>
+  return (
+    <div className="relative w-full min-h-44 md:h-52 md:pt-8 flex flex-col justify-center items-center px-4 overflow-hidden">
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10">
+        <Link className="flex items-center text-xs" href="/">
+          <Image
+            priority
+            src={user?.plan === "free" ? logotipo : logo_w}
+            width={80}
+            height={50}
+            alt="Logo"
+            className={`h-6 md:h-12 w-auto object-contain ${user?.plan === "free" ? "opacity-60" : ""
+              }`}
+          />
+        </Link>
+      </div>
+
+      {/* Fila Principal Horizontal */}
+      <div className="flex items-center justify-between gap-3 w-full max-w-3xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+
+        {/* Foto de Perfil */}
+        <div className="shrink-0">
+          <div className="rounded-full p-0.5 bg-white shadow-md">
             <Image
               priority
               src={optimizedPhoto || logo}
-              width={200}
-              height={200}
-              className="rounded-full object-cover md:w-20 md:h-auto w-15 h-15"
+              width={60}
+              height={60}
+              className="rounded-full object-cover w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20"
               alt="Profile"
             />
           </div>
         </div>
 
-        <div className="w-[55%]">
-          <h2 className="text-xl leading-none w-full font-bold uppercase text-start">
+        {/* Información Principal del Negocio */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <h3 className="text-base sm:text-lg md:text-xl font-bold uppercase truncate leading-tight">
             {displayData.name}
-          </h2>
-          <p className="my-1 text-start text-sm opacity-90">
+          </h3>
+          <p className="text-xs md:text-sm opacity-90 truncate my-0.5">
             {displayData.description}
           </p>
-          {(displayData.address || !user) && (
-            <span className="flex text-xs items-center gap-1">
-              <FaMapMarkerAlt size={14} />
-              {displayData.address || "Santiago del Estero, Argentina"}
-            </span>
-          )}
-          {displayData.schedule && (
-            <span className="flex text-xs items-center gap-1 mt-1">
-              <FaClock size={14} />
-              {displayData.schedule}
-            </span>
-          )}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] sm:text-xs opacity-90">
+            {(displayData.address || !user) && (
+              <span className="flex items-center gap-1 truncate max-w-45 sm:max-w-xs">
+                <FaMapMarkerAlt size={12} className="shrink-0" />
+                <span className="truncate">
+                  {displayData.address || "Santiago del Estero, Argentina"}
+                </span>
+              </span>
+            )}
+            {(displayData.schedule || !user) && (
+              <span className="flex items-center gap-1 shrink-0">
+                <FaClock size={12} className="shrink-0" />
+                {displayData.schedule}
+              </span>
+            )}
+          </div>
         </div>
 
+        {/* Botón de Perfil */}
         {user && cookie && (
-          <Link
-            className={`flex flex-col items-center text-black active:scale-90 bg-white transition-all duration-100 w-fit gap-1 text-sm px-3 py-1 rounded-xl shadow-md`}
-            href="/panel-de-usuario"
-          >
-            Perfil
-          </Link>
+          <div className="shrink-0 absolute right-0 md:relative">
+            <Link
+              className="flex items-center justify-center text-black active:scale-95 bg-white hover:bg-gray-100 transition-all text-xs font-semibold px-3 py-1.5 rounded-xl shadow-md whitespace-nowrap"
+              href="/panel-de-usuario"
+            >
+              Perfil
+            </Link>
+          </div>
         )}
       </div>
-      <div className="flex items-center text-white gap-x-3 gap-y-1 md:mt-4 mt-2 text-xs flex-wrap justify-start pr-2">
+
+      {/* Fila Inferior Horizontal: Teléfono y Redes Sociales */}
+      <div className="flex items-center justify-center text-white gap-x-3 gap-y-1 mt-2 text-xs flex-wrap w-full max-w-4xl drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
         {(displayData.phone || !user) && (
-          <span className="flex items-center gap-1">
-            <FaWhatsapp size={15} />
+          <span className="flex items-center gap-1 font-medium shrink-0">
+            <FaWhatsapp size={14} className="shrink-0" />
             {displayData.phone || "385 123 4567"}
           </span>
         )}
 
-        {[
-          { id: 'ig', val: displayData.instagram, icon: <FaInstagram size={15} /> },
-          { id: 'fb', val: displayData.facebook, icon: <FaFacebook size={15} /> },
-          { id: 'tk', val: displayData.tiktok, icon: <FaTiktok size={15} /> }
-        ]
-          .filter(social => social.val)
-          .map((social) => (
-            <span key={social.id} className="flex items-center gap-1 border-white/50 pl-2">
-              {social.icon}
-              {social.val}
-            </span>
-          ))}
+        {socialLinks.map((social) => (
+          <span
+            key={social.id}
+            className="flex items-center gap-1 pl-2 shrink-0"
+          >
+            {social.icon}
+            <span className="truncate max-w-25">{social.val}</span>
+          </span>
+        ))}
       </div>
+
     </div>
   );
 }
