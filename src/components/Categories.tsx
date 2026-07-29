@@ -27,7 +27,7 @@ export function Categories({
   return (
     <section className="w-[82%] h-full text-[16px]">
       <div
-        className={`flex gap-1 pl-2 overflow-x-auto`}
+        className={`flex gap-1 pl-2 h-full overflow-x-auto`}
         style={{
           scrollbarWidth: "none",
           msOverflowStyle: "none",
