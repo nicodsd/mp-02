@@ -126,7 +126,7 @@ export default function RenderCards({
             </div>
 
             {context && (
-              <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-[100px]">
+              <div className="flex flex-col items-center justify-center px-4 h-full border-l border-gray-100 bg-gray-50/50 gap-4 min-w-25">
                 <button
                   onClick={() => handleEditClick(food)}
                   className="flex items-center gap-2 bg-white border border-gray-300 px-3 py-2 rounded-lg text-xs font-bold hover:bg-gray-900 hover:text-white transition-all"

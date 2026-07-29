@@ -199,7 +199,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
             src={optimizedPhoto || logo}
             width={300}
             height={300}
-            className="rounded-full object-cover w-[135px] h-[135px]"
+            className="rounded-full object-cover w-33.75 h-33.75"
             alt="Profile"
           />
         </div>
@@ -294,7 +294,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
             src={optimizedPhoto || logo}
             width={200}
             height={200}
-            className="rounded-full object-cover w-[130px] h-[130px] shadow-sm"
+            className="rounded-full object-cover w-32.5 h-32.5 shadow-sm"
             alt="Profile"
           />
         </div>
@@ -402,7 +402,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
               src={optimizedPhoto || logo}
               width={200}
               height={200}
-              className="rounded-full object-cover md:w-20 md:h-auto w-[60px] h-[60px]"
+              className="rounded-full object-cover md:w-20 md:h-auto w-15 h-15"
               alt="Profile"
             />
           </div>
