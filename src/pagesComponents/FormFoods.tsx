@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { URI } from "@/src/lib/const";
 import Categories from "@/src/components/newfood_comps/Categories";
+import { MdChevronLeft } from "react-icons/md";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
+import Steps from "@/src/components/newfood_comps/Steps";
 import { Store } from "lucide-react";
 import { FaSpinner, FaTrash, FaTimes, FaList, FaCheckCircle } from "react-icons/fa";
 // 1. IMPORTAR FRAMER MOTION
@@ -206,7 +208,18 @@ export default function FormFoods({ initialCategories, user }: any) {
 
   return (
     <div className="min-h-screen pb-24 relative w-full flex flex-col items-center bg-background-2">
-
+      <div className="flex w-full flex-col px-2 py-3 justify-between items-start">
+        <button
+          type="button"
+          onClick={() => {
+            router.back();
+          }}
+          className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+        >
+          <MdChevronLeft className="text-xl mr-1" />
+          Volver
+        </button>
+      </div>
       <AnimatePresence>
         {(error || successMessage) && (
           <div className="w-full fixed top-5 left-0 right-0 z-100 flex justify-center items-center pointer-events-none px-4">
@@ -281,19 +294,13 @@ export default function FormFoods({ initialCategories, user }: any) {
       </button>
 
       {/* Header General */}
-      <header className="px-4 pb-10 mt-10 flex flex-col gap-2 text-center md:text-left w-full lg:w-[90%] max-w-6xl">
-        <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-gray-800">Carga de Platos</h1>
-        <p className="text-gray-500 text-sm">
-          Completa los datos, agrega los platos a tu lista temporal y luego cárgalos al menú.
-        </p>
-      </header>
+      <Steps />
 
       {/* --- CONTENEDOR PRINCIPAL --- */}
       <div className="flex flex-col lg:flex-row gap-4 md:pb-10 w-full max-w-6xl flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
-        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
-          <h2 className="text-lg font-bold text-gray-700 pb-2">Datos del Plato</h2>
+        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-10 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
 
           <ImageUpload
             preview={preview}
@@ -304,7 +311,7 @@ export default function FormFoods({ initialCategories, user }: any) {
           />
 
           <div className="space-y-8">
-            <div className="flex gap-8 w-full">
+            <div className="flex flex-col gap-8 w-full">
               <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
               <div className="flex flex-col gap-1 w-full">
                 <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
@@ -404,9 +411,9 @@ export default function FormFoods({ initialCategories, user }: any) {
           )}
 
           <div className={`
-            fixed top-0 right-0 h-full w-full sm:w-[450px] bg-background z-50 md:p-6 p-4 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out transform
+            fixed top-0 right-0 h-full w-full sm:w-112.5 bg-background z-50 md:p-6 p-4 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out transform
             ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}
-            lg:static lg:translate-x-0 lg:w-1/2 lg:bg-gray-50 lg:p-6 lg:rounded-2xl lg:border lg:border-gray-200 lg:shadow-none lg:min-h-[400px]
+            lg:static lg:translate-x-0 lg:w-1/2 lg:bg-gray-50 lg:p-6 lg:rounded-2xl lg:border lg:border-gray-200 lg:shadow-none lg:min-h-100
           `}>
             <div className="flex items-center justify-between pb-3 mb-4">
               <h2 className="text-lg font-bold text-gray-700">
@@ -426,7 +433,7 @@ export default function FormFoods({ initialCategories, user }: any) {
                 <p className="text-sm">No has agregado platos a la lista todavía.</p>
               </div>
             ) : (
-              <div className="space-y-2 overflow-y-auto pr-1 flex-1 max-h-[calc(100vh-160px)] lg:max-h-[500px]">
+              <div className="space-y-2 overflow-y-auto pr-1 flex-1 max-h-[calc(100vh-160px)] lg:max-h-125">
                 {foodList.map((food) => (
                   <div key={food.id} className="flex items-center justify-between p-2 bg-white border border-gray-100 rounded-xl shadow-sm">
                     <div className="flex items-center gap-3">
@@ -435,7 +442,7 @@ export default function FormFoods({ initialCategories, user }: any) {
                         alt={food.name}
                         className="w-13 h-13 rounded-lg object-cover bg-gray-100"
                       />
-                      <div className="w-[250px] truncate">
+                      <div className="w-62.5 truncate">
                         <div className="flex items-center gap-1.5">
                           <h4 className="font-bold text-gray-800 text-sm">{food.name}</h4>
                           {food.isGlutenFree && (
