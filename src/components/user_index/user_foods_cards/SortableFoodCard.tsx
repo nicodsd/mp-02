@@ -18,20 +18,17 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
             className={`flex w-full relative overflow-hidden ${food.is_archived ? "grayscale opacity-50" : template?.backgroundColor}
                 ${context
                     ? `border border-gray-200 bg-background md:pr-6 px-2 rounded-xl py-1 h-30 lg:h-16 items-center`
-                    : `border h-27 ${template?.border} rounded-lg p-1 items-center`
+                    : `border h-24 ${template?.border} rounded-lg p-0.5 items-center`
                 }`}
         >
             {
                 food.is_gluten_free && !context && (
-                    <div className={`absolute w-full z-10 top-0 left-0 flex justify-between`}>
-                        <div className="px-2 py-1 flex items-center gap-2 bg-[#ffe17d] shadow-md shadow-black/30 text-white text-sm font-semibold rounded-br-2xl">
-                            <span className={`font-semibold text-[#6d0000] oldstyle-nums`}>
+                    <div className="absolute w-full z-10 top-0 left-0 flex justify-between">
+                        <div className="px-2 py-0.5 flex items-center gap-2 bg-[#ffe17d] shadow-md shadow-black/30 text-white text-xs font-semibold rounded-br-2xl">
+                            <span className="font-semibold text-[#6d0000] oldstyle-nums">
                                 Sin tacc
                             </span>
-                            <IconFood
-                                className="text-[#6d0000]"
-                                size={18}
-                            />
+                            <IconFood className="text-[#6d0000]" size={18} />
                         </div>
                     </div>
                 )
@@ -51,7 +48,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                 <div className="flex gap-2">
                     <div className="menu-card__content text-left">
                         <h2
-                            className={`font-semibold text-base md:h-fit 
+                            className={`font-medium text-[17px] md:h-fit leading-4
                         ${context ? "leading-none" : `text-lg md:h-fit leading-none ${template?.textColor}`}`}
                         >
                             {food.name}
@@ -77,7 +74,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                 </div>
 
                 <div
-                    className={`flex items-end gap-1 ${context ? "justify-end" : "justify-end"}`}
+                    className={`flex items-end gap-1 ${context ? "justify-end" : "justify-end pr-1.5"}`}
                 >
                     {user?.plan !== "free" && !context && <button
                         onClick={(e) => {
@@ -100,7 +97,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                             </span>
 
                             <div className="flex items-center gap-1">
-                                <span className={`font-black ${context ? "text-md" : `text-xl ${template?.textColor}`} oldstyle-nums md:text-2xl`}>
+                                <span className={`font-bold ${context ? "text-md" : `text-[21px] ${template?.textColor}`} oldstyle-nums md:text-2xl`}>
                                     {formatearPrecio(food.promo_price)}
                                 </span>
                             </div>
@@ -108,7 +105,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                     )}
                     {!food.is_promo && (
                         <div className="flex items-center gap-1">
-                            <span className={`font-bold ${context ? "text-md" : `text-xl ${template?.textColor}`} oldstyle-nums md:text-2xl`}>
+                            <span className={`font-semibold ${context ? "text-md" : `text-[21px] ${template?.textColor}`} oldstyle-nums md:text-2xl`}>
                                 {formatearPrecio(food.price)}
                             </span>
                         </div>

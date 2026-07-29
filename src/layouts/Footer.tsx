@@ -62,7 +62,7 @@ export default function Footer({ template }: { template: any }) {
     </div> */}
 
       {/* Línea inferior */}
-      <div className={`flex flex-col items-start justify-end pb-4 text-start ${template?.textColor || "text-gray-700"} min-h-[160px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-xs`}>
+      <div className={`flex flex-col items-start justify-end pb-4 text-start ${template?.textColor || "text-gray-700"} min-h-40 max-w-3xl mx-auto px-4 text-xs`}>
         <div className={`flex items-center ${template?.textColor || "text-gray-700"} gap-2`}>
           <span>¡Crea ahora tu menú gratis!</span>
           <a href="https://qmenu.digital" target="_blank" rel="noopener noreferrer" className={`flex ${template?.backgroundColor || "bg-gray-200"} px-2 font-bold justify-center flex-col items-center rounded-md ${template?.textColor || "text-black"}`}>
@@ -74,15 +74,6 @@ export default function Footer({ template }: { template: any }) {
           <p>
             © {new Date().getFullYear()} QMenú. Todos los derechos reservados.
           </p>
-          Por{" "}
-          <a
-            className="font-semibold"
-            href="https://github.com/nicodsd"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nico Barrera
-          </a>
         </div>
       </div>
     </footer>

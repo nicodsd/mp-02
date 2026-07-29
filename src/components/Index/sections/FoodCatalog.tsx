@@ -25,7 +25,11 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
     let enabledDrinks;
     let enabledDesserts;
 
-    if (!example) {
+    if (user.plan === "free") {
+        enabledDrinks = false
+        enabledDesserts = false
+    }
+    else if (!example) {
         enabledDrinks = user?.enable_bebidas;
         enabledDesserts = user?.enable_postres;
     } else {
@@ -62,10 +66,10 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         <Utensils className="w-5 h-5" />
                     </div>
 
-                    <div className="flex justify-between items-end mb-1">
+                    <div className="flex justify-between h-10 max-h-10 items-end mb-1">
                         <Categories
                             template={template}
-                            foods={allFoods.filter((f: any) => f.sub_category !== "Bebidas" && f.sub_category !== "Postres")}
+                            foods={allFoods.filter((f: any) => !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres"))}
                             selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                         />
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
@@ -74,14 +78,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                     {example || user?.presentation === "default" ? (<CardsFoodsByCategories
                         user={user}
                         arrayFoods={processedFoods.filter(f => {
-                            let isMain = true
-                            if (enabledDesserts && enabledDrinks) {
-                                isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
-                            } else if (enabledDesserts && !enabledDrinks) {
-                                isMain = f.sub_category !== "Postres";
-                            } else if (!enabledDesserts && enabledDrinks) {
-                                isMain = f.sub_category !== "Bebidas";
-                            }
+                            let isMain = !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres");
                             return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                         })}
                         example={example}
@@ -92,14 +89,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             Ath={false}
                             user={user}
                             arrayFoods={processedFoods.filter(f => {
-                                let isMain = true
-                                if (enabledDesserts && enabledDrinks) {
-                                    isMain = f.sub_category !== "Bebidas" && f.sub_category !== "Postres";
-                                } else if (enabledDesserts && !enabledDrinks) {
-                                    isMain = f.sub_category !== "Postres";
-                                } else if (!enabledDesserts && enabledDrinks) {
-                                    isMain = f.sub_category !== "Bebidas";
-                                }
+                                let isMain = !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres");
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
                             example={example}

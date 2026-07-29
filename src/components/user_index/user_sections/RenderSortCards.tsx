@@ -24,11 +24,6 @@ export default function RenderSortCards({ foods: initialFoods, count, user, cont
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
     );
 
-    // Filtrado de platos
-    const platos = useMemo(() =>
-        foods.filter(f => f.sub_category !== "Bebidas" && f.sub_category !== "Postres"),
-        [foods]);
-
     useEffect(() => {
         if (initialFoods) setFoods(initialFoods);
     }, [initialFoods, setFoods]);
@@ -61,16 +56,16 @@ export default function RenderSortCards({ foods: initialFoods, count, user, cont
     const handleDragEnd = async (event: DragEndEvent) => {
         const { active, over } = event;
         if (over && active.id !== over.id) {
-            const oldIndex = platos.findIndex((f) => f._id === active.id);
-            const newIndex = platos.findIndex((f) => f._id === over.id);
+            const oldIndex = foods.findIndex((f) => f._id === active.id);
+            const newIndex = foods.findIndex((f) => f._id === over.id);
 
             if (oldIndex !== -1 && newIndex !== -1) {
-                const updatedPlatos = arrayMove(platos, oldIndex, newIndex);
+                const updatedfoods = arrayMove(foods, oldIndex, newIndex);
 
                 let platoIndex = 0;
                 const updatedFoods = foods.map((f) => {
                     if (f.sub_category !== "Bebidas" && f.sub_category !== "Postres") {
-                        return updatedPlatos[platoIndex++];
+                        return updatedfoods[platoIndex++];
                     }
                     return f;
                 });
@@ -114,8 +109,8 @@ export default function RenderSortCards({ foods: initialFoods, count, user, cont
                     </div>
                 ) : (
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                        <SortableContext items={platos.map(f => f._id)} strategy={verticalListSortingStrategy}>
-                            {platos.map((food) => (
+                        <SortableContext items={foods.map(f => f._id)} strategy={verticalListSortingStrategy}>
+                            {foods.map((food) => (
                                 <SortableRow
                                     user={user}
                                     key={food._id}

@@ -152,7 +152,7 @@ export default function Menu({ data, template, example }: { data: MenuProps, tem
           onOpenModal={() => setShowModal(true)}
         />
 
-        <OffersSection foods={data.foods} template={template} />
+        {data.plan !== "free" && <OffersSection foods={data.foods} template={template} />}
 
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
           <FoodCatalog
@@ -168,12 +168,3 @@ export default function Menu({ data, template, example }: { data: MenuProps, tem
     </main>
   );
 }
-
-
-
-
-{/* <h2 className="text-lg ml-2 font-normal text-gray-600 mb-1 text-start w-full">
-  {arrayFoods.length > 1
-    ? "¿Qué queres comer?"
-    : `¡Hoy! Especialidad de la casa`}
-</h2> */}

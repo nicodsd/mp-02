@@ -63,7 +63,7 @@ export default function UserIndex({ foods, user, template }: any) {
         />
 
         <AddDishButton template={template} />
-        <AdminOffers foods={foods} template={template} />
+        {user.plan !== "free" && <AdminOffers foods={foods} template={template} />}
         <section aria-label="Filtros e información" className="flex h-fit flex-col gap-2 pt-4 pb-10">
 
           <AdminFoodCatalog

@@ -25,49 +25,50 @@ export function Categories({
   };
 
   return (
-    <section className="w-[82%] h-fit text-[17px] font-medium"> <div
-      className={`flex gap-1 pl-2 overflow-x-auto`}
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-    >
-      {orderedCats.length > 0 && (
-        <button
-          key="All"
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            handleClick("0");
-          }}
-          className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
+    <section className="w-[82%] h-full text-[16px]">
+      <div
+        className={`flex gap-1 pl-2 overflow-x-auto`}
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {orderedCats.length > 0 && (
+          <button
+            key="All"
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick("0");
+            }}
+            className={`py-1 no-underline px-3 cursor-pointer rounded-[7px] font-semibold
               ${activeCategory === "0"
-              ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
-              : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
-            }`}
-        >
-          Todo
-        </button>
-      )}
+                ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
+                : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
+              }`}
+          >
+            Todo
+          </button>
+        )}
 
-      {orderedCats.length > 0 && orderedCats.map((category: any) => (
-        <button
-          key={category}
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            handleClick(category);
-          }}
-          className={`py-0.5 no-underline px-3 cursor-pointer rounded-[7px] font-bold
+        {orderedCats.length > 0 && orderedCats.map((category: any) => (
+          <button
+            key={category}
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              handleClick(category);
+            }}
+            className={`py-1 no-underline px-3 text-center cursor-pointer leading-none md:text-xs rounded-[7px] font-semibold
                 ${activeCategory === category
-              ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
-              : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
-            }`}
-        >
-          {category}
-        </button>
-      ))}
-    </div>
+                ? `${template?.backgroundColor2 || "bg-gray-900"} ${template?.textColor || "text-white"} border ${template?.border || "border-gray-300"}`
+                : `${template?.backgroundColor || "bg-background"} ${template?.textColor || "text-gray-700"} hover:${template?.backgroundColor2 || "bg-gray-100"} border ${template?.border || "border-gray-300"}`
+              }`}
+          >
+            {category} especiales
+          </button>
+        ))}
+      </div>
     </section>
   );
 }

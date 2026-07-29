@@ -15,7 +15,7 @@ const SortPriceButton = ({ onSortChange, template }: SortPriceButtonProps) => {
     return (
         <button
             onClick={toggleSortOrder}
-            className={`w-[15%] h-8 border ${template?.backgroundColor2 || "bg-background"} cursor-pointer ${template?.border || "border-gray-300"} rounded-md text-sm font-medium hover:${template?.backgroundColor2 || "bg-gray-100"} transition-colors duration-200 focus:outline-none flex items-center justify-center`}
+            className={`w-[15%] h-full border ${template?.backgroundColor2 || "bg-background"} cursor-pointer ${template?.border || "border-gray-300"} rounded-md text-sm font-medium hover:${template?.backgroundColor2 || "bg-gray-100"} transition-colors duration-200 focus:outline-none flex items-center justify-center`}
         >
             <FaDollarSign className={`h-4 ${template?.icons || "text-primary"} w-4`} />
             {sortOrder === 'desc' ? <FaSortAmountUpAlt className={`h-4 ${template?.textColor || "text-gray-700"} w-4`} /> : <FaSortAmountDownAlt className={`h-4 ${template?.textColor || "text-gray-700"} w-4`} />}

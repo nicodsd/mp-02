@@ -105,7 +105,7 @@ export default function Cards({
       )}
 
       <div className="flex flex-col w-full h-64 overflow-hidden rounded-lg p-2 items-center">
-        <div className="relative min-w-full h-[125px] md:max-w-25 md:max-h-36 shrink-0 rounded-[7px] overflow-hidden">
+        <div className="relative min-w-full h-31.25 md:max-w-25 md:max-h-36 shrink-0 rounded-[7px] overflow-hidden">
           <Image
             quality={75}
             loading="lazy"
@@ -119,10 +119,10 @@ export default function Cards({
 
         <div className="flex flex-col justify-between w-full h-full mt-1.5">
           <div className="text-left flex space-y-1 flex-col justify-start h-full">
-            <h2 className={`${template?.textColor || "text-gray-700"} font-bold text-base leading-none text-wrap line-clamp-2 mt-0.5 md:h-fit`}>
+            <h2 className={`${template?.textColor || "text-gray-700"} font-medium text-[17px] text-balance leading-none line-clamp-2 mt-0.5 md:h-fit`}>
               {name}
             </h2>
-            <p className={`${template?.textColorOpacity || "text-gray-700/50"} text-[13px] text-pretty line-clamp-2 leading-tight`}>
+            <p className={`${template?.textColorOpacity || "text-gray-700/50"} text-[13px] line-clamp-2 leading-3`}>
               {description}
             </p>
           </div>

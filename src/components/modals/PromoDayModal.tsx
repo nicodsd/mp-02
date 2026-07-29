@@ -87,6 +87,16 @@ export default function PromoPanel({
       <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-full md:max-w-3xl px-4 py-6 flex flex-col gap-3 rounded-xl">
         <h3 className="text-xl text-gray-800">Agregar Promociones</h3>
 
+        <div className="bg-linear-to-r from-amber-500 to-amber-600 rounded-lg p-3 mb-2 flex items-center justify-between text-white shadow-md">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">⭐</span>
+            <div>
+              <p className="font-bold text-sm">Función de pago</p>
+              <p className="text-xs opacity-90">Mejora tu plan para activar promociones en tus platos.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="relative flex items-center w-full">
           <input
             type="text"
@@ -102,18 +112,18 @@ export default function PromoPanel({
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => setSelectedCategory("")}
-              className={`py-0.5 no-underline px-3 rounded-[7px] cursor-pointer font-bold ${selectedCategory === ""
+              className={`py-1 text-[13px] no-underline px-3 rounded-[7px] cursor-pointer font-bold ${selectedCategory === ""
                 ? "bg-red-600 text-white border"
                 : "text-gray-800 border border-gray-300"
                 }`}
             >
-              Todas
+              Todos
             </button>
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat!)}
-                className={`py-0.5 no-underline px-2 rounded-[7px] cursor-pointer font-bold ${selectedCategory === cat
+                className={`py-1 text-[13px] no-underline px-2 rounded-[7px] cursor-pointer font-bold ${selectedCategory === cat
                   ? "bg-red-600 text-white border"
                   : "text-gray-800 border border-gray-300"
                   }`}
@@ -123,24 +133,17 @@ export default function PromoPanel({
             ))}
           </div>
 
-          <div className="flex flex-col gap-0.5 h-62 md:h-100 bg-gray-100/60 p-1 rounded-xl overflow-auto">
+          <div className="flex flex-col gap-0.5 h-62 md:h-100 bg-gray-100/60 p-1 rounded-xl overflow-auto relative">
+            {/* Overlay para evitar interacción visualmente si se desea, o simplemente quitamos onClick */}
             {filteredFoods.map((food) => (
               <div
                 key={food._id}
-                onClick={() =>
-                  !isFoodInPromo(food._id) && handleSelectFood(food)
-                }
-                className={`flex cursor-pointer bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition hover:shadow-lg ${isFoodInPromo(food._id)
-                  ? "opacity-40 cursor-not-allowed"
-                  : selectedFood?._id === food._id
-                    ? "border-red-500 shadow-lg"
-                    : "border-gray-300"
-                  }`}
+                className={`flex bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition opacity-70 border-gray-300`}
               >
                 <img
                   src={food.photo}
                   alt={food.name}
-                  className="w-10 h-10 aspect-square object-cover rounded-md"
+                  className="w-10 h-10 aspect-square object-cover rounded-md grayscale"
                 />
                 <div className="flex flex-col justify-between h-full">
                   <h3 className="text-sm tracking-thin leading-4 text-gray-800">
