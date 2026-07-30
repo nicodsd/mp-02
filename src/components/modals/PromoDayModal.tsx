@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import PromoDay from "@/src/components/PromoDay";
 import DiscountSlider from "@/src/components/Index/filters/DiscountSlider";
 import { FaSearch } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 type Food = {
   _id: string | number;
@@ -17,13 +17,14 @@ type Food = {
 };
 
 export default function PromoPanel({
+  plan,
   foods,
   openModal,
 }: {
+  plan: string;
   foods: Food[];
   openModal: () => void;
 }) {
-
   const priceFormatter = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
@@ -39,6 +40,7 @@ export default function PromoPanel({
     setSelectedFood(food);
     setPromoPrice(String(food.price));
   };
+
 
   const applyDiscount = (percent: number) => {
     if (selectedFood) {
@@ -87,7 +89,7 @@ export default function PromoPanel({
       <div className="absolute animate__slideInUp animate__animated animate__faster bottom-22 bg-background z-100 w-full md:max-w-3xl px-4 py-6 flex flex-col gap-3 rounded-xl">
         <h3 className="text-xl text-gray-800">Agregar Promociones</h3>
 
-        <div className="bg-linear-to-r from-amber-500 to-amber-600 rounded-lg p-3 mb-2 flex items-center justify-between text-white shadow-md">
+        {plan === 'free' && <div className="bg-linear-to-r from-amber-500 to-amber-600 rounded-lg p-3 mb-2 flex items-center justify-between text-white shadow-md">
           <div className="flex items-center gap-2">
             <span className="text-xl">⭐</span>
             <div>
@@ -95,7 +97,7 @@ export default function PromoPanel({
               <p className="text-xs opacity-90">Mejora tu plan para activar promociones en tus platos.</p>
             </div>
           </div>
-        </div>
+        </div>}
 
         <div className="relative flex items-center w-full">
           <input
@@ -133,17 +135,18 @@ export default function PromoPanel({
             ))}
           </div>
 
-          <div className="flex flex-col gap-0.5 h-62 md:h-100 bg-gray-100/60 p-1 rounded-xl overflow-auto relative">
+          <div className="flex flex-col gap-0.5 h-80 md:h-100 bg-gray-100/60 p-1 rounded-xl overflow-auto relative">
             {/* Overlay para evitar interacción visualmente si se desea, o simplemente quitamos onClick */}
             {filteredFoods.map((food) => (
               <div
+                onClick={() => plan !== "free" ? handleSelectFood(food) : null}
                 key={food._id}
-                className={`flex bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition opacity-70 border-gray-300`}
+                className={`flex bg-background items-start gap-2 border-[0.3] rounded-lg p-2 transition ${plan !== "free" ? "opacity-100 cursor-pointer hover:bg-gray-200" : "grayscale opacity-50 cursor-not-allowed"} border-gray-300`}
               >
                 <img
                   src={food.photo}
                   alt={food.name}
-                  className="w-10 h-10 aspect-square object-cover rounded-md grayscale"
+                  className="w-10 h-10 aspect-square object-cover rounded-md"
                 />
                 <div className="flex flex-col justify-between h-full">
                   <h3 className="text-sm tracking-thin leading-4 text-gray-800">
@@ -168,54 +171,43 @@ export default function PromoPanel({
         </div>
 
         {selectedFood && (
-          <div className="fixed inset-0 flex items-center backdrop-blur-2xl overscroll-none justify-center">
-            <div className="flex flex-col h-fit justify-center gap-3 bg-background z-50 w-[95%] lg:w-[50%] shadow-lg p-3 rounded-lg">
-              <div className="flex items-start px-2 justify-between">
-                <div className="flex flex-col gap-y-1">
-                  <span className="block text-xs px-2 py-1 w-fit border text-center border-amber-300 bg-amber-300 rounded-full mt-3 font-semibold">
-                    {selectedFood.sub_category}
-                  </span>
-                  <span className="block text-xl font-semibold">
-                    {selectedFood.name}
-                  </span>
+          <div
+            className="fixed inset-0 z-100 backdrop-blur-sm rounded-xl flex items-end sm:items-center justify-center"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white w-full sm:w-125 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <span className="text-xs font-bold text-red-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedFood.name}</h2>
                 </div>
-                <img
-                  src={selectedFood.photo}
-                  alt={selectedFood.name}
-                  className="w-24 h-24 object-cover rounded-md"
-                />
+                <img src={selectedFood.photo} className="w-20 h-20 object-cover rounded-xl" alt="" />
               </div>
-              <DiscountSlider onChange={(percent) => applyDiscount(percent)} />
-              <div className="flex flex-col justify-between">
-                <div className="px-2 flex items-center h-25">
-                  <div className="text-end w-full">
-                    <h2 className="font-semibold text-sm">
-                      Aplicar promoción:
-                    </h2>
-                    <span className="block line-through">
-                      Antes: ${selectedFood.price}
-                    </span>
-                    <span className="text-3xl font-bold">
-                      Ahora: ${promoPrice}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex gap-x-2">
-                  <button
-                    onClick={() => setSelectedFood(null)}
-                    className="cursor-pointer bg-gray-200 w-1/2 text-gray-800 border-gray-300 border px-4 py-3 rounded-lg hover:bg-gray-300 transition mt-2"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handlePublishPromo}
-                    className="bg-red-600 w-1/2 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition mt-2"
-                  >
-                    Publicar
-                  </button>
+
+              <DiscountSlider onChange={applyDiscount} />
+
+              <div className="bg-gray-50 p-4 rounded-2xl my-6 flex justify-between items-center">
+                <div>
+                  <p className="text-gray-500 text-sm">Antes: {priceFormatter.format(selectedFood.price)}</p>
+                  <p className="text-3xl font-black text-gray-900"> {priceFormatter.format(Number(promoPrice))}</p>
                 </div>
               </div>
-            </div>
+
+              <div className="flex gap-3">
+                <button onClick={() => setSelectedFood(null)} className="flex-1 cursor-pointer transition-all duration-200 ease-in-out py-4 font-bold text-gray-500 hover:text-gray-800">Cancelar</button>
+                <button
+                  onClick={handlePublishPromo}
+                  disabled={promoPrice === String(selectedFood.price)}
+                  className="flex-2 bg-red-600 text-white py-4 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 ease-in-out rounded-lg font-bold active:scale-95 disabled:bg-gray-300"
+                >
+                  Publicar Promo
+                </button>
+              </div>
+            </motion.div>
           </div>
         )}
 

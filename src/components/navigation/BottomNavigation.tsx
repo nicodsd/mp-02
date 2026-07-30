@@ -82,7 +82,7 @@ export default function BottomNavigation({
   return (
     <>
       {openDiscount && (
-        <PromoDayModal openModal={() => setOpenDiscount(false)} foods={foods} />
+        <PromoDayModal plan={user.plan} openModal={() => setOpenDiscount(false)} foods={foods} />
       )}
       <QrModalsGenerator
         user={user}

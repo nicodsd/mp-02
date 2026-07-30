@@ -216,7 +216,7 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ duration: 0.2 }}
-            className="bg-white w-full sm:w-[500px] rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
+            className="bg-white w-full sm:w-125 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
             <div className="flex justify-between items-start mb-6">
               <div>
                 <span className="text-xs font-bold text-red-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
@@ -231,10 +231,6 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
               <div>
                 <p className="text-gray-500 text-sm">Antes: {priceFormatter.format(selectedFood.price)}</p>
                 <p className="text-3xl font-black text-gray-900"> {priceFormatter.format(Number(promoPrice))}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs font-bold text-green-600">AHORRO</p>
-                <p className="text-lg font-bold text-green-600">{priceFormatter.format(selectedFood.price - Number(promoPrice))}</p>
               </div>
             </div>
 
