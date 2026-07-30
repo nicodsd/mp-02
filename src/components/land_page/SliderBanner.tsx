@@ -27,7 +27,7 @@ const slidesData: Slide[] = [
         ),
         subtitle: (
             <>
-                Ahora es posible, y gratis, con <span className="font-black">QMenu</span> puedes crear un menú digital profesional en minutos y compartirlo con tus clientes.
+                Ahora es posible, y gratis, con <span className="font-black">QMenu</span>.
             </>
         ),
         bgClass: "from-red-600 to-orange-500",
@@ -90,10 +90,28 @@ export default function SliderBanner() {
     };
 
     return (
-        <section className="relative w-full overflow-hidden md:my-10">
-            {/* Fondo en gradiente ocupando estrictamente 100% de ancho y alto del slide */}
-            <div className={`absolute inset-0 w-full rounded-2xl h-full bg-linear-to-br ${slidesData[current].bgClass} z-0 pointer-events-none`} />
-            <div className="w-full relative min-h-100 md:min-h-0 md:h-90 overflow-hidden shadow-2xl group flex flex-col justify-between">
+        <section className="relative shadow-xl w-full overflow-hidden md:my- rounded-2xl">
+            <div className="w-full relative min-h-90 md:min-h-0 md:h-60 overflow-hidden group flex flex-col justify-between">
+                {/* Fondo en gradiente ocupando estrictamente 100% de ancho y alto del slide */}
+                <div className={`absolute inset-0 w-full rounded-2xl h-full bg-linear-to-br ${slidesData[current].bgClass} z-0 pointer-events-none`} />
+                {/* Imagen Mobile absoluta en el fondo inferior */}
+                {slidesData[current].image && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.25 }}
+                        className="md:hidden absolute inset-x-0 -bottom-14 w-full flex items-end justify-center z-0 pointer-events-none overflow-hidden rounded-b-2xl"
+                    >
+                        <Image
+                            src={slidesData[current].image}
+                            alt={slidesData[current].imageAlt || "banner-image"}
+                            width={600}
+                            height={600}
+                            className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
+                        />
+                    </motion.div>
+                )}
                 <div
                     className="flex w-full h-full cursor-grab active:cursor-grabbing transition-transform duration-500 ease-in-out"
                     style={{ transform: `translateX(-${current * 100}%)` }}
@@ -102,108 +120,75 @@ export default function SliderBanner() {
                     onTouchEnd={onTouchEnd}
                 >
                     {slidesData.map((slide, index) => (
-                        <div key={index} className="min-w-full rounded-2xl w-full h-full min-h-full p-10 md:p-0 relative flex items-center justify-center overflow-hidden">
-
+                        <div key={index} className="min-w-full rounded-2xl w-full h-full min-h-full p-6 md:p-0 relative flex items-center justify-center overflow-hidden">
 
                             {/* Contenido principal */}
-                            <div className="relative h-full z-10 flex flex-col md:flex-row items-center justify-between rounded-2xl w-full md:max-w-6xl mx-auto gap-6 md:gap-8">
-
-                                {/* Textos y Botón (Capa superior z-20) */}
-                                <div className="text-center relative md:text-left flex-1 z-20 w-full flex flex-col items-center md:items-start">
-                                    <motion.h2
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.1 }}
-                                        className="text-4xl md:text-5xl leading-none text-balance font-bold text-white mb-3 md:mb-6"
-                                    >
-                                        {slide.title}
-                                    </motion.h2>
-
-                                    <motion.p
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.2 }}
-                                        className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6 mb-6 md:mb-0"
-                                    >
-                                        {slide.subtitle}
-                                    </motion.p>
-
-                                    {/* Botón CTA */}
-                                    <motion.div
-                                        initial={{ opacity: 0, x: 20 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.3 }}
-                                        className="mt-2 md:mt-8 flex justify-center md:justify-start w-full md:w-auto"
-                                    >
-                                        <Link
-                                            href={slide.ctaLink}
-                                            className={`font-bold py-3 px-8 rounded-lg hover:shadow-xl transition-all transform hover:-translate-y-1 active:translate-y-0 text-base md:text-xl ${slide.ctaBg || "bg-lime-300 hover:bg-lime-400 text-green-900"
-                                                }`}
-                                        >
-                                            {slide.ctaText}
-                                        </Link>
-                                    </motion.div>
-                                </div>
-
-                                {/* Imagen Mobile absoluta en el fondo inferior */}
-                                {slide.image && (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 30 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: 0.25 }}
-                                        className="md:hidden absolute inset-x-0 -bottom-10 w-full flex items-end justify-center z-0 pointer-events-none overflow-hidden rounded-b-2xl"
-                                    >
-                                        <Image
-                                            src={slide.image}
-                                            alt={slide.imageAlt || "banner-image"}
-                                            width={600}
-                                            height={600}
-                                            className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
-                                        />
-                                    </motion.div>
-                                )}
-
+                            <div className="relative h-full md:py-10 z-10 flex flex-col md:flex-row items-center justify-between rounded-2xl w-full mx-auto gap-6 md:gap-0">
                                 {/* Lado Derecho: Imagen Desktop */}
                                 {slide.image && (
-                                    <div className="hidden md:flex flex-1 rounded-2xl justify-end relative z-20">
+                                    <div className="hidden md:flex flex-1 rounded-2xl justify-start relative z-20">
                                         <motion.div
                                             initial={{ opacity: 0, x: -20 }}
                                             whileInView={{ opacity: 1, x: 0 }}
                                             viewport={{ once: true }}
                                             transition={{ delay: 0.4 }}
-                                            className="w-112.5 lg:w-180 rounded-2xl -mr-50"
+                                            className="w-112.5 lg:w-140"
                                         >
                                             <Image
                                                 src={slide.image}
                                                 alt={slide.imageAlt || "banner-image"}
                                                 width={500}
                                                 height={500}
-                                                className="w-full drop-shadow-xl aspect-square h-auto object-contain"
+                                                className="w-full translate-y-6 h-auto object-cover"
                                             />
                                         </motion.div>
                                     </div>
                                 )}
+                                {/* Columna Izquierda: Textos y Botón en la parte inferior */}
+                                <div className="text-center relative md:text-left flex-1 z-20 w-full flex flex-col justify-between items-center md:items-start h-full">
+
+                                    {/* Contenedor agrupado de Título y Subtítulo */}
+                                    <div className="flex flex-col items-center md:items-start">
+                                        <motion.h2
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.1 }}
+                                            className="text-4xl md:text-5xl leading-none text-balance font-bold text-white mb-3 md:mb-4"
+                                        >
+                                            {slide.title}
+                                        </motion.h2>
+
+                                        <motion.p
+                                            initial={{ opacity: 0, x: 20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            transition={{ delay: 0.2 }}
+                                            className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6"
+                                        >
+                                            {slide.subtitle}
+                                        </motion.p>
+                                    </div>
+
+                                </div>
+
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Controles del Slider */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-30">
-                    {slidesData.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrent(index)}
-                            className={`h-2.5 rounded-full transition-all duration-300 ${index === current ? "bg-white w-7" : "bg-white/50 w-2.5 hover:bg-white/80"
-                                }`}
-                            aria-label={`Ir al slide ${index + 1}`}
-                        />
-                    ))}
-                </div>
+            </div>
+            {/* Controles del Slider */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-30">
+                {slidesData.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrent(index)}
+                        className={`h-2.5 rounded-full transition-all duration-300 ${index === current ? "bg-white w-7" : "bg-white/50 w-2.5 hover:bg-white/80"
+                            }`}
+                        aria-label={`Ir al slide ${index + 1}`}
+                    />
+                ))}
             </div>
         </section>
     );

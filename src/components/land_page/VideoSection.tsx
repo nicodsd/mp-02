@@ -9,7 +9,7 @@ export default function VideoSection() {
 
         <div className="w-full relative z-10">
           <div className="text-center md:text-start md:pl-3 md:pr-20">
-            <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
+            <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-balance">
               Una experiencia simple e intuitiva
             </motion.h2>
             <motion.p

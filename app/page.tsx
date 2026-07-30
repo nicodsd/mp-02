@@ -15,6 +15,7 @@ import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 import MPRedirect from '@/src/components/navigation/MPRedirect';
 import { cookies } from "next/headers";
+import EntrepreneurCommitment from "@/src/components/land_page/EntrepreneurCommitment";
 //import Testimonials from "@/src/components/land_page/Testimonials";
 
 export default async function Page() {
@@ -84,6 +85,7 @@ export default async function Page() {
           <MetricsSection />
           <TestimonialsSection />
           <Showcase />
+          <EntrepreneurCommitment />
           <Pricing />
           <FAQ />
           <Contact />

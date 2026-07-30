@@ -53,7 +53,7 @@ export default function Showcase() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="text-base text-zinc-500"
+                            className="text-base text-zinc-500 text-balance"
                         >
                             Cambia el estilo de tu restaurante con un solo clic <strong>desde el panel</strong>.
                         </motion.p>
@@ -67,7 +67,7 @@ export default function Showcase() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 }} className="flex justify-center lg:justify-end relative">
-                        <div className={`relative no-scrollbar w-[255px] h-[500px] md:w-[280px] md:h-[560px] ${activeTheme.appBg} rounded-4xl border-5 border-stone-800 overflow-hidden transition-all`}>
+                        <div className={`relative no-scrollbar w-63.75 h-125 md:w-70 md:h-140 ${activeTheme.appBg} rounded-4xl border-5 border-stone-800 overflow-hidden transition-all`}>
 
                             {/* SCREEN CONTENT - EL FONDO DE LA APP CAMBIA AQUÍ */}
                             <div

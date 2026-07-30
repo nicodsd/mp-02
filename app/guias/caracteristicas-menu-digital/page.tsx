@@ -9,47 +9,47 @@ import { Camera, QrCode, Smartphone, CloudLightning, PieChart, Zap } from 'lucid
 
 const featuresList = [
     {
-        icon: <Zap className="h-6 w-6" />,
+        icon: <Zap className="h-8 w-8" />,
         title: "Ultra rápido",
         description: "Tu menú cargará en segundos, garantizando una experiencia fluida para tus clientes."
     },
     {
-        icon: <HiOutlineAdjustments className="h-6 w-6" />,
+        icon: <HiOutlineAdjustments className="h-8 w-8" />,
         title: "Configura tu menú",
         description: "Destacá del resto, cambiá el tamaño del encabezado, la presentación de los platos, entre otras configuraciones."
     },
     {
-        icon: <HiOutlineColorSwatch className="h-6 w-6" />,
+        icon: <HiOutlineColorSwatch className="h-8 w-8" />,
         title: "Colores Personalizables",
         description: "Diseñá tu menú con la identidad de tu marca. Elegí entre diferentes paletas de colores para que tu menú se vea único."
     },
     {
-        icon: <CloudLightning className="h-6 w-6" />,
+        icon: <CloudLightning className="h-8 w-8" />,
         title: "Actualizaciones en Tiempo Real",
         description: "Modifica precios, oculta platos agotados o cambia descripciones al instante."
     },
     {
-        icon: <Smartphone className="h-6 w-6" />,
+        icon: <Smartphone className="h-8 w-8" />,
         title: "Para todos los dispositivos",
         description: "Diseño optimizado para usarse en cualquier dispositivo, fluidez sin necesidad de instalar apps."
     },
     {
-        icon: <QrCode className="h-6 w-6" />,
+        icon: <QrCode className="h-8 w-8" />,
         title: "Códigos QR Personalizables",
         description: "Genera QRs únicos. Descárgalos en alta resolución listos para imprimir."
     },
     {
-        icon: <Camera className="h-6 w-6" />,
+        icon: <Camera className="h-8 w-8" />,
         title: "Galería de Fotos HD",
         description: "Sube fotos de tus platos en alta calidad. La comida entra por los ojos y aumenta el ticket promedio."
     },
     {
-        icon: <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.82 3.98m0-10.98-6.82 3.98" /></svg>,
+        icon: <svg className="w-7 h-7" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="m8.59 13.51 6.82 3.98m0-10.98-6.82 3.98" /></svg>,
         title: "Comparte tus platos",
         description: "Comparte tus platos con quien quieras, tambien puedes descargar la plantilla para subirla a redes."
     },
     {
-        icon: <PieChart className="h-6 w-6" />,
+        icon: <PieChart className="h-8 w-8" />,
         title: "Analíticas",
         description: "Lleva la cuenta de tus platos cargados, tu gestión de promociones y también los pedidos que recibas."
     }
@@ -77,13 +77,13 @@ export default function CaracteristicasPage() {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {featuresList.map((feature, index) => (
-                                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 md:h-60 flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
-                                        <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 md:h-full flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
+                                        <div className="md:w-12 md:h-12 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                                             {feature.icon}
                                         </div>
                                         <div className="flex flex-col">
-                                            <h4 className="text-lg font-bold text-stone-900 mb-2">{feature.title}</h4>
-                                            <p className="text-stone-600 text-sm leading-relaxed">
+                                            <h4 className="text-md font-semibold text-stone-900">{feature.title}</h4>
+                                            <p className="text-stone-600 text-sm leading-5 mt-1">
                                                 {feature.description}
                                             </p>
                                         </div>

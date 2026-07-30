@@ -57,7 +57,7 @@ export default function GuidePreview() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
-                  className="text-base text-zinc-500"
+                  className="text-base text-zinc-500 text-balance"
                 >
                   Recursos útiles para sacar el máximo provecho de tu menú digital.
                 </motion.p>

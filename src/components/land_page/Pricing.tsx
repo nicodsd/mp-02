@@ -97,13 +97,13 @@ export default function Pricing() {
     <section id="planes" className="py-20 md:py-0 md:pb-30 w-full">
       <div className="w-full">
         <div className="text-center md:text-start mb-8 md:mb-12 md:pl-3">
-          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
+          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl text-balance md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-base text-zinc-500"
+            className="text-base text-zinc-500 text-balance"
           >
             Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
           </motion.p>
@@ -145,7 +145,7 @@ export default function Pricing() {
 
               {
                 !plan.premium ?
-                  <ul className="space-y-1 grow">
+                  <ul className="space-y-1 grow pb-6 md:pb-0">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">
                         <Check className={`h-4 w-4 mr-2 shrink-0 ${plan.recommended ? 'text-primary' : 'text-gray-400'}`} />
@@ -154,7 +154,7 @@ export default function Pricing() {
                     ))}
                   </ul>
                   :
-                  <ul className="space-y-1 grow">
+                  <ul className="space-y-1 grow pb-6">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start">
                         <Check className={`h-4 w-4 mr-2 shrink-0 text-black`} />
@@ -188,7 +188,7 @@ export default function Pricing() {
       </div>
       <span className="flex text-center flex-col mt-8 justify-center items-center gap-1">
         <p className="text-gray-500 text-xs">Manejo seguro de suscripciones a través de Mercado Pago.</p>
-        <p className="text-gray-500 text-xs">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
+        <p className="text-gray-500 text-xs text-pretty">En caso de reembolso o anulación de suscripción, ingresar al panel de <a href="https://www.mercadopago.com.ar" className="text-blue-500 underline">Mercado Pago</a>.</p>
         <p className="text-gray-500 text-xs">Leé nuestros <a href="/terminos-y-condiciones" className="text-blue-500 underline">Términos y Condiciones</a>.</p>
       </span>
     </section>

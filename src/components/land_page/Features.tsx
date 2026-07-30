@@ -36,7 +36,7 @@ export default function Features() {
     <section id="caracteristicas" className="pt-30 pb-10 lg:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
         <div className="text-center md:text-start mb-12 md:pl-3">
-          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Ventajas de nuestro menú digital</motion.h2>
+          <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl text-balance font-bold text-stone-900 mb-4">Ventajas de nuestro menú digital</motion.h2>
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -51,12 +51,12 @@ export default function Features() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {featuresList.map((feature, index) => (
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 h-fit flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
-              <div className="w-12 h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
+              <div className="md:w-12 md:h-12 md:bg-primary-50 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                 {feature.icon}
               </div>
               <div className="flex flex-col">
-                <h4 className="text-lg font-bold text-stone-900 mb-2">{feature.title}</h4>
-                <p className="text-stone-600 text-sm leading-relaxed">
+                <h4 className="text-md font-semibold text-stone-900">{feature.title}</h4>
+                <p className="text-stone-600 text-sm leading-5 mt-1">
                   {feature.description}
                 </p>
               </div>
