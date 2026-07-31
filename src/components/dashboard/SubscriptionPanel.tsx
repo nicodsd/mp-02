@@ -241,7 +241,7 @@ export default function SubscriptionPanel({ user }: { user: any }) {
                 </button>
               ) : plan.id === "lifetime" ? (
                 <Link
-                  href="/contacto"
+                  href="/cotizar-menu"
                   className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
                 >
                   Cotizar Plan
