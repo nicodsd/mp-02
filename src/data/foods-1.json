@@ -178,5 +178,17 @@
         "sub_category": "Postres",
         "photo": "/images/foods/postres/tarta-de-banana.webp",
         "allergens": "dairy"
+    },
+    {
+        "_id": 16,
+        "name": "Vaso cola 500 ml",
+        "description": "Vaso coca cola 500 ml",
+        "price": 1500,
+        "category": "Bebidas",
+        "promo_price": 0,
+        "is_promo": false,
+        "sub_category": "Bebidas",
+        "photo": "/images/foods/bebidas/gaseosas/vaso-cola.avif",
+        "allergens": "dairy"
     }
 ]

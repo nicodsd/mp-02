@@ -49,7 +49,6 @@ export default function ContactoPage() {
             <div className="flex flex-col items-center w-full min-h-screen selection:bg-primary selection:text-white relative">
                 <Navbar isIndex={false} />
 
-                {/* 'grow' hace que el main ocupe todo el espacio disponible, empujando al footer al fondo */}
                 <main className="grow md:rounded-b-2xl bg-background w-full relative flex flex-col items-center justify-start md:max-w-7xl mx-auto px-4 pt-30">
                     <section id="contacto" className="w-full p-6 relative border rounded-2xl border-gray-300">
                         <div className="w-full">
@@ -58,12 +57,9 @@ export default function ContactoPage() {
 
                                 <div className="text-center md:text-start md:mb-16 px-2">
                                     <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Cotizá tu menú</motion.h1>
-                                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-gray-600 text-base md:text-md mb-8 md:mb-14 lg:mx-0">
+                                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-gray-600 text-base md:text-md lg:mx-0">
                                         <strong>¿No sos de Argentina?</strong> No te preocupes, aceptamos pagos internacionales.
                                         Contactate con nosotros para cotizar el plan que mejor se adapte a tu menú.
-                                    </motion.p>
-                                    <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className='text-sm'>
-                                        Tambíen puedes <a href="/registro-de-usuario" className="text-primary underline">registrarte</a> y crear tu menú gratis o lo creamos nosotros con tus productos.
                                     </motion.p>
                                 </div>
 

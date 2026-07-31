@@ -218,6 +218,30 @@ export default function Register() {
     };
   }, [coverPhotoPreview]);
 
+  const handleSkip = async (values: FormValues) => {
+    const finalEmail = sessionEmail || email || values.email || localStorage.getItem("registerEmail") || "";
+    const currentPlan = values.plan || localStorage.getItem("registerPlan") || sessionPlan;
+
+    if (currentPlan === 'lifetime') {
+      try {
+        await emailjs.send(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+          {
+            name: "Sistema QMenú",
+            email: "qmenuofi@gmail.com",
+            message: `Cuenta creada con exito: ${finalEmail} requiere de atención para cotizar precio de menú.`
+          },
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+        );
+      } catch (e) {
+        console.error("Error sending email:", e);
+      }
+    }
+    router.push('/login');
+  };
+
+
   const handleFinalSubmit = async (values: FormValues) => {
     setServerMessage(null);
 
@@ -265,7 +289,7 @@ export default function Register() {
               },
               process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
             );
-          } catch(e) {
+          } catch (e) {
             console.error("Error sending email:", e);
           }
         }
@@ -866,7 +890,7 @@ export default function Register() {
                   {step === 3 ? (
                     <button
                       type="button"
-                      onClick={() => router.push('/login')}
+                      onClick={() => handleSkip(values)}
                       disabled={isSubmitting}
                       className="inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
                     >
@@ -889,7 +913,7 @@ export default function Register() {
                   ) : (
                     <button
                       type="button"
-                      onClick={() => router.push('/login')}
+                      onClick={() => handleSkip(values)}
                       disabled={isSubmitting}
                       className="inline-flex active:scale-95 transition-all cursor-pointer items-center px-8 py-3 border text-md font-bold rounded-lg text-gray-700 bg-background border-gray-400"
                     >

@@ -89,7 +89,7 @@ const plans: PricingPlan[] = [
             "Soporte prioritario"
         ],
         cta: "Cotizar Plan",
-        href: "/contacto",
+        href: "/cotizar-menu",
         premium: true
     }
 ];
@@ -108,8 +108,14 @@ export default function PricingPage() {
                         </Link>
                         <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">
-                                <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
-                                <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
+                                <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl text-balance md:text-5xl font-bold text-stone-900 mb-4">Tener tu Menú digital nunca fue taaan fácil</motion.h2>
+                                <motion.p
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 }}
+                                    className="text-base text-zinc-500 text-balance"
+                                >
                                     Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
                                 </motion.p>
                             </div>
@@ -119,10 +125,10 @@ export default function PricingPage() {
                                     <div
                                         key={index}
                                         className={`relative flex flex-col p-6 md:p-3 md:h-130 rounded-xl border
-                ${!plan.premium && !plan.recommended && 'border-gray-200'}
-                ${plan.name === "Pago Único" && 'bg-linear-to-br from-white to-blue-200/40 border-blue-800 border-2 shadow-xl'}
-                ${plan.premium && 'bg-gray-100 hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
-                ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
+                                                   ${!plan.premium && !plan.recommended && 'border-gray-200'}
+                                                   ${plan.name === "Pago Único" && 'bg-linear-to-br from-white to-blue-200/40 border-blue-800 border-2 shadow-xl'}
+                                                   ${plan.premium && 'bg-gray-100 hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
+                                                   ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
                                     >
                                         {plan.recommended && (
                                             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
@@ -149,7 +155,7 @@ export default function PricingPage() {
 
                                         {
                                             !plan.premium ?
-                                                <ul className="space-y-1 grow">
+                                                <ul className="space-y-1 grow pb-6 md:pb-0">
                                                     {plan.features.map((feature, idx) => (
                                                         <li key={idx} className="flex items-start">
                                                             <Check className={`h-4 w-4 mr-2 shrink-0 ${plan.recommended ? 'text-primary' : 'text-gray-400'}`} />
@@ -158,7 +164,7 @@ export default function PricingPage() {
                                                     ))}
                                                 </ul>
                                                 :
-                                                <ul className="space-y-1 grow">
+                                                <ul className="space-y-1 grow pb-6">
                                                     {plan.features.map((feature, idx) => (
                                                         <li key={idx} className="flex items-start">
                                                             <Check className={`h-4 w-4 mr-2 shrink-0 text-black`} />
@@ -171,11 +177,11 @@ export default function PricingPage() {
                                             !plan.premium ?
                                                 <a href={plan.href}
                                                     className={`w-full text-center py-3 px-4 rounded-xl font-bold text-sm cursor-pointer transition-all 
-                  ${plan.recommended
+                                                     ${plan.recommended
                                                             ? 'bg-primary hover:bg-primary-500 hover:shadow-md text-white'
                                                             : 'hover:bg-gray-100 text-gray-700 border border-gray-300'
                                                         }
-                 `}
+                                                    `}
                                                 >
                                                     {plan.cta}
                                                 </a>
