@@ -64,14 +64,19 @@ export default function BottomNavigation({
     {
       label: "Promocionar",
       icon: <HiOutlineTicket size={22} />,
-      action: () => {
-        if (openDiscount === true) {
-          setOpenDiscount(false);
-        } else {
-          setOpenDiscount(true);
-        }
-      },
+      action: () => router.push("/panel-de-usuario?seccion=promociones"),
     },
+    /*     {
+          label: "Promocionar",
+          icon: <HiOutlineTicket size={22} />,
+          action: () => {
+            if (openDiscount === true) {
+              setOpenDiscount(false);
+            } else {
+              setOpenDiscount(true);
+            }
+          },
+        }, */
     /* {
       label: "Inicio",
       icon: <FaHome size={20} />,
