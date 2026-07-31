@@ -435,11 +435,11 @@ export default function ShareDishModal({
           {/* Right Column: Actions */}
           <div className="flex-1 flex flex-col justify-center p-6 md:p-8 space-y-5 sm:space-y-6" style={{ background: bgColor }}>
             <div className="space-y-2 text-left">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black" style={{ color: textColor }}>
-                Llevá tu sabor a todos lados
+              <h2 className="text-xl sm:text-4xl font-black" style={{ color: textColor }}>
+                Compartime
               </h2>
               <p className="text-xs sm:text-sm leading-relaxed" style={{ color: textOpacity }}>
-                Copiá el enlace directo o descargá una placa con diseño profesional, optimizada con los colores de tu menú, ideal para subir a historias de Instagram o compartir por WhatsApp.
+                Copiá el enlace directo o descargá la imagen promocional con el QR del plato, para compartir en redes.
               </p>
             </div>
 
