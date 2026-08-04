@@ -37,7 +37,6 @@ export default function RenderSortCards({ foods: initialFoods, count, user, cont
         if (selectedIds.length === 0 || !confirm(`¿Eliminar ${selectedIds.length} ítems?`)) return;
 
         selectedIds.forEach(id => removeFoodLocal(id));
-        console.log(selectedIds)
         try {
             await fetch(`${URI}/foods/delete-multiple`, {
                 method: "DELETE",

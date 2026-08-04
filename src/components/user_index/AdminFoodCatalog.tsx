@@ -5,6 +5,7 @@ import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import ListCardsByCategory from "@/src/components/Index/sections/ListCardsByCategory";
 import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
 //import DownloadMenuModal from "@/src/components/pdf/DownloadMenuModal";
+import AddSectionCardsFoods from "./user_sections/AddSectionCardsFoods";
 import { Dessert, Martini, Utensils } from "lucide-react";
 
 export default function AdminFoodCatalog({ foods, user, template }: any) {
@@ -34,24 +35,33 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
         enabledDrinks = true
         enabledDesserts = true
     }
+    // Secciones para mapear, con fallback de migración para premium
+    const topSections = user?.top_sections?.length > 0 ? user.top_sections : (isPremium && user?.enable_bebidas !== false ? ["Bebidas"] : []);
+    const bottomSections = user?.bottom_sections?.length > 0 ? user.bottom_sections : (isPremium && user?.enable_postres !== false ? ["Postres"] : []);
+
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {foods.filter((f: any) => f.sub_category === "Bebidas").length > 0 && enabledDrinks &&
-                    <div className="flex flex-col gap-1">
-                        <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
-                            <h2 className="text-xl font-normal">Bebidas</h2>
-                            <Martini className="w-5 h-5" />
+                {/* {isPremium &&
+                    <AddSectionCardsFoods template={template} user={user} foods={foods} />
+                } */}
+                {topSections.map((sectionName: string) => {
+                    const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
+                    if (sectionFoods.length === 0) return null;
+                    return (
+                        <div key={sectionName} className="flex flex-col gap-1">
+                            <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                <h2 className="text-xl font-normal">{sectionName}</h2>
+                            </div>
+                            <RenderCardsOptions
+                                user={user}
+                                foods={sectionFoods}
+                                template={template}
+                                context={false}
+                            />
                         </div>
-                        <RenderCardsOptions
-                            user={user}
-                            foods={foods.filter((f: any) => f.sub_category === "Bebidas")}
-                            template={template}
-                            context={false}
-                        />
-                    </div>
-                }
-
+                    );
+                })}
                 {processedFoods.length > 0 ? (
                     <div className="flex flex-col gap-1 min-h-80">
                         <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
@@ -69,7 +79,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             <div className="flex justify-between h-10 max-h-10 items-end mb-1">
                                 <Categories
                                     template={template}
-                                    foods={foods.filter((f: any) => !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres"))}
+                                    foods={foods.filter((f: any) => !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category))}
                                     selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                                 />
                                 <SortPriceButton onSortChange={setSortOrder} template={template} />
@@ -78,7 +88,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         {user?.presentation === "default" ? (<SortableContext
                             user={user}
                             arrayFoods={processedFoods.filter(f => {
-                                let isMain = !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres");
+                                let isMain = !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category);
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
                             template={template}
@@ -87,7 +97,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                 Ath={true}
                                 user={user}
                                 arrayFoods={processedFoods.filter(f => {
-                                    let isMain = !(enabledDrinks && f.sub_category === "Bebidas") && !(enabledDesserts && f.sub_category === "Postres");
+                                    let isMain = !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category);
                                     return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                                 })}
                                 example={false}
@@ -97,15 +107,18 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                 ) : (
                     null
                 )}
-                {foods.filter((f: any) => f.sub_category === "Postres").length > 0 && enabledDesserts &&
-                    <div className="flex flex-col gap-1">
-                        <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
-                            <h2 className="text-xl font-normal">Postres</h2>
-                            <Dessert className="w-5 h-5" />
+                {bottomSections.map((sectionName: string) => {
+                    const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
+                    if (sectionFoods.length === 0) return null;
+                    return (
+                        <div key={sectionName} className="flex flex-col gap-1">
+                            <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                <h2 className="text-xl font-normal">{sectionName}</h2>
+                            </div>
+                            <RenderCardsOptions user={user} foods={sectionFoods} template={template} />
                         </div>
-                        <RenderCardsOptions user={user} foods={foods.filter((f: any) => f.sub_category === "Postres")} template={template} />
-                    </div>
-                }
+                    );
+                })}
             </div>
         </section>
     );

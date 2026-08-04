@@ -270,8 +270,6 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
     tiktok: user?.tiktok,
   };
 
-  console.log(template)
-
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
   return (
     <div className={`flex flex-col h-full pt-8 items-center justify-center 
@@ -374,7 +372,6 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
   );
 }
 function HorizontalNavUser({ user, photo, cookie, template }: any) {
-  console.log(user)
   const displayData = {
     name: user?.name || (!user ? "QMENÚ" : ""),
     description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),

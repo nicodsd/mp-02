@@ -1,5 +1,4 @@
 import { FaPlus } from "react-icons/fa";
-
 export default function AddDishButton({ template }: any) {
     return (
         <div className={`flex h-28 w-full flex-col justify-center active:scale-95 transition-all duration-300 items-center ${template?.textColor}`}>
