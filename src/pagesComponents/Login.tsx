@@ -10,6 +10,7 @@ import logo from "@/public/images/logo/logo-rojo.png";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import { URI } from "@/src/lib/const";
 import { MdChevronLeft } from "react-icons/md";
+import PanLoader from "../skeleton/PanLoader";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -24,6 +25,8 @@ export default function LoginPage() {
   const router = useRouter();
   const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [alreadyLoggedIn, setAlreadyLoggedIn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -32,6 +35,7 @@ export default function LoginPage() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setServerMessage(null);
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("email", values.email);
       formData.append("password", values.password);
@@ -55,8 +59,13 @@ export default function LoginPage() {
             await setMenuCookie(activeMenu);
           }
 
-          router.push("/mi-menu");
+          setIsLoading(false);
+          setIsSuccess(true);
+          setTimeout(() => {
+            router.push("/mi-menu");
+          }, 1500);
         } else {
+          setIsLoading(false);
           if (data.alreadyLoggedIn) {
             setAlreadyLoggedIn(true);
             setServerMessage(data.message || "Error de credenciales");
@@ -66,6 +75,7 @@ export default function LoginPage() {
           }
         }
       } catch (error) {
+        setIsLoading(false);
         setServerMessage("Error de conexión");
       }
     },
@@ -244,6 +254,26 @@ export default function LoginPage() {
           </p>
         </div>
       </footer>
+
+      {(isLoading || isSuccess) && <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+        {/* Overlay de Carga */}
+        {isLoading && (
+          <PanLoader />
+        )}
+
+        {/* Overlay de Éxito */}
+        {isSuccess && (
+          <div className="flex flex-col items-center justify-center">
+            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-4">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <p className="text-xl font-bold text-gray-800">¡Inicio de sesión exitoso!</p>
+            <p className="text-sm text-gray-500 mt-2">Redirigiendo a tu menú...</p>
+          </div>
+        )}
+      </div>}
     </div>
   );
 }

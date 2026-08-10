@@ -32,6 +32,7 @@ import UserPlan from "@/src/components/user-plan/UserPlan";
 import { useRouter, useSearchParams } from "next/navigation";
 import { logout } from "@/app/actions";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function PanelUser({
   user,
@@ -195,17 +196,13 @@ export default function PanelUser({
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
                   <div className="flex items-start justify-between px-6 py-8">
                     <div className="flex flex-col">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          router.replace("/mi-menu");
-
-                        }}
+                      <Link
+                        href="/mi-menu"
                         className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
                       >
                         <MdChevronLeft className="text-xl mr-1" />
                         Volver
-                      </button>
+                      </Link>
                       <div className="flex ml-2 flex-col gap-2 mt-10">
                         <div className="flex items-center gap-2">
                           <Image
@@ -268,7 +265,13 @@ export default function PanelUser({
           <div className="flex h-full w-full md:justify-between items-start flex-col md:flex-row gap-4 md:gap-8">
             <aside className="hidden h-full md:block md:w-80 shrink-0 mt-10">
               <div className="">
-                <BttnBack />
+                <Link
+                  href="/mi-menu"
+                  className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+                >
+                  <MdChevronLeft className="text-xl mr-1" />
+                  Volver
+                </Link>
                 <div className="flex ml-2 flex-col gap-2 mt-8">
                   <div className="flex items-center gap-2">
                     <Image

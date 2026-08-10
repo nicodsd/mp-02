@@ -297,7 +297,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <div className="relative">
                     <input
                       className="w-full border p-3 rounded-lg"
-                      maxLength={15}
+                      maxLength={25}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
@@ -340,7 +340,7 @@ const UserSettings = ({ user }: { user: any }) => {
                   <div className="relative">
                     <input
                       className="w-full border p-3 rounded-lg"
-                      maxLength={25}
+                      maxLength={40}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                     />
@@ -429,7 +429,7 @@ const UserSettings = ({ user }: { user: any }) => {
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={location}
-                      maxLength={20}
+                      maxLength={40}
                       onChange={(e) => setLocation(e.target.value)}
                     />
                     <button
@@ -515,7 +515,7 @@ const UserSettings = ({ user }: { user: any }) => {
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={instagram}
-                      maxLength={15}
+                      maxLength={25}
                       onChange={(e) => setInstagram(e.target.value)}
                     />
                     <button
@@ -558,7 +558,7 @@ const UserSettings = ({ user }: { user: any }) => {
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={facebook}
-                      maxLength={15}
+                      maxLength={25}
                       onChange={(e) => setFacebook(e.target.value)}
                     />
                     <button
@@ -601,7 +601,7 @@ const UserSettings = ({ user }: { user: any }) => {
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={tiktok}
-                      maxLength={10}
+                      maxLength={25}
                       onChange={(e) => setTiktok(e.target.value)}
                     />
                     <button
