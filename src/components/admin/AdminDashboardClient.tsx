@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, Utensils, Eye, Activity, Bell, Mail, Send } from "lucide-react";
-import { URI } from "@/src/lib/const";
+import { Users, Utensils, Eye, Activity, Bell, Mail, Send, ExternalLink } from "lucide-react";
+import { URI, NEXT_PUBLIC_URL } from "@/src/lib/const";
 
 interface Metrics {
   users: number;
@@ -191,6 +191,19 @@ export default function AdminDashboardClient({ user }: { user: any }) {
           </div>
         </div>
       </div>
+
+      {/* Users List Area */}
+      <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+        <div className="p-6 border-b border-gray-100 flex items-center gap-3">
+          <div className="bg-purple-50 p-2 rounded-lg">
+            <Users size={20} className="text-purple-600" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-800">Directorio de Usuarios</h2>
+        </div>
+        <div className="p-6">
+          <UsersList />
+        </div>
+      </div>
     </div>
   );
 }
@@ -293,6 +306,77 @@ function MetricCard({ title, value, icon, gradient, borderColor }: any) {
           {icon}
         </div>
       </div>
+    </div>
+  );
+}
+
+function UsersList() {
+  const [users, setUsers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const res = await fetch(`${URI}/admin/users`);
+        const data = await res.json();
+        if (data.success) {
+          setUsers(data.users);
+        }
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUsers();
+  }, []);
+
+  if (loading) return <div className="text-gray-500 py-4 text-center">Cargando usuarios...</div>;
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="bg-gray-50 text-gray-600 text-sm">
+            <th className="px-4 py-3 font-medium rounded-tl-lg">Nombre</th>
+            <th className="px-4 py-3 font-medium">Correo Electrónico</th>
+            <th className="px-4 py-3 font-medium">Rol</th>
+            <th className="px-4 py-3 font-medium">Estado</th>
+            <th className="px-4 py-3 font-medium rounded-tr-lg text-center">Menú</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-100">
+          {users.map((u) => (
+            <tr key={u._id} className="hover:bg-gray-50/50 transition-colors">
+              <td className="px-4 py-3 text-sm font-medium text-gray-900">{u.name}</td>
+              <td className="px-4 py-3 text-sm text-gray-600">{u.email}</td>
+              <td className="px-4 py-3 text-sm text-gray-600 capitalize">{u.role}</td>
+              <td className="px-4 py-3 text-sm">
+                <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${u.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                  {u.is_active ? 'Activo' : 'Inactivo'}
+                </span>
+              </td>
+              <td className="px-4 py-3 text-sm text-center">
+                <a
+                  href={`${NEXT_PUBLIC_URL}/menu-digital/${encodeURIComponent(u.name.trim().replace(/\s+/g, "-"))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 font-medium rounded-lg transition-colors"
+                  title="Visitar menú"
+                >
+                  <ExternalLink size={14} />
+                  <span>Visitar</span>
+                </a>
+              </td>
+            </tr>
+          ))}
+          {users.length === 0 && (
+            <tr>
+              <td colSpan={5} className="px-4 py-8 text-center text-gray-500">No hay usuarios registrados.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }

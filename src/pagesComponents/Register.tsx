@@ -50,7 +50,7 @@ const validationSchemas = [
       .required("Ingrese una contraseña"),
     name: Yup.string()
       .test("len", "Mínimo 3 caracteres", (val) => !val || val.length >= 3)
-      .test("len", "Máximo 20 caracteres", (val) => !val || val.length <= 20)
+      .test("len", "Máximo 25 caracteres", (val) => !val || val.length <= 25)
       .required("Ingrese un nombre"),
   }),
   Yup.object({
@@ -74,18 +74,38 @@ const validationSchemas = [
     location: Yup.string().optional(),
     description: Yup.string()
       .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
-      .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
+      .test("len", `Máximo 40 caracteres`, (val) => !val || val.length <= 40)
       .optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
     schedule: Yup.string().optional(),
-    phonePrefix: Yup.number().when('phone', {
-      is: (val: string) => val && val.length > 0,
-      then: (schema) => schema.required('Ingrese un prefijo'),
-      otherwise: (schema) => schema.optional(),
-    }),
-    phone: Yup.number().optional().min(7, "Mínimo 7 dígitos")
+    phonePrefix: Yup.string().test(
+      "prefix-required",
+      "Falta prefijo",
+      function (value) {
+        const { phone } = this.parent;
+        if (phone && !value) return false;
+        return true;
+      }
+    ).test("is-number", "Solo números", (val) => !val || /^[0-9]+$/.test(val)).optional(),
+    phone: Yup.string().test(
+      "phone-required",
+      "Falta número",
+      function (value) {
+        const { phonePrefix } = this.parent;
+        if (phonePrefix && !value) return false;
+        return true;
+      }
+    ).test("is-number", "Solo números", (val) => !val || /^[0-9]+$/.test(val))
+      .test(
+        "phone-min",
+        "Mínimo 7 dígitos",
+        function (value) {
+          if (value && String(value).length < 7) return false;
+          return true;
+        }
+      ).optional()
   }),
 ];
 
@@ -518,7 +538,7 @@ export default function Register() {
                           id="name"
                           value={values.name}
                           name="name"
-                          maxLength={15}
+                          maxLength={25}
                           type="text"
                           placeholder="Mi Local"
                           className="block w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
@@ -767,7 +787,7 @@ export default function Register() {
                           <Field
                             id="location"
                             name="location"
-                            maxLength={20}
+                            maxLength={40}
                             type="text"
                             placeholder="Av. Alvear 123"
                             className="block w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
@@ -800,7 +820,8 @@ export default function Register() {
                             maxLength={7}
                             className="text-gray-700 appearance-none overflow-hidden w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                           />
-                          <ErrorMessage name="phone" component="div" className="text-xs mr-1 text-red-500 font-medium absolute" />
+                          <ErrorMessage name="phonePrefix" component="div" className="text-xs mr-1 text-red-500 font-medium absolute right-0 -bottom-4" />
+                          <ErrorMessage name="phone" component="div" className="text-xs mr-1 text-red-500 font-medium absolute right-0 -top-4" />
                         </div>
                       </div>
                     </div>
@@ -817,7 +838,7 @@ export default function Register() {
                         name="description"
                         as="textarea"
                         rows={2}
-                        maxLength={30}
+                        maxLength={40}
                         placeholder="Cuenta en pocas líneas qué ofreces y tu propuesta de valor."
                         className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
@@ -835,7 +856,7 @@ export default function Register() {
                         id="schedule"
                         name="schedule"
                         type="text"
-                        maxLength={50}
+                        maxLength={30}
                         placeholder="Ej. Lun a Vie: 10:00 a 22:00 hs"
                         className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                       />
@@ -852,7 +873,7 @@ export default function Register() {
                           <Field
                             name="instagram"
                             type="text"
-                            maxLength={15}
+                            maxLength={25}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -862,7 +883,7 @@ export default function Register() {
                           <Field
                             name="facebook"
                             type="text"
-                            maxLength={15}
+                            maxLength={25}
                             placeholder="Nombre de usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -872,7 +893,7 @@ export default function Register() {
                           <Field
                             name="tiktok"
                             type="text"
-                            maxLength={15}
+                            maxLength={25}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />

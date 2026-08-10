@@ -83,8 +83,8 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
                 <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
                 <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
               </div>
-              <span className="md:text-sm text-xs font-medium leading-4 text-white">¿Se viene el día de la madre? Con tu plan <span className="font-bold text-white">Plus+</span> puedes agregar promociones especiales y destacar tu menú.</span>
-              
+              <span className="md:text-sm text-xs font-medium leading-4 text-white">Con tu plan <span className="font-bold text-white">Plus+</span> puedes agregar promociones especiales.</span>
+
               {/* Tooltip */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
                 Disponible en planes Plus o Premium
@@ -107,7 +107,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
                 <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
               </div>
               <span className="md:text-sm text-xs font-medium leading-4 text-white">¿Quieres saber en tiempo real quienes entran a tu menú?</span>
-              
+
               {/* Tooltip */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
                 Disponible en planes Plus o Premium
