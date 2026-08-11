@@ -7,7 +7,7 @@ export default function AddSectionCardsFoods({ template, user, foods }: any) {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
-        {/* <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1">
             <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                 <h2 className="text-xl font-normal">Administrar secciones</h2>
                 <ListPlus className="w-5 h-5" />
@@ -30,6 +30,6 @@ export default function AddSectionCardsFoods({ template, user, foods }: any) {
                     template={template}
                 />
             )}
-        </div> */}
+        </div>
     );
 }

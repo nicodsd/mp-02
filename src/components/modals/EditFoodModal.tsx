@@ -16,6 +16,7 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 
 interface EditFoodModalProps {
   isOpen: boolean;
+  user: any;
   onClose: () => void;
   food: any;
   onUpdate: () => void;
@@ -23,6 +24,7 @@ interface EditFoodModalProps {
 
 export default function EditFoodModal({
   isOpen,
+  user,
   onClose,
   food,
   onUpdate
@@ -33,8 +35,8 @@ export default function EditFoodModal({
 
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [userPlan, setUserPlan] = useState("free");
-  
+  const [userPlan, setUserPlan] = useState(user.plan || "free");
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -63,7 +65,7 @@ export default function EditFoodModal({
       try {
         const u = JSON.parse(decodeURIComponent(cookieUser.split('=')[1]));
         if (u && u.plan) setUserPlan(u.plan);
-      } catch(e) {}
+      } catch (e) { }
     }
   }, [food]);
 
@@ -91,7 +93,7 @@ export default function EditFoodModal({
     dataToSend.append("price", formData.price);
 
     const finalIsArchived = userPlan === "free" ? Boolean(food.is_archived) : formData.is_archived;
-    const finalMenus = userPlan === "free" ? (food.menus || []) : formData.menus;
+    const finalMenus = (userPlan === "free" || userPlan === "plus") ? (food.menus || []) : formData.menus;
 
     dataToSend.append("is_archived", String(finalIsArchived));
     if (finalMenus && finalMenus.length > 0) {
@@ -263,6 +265,7 @@ export default function EditFoodModal({
                     <button
                       type="button"
                       onClick={() =>
+                        userPlan !== "free" &&
                         setFormData({ ...formData, is_archived: !formData.is_archived })
                       }
                       className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${formData.is_archived ? "bg-gray-800" : "bg-gray-300"
@@ -281,9 +284,14 @@ export default function EditFoodModal({
                   </div>
 
                   {/* Menús */}
-                  <div className={`relative group flex flex-col gap-1 mt-3 ${userPlan === "free" ? "opacity-50 pointer-events-none" : ""}`}>
+                  <div className={`relative group flex flex-col gap-1 mt-3`}>
+                    {(userPlan === "free" || userPlan === "plus") && (
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                        Disponible en planes Plus o Premium
+                      </div>
+                    )}
                     <label className="text-[10px] font-bold text-gray-700 uppercase tracking-widest cursor-pointer">Mostrar en los siguientes Menús:</label>
-                    <div className="flex flex-wrap gap-2 p-1">
+                    <div className={`flex flex-wrap gap-2 p-1 ${userPlan === "free" || userPlan === "plus" ? "opacity-50 pointer-events-none" : ""}`}>
                       {userMenus.length === 0 ? (
                         <p className="text-[10px] text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
                       ) : (
@@ -294,6 +302,9 @@ export default function EditFoodModal({
                               type="button"
                               key={m._id}
                               onClick={() => {
+                                if (userPlan === "free" || userPlan === "plus") {
+                                  return;
+                                }
                                 if (isSelected) {
                                   setFormData({ ...formData, menus: formData.menus.filter(id => id !== m._id) });
                                 } else {
@@ -311,11 +322,6 @@ export default function EditFoodModal({
                         })
                       )}
                     </div>
-                    {userPlan === "free" && (
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
-                        Disponible en planes Plus o Premium
-                      </div>
-                    )}
                   </div>
 
                   <button

@@ -130,13 +130,12 @@ export default function Cards({
           <div className="flex items-end gap-1 justify-between h-fit mt-2">
             {/* Lógica de precio normal vs precio promocional integrada */}
             {is_promo && promo_price ? (
-              <div className="flex flex-col items-start leading-none">
-                <span className={`${template?.textColorOpacity || "text-gray-700/50"} text-xs line-through decoration-red-600`}>
+              <div className="flex flex-col items-start mt-1">
+                <span className={`${template?.textColorOpacity || "text-gray-700/50"} text-[11px] line-through leading-2 decoration-red-600`}>
                   {formatearPrecio(price)}
                 </span>
                 <span
-                  style={{ color: template?.accentColors?.[1] || "inherit" }}
-                  className={`font-bold oldstyle-nums text-xl ${!template?.accentColors?.[1] ? "text-red-600" : ""}`}
+                  className={`font-bold text-xl ${template?.textColor || "text-red-600"}`}
                 >
                   {formatearPrecio(promo_price)}
                 </span>

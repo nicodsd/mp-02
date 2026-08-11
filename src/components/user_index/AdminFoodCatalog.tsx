@@ -36,13 +36,16 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
         enabledDesserts = true
     }
     // Secciones para mapear, con fallback de migración para premium
-    const topSections = user?.top_sections?.length > 0 ? user.top_sections : (isPremium && user?.enable_bebidas !== false ? ["Bebidas"] : []);
-    const bottomSections = user?.bottom_sections?.length > 0 ? user.bottom_sections : (isPremium && user?.enable_postres !== false ? ["Postres"] : []);
+    /*    const topSections = user?.top_sections?.length > 0 ? user.top_sections : [];
+       const bottomSections = user?.bottom_sections?.length > 0 ? user.bottom_sections : []; */
+
+    const topSections = ["Bebidas"];
+    const bottomSections = ["Postres"];
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {/* {isPremium &&
+                {/*    {isPremium &&
                     <AddSectionCardsFoods template={template} user={user} foods={foods} />
                 } */}
                 {topSections.map((sectionName: string) => {
@@ -52,6 +55,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         <div key={sectionName} className="flex flex-col gap-1">
                             <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                                 <h2 className="text-xl font-normal">{sectionName}</h2>
+                                <Martini className="w-5 h-5" />
                             </div>
                             <RenderCardsOptions
                                 user={user}
@@ -114,6 +118,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         <div key={sectionName} className="flex flex-col gap-1">
                             <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                                 <h2 className="text-xl font-normal">{sectionName}</h2>
+                                <Dessert className="w-5 h-5" />
                             </div>
                             <RenderCardsOptions user={user} foods={sectionFoods} template={template} />
                         </div>
