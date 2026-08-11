@@ -6,6 +6,8 @@ import PageNotFound from "@/app/not-found";
 import { userGet } from "@/app/api/menu/userGet";
 import Bell from "@/src/components/buttons/Bell";
 import templates from "@/src/data/templates.json";
+import getMenus from "@/src/lib/getMenus";
+import BranchesModal from "@/src/components/modals/BranchesModal";
 
 export default async function Page({
   params,
@@ -18,8 +20,14 @@ export default async function Page({
   if (!user?.data) {
     return <PageNotFound />;
   }
+
+  const userId = user.data.user_id || user.data._id || user.data.id;
+  const menusData = userId ? await getMenus(userId) : { menus: [] };
+  const menus = menusData?.menus || [];
+
   return (
     <div className="flex relative flex-col min-h-screen">
+      {menus.length > 0 && <BranchesModal template={template} menus={menus} userName={user.data.name} />}
       <NavBar
         state={0}
         bttn={false}
