@@ -24,15 +24,21 @@ export default function SelectStoreModal({
     if (!isOpen) return null;
 
     const handleShare = () => {
-        const identifier = menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id;
-        const link = `${window.location.origin}/menu-digital/${user?.name}/${identifier}`;
+        const isCentral = menu?.menuEnlisted === 0;
+        const identifier = menu?.menuEnlisted ?? (menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id);
+        const link = isCentral
+            ? `${window.location.origin}/menu-digital/${user?.name}`
+            : `${window.location.origin}/menu-digital/${user?.name}/${identifier}`;
         navigator.clipboard.writeText(link);
         alert("¡Enlace de la sucursal copiado al portapapeles!");
     };
 
     const handleEnter = () => {
-        const identifier = menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id;
-        const link = `/menu-digital/${user?.name}/${identifier}`;
+        const isCentral = menu?.menuEnlisted === 0;
+        const identifier = menu?.menuEnlisted ?? (menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id);
+        const link = isCentral
+            ? `/menu-digital/${user?.name}`
+            : `/menu-digital/${user?.name}/${identifier}`;
         window.open(link, "_blank");
     };
     //console.log("menu", menu);

@@ -2,9 +2,8 @@
 import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { logotipo, URI } from "@/src/lib/const";
-import { refreshPage, updateUserCookie } from "@/app/actions";
+import { updateUserCookie } from "@/app/actions";
 import { MdChevronLeft } from "react-icons/md";
-import BttnBack from "@/src/components/buttons/BttnBack";
 import {
   TabGroup,
   Tab,
@@ -152,6 +151,18 @@ export default function PanelUser({
       ? "text-white bg-black transform scale-[1.02]"
       : "text-gray-500 hover:bg-gray-100 bg-transparent"
     }`;
+
+  const isFeatureBlocked = () => {
+    const key = menuItems[selectedIndex]?.key;
+    switch (user?.plan) {
+      case "free":
+        return ["promociones", "configuraciones", "paletas", "sucursales"].includes(key);
+      case "plus":
+        return ["sucursales", "configuraciones"].includes(key);
+      default:
+        return false;
+    }
+  };
 
   return (
     <div className="h-screen relative">
@@ -314,13 +325,13 @@ export default function PanelUser({
             </aside>
 
             <main className="flex-1 w-full relative">
-              <div className={user?.plan === "free" && ["promociones", "configuraciones", "paletas", "sucursales"].includes(menuItems[selectedIndex]?.key) ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
+              <div className={isFeatureBlocked() ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
                 <TabPanels className="min-h-full w-full lg:w-[80%] xl:w-[90%] overflow-hidden">
                   {children}
                 </TabPanels>
               </div>
 
-              {user?.plan === "free" && ["promociones", "configuraciones", "paletas", "sucursales"].includes(menuItems[selectedIndex]?.key) && (
+              {isFeatureBlocked() && (
                 <div className="fixed inset-0 flex items-center justify-center z-10 p-4 pointer-events-none">
                   <motion.div initial={{ opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="pointer-events-auto backdrop-blur-sm bg-white border border-gray-200 p-6 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-auto animate-in fade-in zoom-in duration-300">
                     <div className="mx-auto w-16 h-16 bg-blue-50 text-amber-500 rounded-full flex items-center justify-center mb-4">

@@ -286,6 +286,8 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         template?.template_id === "lavender"
         ||
         template?.template_id === "sakura"
+        ||
+        template?.template_id === "royal"
         ? `${template?.textColor}` : "text-white"} w-full`}>
       <div className="relative">
         <div className={`rounded-full p-1.5 ${template?.backgroundColor}`}>
@@ -300,7 +302,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         </div>
         {user && cookie && (
           <Link
-            className={`flex items-center active:scale-90 bg-white text-gray-800 transition-all duration-100 absolute bottom-0 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 py-2 rounded-full shadow-md`}
+            className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} text-gray-800 transition-all duration-100 absolute bottom-0 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
             <FaEdit size={14} /> Perfil
@@ -346,21 +348,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
             ]
               .filter(social => social.val)
               .map((social) => (
-                <span key={social.id} className={`flex items-center gap-1
-                ${template?.template_id === "default"
-                    ||
-                    template?.template_id === "lavender"
-                    ||
-                    template?.template_id === "gold"
-                    ||
-                    template?.template_id === "lemon"
-                    ||
-                    template?.template_id === "cherry"
-                    ||
-                    template?.template_id === "mint"
-                    ||
-                    template?.template_id === "sakura"
-                    ? "border-gray-600" : "border-white/50"} pl-2`}>
+                <span key={social.id} className={`flex items-center gap-1`}>
                   {social.icon}
                   {social.val}
                 </span>
@@ -478,7 +466,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
             className="flex items-center gap-1 pl-2 shrink-0"
           >
             {social.icon}
-            <span className="truncate max-w-25">{social.val}</span>
+            <span className="truncate max-w-20">{social.val}</span>
           </span>
         ))}
       </div>
