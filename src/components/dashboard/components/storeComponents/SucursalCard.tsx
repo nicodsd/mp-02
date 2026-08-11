@@ -12,7 +12,7 @@ export const SucursalCard = ({ m, isSelected, isSelectionMode, onToggle }: any) 
             )}
 
             <button
-                onClick={() => isSelectionMode ? onToggle(m._id) : console.log("Ver menú", m._id)}
+                onClick={() => isSelectionMode ? onToggle(m._id) : null}
                 className={`flex flex-col h-50 w-full rounded-xl border-4 transition-all duration-200 justify-end relative items-center overflow-hidden 
                     ${isSelected ? "border-blue-500 scale-[0.97]" : "border-gray-900"} 
                     bg-gray-200`}

@@ -19,7 +19,7 @@ export const ConfigOptionCard: React.FC<ConfigOptionCardProps> = ({ id, label, s
             }}
             className="cursor-pointer w-full group"
         >
-            <div className={`relative ${isVertical ? 'flex-col items-center justify-between min-h-[140px] w-full' : 'flex-row items-center justify-between h-24'} flex-1 border-2 rounded-2xl py-3 px-4 flex bg-white transition-all duration-300 
+            <div className={`relative ${isVertical ? 'flex-col items-center justify-between min-h-35 w-full' : 'flex-row items-center justify-between h-24'} flex-1 border-2 rounded-2xl py-3 px-4 flex bg-white transition-all duration-300 
                 ${selected ? 'border-gray-900 shadow-lg scale-[1.03] md:scale-101 z-10' : 'border-gray-400 opacity-50 group-hover:opacity-100 group-hover:border-gray-300'}`}>
 
                 <div className={`flex items-center justify-center ${isVertical ? 'w-full flex-1' : 'w-20'}`}>
