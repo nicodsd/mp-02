@@ -263,5 +263,29 @@
         "textColor2": "text-white",
         "icons": "text-[#FF4D6D]",
         "border": "border-[#FFB3C1]/30"
+    },
+    {
+        "template_id": "royal",
+        "name": "Royal",
+        "bgMenu": "bg-[#fafeff]",
+        "backgroundColor": "bg-[#fafeff]",
+        "backgroundColor2": "bg-[#F4F7FF]",
+        "accentColors": [
+            "bg-[#F4F7FF]",
+            "bg-[#0223a8]",
+            "bg-[#070B24]",
+            "bg-[#FFF0F3]"
+        ],
+        "accentColors2": [
+            "[#F4F7FF]",
+            "[#0223a8]",
+            "[#070B24]",
+            "[#FFF0F3]"
+        ],
+        "textColor": "text-[#001154]",
+        "textColorOpacity": "text-[#001154]/60",
+        "textColor2": "text-white",
+        "icons": "text-[#0223a8]",
+        "border": "border-[#0223a8]/30"
     }
 ]

@@ -142,7 +142,7 @@ export default function Cards({
                 </span>
               </div>
             ) : (
-              <span className={`${template?.textColor || "text-gray-700"} font-bold oldstyle-nums text-xl`}>
+              <span className={`${template?.textColor || "text-gray-700"} font-semibold oldstyle-nums text-xl`}>
                 {formatearPrecio(price)}
               </span>
             )}
