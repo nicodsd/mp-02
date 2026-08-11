@@ -22,7 +22,7 @@ export function proxy(req: NextRequest) {
         style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`};
         img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com;
         font-src 'self';
-        connect-src ${connectSrc};
+        connect-src ${connectSrc} [https://api.qmenu.digital](https://api.qmenu.digital);
         object-src 'none';
         base-uri 'self';
         form-action 'self';
