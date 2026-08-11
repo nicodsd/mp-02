@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface BranchesModalProps {
   menus: any[];
@@ -13,7 +13,7 @@ interface BranchesModalProps {
 export default function BranchesModal({ template, menus, userName }: BranchesModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  console.log(template)
+  const pathname = usePathname();
   useEffect(() => {
     // Solo mostramos el modal si hay más de una sucursal, o podemos mostrarlo siempre si hay sucursales.
     // Vamos a mostrarlo si hay al menos una sucursal.
@@ -25,10 +25,16 @@ export default function BranchesModal({ template, menus, userName }: BranchesMod
   if (!isOpen) return null;
 
   const handleEnter = (menu: any) => {
-    const identifier = menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id;
-    const link = `/menu-digital/${userName}/${identifier}`;
-    router.push(link);
-    setIsOpen(false);
+    const isCentral = menu?.menuEnlisted === 0;
+    const identifier = menu?.menuEnlisted ?? (menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id);
+    const link = isCentral ? `/menu-digital/${userName}` : `/menu-digital/${userName}/${identifier}`;
+    
+    if (pathname === link) {
+      setIsOpen(false);
+    } else {
+      router.push(link);
+      setIsOpen(false);
+    }
   };
 
   return (

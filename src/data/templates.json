@@ -271,15 +271,15 @@
         "backgroundColor": "bg-[#fafeff]",
         "backgroundColor2": "bg-[#F4F7FF]",
         "accentColors": [
-            "bg-[#F4F7FF]",
-            "bg-[#0223a8]",
             "bg-[#070B24]",
+            "bg-[#0223a8]",
+            "bg-[#F4F7FF]",
             "bg-[#FFF0F3]"
         ],
         "accentColors2": [
-            "[#F4F7FF]",
-            "[#0223a8]",
             "[#070B24]",
+            "[#0223a8]",
+            "[#F4F7FF]",
             "[#FFF0F3]"
         ],
         "textColor": "text-[#001154]",
