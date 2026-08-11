@@ -38,16 +38,13 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
           credentials: "include"
         });
         if (!res.ok) {
-          console.error("Analytics fetch failed with status:", res.status);
           return;
         }
         const data = await res.json();
         if (data.success && data.analytics) {
           setAnalytics(data.analytics);
-          console.log("Analytics fetched successfully:", data.analytics);
         }
       } catch (error) {
-        console.error("Error fetching analytics:", error);
       }
     }
     fetchAnalytics();

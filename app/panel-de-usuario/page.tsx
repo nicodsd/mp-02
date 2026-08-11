@@ -54,7 +54,6 @@ export default async function DashboardPage() {
   ]);
   const template = templates.find((t) => t.template_id === user?.template_id) || null;
   const menus = menusData?.menus || [];
-
   return (
     <PanelUser user={user} token={token} template={template}>
       <div className="md:hidden py-1 px-2 md:px-0">

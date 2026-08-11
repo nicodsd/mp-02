@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { URI } from '@/src/lib/const';
 import Image from 'next/image';
 import { ConfigOptionCard, ConfigSwitch } from '@/src/components/dashboard/components/configComponents/ConfigComponents';
@@ -13,7 +12,6 @@ import ImgRecortado from "@/public/images/dashboard/recortado.png";
 import { updateMenuCookie } from '@/app/actions';
 
 export default function ConfigureMenu({ user }: { user: any }) {
-
     const [loadingNavbar, setLoadingNavbar] = useState(false);
     const [loadingPresentation, setLoadingPresentation] = useState(false);
     const [navBar, setNavBar] = useState(user?.navBar || "default");
@@ -44,17 +42,18 @@ export default function ConfigureMenu({ user }: { user: any }) {
     ];
 
     const updateConfig = async (key: string, value: any) => {
-
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         if (key === "presentation" && presentation !== value) {
             setLoadingPresentation(true);
             setPresentation(value);
         }
-
         if (key === "navBar" && navBar !== value) {
             setLoadingNavbar(true);
             setNavBar(value);
         }
-
         if (key === 'enable_bebidas') setEnableBebidas(value);
         if (key === 'enable_postres') setEnablePostres(value);
         if (key === 'whatsAppCart') setWhatsappOrders(value);
@@ -79,7 +78,7 @@ export default function ConfigureMenu({ user }: { user: any }) {
             if (key === 'navBar') setLoadingNavbar(true);
             if (key === 'presentation') setLoadingPresentation(true);
             try {
-                const response = await fetch(`${URI}/menu/update/config/${user?.id}`, {
+                let response = await fetch(`${URI}/menu/update/config/${user?.id}`, {
                     method: 'PUT',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
@@ -117,8 +116,10 @@ export default function ConfigureMenu({ user }: { user: any }) {
             <div className="flex flex-col w-full items-start justify-start gap-10">
 
                 <section className="w-full flex flex-col gap-3">
-
-                    <h2 className="font-bold text-gray-800">Encabezado</h2>
+                    <div className='flex flex-col gap-1 mb-2'>
+                        <h2 className="font-bold text-gray-800">Encabezado</h2>
+                        <span className='text-xs text-gray-600'>Elige el estilo del encabezado de tu menú</span>
+                    </div>
 
                     <div className="grid grid-cols-3 gap-2 h-38 w-full">
                         {navBarOptions.map((option) => (
@@ -131,7 +132,10 @@ export default function ConfigureMenu({ user }: { user: any }) {
                 </section>
 
                 <section className="w-full flex flex-col gap-3">
-                    <h2 className="font-bold text-gray-800">Tipo de presentación</h2>
+                    <div className='flex flex-col gap-1 mb-2'>
+                        <h2 className="font-bold text-gray-800">Tipo de presentación</h2>
+                        <span className='text-xs text-gray-600'>Elige cómo quieres que se muestren los productos de tu menú</span>
+                    </div>
                     <div className="flex flex-col gap-3 h-52">
                         {presentationOptions.map((option) => (
                             <ConfigOptionCard key={option.id} id={option.id} label={option.label} format={"horizontal"} selected={option.selected}
@@ -143,7 +147,10 @@ export default function ConfigureMenu({ user }: { user: any }) {
                 </section>
 
                 <section className="w-full">
-                    <h2 className="font-bold text-gray-800 mb-2">Menús satélites</h2>
+                    <div className='flex flex-col gap-1 mb-2'>
+                        <h2 className="font-bold text-gray-800">Secciones horizontales</h2>
+                        <span className='text-xs text-gray-600'>Activa secciones adicionales para tu menú, como bebidas o postres</span>
+                    </div>
                     <div className="flex flex-col bg-gray-50/50 rounded-2xl px-4 py-1 border shadow-md border-gray-100">
                         <ConfigSwitch label="Habilitar menú superior Bebidas" enabled={enableBebidas}
                             onChange={(v: boolean) => updateConfig('enable_bebidas', v)} />
@@ -154,9 +161,12 @@ export default function ConfigureMenu({ user }: { user: any }) {
                 </section>
 
                 <section className="w-full">
-                    <h2 className="font-bold text-gray-800 mb-2">Pedidos WhatsApp</h2>
+                    <div className='flex flex-col gap-1 mb-2'>
+                        <h2 className="font-bold text-gray-800">Pedidos WhatsApp</h2>
+                        <span className='text-xs text-gray-600'>Los clientes podrán enviar sus pedidos directamente a tu WhatsApp</span>
+                    </div>
                     <div className="bg-gray-50/50 rounded-2xl px-4 py-1 border shadow-md border-gray-100">
-                        <ConfigSwitch label="Función de pedidos activa" enabled={whatsappOrders}
+                        <ConfigSwitch label="Activar función de pedidos por WhatsApp" enabled={whatsappOrders}
                             onChange={(v: boolean) => updateConfig('whatsAppCart', v)} />
                     </div>
                 </section>

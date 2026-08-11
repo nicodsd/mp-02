@@ -22,6 +22,10 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
 
     //console.log("menus", menus);
     const toggleSelection = (id: string) => {
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         setSelectedIds(prev =>
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
         );
@@ -33,11 +37,19 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     };
 
     const handleEditStore = async () => {
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         setOpenSelectStore(false);
         setIsEditModalOpen(true);
     };
 
     const handleBulkDelete = async () => {
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
             try {
                 const res = await fetch(`${URI}/menu/delete-menus/${selectedIds}`, {
@@ -58,12 +70,20 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     }
 
     const handleSelectStore = (storeId: string) => {
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         setStoreId(storeId);
         setMenu(menus.find((m: any) => m._id === storeId));
         setOpenSelectStore(true);
     }
 
     const handleDeleteSingleStore = async () => {
+        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+            alert("No tienes permiso para realizar esta accion");
+            return;
+        }
         if (confirm(`¿Eliminar la sucursal actual?`)) {
             try {
                 const res = await fetch(`${URI}/menu/delete-menus/${storeId}`, {
@@ -85,14 +105,16 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
-            <StoreAddModal
-                isOpen={isOpenModal}
-                menusCount={menusCount}
-                user_id={user_id}
-                setIsOpen={setIsOpenModal}
-            />
+            {user?.plan === "premium" && (
+                <StoreAddModal
+                    isOpen={isOpenModal}
+                    menusCount={menusCount}
+                    user_id={user_id}
+                    setIsOpen={setIsOpenModal}
+                />
+            )}
 
-            {openSelectStore && (
+            {openSelectStore && user?.plan === "premium" && (
                 <SelectStoreModal
                     isOpen={openSelectStore}
                     storeId={storeId}
@@ -156,7 +178,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                     </div>
                 </div>
             </div>
-            {isEditModalOpen && (
+            {isEditModalOpen && user?.plan === "premium" && (
                 <StoreEditModal
                     user_id={user_id}
                     menu={menu}
