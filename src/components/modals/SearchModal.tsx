@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import SearchInput from '@/src/components/Index/filters/Search'
-import RenderCards from '@/src/components/RenderCardsExample'
+import RenderCards from '@/src/components/Index/foods_cards/FoodCardSearch'
 
 export default function SearchModal({ arrayFoods, setSearch, setShowModal, showModal, template }: any) {
     const [query, setQuery] = useState('')
@@ -44,12 +44,14 @@ export default function SearchModal({ arrayFoods, setSearch, setShowModal, showM
                 </div>
 
                 {query?.length > 0 && (
-                    <div className='flex-1 mt-4 overflow-y-auto pb-20'>
-                        <RenderCards
-                            foods={filteredFoods}
-                            count={4}
-                            template={template}
-                        />
+                    <div className='flex flex-col no-scrollbar gap-1 mt-4 overflow-y-auto pb-20'>
+                        {filteredFoods.map((food: any) => (
+                            <RenderCards
+                                key={food._id}
+                                {...food}
+                                template={template}
+                            />
+                        ))}
                     </div>
                 )}
             </div>
