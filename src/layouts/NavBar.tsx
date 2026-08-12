@@ -314,7 +314,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         <h2 className="text-2xl leading-none font-bold mt-2 uppercase text-center px-4">
           {displayData.name}
         </h2>
-        <p className="my-1 text-center px-6 text-sm opacity-90">
+        <p className="my-1 text-center px-6 text-sm">
           {displayData.description}
         </p>
         <div className="flex flex-col items-center gap-1">
@@ -417,10 +417,10 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
           <h3 className="text-base sm:text-lg md:text-xl font-bold uppercase truncate leading-tight">
             {displayData.name}
           </h3>
-          <p className="text-xs md:text-sm opacity-90 truncate my-0.5">
+          <p className="text-xs md:text-sm truncate my-0.5">
             {displayData.description}
           </p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] sm:text-xs opacity-90">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] sm:text-xs">
             {(displayData.address || !user) && (
               <span className="flex items-center gap-1 truncate max-w-45 sm:max-w-xs">
                 <FaMapMarkerAlt size={12} className="shrink-0" />
