@@ -1,8 +1,8 @@
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { refreshPage } from '@/app/actions';
-import { Field, Formik, Form, ErrorMessage } from 'formik';
+import { Field, Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { URI } from '@/src/lib/const';
 import * as Yup from 'yup';
 import {
@@ -37,6 +37,21 @@ const StoreSchema = Yup.object().shape({
 export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }: { user_id: string, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, menusCount: number }) {
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const [coverPreview, setCoverPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const formikRef = useRef<FormikProps<any>>(null);
+
+    const handleClose = () => {
+        if (formikRef.current && formikRef.current.dirty) {
+            const confirmSave = confirm("Tienes cambios sin guardar. ¿Deseas guardarlos?");
+            if (confirmSave) {
+                formikRef.current.submitForm();
+            } else {
+                setIsOpen(false);
+            }
+        } else {
+            setIsOpen(false);
+        }
+    };
 
     useEffect(() => {
         return () => {
@@ -46,7 +61,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
     }, [photoPreview, coverPreview]);
 
     const handleAddStore = async (values: any) => {
-        setIsOpen(false);
+        setIsLoading(true);
         const formData = new FormData();
         if (values.photo) {
             formData.append("photo", values.photo);
@@ -81,6 +96,8 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
             console.log(data);
         } catch (error) {
             console.error("Error al agregar la tienda:", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -100,7 +117,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
 
     return (
         <Transition show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={() => setIsOpen(false)}>
+            <Dialog as="div" className="relative z-50" onClose={handleClose}>
                 {/* Backdrop (Fondo oscuro) */}
                 <TransitionChild
                     enter="ease-out duration-300"
@@ -125,7 +142,13 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                             leaveTo="translate-x-full"
                         >
                             <DialogPanel className="pointer-events-auto relative w-screen p-4 sm:max-w-lg h-full pb-26 flex flex-col overflow-y-auto items-center justify-center bg-background">
+                                {isLoading && (
+                                    <div className="absolute inset-0 bg-white/70 z-50 flex items-center justify-center">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                                    </div>
+                                )}
                                 <Formik
+                                    innerRef={formikRef}
                                     initialValues={initialValues}
                                     validationSchema={StoreSchema}
                                     onSubmit={(values) => {
@@ -298,7 +321,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                                 <div className="bg-background flex justify-end gap-3 fixed bottom-0 left-0 right-0 p-3 w-full">
                                                     <button
                                                         type="button"
-                                                        onClick={() => setIsOpen(false)}
+                                                        onClick={handleClose}
                                                         className="flex-1 px-4 py-2 h-fit max-w-30 text-stone-600 rounded-lg hover:bg-gray-50 transition"
                                                     >
                                                         Cancelar

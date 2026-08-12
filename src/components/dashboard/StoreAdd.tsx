@@ -17,10 +17,10 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     const [storeId, setStoreId] = useState("");
     const [menu, setMenu] = useState<any>({});
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     let menusCount = (menus?.length || 0) + 1;
 
-    //console.log("menus", menus);
     const toggleSelection = (id: string) => {
         if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
@@ -51,6 +51,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
             return;
         }
         if (confirm(`¿Eliminar ${selectedIds.length} sucursales?`)) {
+            setIsLoading(true);
             try {
                 const res = await fetch(`${URI}/menu/delete-menus/${selectedIds}`, {
                     method: 'DELETE',
@@ -64,8 +65,10 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                setIsLoading(false);
+                handleCancel();
             }
-            handleCancel();
         }
     }
 
@@ -85,6 +88,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
             return;
         }
         if (confirm(`¿Eliminar la sucursal actual?`)) {
+            setIsLoading(true);
             try {
                 const res = await fetch(`${URI}/menu/delete-menus/${storeId}`, {
                     method: 'DELETE',
@@ -99,12 +103,19 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                setIsLoading(false);
             }
         }
     }
 
     return (
         <div className="relative min-h-screen w-full overflow-hidden">
+            {isLoading && (
+                <div className="fixed inset-0 bg-gray-50/50 z-50 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                </div>
+            )}
             {user?.plan === "premium" && (
                 <StoreAddModal
                     isOpen={isOpenModal}
