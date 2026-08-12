@@ -42,7 +42,7 @@ export default function ConfigureMenu({ user }: { user: any }) {
     ];
 
     const updateConfig = async (key: string, value: any) => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }

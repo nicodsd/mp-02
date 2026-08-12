@@ -22,7 +22,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
 
     //console.log("menus", menus);
     const toggleSelection = (id: string) => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -37,7 +37,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     };
 
     const handleEditStore = async () => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -46,7 +46,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     };
 
     const handleBulkDelete = async () => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -70,7 +70,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     }
 
     const handleSelectStore = (storeId: string) => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -80,7 +80,7 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
     }
 
     const handleDeleteSingleStore = async () => {
-        if (user?.plan !== 'free' || user?.plan !== 'plus') {
+        if (user?.plan !== 'premium') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }

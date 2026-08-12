@@ -193,7 +193,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
   return (
     <div className={`flex flex-col pt-8 items-center justify-center ${user?.plan === "free" ? "text-gray-700" : "text-white drop-shadow drop-shadow-gray-900/30"} w-full`}>
       <div className="relative">
-        <div className={`rounded-full p-1 ${user?.plan !== "free" ? "bg-white" : "bg-gray-700"}`}>
+        <div className={`rounded-full p-1 ${user?.plan !== "free" ? `bg-white` : "bg-gray-700"}`}>
           <Image
             priority
             src={optimizedPhoto || logo}
@@ -213,46 +213,50 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
         )}
       </div>
 
-      <h2 className="text-2xl leading-none font-bold mt-6 uppercase text-center px-4">
-        {displayData.name}
-      </h2>
-      <p className="my-1 text-center px-6 text-sm">
-        {displayData.description}
-      </p>
-
-      <div className="flex flex-col items-center mt-0.5">
-        {displayData.schedule && (
-          <span className="flex text-[13px] items-center gap-2">
-            <FaClock size={16} />
-            {displayData.schedule}
-          </span>
-        )}
-        {(displayData.address || !user) && (
-          <span className="flex text-[13px] items-center gap-2">
-            <FaMapMarkerAlt size={16} />
-            {displayData.address || "Santiago del Estero, Argentina"}
-          </span>
-        )}
-        <div className="flex items-center gap-x-3 mt-1 text-xs flex-wrap justify-center px-4">
-          {(displayData.phone || !user) && (
-            <span className="flex items-center gap-1">
-              <FaWhatsapp size={16} />
-              {displayData.phone || "385 123 4567"}
-            </span>
-          )}
-
-          {[
-            { id: 'ig', val: displayData.instagram, icon: <FaInstagram size={16} /> },
-            { id: 'fb', val: displayData.facebook, icon: <FaFacebook size={16} /> },
-            { id: 'tk', val: displayData.tiktok, icon: <FaTiktok size={16} /> }
-          ]
-            .filter(social => social.val)
-            .map((social) => (
-              <span key={social.id} className={`flex items-center gap-1 ${user?.plan === "free" ? "border-gray-700" : "border-white/50"} pl-2`}>
-                {social.icon}
-                {social.val}
+      <div className={`w-full `}>
+        <h2 className="text-2xl leading-none font-bold mt-2 uppercase text-center px-4">
+          {displayData.name}
+        </h2>
+        <p className="my-1 text-center px-6 text-sm">
+          {displayData.description}
+        </p>
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center gap-x-2">
+            {displayData.schedule && (
+              <span className="flex text-[12px] items-center gap-1">
+                <FaClock size={15} className={`${template?.icons}`} />
+                {displayData.schedule}
               </span>
-            ))}
+            )}
+            {(displayData.address || !user) && (
+              <span className="flex text-[12px] items-center gap-1">
+                <FaMapMarkerAlt size={15} className={`${template?.icons}`} />
+                {displayData.address || "Santiago del Estero, Argentina"}
+              </span>
+            )}
+          </div>
+
+          <div className="flex items-center gap-x-3 text-[12px] flex-wrap justify-center px-4">
+            {(displayData.phone || !user) && (
+              <span className="flex items-center gap-1">
+                <FaWhatsapp size={16} />
+                {displayData.phone || "385 123 4567"}
+              </span>
+            )}
+
+            {[
+              { id: 'ig', val: displayData.instagram, icon: <FaInstagram size={16} /> },
+              { id: 'fb', val: displayData.facebook, icon: <FaFacebook size={16} /> },
+              { id: 'tk', val: displayData.tiktok, icon: <FaTiktok size={16} /> }
+            ]
+              .filter(social => social.val)
+              .map((social) => (
+                <span key={social.id} className={`flex items-center gap-1`}>
+                  {social.icon}
+                  {social.val}
+                </span>
+              ))}
+          </div>
         </div>
       </div>
     </div>
@@ -290,19 +294,19 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         template?.template_id === "royal"
         ? `${template?.textColor}` : "text-white"} w-full`}>
       <div className="relative">
-        <div className={`rounded-full p-1.5 ${template?.backgroundColor}`}>
+        <div className={`rounded-full p-1 ${user?.plan !== "free" ? `${template?.backgroundColor2}` : "bg-gray-700"}`}>
           <Image
             priority
             src={optimizedPhoto || logo}
-            width={200}
-            height={200}
-            className="rounded-full object-cover w-32.5 h-32.5 shadow-sm"
+            width={300}
+            height={300}
+            className="rounded-full object-cover w-33.75 h-33.75"
             alt="Profile"
           />
         </div>
         {user && cookie && (
           <Link
-            className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} transition-all duration-100 absolute bottom-0 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 hover:opacity-80 py-2 rounded-full shadow-md`}
+            className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} transition-all duration-100 absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 hover:opacity-80 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
             <FaEdit size={14} /> Perfil
