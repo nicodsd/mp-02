@@ -129,6 +129,7 @@ export default function RenderSortCards({ foods: initialFoods, count, user, cont
 
             {selectedFood && (
                 <EditFoodModal
+                    user={user}
                     isOpen={isEditOpen}
                     onClose={() => setIsEditOpen(false)}
                     food={selectedFood}

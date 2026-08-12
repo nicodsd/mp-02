@@ -166,6 +166,7 @@ export default function RenderCards({
 
       {selectedFood && (
         <EditFoodModal
+          user={user}
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           food={selectedFood}

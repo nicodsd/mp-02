@@ -69,6 +69,7 @@ export default function ListCardsByCategory({ arrayFoods, user, example, templat
             </div>
             {selectedFood && (
                 <EditFoodModal
+                    user={user}
                     isOpen={isEditOpen}
                     onClose={() => setIsEditOpen(false)}
                     food={selectedFood}
