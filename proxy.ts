@@ -10,20 +10,35 @@ export function proxy(req: NextRequest) {
 
     const isDev = process.env.NODE_ENV === "development";
 
+    // Dominios permitidos para fetch/axios/WebSocket/Analytics
     const connectSrc = [
         "'self'",
         "https://api.qmenu.digital",
         "https://qmenu.digital",
         "https://api.emailjs.com",
+        "https://www.google-analytics.com",
+        "https://analytics.google.com",
+        "https://stats.g.doubleclick.net",
         "http://localhost:4000",
         ...(isDev ? ["ws://localhost:*", "ws://127.0.0.1:*"] : [])
     ].join(" ");
 
+    // Dominios permitidos para cargar scripts externos (GTM, GA)
+    const scriptSrc = [
+        "'self'",
+        `'nonce-${nonce}'`,
+        "'unsafe-inline'",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
+        ...(isDev ? ["'unsafe-eval'"] : [])
+    ].join(" ");
+
+    // Construcción de la política CSP
     const cspHeader = `
         default-src 'self';
-        script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""};
+        script-src ${scriptSrc};
         style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`};
-        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com;
+        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com;
         font-src 'self' data:;
         connect-src ${connectSrc};
         object-src 'none';
@@ -35,6 +50,7 @@ export function proxy(req: NextRequest) {
 
     res.headers.set("Content-Security-Policy", cspHeader);
 
+    // Lógica de redirección según rutas
     const token = req.cookies.get("token")?.value;
     const user = req.cookies.get("user")?.value;
     const { pathname } = req.nextUrl;

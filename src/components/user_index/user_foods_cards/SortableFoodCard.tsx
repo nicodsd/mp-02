@@ -36,7 +36,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
             <div className={`relative shrink-0 md:max-w-25 md:max-h-36 md:h-full h-full min-w-20 w-20 max-w-20 rounded-[7px] overflow-hidden`}>
                 <Image
                     quality={75}
-                    loading="eager"
+                    loading="lazy"
                     src={food.photo}
                     alt={food.name}
                     fill
