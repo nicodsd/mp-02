@@ -302,7 +302,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         </div>
         {user && cookie && (
           <Link
-            className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} text-gray-800 transition-all duration-100 absolute bottom-0 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 py-2 rounded-full shadow-md`}
+            className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} transition-all duration-100 absolute bottom-0 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 hover:opacity-80 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
             <FaEdit size={14} /> Perfil
@@ -442,7 +442,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
         {user && cookie && (
           <div className="shrink-0 absolute right-0 md:relative">
             <Link
-              className="flex items-center justify-center text-black active:scale-95 bg-white hover:bg-gray-100 transition-all text-xs font-semibold px-3 py-1.5 rounded-xl shadow-md whitespace-nowrap"
+              className={`flex items-center justify-center ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} active:scale-95 transition-all text-xs font-semibold px-3 py-1.5 rounded-xl shadow-md hover:opacity-80 whitespace-nowrap`}
               href="/panel-de-usuario"
             >
               Perfil
