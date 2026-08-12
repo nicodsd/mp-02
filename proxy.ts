@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import crypto from "crypto";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
     const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
     const res = NextResponse.next();
 
