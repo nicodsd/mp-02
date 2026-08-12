@@ -172,7 +172,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
               <div className="bg-gray-800/20 absolute top-10 left-1/2 -translate-x-1/2 blur-lg w-[80%] h-2/3"></div>
             )
           }
-          <RenderSortCards template={template} foods={arrayFoods} count={4} context={true} />
+          <RenderSortCards template={template} user={user} foods={arrayFoods} count={4} context={true} />
         </div>
       </div>
     </div >
