@@ -2,27 +2,30 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import crypto from "crypto";
 
-export function proxy(req: NextRequest) {
+export function middleware(req: NextRequest) {
     const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
     const res = NextResponse.next();
 
     res.headers.set("x-nonce", nonce);
 
     const isDev = process.env.NODE_ENV === "development";
+
     const connectSrc = [
         "'self'",
-        "http://localhost:4000",
+        "https://api.qmenu.digital",
         "https://qmenu.digital",
         "https://api.emailjs.com",
+        "http://localhost:4000",
         ...(isDev ? ["ws://localhost:*", "ws://127.0.0.1:*"] : [])
     ].join(" ");
+
     const cspHeader = `
         default-src 'self';
-        script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""};
+        script-src 'self' 'nonce-${nonce}' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""};
         style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`};
         img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com;
-        font-src 'self';
-        connect-src ${connectSrc} [https://api.qmenu.digital](https://api.qmenu.digital);
+        font-src 'self' data:;
+        connect-src ${connectSrc};
         object-src 'none';
         base-uri 'self';
         form-action 'self';
@@ -32,31 +35,34 @@ export function proxy(req: NextRequest) {
 
     res.headers.set("Content-Security-Policy", cspHeader);
 
-    if (req.nextUrl.pathname === "/iniciar-sesion") {
-        const token = req.cookies.get("token")?.value;
-        const user = req.cookies.get("user")?.value;
+    const token = req.cookies.get("token")?.value;
+    const user = req.cookies.get("user")?.value;
+    const { pathname } = req.nextUrl;
+
+    if (pathname === "/iniciar-sesion") {
         if (token && user) {
             return NextResponse.redirect(new URL("/", req.url));
         }
     }
-    if (req.nextUrl.pathname === "/") {
-        const token = req.cookies.get("token")?.value;
-        const user = req.cookies.get("user")?.value;
+
+    if (pathname === "/") {
         if (token || user) {
             return NextResponse.redirect(new URL("/mi-menu", req.url));
         }
     }
 
     const protectedRoutes = ["/panel-de-usuario", "/nuevo-plato", "/mi-menu"];
-    if (protectedRoutes.some((path) => req.nextUrl.pathname.startsWith(path))) {
-        const token = req.cookies.get("token")?.value;
-        const user = req.cookies.get("user")?.value;
+    if (protectedRoutes.some((path) => pathname.startsWith(path))) {
         if (!token || !user) {
             return NextResponse.redirect(new URL("/", req.url));
         }
     }
+
     return res;
 }
+
 export const config = {
-    matcher: ["/panel-de-usuario", "/nuevo-plato", "/iniciar-sesion", "/", "/mi-menu"],
+    matcher: [
+        "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+    ],
 };
