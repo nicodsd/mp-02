@@ -48,7 +48,7 @@ export default async function Page({
         <Bell user={user?.data} template={template} />
       }
       <Menu example={false} data={user?.data} template={template} />
-      <Footer template={template} />
+      {user?.data?.plan === "free" && <Footer template={template} />}
     </div>
   );
 }

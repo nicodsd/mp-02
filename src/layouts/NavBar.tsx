@@ -143,7 +143,7 @@ export default function NavBar({
             : "absolute top-2 italic"
           } items-center justify-between`}>
           {user && typeNavbar !== "horizontal" && (
-            <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/">
+            <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/mi-menu">
               {user?.plan === "free" ? (
                 <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
               ) : (
