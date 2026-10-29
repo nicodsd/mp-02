@@ -105,6 +105,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                     return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                                 })}
                                 example={false}
+                                whatsapp={false}
                                 template={template}
                             />)}
                     </div>
