@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import SearchModal from "@/src/components/modals/SearchModal";
 import FilterHeader from "@/src/components/Index/sections/FilterHeader";
+import FloatingSocialButtons from "@/src/components/buttons/FloatingSocialButtons";
 import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
 import ShareDishModal from "@/src/components/modals/ShareDishModal";

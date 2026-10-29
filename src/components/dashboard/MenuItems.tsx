@@ -68,8 +68,8 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
         {
           user.plan !== "free" ?
             <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
-              <div className="flex flex-col items-start ">
-                <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
+              <div className="flex flex-col items-start">
+                <span className="text-lg text-white mb-1 font-semibold leading-tight truncate">Promociones</span>
                 <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
               </div>
               <span className="text-xs font-medium leading-3 text-white/80">Promociones activas</span>

@@ -7,7 +7,7 @@ import { placeholder } from "@/src/lib/const";
 import { HiOutlineLogout } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { OctagonX, Store } from "lucide-react";
+import { OctagonX, Store, ArrowLeft, ChevronLeft } from "lucide-react";
 import {
   FaCamera,
   FaInstagram,
@@ -32,7 +32,7 @@ const UserSettings = ({ user }: { user: any }) => {
   const [filePhoto, setFilePhoto] = useState<File>();
   const [fileBackground, setFileBackground] = useState<File>();
   const [description, setDescription] = useState(
-    user?.description || "Bar de comida.",
+    user?.description || "",
   );
   const [schedule, setSchedule] = useState(user?.schedule || "");
   const [location, setLocation] = useState(user?.location || "");
@@ -40,6 +40,9 @@ const UserSettings = ({ user }: { user: any }) => {
   const [instagram, setInstagram] = useState(user?.instagram || "");
   const [facebook, setFacebook] = useState(user?.facebook || "");
   const [tiktok, setTiktok] = useState(user?.tiktok || "");
+
+  // Estado para controlar la sección de edición abierta en pantalla completa
+  const [activeEditField, setActiveEditField] = useState<string | null>(null);
 
   const [editStates, setEditStates] = useState({
     name: false,
@@ -80,11 +83,12 @@ const UserSettings = ({ user }: { user: any }) => {
       facebook: false,
       tiktok: false,
     });
+    setActiveEditField(null);
   }, [user]);
 
-  const prefix = phone.slice(0, 3)
-  const number = phone.slice(3)
-  const phoneFormated = prefix + number
+  const prefix = phone.slice(0, 3);
+  const number = phone.slice(3);
+  const phoneFormated = prefix + number;
 
   const cancelChanges = () => {
     setName(user?.name);
@@ -110,7 +114,8 @@ const UserSettings = ({ user }: { user: any }) => {
       facebook: false,
       tiktok: false,
     });
-  }
+    setActiveEditField(null);
+  };
 
   const hadleLogoutUserAction = async (userId: string) => {
     try {
@@ -129,12 +134,66 @@ const UserSettings = ({ user }: { user: any }) => {
       console.error("Error en logout:", err);
     } finally {
       router.push("/");
-      router.refresh()
+      router.refresh();
     }
-  }
+  };
 
-  const toggleEdit = (field: keyof typeof editStates) => {
-    setEditStates((prev) => ({ ...prev, [field]: !prev[field] }));
+  const openSubEdit = (field: string) => {
+    setActiveEditField(field);
+  };
+
+  const closeSubEdit = () => {
+    setActiveEditField(null);
+  };
+
+  const removeField = async (field: keyof typeof editStates) => {
+    if (field === "name") return;
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append(field, "");
+    formData.append("user_id", String(user?.id));
+
+    try {
+      const res = await fetch(`${URI}/menu/update/info/${user.id}`, {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.errors) {
+          alert(`Error de validación: ${data.errors.join(", ")}`);
+        } else {
+          alert(data.message || "Ocurrió un error inesperado");
+        }
+        return;
+      }
+      if (data.success) {
+        if (data.user) {
+          await updateUserCookie(data.user);
+        }
+        if (data.menu) {
+          await updateMenuCookie(data.menu);
+        }
+        if (field === "description") setDescription("");
+        if (field === "schedule") setSchedule("");
+        if (field === "location") setLocation("");
+        if (field === "phone") setPhone("");
+        if (field === "instagram") setInstagram("");
+        if (field === "facebook") setFacebook("");
+        if (field === "tiktok") setTiktok("");
+        setEditStates((prev) => ({ ...prev, [field]: false }));
+        setActiveEditField(null);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Error en la conexión:", error);
+      alert("No se pudo conectar con el servidor.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const photoCapture = (selectedFile: File) => {
@@ -143,11 +202,12 @@ const UserSettings = ({ user }: { user: any }) => {
     setPreviewPhoto(URL.createObjectURL(selectedFile));
     setEditStates((prev) => ({ ...prev, photo: true }));
   };
+
   const backgroundCapture = (selectedFile: File) => {
     if (!selectedFile) return;
     setFileBackground(selectedFile);
     setPreviewBackground(URL.createObjectURL(selectedFile));
-    setEditStates((prev) => ({ ...prev, background: true }));
+    setEditStates((prev) => ({ ...prev, cover: true }));
   };
 
   const userUpdate = async (e: React.FormEvent) => {
@@ -203,6 +263,7 @@ const UserSettings = ({ user }: { user: any }) => {
           facebook: false,
           tiktok: false,
         });
+        setActiveEditField(null);
       }
     } catch (error) {
       console.error("Error en la conexión:", error);
@@ -288,311 +349,508 @@ const UserSettings = ({ user }: { user: any }) => {
             }
           </div>
           <div className="w-full flex flex-col gap-y-8">
+            {/* Nombre */}
             <div className="w-full">
-              {editStates.name ? (
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <Store size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Nombre
+                    </label>
+                    <p className="text-lg">{name}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("name")}
+                  className="text-xs font-bold cursor-pointer active:text-gray-900 transition-all text-gray-500"
+                >
+                  Editar
+                </button>
+              </div>
+            </div>
+
+            {/* Descripción */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <TbNotes size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold text-gray-500">
+                      Descripción
+                    </label>
+                    {description ? (
+                      <p className="text-lg line-clamp-1">{description}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("description")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.description ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.description ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* Horarios */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaClock size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Horarios de Atención
+                    </label>
+                    {schedule ? (
+                      <p className="text-lg line-clamp-1">{schedule}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("schedule")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.schedule ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.schedule ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* Ubicación */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaMapMarkerAlt size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Ubicación
+                    </label>
+                    {location ? (
+                      <p className="text-lg">{location}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("location")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.location ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.location ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* WhatsApp */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaWhatsapp size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Whatsapp
+                    </label>
+                    {phone ? (
+                      <p className="text-lg">{prefix} {number}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("phone")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.phone ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.phone ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* Instagram */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaInstagram size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Instagram / Nombre de Usuario
+                    </label>
+                    {user?.instagram ? (
+                      <p className="text-lg">{user?.instagram}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("instagram")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.instagram ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.instagram ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* Facebook */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaFacebook size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      Facebook / Nombre de Usuario
+                    </label>
+                    {user?.facebook ? (
+                      <p className="text-lg">{user?.facebook}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("facebook")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.facebook ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.facebook ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+
+            {/* TikTok */}
+            <div className="w-full">
+              <div className="flex justify-between items-center text-gray-500">
+                <div className="flex items-center gap-4">
+                  <FaTiktok size={20} />
+                  <div className="flex flex-col items-start">
+                    <label className="flex items-center gap-1 text-xs font-bold ">
+                      TikTok
+                    </label>
+                    {user?.tiktok ? (
+                      <p className="text-lg">{user?.tiktok}</p>
+                    ) : (
+                      <span className="text-sm italic text-gray-400">Sin registrar</span>
+                    )}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => openSubEdit("tiktok")}
+                  className={`text-xs font-bold cursor-pointer ${!user?.tiktok ? "text-blue-500" : "text-gray-500"}`}
+                >
+                  {!user?.tiktok ? "Agregar" : "Editar"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* VISTA DE EDICIÓN INDIVIDUAL EN PANTALLA COMPLETA (FIXED) */}
+        {activeEditField && (
+          <div className="fixed inset-0 z-50 bg-background w-full h-full flex flex-col p-4 overflow-y-auto">
+            <div className="flex flex-col gap-3 mb-2 w-full md:max-w-xl mx-auto">
+              <button
+                type="button"
+                onClick={closeSubEdit}
+                className="flex items-center gap-2 text-sm font-bold text-gray-700 cursor-pointer w-fit"
+              >
+                <ChevronLeft size={20} /> Volver
+              </button>
+              <h2 className="text-xl font-bold mt-6 text-gray-800">
+                {!user?.[activeEditField]
+                  ? `Agregar ${activeEditField === 'name' ? 'Nombre' :
+                    activeEditField === 'description' ? 'Descripción' :
+                      activeEditField === 'schedule' ? 'Horario de Atención' :
+                        activeEditField === 'location' ? 'Ubicación' :
+                          activeEditField === 'phone' ? 'WhatsApp' :
+                            activeEditField === 'instagram' ? 'Instagram' :
+                              activeEditField === 'facebook' ? 'Facebook' : 'TikTok'
+                  }`
+                  : `Editar ${activeEditField === 'name' ? 'Nombre' :
+                    activeEditField === 'description' ? 'Descripción' :
+                      activeEditField === 'schedule' ? 'Horario de Atención' :
+                        activeEditField === 'location' ? 'Ubicación' :
+                          activeEditField === 'phone' ? 'WhatsApp' :
+                            activeEditField === 'instagram' ? 'Instagram' :
+                              activeEditField === 'facebook' ? 'Facebook' : 'TikTok'
+                  }`
+                }
+              </h2>
+
+
+            </div>
+
+            <div className="w-full md:max-w-xl mx-auto flex flex-col gap-4 flex-1">
+              {activeEditField === "name" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    Nombre
+                    {/* Opcional */}
                   </label>
                   <div className="relative">
                     <input
                       className="w-full border p-3 rounded-lg"
                       maxLength={25}
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => {
+                        // Permite letras, números, guiones, guiones bajos y espacios
+                        const sanitizedValue = e.target.value.replace(/[^a-zA-Z0-9\s-_]/g, "");
+                        setName(sanitizedValue);
+                        setEditStates((prev) => ({ ...prev, name: true }));
+                      }}
+                      autoFocus
                     />
                     <button
                       type="button"
-                      onClick={() => toggleEdit("name")}
+                      onClick={() => setName("")}
                       className="absolute right-3 top-1/2 -translate-y-1/2"
                     >
                       <FaTimes />
                     </button>
                   </div>
                 </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <Store size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Nombre
-                      </label>
-                      <p className="text-lg">{name}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("name")}
-                    className="text-xs font-bold cursor-pointer active:text-gray-900 transition-all text-gray-500"
-                  >
-                    Editar
-                  </button>
-                </div>
               )}
-            </div>
-            <div className="w-full">
-              {editStates.description ? (
+
+              {activeEditField === "description" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <TbNotes /> Descripción
+                    <TbNotes size={20} />Descripción
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       maxLength={40}
                       value={description}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={(e) => {
+                        setDescription(e.target.value);
+                        setEditStates((prev) => ({ ...prev, description: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.description ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("description")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setDescription("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <TbNotes size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold text-gray-500">
-                        Descripción
-                      </label>
-                      <p className="text-lg line-clamp-1">{description}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("description")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.description ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.description ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
 
-            <div className="w-full">
-              {editStates.schedule ? (
+              {activeEditField === "schedule" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaClock /> Horarios de Atención
+                    <FaClock size={20} /> Horarios de Atención
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       maxLength={30}
                       value={schedule}
-                      onChange={(e) => setSchedule(e.target.value)}
+                      onChange={(e) => {
+                        setSchedule(e.target.value);
+                        setEditStates((prev) => ({ ...prev, schedule: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.schedule ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("schedule")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setSchedule("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaClock size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Horarios de Atención
-                      </label>
-                      <p className="text-lg line-clamp-1">{schedule}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("schedule")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.schedule ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.schedule ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
 
-            <div className="w-full">
-              {editStates.location ? (
+              {activeEditField === "location" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaMapMarkerAlt /> Ubicación
+                    <FaMapMarkerAlt size={20} /> Ubicación
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={location}
                       maxLength={40}
-                      onChange={(e) => setLocation(e.target.value)}
+                      onChange={(e) => {
+                        setLocation(e.target.value);
+                        setEditStates((prev) => ({ ...prev, location: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.location ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("location")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setLocation("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaMapMarkerAlt size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Ubicación
-                      </label>
-                      <p className="text-lg">{location}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("location")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.location ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.location ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
-            <div className="w-full">
-              {editStates.phone ? (
+
+              {activeEditField === "phone" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaWhatsapp /> WhatsApp
+                    <FaWhatsapp size={20} /> WhatsApp
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={phoneFormated}
                       maxLength={10}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        setEditStates((prev) => ({ ...prev, phone: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.phone ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("phone")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setPhone("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaWhatsapp size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Whatsapp
-                      </label>
-                      <p className="text-lg">{prefix} {number}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("phone")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.phone ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.phone ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
-            <div className="w-full">
-              {editStates.instagram ? (
+
+              {activeEditField === "instagram" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaInstagram /> Instagram
+                    <FaInstagram size={20} /> www.instagram.com/
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={instagram}
+                      placeholder="Nombre de Usuario"
                       maxLength={25}
-                      onChange={(e) => setInstagram(e.target.value)}
+                      onChange={(e) => {
+                        setInstagram(e.target.value);
+                        setEditStates((prev) => ({ ...prev, instagram: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.instagram ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("instagram")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setInstagram("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaInstagram size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Instagram
-                      </label>
-                      <p className="text-lg">{user?.instagram}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("instagram")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.instagram ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.instagram ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
-            <div className="w-full">
-              {editStates.facebook ? (
+
+              {activeEditField === "facebook" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
-                    <FaFacebook /> Facebook
+                    <FaFacebook size={20} /> Facebook
                   </label>
-                  <div className="relative">
+                  <div className="relative mt-2">
                     <input
                       className="w-full border p-3 rounded-lg"
                       value={facebook}
+                      placeholder="Nombre de Usuario"
                       maxLength={25}
-                      onChange={(e) => setFacebook(e.target.value)}
+                      onChange={(e) => {
+                        setFacebook(e.target.value);
+                        setEditStates((prev) => ({ ...prev, facebook: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.facebook ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("facebook")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setFacebook("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaFacebook size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        Facebook
-                      </label>
-                      <p className="text-lg">{user?.facebook}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("facebook")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.facebook ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.facebook ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
-            </div>
-            <div className="w-full">
-              {editStates.tiktok ? (
+
+              {activeEditField === "tiktok" && (
                 <div className="relative">
                   <label className="flex items-center gap-1 text-xs font-bold text-gray-500 mb-1">
                     <FaTiktok /> TikTok
@@ -602,40 +860,37 @@ const UserSettings = ({ user }: { user: any }) => {
                       className="w-full border p-3 rounded-lg"
                       value={tiktok}
                       maxLength={25}
-                      onChange={(e) => setTiktok(e.target.value)}
+                      onChange={(e) => {
+                        setTiktok(e.target.value);
+                        setEditStates((prev) => ({ ...prev, tiktok: true }));
+                      }}
+                      autoFocus
                     />
-                    <button
-                      type="button"
-                      onClick={() => cancelChanges()}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <FaTimes />
-                    </button>
+                    {user?.tiktok ? (
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() => removeField("tiktok")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-red-500 hover:text-red-700 cursor-pointer disabled:opacity-50"
+                      >
+                        {loading ? <FaSpinner className="animate-spin" /> : "Quitar"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setTiktok("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2"
+                      >
+                        <FaTimes />
+                      </button>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <div className="flex justify-between items-center text-gray-500">
-                  <div className="flex items-center gap-4">
-                    <FaTiktok size={20} />
-                    <div className="flex flex-col items-start">
-                      <label className="flex items-center gap-1 text-xs font-bold ">
-                        TikTok
-                      </label>
-                      <p className="text-lg">{user?.tiktok}</p>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => toggleEdit("tiktok")}
-                    className={`text-xs font-bold cursor-pointer ${!user?.tiktok ? "text-blue-500" : "text-gray-500"}`}
-                  >
-                    {!user?.tiktok ? "Agregar" : "Editar"}
-                  </button>
                 </div>
               )}
             </div>
           </div>
-        </div>
+        )}
+
         {isEditing && (
           <motion.div
             initial={{ y: 100 }}
@@ -676,6 +931,7 @@ const UserSettings = ({ user }: { user: any }) => {
         <span className="text-gray-500 text-sm">
           Comparte el código QR para acceder a tu menú, o tambien puedes copiar el enlace para compartir en tus redes sociales.
         </span>
+
         <div className="w-full flex mt-5 justify-center">
           <QrCode user={user} logoUrl={previewPhoto} />
         </div>

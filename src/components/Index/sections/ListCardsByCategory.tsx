@@ -7,7 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
 import { refreshPage } from "@/app/actions";
 
-export default function ListCardsByCategory({ arrayFoods, user, example, template, Ath }: { arrayFoods: any, user: any, example: boolean, template: any, Ath: boolean }) {
+export default function ListCardsByCategory({ arrayFoods, whatsapp, user, example, template, Ath }: { arrayFoods: any, user: any, example: boolean, template: any, whatsapp: boolean, Ath: boolean }) {
     const [selectedFood, setSelectedFood] = useState<any>(null);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const groupedFoods = useMemo(() => {
@@ -47,7 +47,7 @@ export default function ListCardsByCategory({ arrayFoods, user, example, templat
                             <div className="flex flex-col gap-0.5">
                                 {Array.isArray(foods) && foods.map((food: any, index: number) => (
                                     <div className="relative" key={index}>
-                                        <FoodsCardsExample user={user} list={true} example={example} whatsapp={false} {...food} template={template} context={false} edit={handleEditClick} />
+                                        <FoodsCardsExample user={user} list={true} example={example} whatsapp={whatsapp && !Ath ? true : false} {...food} template={template} context={false} edit={handleEditClick} />
                                         {
                                             Ath && !example && (
                                                 <button
