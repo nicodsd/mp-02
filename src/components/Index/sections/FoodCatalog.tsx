@@ -94,6 +94,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             })}
                             example={example}
                             template={template}
+                            whatsapp={user?.whatsAppCart}
                         />)}
 
                 </div>

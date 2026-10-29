@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
+import FloatingSocialButtons from "@/src/components/buttons/FloatingSocialButtons";
 import Image from "next/image";
 import {
   FaMapMarkerAlt,
   FaWhatsapp,
-  FaInstagram,
-  FaFacebook,
-  FaTiktok,
   FaEdit,
   FaClock,
 } from "react-icons/fa";
@@ -129,7 +127,7 @@ export default function NavBar({
       case 'recortado':
         return "h-90";
       default:
-        return "h-100"; // Caso por defecto o si no existe typeNavbar
+        return "h-110"; // Caso por defecto o si no existe typeNavbar
     }
   };
   const navHeightClass = getNavbarHeight();
@@ -208,12 +206,12 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
             className={`flex items-center active:scale-90 transition-all duration-100 absolute -bottom-2 right-0 mx-auto left-0 w-fit gap-1 ${user?.plan === "free" ? "bg-gray-100 text-black" : "bg-white text-black"} text-sm px-3 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
-            <FaEdit size={14} /> Perfil
+            <FaEdit size={14} /> Panel
           </Link>
         )}
       </div>
 
-      <div className={`w-full `}>
+      <div className={`w-full`}>
         <h2 className="text-2xl leading-none font-bold mt-2 uppercase text-center px-4">
           {displayData.name}
         </h2>
@@ -223,39 +221,20 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
         <div className="flex flex-col items-center gap-1">
           <div className="flex items-center gap-x-2">
             {displayData.schedule && (
-              <span className="flex text-[12px] items-center gap-1">
-                <FaClock size={15} className={`${template?.icons}`} />
+              <span className="flex text-[14px] items-center gap-1">
+                <FaClock size={20} className={`${template?.icons}`} />
                 {displayData.schedule}
               </span>
             )}
             {(displayData.address || !user) && (
-              <span className="flex text-[12px] items-center gap-1">
-                <FaMapMarkerAlt size={15} className={`${template?.icons}`} />
+              <span className="flex text-[14px] items-center gap-1">
+                <FaMapMarkerAlt size={20} className={`${template?.icons}`} />
                 {displayData.address || "Santiago del Estero, Argentina"}
               </span>
             )}
           </div>
-
-          <div className="flex items-center gap-x-3 text-[12px] flex-wrap justify-center px-4">
-            {(displayData.phone || !user) && (
-              <span className="flex items-center gap-1">
-                <FaWhatsapp size={16} />
-                {displayData.phone || "385 123 4567"}
-              </span>
-            )}
-
-            {[
-              { id: 'ig', val: displayData.instagram, icon: <FaInstagram size={16} /> },
-              { id: 'fb', val: displayData.facebook, icon: <FaFacebook size={16} /> },
-              { id: 'tk', val: displayData.tiktok, icon: <FaTiktok size={16} /> }
-            ]
-              .filter(social => social.val)
-              .map((social) => (
-                <span key={social.id} className={`flex items-center gap-1`}>
-                  {social.icon}
-                  {social.val}
-                </span>
-              ))}
+          <div className="flex justify-center mt-1 w-full">
+            <FloatingSocialButtons user={user} />
           </div>
         </div>
       </div>
@@ -304,13 +283,17 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
             alt="Profile"
           />
         </div>
-        {user && cookie && (
+        {user && cookie ? (
           <Link
             className={`flex items-center active:scale-90 ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} transition-all duration-100 absolute -bottom-1 right-0 mx-auto left-0 w-fit gap-1 text-xs px-3 hover:opacity-80 py-2 rounded-full shadow-md`}
             href="/panel-de-usuario"
           >
-            <FaEdit size={14} /> Perfil
+            <FaEdit size={14} /> Panel
           </Link>
+        ) : (
+          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-100">
+            <FloatingSocialButtons user={user} isDropdown={true} />
+          </div>
         )}
       </div>
 
@@ -337,27 +320,17 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
             )}
           </div>
 
-          <div className="flex items-center gap-x-3 text-[12px] flex-wrap justify-center px-4">
+          {/*     <div className="flex items-center gap-x-3 text-[12px] flex-wrap justify-center px-4">
             {(displayData.phone || !user) && (
               <span className="flex items-center gap-1">
                 <FaWhatsapp size={16} />
                 {displayData.phone || "385 123 4567"}
               </span>
             )}
-
-            {[
-              { id: 'ig', val: displayData.instagram, icon: <FaInstagram size={16} /> },
-              { id: 'fb', val: displayData.facebook, icon: <FaFacebook size={16} /> },
-              { id: 'tk', val: displayData.tiktok, icon: <FaTiktok size={16} /> }
-            ]
-              .filter(social => social.val)
-              .map((social) => (
-                <span key={social.id} className={`flex items-center gap-1`}>
-                  {social.icon}
-                  {social.val}
-                </span>
-              ))}
-          </div>
+          </div> */}
+          {/*  <div className="flex justify-center mt-1 w-full">
+            <FloatingSocialButtons user={user} />
+          </div> */}
         </div>
       </div>
     </div>
@@ -377,12 +350,6 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
 
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
 
-  const socialLinks = [
-    { id: "ig", val: displayData.instagram, icon: <FaInstagram size={15} /> },
-    { id: "fb", val: displayData.facebook, icon: <FaFacebook size={15} /> },
-    { id: "tk", val: displayData.tiktok, icon: <FaTiktok size={15} /> },
-  ].filter((s) => s.val);
-
   return (
     <div className="relative w-full min-h-44 md:h-52 md:pt-8 flex flex-col justify-center items-center px-4 overflow-hidden">
       <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10">
@@ -397,6 +364,10 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
               }`}
           />
         </Link>
+      </div>
+
+      <div className="absolute top-2 right-2 z-100">
+        <FloatingSocialButtons user={user} isDropdown={true} />
       </div>
 
       {/* Fila Principal Horizontal */}
@@ -418,7 +389,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
 
         {/* Información Principal del Negocio */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
-          <h3 className="text-base sm:text-lg md:text-xl font-bold uppercase truncate leading-tight">
+          <h3 className="text-lg sm:text-lg md:text-xl font-bold uppercase truncate leading-tight">
             {displayData.name}
           </h3>
           <p className="text-xs md:text-sm truncate my-0.5">
@@ -427,7 +398,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
           <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[13px] sm:text-xs">
             {(displayData.address || !user) && (
               <span className="flex items-center gap-1 truncate max-w-45 sm:max-w-xs">
-                <FaMapMarkerAlt size={12} className="shrink-0" />
+                <FaMapMarkerAlt size={15} className="shrink-0" />
                 <span className="truncate">
                   {displayData.address || "Santiago del Estero, Argentina"}
                 </span>
@@ -435,7 +406,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
             )}
             {(displayData.schedule || !user) && (
               <span className="flex items-center gap-1 shrink-0">
-                <FaClock size={12} className="shrink-0" />
+                <FaClock size={15} className="shrink-0" />
                 {displayData.schedule}
               </span>
             )}
@@ -449,31 +420,20 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
               className={`flex items-center justify-center ${template?.backgroundColor2 || "bg-white"} ${template?.textColor || "text-gray-800"} active:scale-95 transition-all text-xs font-semibold px-3 py-1.5 rounded-xl shadow-md hover:opacity-80 whitespace-nowrap`}
               href="/panel-de-usuario"
             >
-              Perfil
+              Panel
             </Link>
           </div>
         )}
       </div>
 
-      {/* Fila Inferior Horizontal: Teléfono y Redes Sociales */}
-      <div className="flex items-center justify-center text-white gap-x-3 gap-y-1 mt-2 text-xs flex-wrap w-full max-w-4xl drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-        {(displayData.phone || !user) && (
+      {/*    {(displayData.phone || !user) && (
+        <div className="flex items-center justify-center text-white gap-x-3 gap-y-1 mt-2 text-xs flex-wrap w-full max-w-4xl drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
           <span className="flex items-center gap-1 font-medium shrink-0">
             <FaWhatsapp size={14} className="shrink-0" />
             {displayData.phone || "385 123 4567"}
           </span>
-        )}
-
-        {socialLinks.map((social) => (
-          <span
-            key={social.id}
-            className="flex items-center gap-1 pl-2 shrink-0"
-          >
-            {social.icon}
-            <span className="truncate max-w-20">{social.val}</span>
-          </span>
-        ))}
-      </div>
+        </div>
+      )} */}
 
     </div>
   );
