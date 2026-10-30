@@ -1,4 +1,4 @@
-import React, { useState, useTransition, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Categories from "@/src/components/Categories";
 import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
@@ -25,30 +25,40 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
     if (foods?.length === 0) return null;
 
     const isPremium = (user.plan === "premium" && user.mp_preapproval_id !== null) || (user.plan === "plus" && user.mp_preapproval_id !== null);
-    let enabledDrinks;
-    let enabledDesserts;
 
-    if (!isPremium) {
-        enabledDrinks = false
-        enabledDesserts = false
-    } else {
-        enabledDrinks = true
-        enabledDesserts = true
-    }
-    // Secciones para mapear, con fallback de migración para premium
-    /*    const topSections = user?.top_sections?.length > 0 ? user.top_sections : [];
-       const bottomSections = user?.bottom_sections?.length > 0 ? user.bottom_sections : []; */
+    // Secciones para mapear según el plan
+    const [customTopSections, setCustomTopSections] = useState<string[]>(user?.top_sections?.length > 0 ? user.top_sections : []);
+    const [customBottomSections, setCustomBottomSections] = useState<string[]>(user?.bottom_sections?.length > 0 ? user.bottom_sections : []);
 
-    const topSections = ["Bebidas"];
-    const bottomSections = ["Postres"];
+    React.useEffect(() => {
+        if (user?.top_sections) {
+            setCustomTopSections(user.top_sections);
+        }
+    }, [user?.top_sections]);
+
+    React.useEffect(() => {
+        if (user?.bottom_sections) {
+            setCustomBottomSections(user.bottom_sections);
+        }
+    }, [user?.bottom_sections]);
+
+    // Si es premium se usan las secciones personalizadas; si es free se muestran bebidas y postres por defecto sin tocar la BD
+    const activeTopSections = isPremium ? customTopSections : ["Bebidas"];
+    const activeBottomSections = isPremium ? customBottomSections : ["Postres"];
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {/*    {isPremium &&
-                    <AddSectionCardsFoods template={template} user={user} foods={foods} />
-                } */}
-                {topSections.map((sectionName: string) => {
+                {isPremium && (
+                    <AddSectionCardsFoods
+                        template={template}
+                        user={{ ...user, top_sections: customTopSections, bottom_sections: customBottomSections }}
+                        foods={foods}
+                        onUpdateSections={setCustomTopSections}
+                        top={true}
+                    />
+                )}
+                {activeTopSections.map((sectionName: string) => {
                     const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
                     return (
@@ -83,7 +93,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             <div className="flex justify-between h-10 max-h-10 items-end mb-1">
                                 <Categories
                                     template={template}
-                                    foods={foods.filter((f: any) => !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category))}
+                                    foods={foods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category))}
                                     selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                                 />
                                 <SortPriceButton onSortChange={setSortOrder} template={template} />
@@ -92,7 +102,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         {user?.presentation === "default" ? (<SortableContext
                             user={user}
                             arrayFoods={processedFoods.filter(f => {
-                                let isMain = !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category);
+                                let isMain = !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category);
                                 return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                             })}
                             template={template}
@@ -101,7 +111,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                 Ath={true}
                                 user={user}
                                 arrayFoods={processedFoods.filter(f => {
-                                    let isMain = !topSections.includes(f.sub_category) && !bottomSections.includes(f.sub_category);
+                                    let isMain = !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category);
                                     return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
                                 })}
                                 example={false}
@@ -112,7 +122,16 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                 ) : (
                     null
                 )}
-                {bottomSections.map((sectionName: string) => {
+                {isPremium && (
+                    <AddSectionCardsFoods
+                        template={template}
+                        user={{ ...user, top_sections: customTopSections, bottom_sections: customBottomSections }}
+                        foods={foods}
+                        onUpdateSections={setCustomBottomSections}
+                        top={false}
+                    />
+                )}
+                {activeBottomSections.map((sectionName: string) => {
                     const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
                     return (
@@ -121,7 +140,12 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                                 <h2 className="text-xl font-normal">{sectionName}</h2>
                                 <Dessert className="w-5 h-5" />
                             </div>
-                            <RenderCardsOptions user={user} foods={sectionFoods} template={template} />
+                            <RenderCardsOptions
+                                user={user}
+                                foods={sectionFoods}
+                                template={template}
+                                context={false}
+                            />
                         </div>
                     );
                 })}
