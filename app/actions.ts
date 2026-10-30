@@ -111,6 +111,8 @@ export async function updateMenuCookie(updatedFields: object) {
         // O si necesitas el path, Next.js intentará usar el cache 
         // de los fetch que NO hayan cambiado sus tags.
         revalidatePath('/panel-de-usuario', 'page');
+        revalidatePath('/mi-menu', 'page');
+        revalidateTag('menu', 'max');
     }
 }
 

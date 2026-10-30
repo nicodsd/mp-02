@@ -5,7 +5,9 @@ import { URI } from "@/src/lib/const";
 export async function userGet(name: string) {
     if (name === "QMENU") { return redirect("/ejemplo"); }
     try {
-        const response = await fetch(`${URI}/menu/${name}`);
+        const response = await fetch(`${URI}/menu/${name}`, {
+            next: { tags: ['menu'], revalidate: 2 }
+        });
         const dataDB = await response.json();
         if (!response.ok) {
             return null;
@@ -19,4 +21,4 @@ export async function userGet(name: string) {
         console.error("Error:", error);
         return null;
     }
-}  
+}

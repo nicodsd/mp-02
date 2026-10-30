@@ -6,7 +6,9 @@ import { URI } from "@/src/lib/const";
 export async function userGetSatellite(name: string, location: string) {
     if (name === "QMENU") { return redirect("/ejemplo"); }
     try {
-        const response = await fetch(`${URI}/menu/${name}/${location}`);
+        const response = await fetch(`${URI}/menu/${name}/${location}`, {
+            next: { tags: ['menu'], revalidate: 2 }
+        });
         const dataDB = await response.json();
         if (!response.ok) {
             return null;
