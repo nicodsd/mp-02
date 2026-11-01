@@ -250,7 +250,6 @@ const UserSettings = ({ user }: { user: any }) => {
         if (data.menu) {
           await updateMenuCookie(data.menu);
         }
-        router.refresh();
         setEditStates({
           name: false,
           description: false,
@@ -266,7 +265,6 @@ const UserSettings = ({ user }: { user: any }) => {
         setActiveEditField(null);
       }
     } catch (error) {
-      console.error("Error en la conexión:", error);
       alert("No se pudo conectar con el servidor.");
     } finally {
       setLoading(false);
@@ -275,6 +273,11 @@ const UserSettings = ({ user }: { user: any }) => {
 
   return (
     <div className="w-full overflow-x-hidden">
+      {loading && (
+        <div className="fixed inset-0 bg-gray-50/50 z-60 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+        </div>
+      )}
       <header className="p-3 w-full flex flex-col">
         <h1 className="text-2xl font-bold text-gray-800">Tu local</h1>
         <p className="text-gray-500 text-sm">Edita la información de tu negocio.</p>

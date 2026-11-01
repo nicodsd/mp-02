@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { refreshPage } from '@/app/actions';
+import { refreshPage, updateMenuCookie, updateUserCookie } from '@/app/actions';
 import { Field, Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { URI } from '@/src/lib/const';
 import * as Yup from 'yup';
@@ -14,24 +14,44 @@ import {
 } from "react-icons/fa";
 
 // Esquema de validación para mantener la integridad de los datos
-const StoreSchema = Yup.object().shape({
+const StoreSchema = Yup.object({
     photo: Yup.mixed().nullable().optional(),
     cover: Yup.mixed().nullable().optional(),
     location: Yup.string().optional(),
     description: Yup.string()
         .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
-        .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
+        .test("len", `Máximo 40 caracteres`, (val) => !val || val.length <= 40)
         .optional(),
-    schedule: Yup.string().optional(),
     instagram: Yup.string().optional(),
     facebook: Yup.string().optional(),
     tiktok: Yup.string().optional(),
-    phonePrefix: Yup.number().when('phone', {
-        is: (val: string) => val && val.length > 0,
-        then: (schema) => schema.required('Ingrese un prefijo'),
-        otherwise: (schema) => schema.optional(),
-    }),
-    phone: Yup.number().optional().min(7, "Mínimo 7 dígitos")
+    schedule: Yup.string().optional(),
+    phonePrefix: Yup.string().test(
+        "prefix-required",
+        "Falta prefijo",
+        function (value) {
+            const { phone } = this.parent;
+            if (phone && !value) return false;
+            return true;
+        }
+    ).test("is-number", "Solo números", (val) => !val || /^[0-9]+$/.test(val)).optional(),
+    phone: Yup.string().test(
+        "phone-required",
+        "Falta número",
+        function (value) {
+            const { phonePrefix } = this.parent;
+            if (phonePrefix && !value) return false;
+            return true;
+        }
+    ).test("is-number", "Solo números", (val) => !val || /^[0-9]+$/.test(val))
+        .test(
+            "phone-min",
+            "Mínimo 7 dígitos",
+            function (value) {
+                if (value && String(value).length < 7) return false;
+                return true;
+            }
+        ).optional()
 });
 
 export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { user_id: string, menu: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) {
@@ -85,16 +105,35 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
                 body: formData,
                 credentials: "include",
             });
+            const data = await response.json().catch(() => ({}));
+
             if (response.ok) {
+                if (data?.user) {
+                    await updateUserCookie(data.user);
+                }
+                if (data?.menu) {
+                    await updateMenuCookie(data.menu);
+                } else {
+                    await updateMenuCookie({
+                        location: values.location,
+                        phone: String((values.phonePrefix || "") + (values.phone || "")),
+                        description: values.description,
+                        schedule: values.schedule,
+                        instagram: values.instagram,
+                        facebook: values.facebook,
+                        tiktok: values.tiktok,
+                    });
+                }
                 alert(`Tienda actualizada exitosamente`);
                 setIsOpen(false);
-                refreshPage();
+                await refreshPage();
             } else {
                 console.log("Error al actualizar la tienda");
-                alert(`Error al actualizar la tienda`);
+                alert(data?.message || `Error al actualizar la tienda`);
             }
         } catch (error) {
             console.error("Error al actualizar la tienda:", error);
+            alert("No se pudo conectar con el servidor.");
         } finally {
             setIsLoading(false);
         }
@@ -116,17 +155,6 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={handleClose}>
-                <TransitionChild
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm" />
-                </TransitionChild>
-                <h2 className="text-xl font-semibold text-gray-700 mb-2">Editar Menú</h2>
 
                 <div className="fixed inset-0 overflow-hidden">
                     <div className="flex h-full items-center justify-end">
@@ -147,13 +175,16 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
                                 <Formik
                                     innerRef={formikRef}
                                     initialValues={initialValues}
+                                    enableReinitialize
                                     validationSchema={StoreSchema}
-                                    onSubmit={(values) => {
-                                        handleEditStore(values);
+                                    onSubmit={async (values, { setSubmitting }) => {
+                                        await handleEditStore(values);
+                                        setSubmitting(false);
                                     }}
                                 >
                                     {({ setFieldValue, isSubmitting, values }) => (
                                         <Form className="flex flex-col gap-6 pt-10 w-full">
+                                            <h2 className="text-xl font-semibold text-gray-700 mb-2">Editar Menú</h2>
                                             <div className={`flex justify-evenly w-full mb-5`}>
                                                 {/* LOGO SECTION */}
                                                 <div className="relative flex items-center justify-center gap-2 flex-col">

@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { URI } from "@/src/lib/const";
 import Categories from "@/src/components/newfood_comps/Categories";
-import { MdChevronLeft } from "react-icons/md";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
 import Steps from "@/src/components/newfood_comps/Steps";
@@ -208,18 +207,7 @@ export default function FormFoods({ initialCategories, user }: any) {
 
   return (
     <div className="min-h-screen pb-24 relative w-full flex flex-col items-center bg-background-2">
-      <div className="flex w-full flex-col px-2 py-3 justify-between items-start">
-        <button
-          type="button"
-          onClick={() => {
-            router.back();
-          }}
-          className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
-        >
-          <MdChevronLeft className="text-xl mr-1" />
-          Volver
-        </button>
-      </div>
+
       <AnimatePresence>
         {(error || successMessage) && (
           <div className="w-full fixed top-5 left-0 right-0 z-100 flex justify-center items-center pointer-events-none px-4">
@@ -281,7 +269,7 @@ export default function FormFoods({ initialCategories, user }: any) {
         aria-label="Abrir lista de platos"
         type="button"
         onClick={() => setIsSidebarOpen(true)}
-        className="md:hidden fixed top-5 right-4 z-40 bg-background ring-7 ring-background text-gray-800 border-gray-800 border p-4 rounded-full active:scale-90 transition-all"
+        className="md:hidden fixed top-5 right-4 z-40 bg-background shadow-lg text-gray-800 border-gray-800 border p-4 rounded-full active:scale-90 transition-all"
       >
         <div className="relative">
           <FaList size={28} />
@@ -292,23 +280,24 @@ export default function FormFoods({ initialCategories, user }: any) {
           )}
         </div>
       </button>
-
       {/* Header General */}
       <Steps />
-
       {/* --- CONTENEDOR PRINCIPAL --- */}
       <div className="flex flex-col lg:flex-row gap-4 md:pb-10 w-full max-w-6xl flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
         <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-10 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
-
-          <ImageUpload
-            preview={preview}
-            file={file}
-            imgPlaceholder={imgPlaceholder}
-            onImageChange={handleImage}
-            onDelete={() => { setFile(null); setPreview(imgPlaceholder); }}
-          />
+          <div className="flex flex-col gap-1 w-full">
+            <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">imagen</label>
+            <ImageUpload
+              preview={preview}
+              file={file}
+              imgPlaceholder={imgPlaceholder}
+              onImageChange={handleImage}
+              onDelete={() => { setFile(null); setPreview(imgPlaceholder); }}
+              onError={setError}
+            />
+          </div>
 
           <div className="space-y-8">
             <div className="flex flex-col gap-8 w-full">
