@@ -17,7 +17,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
         <div
             className={`flex w-full relative overflow-hidden ${food.is_archived ? "grayscale opacity-50" : template?.backgroundColor}
                 ${context
-                    ? `border border-gray-200 bg-background md:pr-6 px-2 rounded-xl py-1 h-30 lg:h-16 items-center`
+                    ? `border border-gray-200 bg-background md:pr-6 px-2 rounded-xl py-1 h-26 lg:h-16 items-center`
                     : `border h-24 ${template?.border} rounded-lg p-0.5 items-center`
                 }`}
         >
@@ -33,7 +33,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                     </div>
                 )
             }
-            <div className={`relative shrink-0 md:max-w-25 md:max-h-36 md:h-full h-full min-w-20 w-20 max-w-20 rounded-[7px] overflow-hidden`}>
+            <div className={`${context ? " md:h-full h-22 aspect-square" : "md:max-w-25 md:max-h-36 md:h-full h-full"} relative shrink-0 min-w-20 w-20 max-w-20 rounded-[7px] overflow-hidden`}>
                 <Image
                     quality={75}
                     loading="lazy"

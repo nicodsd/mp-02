@@ -57,8 +57,8 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
         <p className="text-gray-500 text-sm">Gestiona tus platos, crea, edita entre otras cosas.</p>
       </header>
 
-      <div className="grid grid-cols-3 lg:grid-cols-3 gap-2">
-        <div className="flex flex-col items-start p-3 rounded-xl bg-orange-400 justify-between">
+      <div className="grid grid-cols-3 lg:grid-cols-3 gap-1 md:gap-2">
+        <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-orange-400 justify-between">
           <div className="flex flex-col items-start ">
             <span className="text-lg text-white mb-1 font-semibold leading-tight">Platos</span>
             <span className="text-[3rem] font-bold text-white">{activeDataFoods.length}</span>
@@ -67,7 +67,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
         </div>
         {
           user.plan !== "free" ?
-            <div className="flex flex-col items-start p-3 rounded-xl bg-teal-600 justify-between">
+            <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-teal-600 justify-between">
               <div className="flex flex-col items-start">
                 <span className="text-lg text-white mb-1 font-semibold leading-tight truncate">Promociones</span>
                 <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
@@ -75,7 +75,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
               <span className="text-xs font-medium leading-3 text-white/80">Promociones activas</span>
             </div>
             :
-            <div className="relative group flex flex-col items-start gap-2 p-3 rounded-xl bg-gray-300 justify-between">
+            <div className="relative group flex flex-col items-start gap-2 p-2 md:p-3 rounded-xl bg-gray-300 justify-between">
               <div className="flex flex-col items-start">
                 <span className="text-lg text-white mb-1 font-semibold leading-tight">Promociones</span>
                 <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
@@ -90,7 +90,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
         }
         {
           user.plan !== "free" ?
-            <div className="flex flex-col items-start p-3 rounded-xl bg-indigo-500 justify-between">
+            <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-indigo-500 justify-between">
               <div className="flex flex-col items-start ">
                 <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
                 <span className="text-[3rem] font-bold text-white">{analytics.visits}</span>
@@ -98,7 +98,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
               <span className="text-xs font-medium text-white/80">Vistas al menú</span>
             </div>
             :
-            <div className="relative group flex flex-col items-start gap-2 p-3 rounded-xl bg-gray-300 justify-between">
+            <div className="relative group flex flex-col items-start gap-2 p-2 md:p-3 rounded-xl bg-gray-300 justify-between">
               <div className="flex flex-col items-start">
                 <span className="text-lg text-white mb-1 font-semibold leading-tight">Visitas</span>
                 <span className="md:text-[2.5rem] text-xl font-bold leading-none text-white">0</span>
@@ -164,7 +164,7 @@ export function MenuItems({ dataFoods, template, user, token }: { dataFoods: any
           <SearchInput arrayFoods={arrayFoods} setSearch={setSearch} />
           <AddFoodBttn state={false} />
         </div>
-        <div className="flex w-full h-130 relative bg-gray-200/60 md:p-1 rounded-xl">
+        <div className="flex w-full h-130 relative bg-gray-200/30 md:p-1 rounded-xl">
           {
             view === "active" ? (
               <div className="bg-orange-300/40 absolute top-10 left-1/2 -translate-x-1/2 blur-lg w-[80%] h-2/3"></div>
