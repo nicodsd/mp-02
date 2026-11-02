@@ -7,6 +7,7 @@ import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
 import Steps from "@/src/components/newfood_comps/Steps";
 import { Store } from "lucide-react";
+import { FoodCategoryIcon } from "@/src/components/icons/foods";
 import { FaSpinner, FaTrash, FaTimes, FaList, FaCheckCircle } from "react-icons/fa";
 // 1. IMPORTAR FRAMER MOTION
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,6 +20,7 @@ interface LocalFood {
   description: string;
   price: string;
   subCategories: string;
+  categoryIcon?: string;
   file: File | null;
   preview: string;
   isGlutenFree: boolean;
@@ -46,6 +48,7 @@ export default function FormFoods({ initialCategories, user }: any) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [subCategories, setSubCategories] = useState<string>("");
+  const [categoryIcon, setCategoryIcon] = useState<string>("");
   const [price, setPrice] = useState("");
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
@@ -82,6 +85,7 @@ export default function FormFoods({ initialCategories, user }: any) {
     setDescription("");
     setPrice("");
     setSubCategories("");
+    setCategoryIcon("");
     setFile(null);
     setPreview(imgPlaceholder);
     setIsGlutenFree(false);
@@ -102,6 +106,7 @@ export default function FormFoods({ initialCategories, user }: any) {
       description,
       price,
       subCategories,
+      categoryIcon,
       file,
       preview,
       isGlutenFree,
@@ -139,6 +144,9 @@ export default function FormFoods({ initialCategories, user }: any) {
         formData.append("description", food.description);
         formData.append("price", food.price);
         formData.append("sub_category", food.subCategories);
+        if (food.categoryIcon) {
+          formData.append("category_icon", food.categoryIcon);
+        }
         formData.append("category", "Comidas");
         formData.append("promo_price", "0");
         formData.append("is_promo", "false");
@@ -187,27 +195,8 @@ export default function FormFoods({ initialCategories, user }: any) {
     setLoading(false);
   };
 
-  {/*             <div className="flex flex-col gap-2">
-              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
-              <div className="relative">
-                <input
-                  className="w-full border bg-background border-gray-300 rounded-lg px-10 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                  id="price"
-                  name="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  maxLength={10}
-                  placeholder="0.00"
-                  type="number"
-                  required
-                />
-                <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
-              </div>
-            </div> */}
-
   return (
-    <div className="min-h-screen pb-24 relative w-full flex flex-col items-center bg-background-2">
-
+    <div className="min-h-screen pb-6 relative w-full flex flex-col items-center bg-background-2">
       <AnimatePresence>
         {(error || successMessage) && (
           <div className="w-full fixed top-5 left-0 right-0 z-100 flex justify-center items-center pointer-events-none px-4">
@@ -248,6 +237,12 @@ export default function FormFoods({ initialCategories, user }: any) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
                             <h4 className="font-bold text-gray-800 text-md truncate">{food.name}</h4>
+                            {food.subCategories && (
+                              <span className="inline-flex items-center gap-1 bg-gray-200/70 text-gray-700 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+                                <FoodCategoryIcon iconName={food.categoryIcon} categoryName={food.subCategories} size={11} />
+                                {food.subCategories}
+                              </span>
+                            )}
                             {food.isGlutenFree && (
                               <span className="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md border border-amber-200">Sin TACC</span>
                             )}
@@ -280,15 +275,14 @@ export default function FormFoods({ initialCategories, user }: any) {
           )}
         </div>
       </button>
-      {/* Header General */}
+
       <Steps />
-      {/* --- CONTENEDOR PRINCIPAL --- */}
+
       <div className="flex flex-col lg:flex-row gap-4 md:pb-10 w-full max-w-6xl flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
-        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-10 md:rounded-2xl md:border md:border-gray-100 space-y-6 md:shadow-sm">
-          <div className="flex flex-col gap-1 w-full">
-            <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">imagen</label>
+        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-8 md:rounded-2xl md:border md:border-gray-100 space-y-12 md:shadow-sm">
+          <div className="flex flex-col gap-1 w-full shadow-lg rounded-xl">
             <ImageUpload
               preview={preview}
               file={file}
@@ -299,9 +293,10 @@ export default function FormFoods({ initialCategories, user }: any) {
             />
           </div>
 
-          <div className="space-y-8">
-            <div className="flex flex-col gap-8 w-full">
+          <div className="space-y-12">
+            <div className="flex flex-col gap-5 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
               <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
+              <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
               <div className="flex flex-col gap-1 w-full">
                 <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
                 <div className="relative">
@@ -320,19 +315,26 @@ export default function FormFoods({ initialCategories, user }: any) {
                 </div>
               </div>
             </div>
-            <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
               <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Categorías</label>
-              <div className="p-3 rounded-2xl bg-background border border-gray-200">
-                <Categories categoriesList={initialCategories} onChange={setSubCategories} user={user} />
+              <div className="p-1 rounded-xl">
+                <Categories
+                  categoriesList={initialCategories}
+                  value={subCategories}
+                  onChange={(selected, icon) => {
+                    setSubCategories(selected);
+                    setCategoryIcon(icon || "");
+                  }}
+                  user={user}
+                />
               </div>
             </div>
             {/* INTERFAZ DEL SWITCH: APTOS LIBRE DE TACC */}
-            <div className="flex items-center justify-between p-3 bg-background border border-gray-300 rounded-xl">
+            <div className="flex items-center justify-between p-3 bg-background border border-gray-300 rounded-xl shadow">
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-gray-700">Libre de TACC / Sin Gluten</span>
-                <span className="text-xs text-gray-400">Activa esta casilla si el plato es apto para celíacos</span>
+                <span className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Libre de TACC / Sin Gluten</span>
+                <span className="text-xs text-gray-500">Activa esta casilla si el plato es apto para celíacos</span>
               </div>
               <button
                 type="button"
@@ -348,8 +350,11 @@ export default function FormFoods({ initialCategories, user }: any) {
                 />
               </button>
             </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Mostrar en los Menús</label>
+            <div className="flex flex-col gap-2 p-3 bg-background border border-gray-300 rounded-xl shadow">
+              <div>
+                <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Mostrar en los Menús</label>
+                <p className="text-[12px] text-gray-500">Selecciona los menús donde quieres que aparezca este plato. Si no seleccionas ninguno, se mostrará en todos por defecto.</p>
+              </div>
               <div className="flex flex-wrap gap-2 p-1">
                 {userMenus.length === 0 ? (
                   <p className="text-xs text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
@@ -367,7 +372,7 @@ export default function FormFoods({ initialCategories, user }: any) {
                             setSelectedMenus(prev => [...prev, m._id]);
                           }
                         }}
-                        className={`px-4 py-2 rounded-full text-sm font-bold transition-all border flex gap-2 items-center ${isSelected
+                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border flex gap-2 items-center ${isSelected
                           ? "bg-black text-white border-black shadow-md"
                           : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
                           }`}
@@ -433,9 +438,15 @@ export default function FormFoods({ initialCategories, user }: any) {
                       />
                       <div className="w-62.5 truncate">
                         <div className="flex items-center gap-1.5">
-                          <h4 className="font-bold text-gray-800 text-sm">{food.name}</h4>
+                          <h4 className="font-bold text-gray-800 text-sm truncate">{food.name}</h4>
+                          {food.subCategories && (
+                            <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 text-[10px] font-semibold px-1.5 py-0.5 rounded-md border border-gray-200 shrink-0">
+                              <FoodCategoryIcon iconName={food.categoryIcon} categoryName={food.subCategories} size={11} />
+                              {food.subCategories}
+                            </span>
+                          )}
                           {food.isGlutenFree && (
-                            <span className="bg-amber-100 text-amber-800 text-[9px] font-bold px-1 rounded border border-amber-200">Sin TACC</span>
+                            <span className="bg-amber-100 text-amber-800 text-[9px] font-bold px-1 rounded border border-amber-200 shrink-0">Sin TACC</span>
                           )}
                         </div>
                         <p className="text-xs text-gray-500 line-clamp-1">{food.description}</p>

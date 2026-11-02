@@ -12,15 +12,20 @@ export default function UserIndex({ foods, user, template }: any) {
   const [showModal, setShowModal] = useState(false);
   const [sharingFood, setSharingFood] = useState<any>(null);
 
-  // Listen to the 'share-dish' event
+  // Listen to the 'share-dish' and 'open-search-modal' events
   useEffect(() => {
     const handleShareEvent = (e: Event) => {
       const customEvent = e as CustomEvent;
       setSharingFood(customEvent.detail);
     };
+    const handleOpenSearchEvent = () => {
+      setShowModal(true);
+    };
     document.addEventListener("share-dish", handleShareEvent);
+    document.addEventListener("open-search-modal", handleOpenSearchEvent);
     return () => {
       document.removeEventListener("share-dish", handleShareEvent);
+      document.removeEventListener("open-search-modal", handleOpenSearchEvent);
     };
   }, []);
 

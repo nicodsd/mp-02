@@ -18,9 +18,9 @@ export default async function Page({
   const user = await userGet(name);
   let template = templates.find((t) => t.template_id === user?.data?.template_id);
   if (user?.plan !== "free") {
-    template = templates.find((t) => t.template_id === user?.template_id);
-    template = templates.find((t) => t.template_id === "default");
+    template = templates.find((t) => t.template_id === user?.data?.template_id);
   } else {
+    template = templates.find((t) => t.template_id === "default");
     user.presentation = "default"
     user.navBar = "default"
   }
