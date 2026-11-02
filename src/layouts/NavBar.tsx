@@ -7,6 +7,7 @@ import {
   FaWhatsapp,
   FaEdit,
   FaClock,
+  FaSearch,
 } from "react-icons/fa";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
@@ -34,9 +35,22 @@ export default function NavBar({
   template
 }: NavBarProps) {
   const [isMounted, setIsMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 380);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   let typeNavbar = 'default';
@@ -59,6 +73,13 @@ export default function NavBar({
         ? { backgroundImage: `url("${optimizedBackground}")` }
         : {};
   }
+
+  const displayData = {
+    name: user?.name || (!user ? "QMENÚ" : ""),
+    description: user?.description || (!user ? "Crea tu menú GRATIS con QMenú." : ""),
+  };
+
+  const optimizedPhoto = getOptimizedImage(photo, 100, 100);
 
   const renderNavContent = () => {
     switch (state) {
@@ -127,50 +148,88 @@ export default function NavBar({
       case 'recortado':
         return "h-90";
       default:
-        return "h-110"; // Caso por defecto o si no existe typeNavbar
+        return "h-110";
     }
   };
   const navHeightClass = getNavbarHeight();
 
   return (
-    <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-background"}`}>
+    <>
+      {/* Navbar compacto flotante */}
       {!isSpecialState && (
-        <div className={`flex w-full z-50 
-        ${!user
-            ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-red-700 to-primary h-14 p-2 text-white"
-            : "absolute top-2 italic"
-          } items-center justify-between`}>
-          {user && typeNavbar !== "horizontal" && (
-            <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/mi-menu">
-              {user?.plan === "free" ? (
-                <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
-              ) : (
-                <Image priority src={logo_w} width={60} height={60} alt="Logo" className="w-13 h-13 md:w-24 md:h-16 object-contain" />
-              )}
-              {cookie && <UserPlan plan={user?.plan} />}
-            </Link>
-          )}
-          {!user && (
-            <div className="flex w-full justify-around items-center md:justify-center md:gap-10">
-              <span className="text-md tracking-tight md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
-              <BotonAccion color="white" textColor="primary" />
+        <div
+          className={`fixed -top-1 left-0 right-0 z-50 backdrop-blur-sm ${template?.bgMenu} shadow-md transition-all duration-300 transform ${isScrolled ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+            } py-3 px-4 flex items-center justify-between`}
+        >
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="shrink-0">
+              <Image
+                src={optimizedPhoto || logo}
+                width={40}
+                height={40}
+                className="rounded-full object-cover w-10 h-10 border border-gray-200"
+                alt="Logo compacto"
+              />
             </div>
-          )}
+            <div className="flex flex-col min-w-0">
+              <span className={`text-sm font-bold uppercase ${template?.textColor || "text-primary"} truncate`}>
+                {displayData.name}
+              </span>
+              <span className={`text-xs ${template?.textColor || "text-primary"} truncate`}>
+                {displayData.description}
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            aria-label="Buscar platos"
+            onClick={() => document.dispatchEvent(new CustomEvent("open-search-modal"))}
+            className={`p-2.5 ${template?.backgroundColor || "bg-background"} hover:opacity-80 active:scale-95 transition shrink-0 cursor-pointer flex items-center justify-center`}
+          >
+            <FaSearch className={`${template?.icons || "text-primary"}`} size={20} />
+          </button>
         </div>
       )}
 
-      <div
-        className={`relative w-full transition-all flex items-center bg-center bg-cover bg-no-repeat bg-linear-to-b from-white to-background ${navHeightClass}`}
-        style={inlineStyle}
-      >
+      <header className={`flex flex-col w-full ${isSpecialState ? "" : "bg-background"}`}>
         {!isSpecialState && (
-          <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : ""}`} />
+          <div className={`flex w-full z-40 
+          ${!user
+              ? "backdrop-blur-lg bg-linear-to-b sticky top-0 from-red-700 to-primary h-14 p-2 text-white"
+              : "absolute top-2 italic"
+            } items-center justify-between`}>
+            {user && typeNavbar !== "horizontal" && (
+              <Link className="flex w-full justify-center gap-2 items-center text-xs" href="/mi-menu">
+                {user?.plan === "free" ? (
+                  <Image priority src={logotipo} width={60} height={60} alt="Logo" className="w-13 h-13 opacity-60 md:w-24 md:h-16 object-contain" />
+                ) : (
+                  <Image priority src={logo_w} width={60} height={60} alt="Logo" className="w-13 h-13 md:w-24 md:h-16 object-contain" />
+                )}
+                {cookie && <UserPlan plan={user?.plan} />}
+              </Link>
+            )}
+            {!user && (
+              <div className="flex w-full justify-around items-center md:justify-center md:gap-10">
+                <span className="text-md tracking-tight md:text-lg font-bold">Crea tu Menú ¡GRATIS!</span>
+                <BotonAccion color="white" textColor="primary" />
+              </div>
+            )}
+          </div>
         )}
-        <nav className="relative z-10 w-full">
-          {renderNavContent()}
-        </nav>
-      </div>
-    </header>
+
+        <div
+          className={`relative w-full transition-all flex items-center bg-center bg-cover bg-no-repeat bg-linear-to-b from-white to-background ${navHeightClass}`}
+          style={inlineStyle}
+        >
+          {!isSpecialState && (
+            <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : ""}`} />
+          )}
+          <nav className="relative z-10 w-full">
+            {renderNavContent()}
+          </nav>
+        </div>
+      </header>
+    </>
   );
 }
 
@@ -241,6 +300,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
     </div>
   );
 }
+
 function RecortadoNavUser({ user, photo, cookie, template }: any) {
   const displayData = {
     name: user?.name || (!user ? "QMENÚ" : ""),
@@ -319,23 +379,12 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
               </span>
             )}
           </div>
-
-          {/*     <div className="flex items-center gap-x-3 text-[12px] flex-wrap justify-center px-4">
-            {(displayData.phone || !user) && (
-              <span className="flex items-center gap-1">
-                <FaWhatsapp size={16} />
-                {displayData.phone || "385 123 4567"}
-              </span>
-            )}
-          </div> */}
-          {/*  <div className="flex justify-center mt-1 w-full">
-            <FloatingSocialButtons user={user} />
-          </div> */}
         </div>
       </div>
     </div>
   );
 }
+
 function HorizontalNavUser({ user, photo, cookie, template }: any) {
   const displayData = {
     name: user?.name || (!user ? "QMENÚ" : ""),
@@ -370,10 +419,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
         <FloatingSocialButtons user={user} isDropdown={true} />
       </div>
 
-      {/* Fila Principal Horizontal */}
       <div className="flex items-center justify-between gap-3 w-full max-w-3xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
-
-        {/* Foto de Perfil */}
         <div className="shrink-0">
           <div className="rounded-full p-0.5 bg-white shadow-md">
             <Image
@@ -387,7 +433,6 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
           </div>
         </div>
 
-        {/* Información Principal del Negocio */}
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           <h3 className="text-lg sm:text-lg md:text-xl font-bold uppercase truncate leading-tight">
             {displayData.name}
@@ -413,7 +458,6 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
           </div>
         </div>
 
-        {/* Botón de Perfil */}
         {user && cookie && (
           <div className="shrink-0 absolute right-0 md:relative">
             <Link
@@ -425,16 +469,6 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
           </div>
         )}
       </div>
-
-      {/*    {(displayData.phone || !user) && (
-        <div className="flex items-center justify-center text-white gap-x-3 gap-y-1 mt-2 text-xs flex-wrap w-full max-w-4xl drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
-          <span className="flex items-center gap-1 font-medium shrink-0">
-            <FaWhatsapp size={14} className="shrink-0" />
-            {displayData.phone || "385 123 4567"}
-          </span>
-        </div>
-      )} */}
-
     </div>
   );
 }

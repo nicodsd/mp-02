@@ -4,7 +4,7 @@ import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import CardsFoodsByCategories from "@/src/components/Index/sections/CardsFoodsByCategories";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import ListCardsByCategory from "./ListCardsByCategory";
-import { Utensils, Martini, Dessert } from "lucide-react";
+import { FoodCategoryIcon, getCategoryIconFromFoods } from "@/src/components/icons/foods";
 
 export default function FoodCatalog({ allFoods, template, example, user }: any) {
     const [selectedSubCategory, setSelectedSubCategory] = useState("0");
@@ -31,17 +31,29 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
     const activeTopSections = isPremium ? customTopSections : ["Bebidas"];
     const activeBottomSections = isPremium ? customBottomSections : ["Postres"];
 
+    const mainFoods = processedFoods.filter(
+        (f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)
+    );
+    const mainSectionIcon = getCategoryIconFromFoods(mainFoods, selectedSubCategory);
+
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
                 {activeTopSections.map((sectionName: string) => {
                     const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
+                    const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
                     return (
                         <div key={sectionName} className="flex flex-col gap-1">
                             <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                                 <h2 className="text-xl font-normal">{sectionName}</h2>
-                                <Martini className="w-5 h-5" />
+                                <FoodCategoryIcon
+                                    iconName={sectionIcon}
+                                    categoryName={sectionName}
+                                    fallbackIcon="Martini"
+                                    className="w-5 h-5"
+                                    size={20}
+                                />
                             </div>
                             <RenderCardsOptions
                                 user={user}
@@ -59,7 +71,13 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                 <div className="flex flex-col gap-2">
                     <div className={`flex ml-2 items-center gap-2 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                         <h2 className="text-xl font-normal">Platos</h2>
-                        <Utensils className="w-5 h-5" />
+                        <FoodCategoryIcon
+                            iconName={mainSectionIcon}
+                            categoryName={selectedSubCategory !== "0" ? selectedSubCategory : undefined}
+                            fallbackIcon="Utensils"
+                            className="w-5 h-5"
+                            size={20}
+                        />
                     </div>
 
                     <div className="flex justify-between h-9 max-h-9 items-end mb-1">
@@ -73,10 +91,9 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
 
                     {example || user?.presentation === "default" ? (<CardsFoodsByCategories
                         user={user}
-                        arrayFoods={processedFoods.filter(f => {
-                            let isMain = !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category);
-                            return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
-                        })}
+                        arrayFoods={mainFoods.filter((f: any) =>
+                            selectedSubCategory === "0" ? true : f.sub_category === selectedSubCategory
+                        )}
                         example={example}
                         whatsapp={user?.whatsAppCart}
                         template={template}
@@ -84,10 +101,9 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                         <ListCardsByCategory
                             Ath={false}
                             user={user}
-                            arrayFoods={processedFoods.filter(f => {
-                                let isMain = !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category);
-                                return selectedSubCategory === "0" ? isMain : (isMain && f.sub_category === selectedSubCategory);
-                            })}
+                            arrayFoods={mainFoods.filter((f: any) =>
+                                selectedSubCategory === "0" ? true : f.sub_category === selectedSubCategory
+                            )}
                             example={example}
                             template={template}
                             whatsapp={user?.whatsAppCart}
@@ -99,11 +115,18 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                 {activeBottomSections.map((sectionName: string) => {
                     const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
+                    const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
                     return (
                         <div key={sectionName} className="flex flex-col gap-1">
                             <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
                                 <h2 className="text-xl font-normal">{sectionName}</h2>
-                                <Dessert className="w-5 h-5" />
+                                <FoodCategoryIcon
+                                    iconName={sectionIcon}
+                                    categoryName={sectionName}
+                                    fallbackIcon="Dessert"
+                                    className="w-5 h-5"
+                                    size={20}
+                                />
                             </div>
                             <RenderCardsOptions
                                 user={user}

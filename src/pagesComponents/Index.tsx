@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import foodsData from "@/src/data/foods-1.json";
 import subCategoriesData from "@/src/data/sub_categories.json";
 import FilterHeader from "@/src/components/Index/sections/FilterHeader";
@@ -13,6 +13,16 @@ export default function Inicio() {
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(foodsData);
   const user = {}
+
+  useEffect(() => {
+    const handleOpenSearchEvent = () => {
+      setShowModal(true);
+    };
+    document.addEventListener("open-search-modal", handleOpenSearchEvent);
+    return () => {
+      document.removeEventListener("open-search-modal", handleOpenSearchEvent);
+    };
+  }, []);
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {

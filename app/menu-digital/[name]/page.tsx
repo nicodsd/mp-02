@@ -16,7 +16,14 @@ export default async function Page({
 }) {
   const { name } = await params;
   const user = await userGet(name);
-  const template = templates.find((t) => t.template_id === user?.data?.template_id);
+  let template = templates.find((t) => t.template_id === user?.data?.template_id);
+  if (user?.plan !== "free") {
+    template = templates.find((t) => t.template_id === user?.data?.template_id);
+  } else {
+    template = templates.find((t) => t.template_id === "default");
+    user.presentation = "default"
+    user.navBar = "default"
+  }
   if (!user?.data) {
     return <PageNotFound />;
   }

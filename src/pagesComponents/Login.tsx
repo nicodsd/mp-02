@@ -66,6 +66,7 @@ export default function LoginPage() {
           }, 1500);
         } else {
           setIsLoading(false);
+          setServerMessage(data.message || "Error de credenciales");
           if (data.alreadyLoggedIn) {
             setAlreadyLoggedIn(true);
             setServerMessage(data.message || "Error de credenciales");
@@ -74,9 +75,9 @@ export default function LoginPage() {
             setServerMessage(data.message);
           }
         }
-      } catch (error) {
+      } catch (error: any) {
         setIsLoading(false);
-        setServerMessage("Error de conexión");
+        setServerMessage(error.message || "Error de credenciales");
       }
     },
   });
@@ -131,7 +132,7 @@ export default function LoginPage() {
           </button>
         </div>
         {serverMessage && (
-          <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 border-2 ${serverMessage === "Error de conexión" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "border-red-500" : "border-green-500"} ${serverMessage === "Error de conexión" ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 ${alreadyLoggedIn && "text-orange-600"} ${alreadyLoggedIn && "bg-orange-50"} ${alreadyLoggedIn && "border-orange-300"} rounded-xl`}>
+          <div className={`p-4 mx-auto animate-in fade-in duration-400 slide-in-from-top-16 ${serverMessage === "Contraseña incorrecta" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "bg-red-500" : "bg-green-500"} ${serverMessage === "Error de conexión" ? "text-white" : "text-background"} text-md shadow-lg font-semibold w-[90%] md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto fixed top-12 z-100 left-0 right-0 ${alreadyLoggedIn && "text-orange-600"} ${alreadyLoggedIn && "bg-orange-50"} ${alreadyLoggedIn && "border-orange-300"} rounded-xl`}>
             {serverMessage} {
               alreadyLoggedIn && (
                 <button onClick={() => { handleIsOnline() }} className="text-blue-600 font-bold hover:underline ml-1 cursor-pointer uppercase">Cerrar Sesión</button>
