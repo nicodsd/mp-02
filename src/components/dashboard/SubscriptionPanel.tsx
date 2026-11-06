@@ -4,6 +4,7 @@ import { Check, Loader2, CreditCard, Sparkles, ShieldCheck } from "lucide-react"
 import { motion } from "framer-motion";
 import { URI } from "@/src/lib/const";
 import Link from "next/link";
+import { useFoodStore } from "@/src/lib/useFoodStore";
 
 interface PlanFeature {
   text: string;
@@ -21,7 +22,9 @@ interface Plan {
   buttonClass: string;
 }
 
-export default function SubscriptionPanel({ user }: { user: any }) {
+export default function SubscriptionPanel({ user: initialUser }: { user: any }) {
+  const { user: storeUser } = useFoodStore();
+  const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
   const plans: Plan[] = [

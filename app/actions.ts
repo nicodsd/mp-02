@@ -16,10 +16,12 @@ export async function refreshPage() {
     revalidatePath('/dashboard', 'page');
     revalidatePath('/', 'layout');
     revalidatePath('/panel-de-usuario', 'page');
+    revalidatePath('/mi-menu', 'page');
 }
 export async function refreshPagePanelMenuConfigure() {
     revalidateTag('menu', 'max');
     revalidatePath('/panel-de-usuario', 'page');
+    revalidatePath('/mi-menu', 'page');
 }
 
 export async function setAuthCookie(token: string) {

@@ -2,6 +2,7 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/re
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { refreshPage, updateMenuCookie, updateUserCookie } from '@/app/actions';
+import { useFoodStore } from '@/src/lib/useFoodStore';
 import { Field, Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { URI } from '@/src/lib/const';
 import * as Yup from 'yup';
@@ -55,6 +56,7 @@ const StoreSchema = Yup.object({
 });
 
 export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { user_id: string, menu: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) {
+    const refreshPanelData = useFoodStore((state) => state.refreshPanelData);
     const [photoPreview, setPhotoPreview] = useState<string | null>(menu?.photo || null);
     const [coverPreview, setCoverPreview] = useState<string | null>(menu?.cover || null);
     const [isLoading, setIsLoading] = useState(false);
@@ -126,6 +128,7 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
                 }
                 alert(`Tienda actualizada exitosamente`);
                 setIsOpen(false);
+                await refreshPanelData();
                 await refreshPage();
             } else {
                 console.log("Error al actualizar la tienda");
@@ -305,7 +308,7 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
                                                     name="description"
                                                     as="textarea"
                                                     rows={2}
-                                                    maxLength={30}
+                                                    maxLength={40}
                                                     placeholder="Cuenta en pocas líneas qué ofreces y tu propuesta de valor."
                                                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                                                 />
@@ -332,15 +335,15 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
                                                 <div className="flex flex-col gap-3">
                                                     <div className="flex items-center gap-3">
                                                         <span className="w-8 text-xl text-gray-700"><FaInstagram /></span>
-                                                        <Field name="instagram" type="text" maxLength={15} placeholder="@tu_usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
+                                                        <Field name="instagram" type="text" maxLength={30} placeholder="@tu_usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
                                                     </div>
                                                     <div className="flex items-center gap-3">
                                                         <span className="w-8 text-xl text-gray-700"><FaFacebook /></span>
-                                                        <Field name="facebook" type="text" maxLength={15} placeholder="Nombre de usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
+                                                        <Field name="facebook" type="text" maxLength={30} placeholder="Nombre de usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
                                                     </div>
                                                     <div className="flex items-center gap-3">
                                                         <span className="w-8 text-xl text-gray-700"><FaTiktok /></span>
-                                                        <Field name="tiktok" type="text" maxLength={15} placeholder="@tu_usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
+                                                        <Field name="tiktok" type="text" maxLength={30} placeholder="@tu_usuario" className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" />
                                                     </div>
                                                 </div>
                                             </div>

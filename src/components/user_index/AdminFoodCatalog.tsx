@@ -4,14 +4,12 @@ import SortPriceButton from "@/src/components/Index/filters/SortPrice";
 import RenderCardsOptions from "@/src/components/RenderCardsOptions";
 import ListCardsByCategory from "@/src/components/Index/sections/ListCardsByCategory";
 import SortableContext from "@/src/components/user_index/user_sections/SortableContext";
-//import DownloadMenuModal from "@/src/components/pdf/DownloadMenuModal";
 import AddSectionCardsFoods from "./user_sections/AddSectionCardsFoods";
 import { FoodCategoryIcon, getCategoryIconFromFoods } from "@/src/components/icons/foods";
 
 export default function AdminFoodCatalog({ foods, user, template }: any) {
     const [selectedSubCategory, setSelectedSubCategory] = useState("0");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
-
     const processedFoods = useMemo(() => {
         let base = [...foods];
         if (sortOrder) {
@@ -46,15 +44,18 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
     const activeTopSections = isPremium ? customTopSections : ["Bebidas"];
     const activeBottomSections = isPremium ? customBottomSections : ["Postres"];
 
-    const mainFoods = processedFoods.filter(
-        (f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)
-    );
+    let mainFoods: any = processedFoods;
+    if (user?.enable_bebidas && user?.enable_postres) {
+        mainFoods = processedFoods?.filter(
+            (f: any) => !activeTopSections.includes(f?.sub_category) && !activeBottomSections?.includes(f?.sub_category)
+        );
+    }
     const mainSectionIcon = getCategoryIconFromFoods(mainFoods, selectedSubCategory);
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-2 w-full">
             <div className="flex flex-col gap-10">
-                {isPremium && (
+                {isPremium && user?.enable_bebidas && (
                     <AddSectionCardsFoods
                         template={template}
                         user={{ ...user, top_sections: customTopSections, bottom_sections: customBottomSections }}
@@ -63,7 +64,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         top={true}
                     />
                 )}
-                {activeTopSections.map((sectionName: string) => {
+                {isPremium && user?.enable_bebidas && activeTopSections.map((sectionName: string) => {
                     const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
                     const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
@@ -111,19 +112,20 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                             <div className="flex justify-between h-10 max-h-10 items-end mb-1">
                                 <Categories
                                     template={template}
-                                    foods={foods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category))}
+                                    foods={user?.enable_bebidas && user?.enable_postres ? foods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)) : foods}
                                     selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                                 />
                                 <SortPriceButton onSortChange={setSortOrder} template={template} />
                             </div>
                         )}
-                        {user?.presentation === "default" ? (<SortableContext
-                            user={user}
-                            arrayFoods={mainFoods.filter((f: any) =>
-                                selectedSubCategory === "0" ? true : f.sub_category === selectedSubCategory
-                            )}
-                            template={template}
-                        />) : (
+                        {user?.presentation === "default" ? (
+                            <SortableContext
+                                user={user}
+                                arrayFoods={mainFoods.filter((f: any) =>
+                                    selectedSubCategory === "0" ? true : f.sub_category === selectedSubCategory
+                                )}
+                                template={template}
+                            />) : (
                             <ListCardsByCategory
                                 Ath={true}
                                 user={user}
@@ -138,7 +140,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                 ) : (
                     null
                 )}
-                {isPremium && (
+                {isPremium && user?.enable_postres && (
                     <AddSectionCardsFoods
                         template={template}
                         user={{ ...user, top_sections: customTopSections, bottom_sections: customBottomSections }}
@@ -147,7 +149,7 @@ export default function AdminFoodCatalog({ foods, user, template }: any) {
                         top={false}
                     />
                 )}
-                {activeBottomSections.map((sectionName: string) => {
+                {isPremium && user?.enable_postres && activeBottomSections.map((sectionName: string) => {
                     const sectionFoods = foods.filter((f: any) => f.sub_category === sectionName);
                     if (sectionFoods.length === 0) return null;
                     const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);

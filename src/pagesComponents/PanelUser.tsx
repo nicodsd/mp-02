@@ -26,15 +26,17 @@ import {
   HiOutlineAdjustments,
   HiOutlineClipboardList,
   HiOutlineCreditCard,
+  HiOutlineExternalLink,
 } from "react-icons/hi";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 import { useRouter, useSearchParams } from "next/navigation";
 import { logout } from "@/app/actions";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useFoodStore } from "@/src/lib/useFoodStore";
 
 export default function PanelUser({
-  user,
+  user: initialUser,
   token,
   template,
   children,
@@ -44,6 +46,16 @@ export default function PanelUser({
   template: any;
   children: React.ReactNode;
 }) {
+  const {
+    user: storeUser,
+    fetchPanelData,
+    refreshPanelData,
+    updateUserLocal,
+    clearPanelStore,
+  } = useFoodStore();
+
+  const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
@@ -51,6 +63,8 @@ export default function PanelUser({
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const preapprovalId = searchParams.get("preapproval_id");
+  const menuSlug = user?.name ? encodeURIComponent(user.name.trim().replace(/\s+/g, "-")) : "";
+  const menuUrl = menuSlug ? `/menu-digital/${menuSlug}` : "#";
 
   // Definición estática del menú para evitar que cambie su referencia
   const menuItems = [
@@ -62,6 +76,13 @@ export default function PanelUser({
     { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
     { key: "plan", name: "Suscripciones", icon: <HiOutlineCreditCard size={20} /> },
   ];
+
+  // Cargar todos los datos del panel en una sola petición la primera vez que se entra (o si hubo cambios)
+  useEffect(() => {
+    if (initialUser?.id) {
+      fetchPanelData(initialUser, token);
+    }
+  }, [initialUser?.id, token, fetchPanelData]);
 
   // CORRECCIÓN 1 Y 2: Movemos la lógica de localStorage adentro del useEffect
   useEffect(() => {
@@ -89,11 +110,15 @@ export default function PanelUser({
             setServerMessage("Error BD: " + (dataUpdate.message || "No se pudo actualizar el plan"));
           } else {
             await updateUserCookie(dataUpdate.user);
+            if (dataUpdate.user) {
+              updateUserLocal(dataUpdate.user);
+            }
+            await refreshPanelData();
             // CORRECCIÓN 3: Limpiamos el preapproval_id de la URL para evitar bucles al recargar (F5)
             const params = new URLSearchParams(window.location.search);
             params.delete("preapproval_id");
             localStorage.removeItem("plan"); // Limpiamos el storage también
-            router.replace(`/panel-de-usuario?${params.toString()}`);
+            window.history.replaceState(null, "", `/panel-de-usuario?${params.toString()}`);
           }
         } catch (e: any) {
           console.error(e);
@@ -103,7 +128,7 @@ export default function PanelUser({
     };
 
     processSessionAndPayment();
-  }, [preapprovalId, user?.email, router]);
+  }, [preapprovalId, user?.email, router, updateUserLocal, refreshPanelData]);
 
   useEffect(() => {
     const index = menuItems.findIndex(item => item.key === seccion);
@@ -116,12 +141,12 @@ export default function PanelUser({
     // 1. Actualizamos el estado de manera inmediata (Mejora la respuesta visual instantánea)
     setSelectedIndex(index);
 
-    // 2. Modificamos la URL de forma local sin disparar peticiones al servidor de Next.js
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("seccion", menuItems[index].key);
-
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({ ...window.history.state, as: newUrl, url: newUrl }, "", newUrl);
+    // 2. Actualizamos la URL en el historial del navegador sin disparar peticiones RSC de Next.js
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      params.set("seccion", menuItems[index].key);
+      window.history.replaceState(null, "", `/panel-de-usuario?${params.toString()}`);
+    }
   };
 
   const hadleLogoutUserAction = async (userId: string) => {
@@ -140,6 +165,7 @@ export default function PanelUser({
     } catch (err) {
       console.error("Error en logout:", err);
     } finally {
+      clearPanelStore();
       router.push("/");
       router.refresh();
     }
@@ -301,6 +327,7 @@ export default function PanelUser({
                     <UserPlan plan={user?.plan} />
                   </div>
                 </div>
+
                 <TabList className="h-auto md:flex flex-col mt-16 gap-y-2">
                   {menuItems.map((item, index) => (
                     <Tab
@@ -324,9 +351,34 @@ export default function PanelUser({
               </div>
             </aside>
 
-            <main className="flex-1 w-full relative">
+            <main className="flex-1 w-full relative pb-10 md:pb-0">
+              <div className="w-full flex items-center justify-between px-2 md:px-0 pt-2 mb-2">
+                <div className="md:hidden">
+                  <Link
+                    href="/mi-menu"
+                    className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+                  >
+                    <MdChevronLeft className="text-xl mr-1" />
+                    Volver
+                  </Link>
+                </div>
+                <div className="ml-auto fixed z-30 md:absolute right-3 top-21 md:top-2 md:mr-0 min-h-10 flex items-center justify-end">
+                  <Link
+                    href={menuUrl}
+                    target={menuSlug ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (!menuSlug) e.preventDefault();
+                    }}
+                    className={`flex flex-col md:flex-row-reverse md:gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold md:h-fit h-15.5 justify-center items-center aspect-square md:aspect-auto md:px-3.5 md:py-2 rounded-full md:rounded-md transition-all active:scale-95 shrink-0 md:shadow-sm ${!menuSlug ? "opacity-50 pointer-events-none" : ""}`}
+                  >
+                    <HiOutlineExternalLink size={20} />
+                    <span>Menú</span>
+                  </Link>
+                </div>
+              </div>
               <div className={isFeatureBlocked() ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
-                <TabPanels className="min-h-full w-full lg:w-[80%] xl:w-[90%] overflow-hidden">
+                <TabPanels className="min-h-full w-full pt-4 md:pt-2 overflow-hidden">
                   {children}
                 </TabPanels>
               </div>

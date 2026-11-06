@@ -122,7 +122,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
   };
 
   return (
-    <div className="flex relative items-center w-full lg:w-3/4 xl:w-1/2 justify-center md:justify-start">
+    <div className="flex relative items-center w-full justify-center md:justify-start">
       <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-8 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
@@ -201,7 +201,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
         <div className="flex flex-col gap-2">
           <a
             href={url}
-            className="w-full flex cursor-pointer justify-center items-center py-3.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all active:scale-95 shadow-lg"
+            className="w-full flex cursor-pointer justify-center duration-100 items-center py-3.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-all active:scale-95 shadow-lg"
           >
             <ExternalLink className="w-5 h-5 mr-2" /> Visitar
           </a>

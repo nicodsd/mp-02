@@ -31,41 +31,74 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
     const activeTopSections = isPremium ? customTopSections : ["Bebidas"];
     const activeBottomSections = isPremium ? customBottomSections : ["Postres"];
 
-    const mainFoods = processedFoods.filter(
-        (f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)
-    );
+    let mainFoods: any = processedFoods;
+    if (user?.enable_bebidas && user?.enable_postres) {
+        mainFoods = processedFoods?.filter(
+            (f: any) => !activeTopSections.includes(f?.sub_category) && !activeBottomSections?.includes(f?.sub_category)
+        );
+    }
     const mainSectionIcon = getCategoryIconFromFoods(mainFoods, selectedSubCategory);
 
     return (
         <section aria-label="Lista de Platos" className="flex flex-col gap-1">
             <div className="flex flex-col gap-10">
-                {activeTopSections.map((sectionName: string) => {
-                    const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
-                    if (sectionFoods.length === 0) return null;
-                    const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
-                    return (
-                        <div key={sectionName} className="flex flex-col gap-1">
-                            <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
-                                <h2 className="text-xl font-normal">{sectionName}</h2>
-                                <FoodCategoryIcon
-                                    iconName={sectionIcon}
-                                    categoryName={sectionName}
-                                    fallbackIcon="Martini"
-                                    className="w-5 h-5"
-                                    size={20}
+                {!example ?
+                    isPremium && user?.enable_bebidas && activeTopSections.map((sectionName: string) => {
+                        const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
+                        if (sectionFoods.length === 0) return null;
+                        const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
+                        return (
+                            <div key={sectionName} className="flex flex-col gap-1">
+                                <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                    <h2 className="text-xl font-normal">{sectionName}</h2>
+                                    <FoodCategoryIcon
+                                        iconName={sectionIcon}
+                                        categoryName={sectionName}
+                                        fallbackIcon="Martini"
+                                        className="w-5 h-5"
+                                        size={20}
+                                    />
+                                </div>
+                                <RenderCardsOptions
+                                    user={user}
+                                    example={example}
+                                    template={template}
+                                    context={true}
+                                    whatsapp={user?.whatsAppCart}
+                                    foods={sectionFoods}
                                 />
                             </div>
-                            <RenderCardsOptions
-                                user={user}
-                                example={example}
-                                template={template}
-                                context={true}
-                                whatsapp={user?.whatsAppCart}
-                                foods={sectionFoods}
-                            />
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                    :
+                    activeTopSections.map((sectionName: string) => {
+                        const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
+                        if (sectionFoods.length === 0) return null;
+                        const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
+                        return (
+                            <div key={sectionName} className="flex flex-col gap-1">
+                                <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                    <h2 className="text-xl font-normal">{sectionName}</h2>
+                                    <FoodCategoryIcon
+                                        iconName={sectionIcon}
+                                        categoryName={sectionName}
+                                        fallbackIcon="Martini"
+                                        className="w-5 h-5"
+                                        size={20}
+                                    />
+                                </div>
+                                <RenderCardsOptions
+                                    user={user}
+                                    example={example}
+                                    template={template}
+                                    context={true}
+                                    whatsapp={user?.whatsAppCart}
+                                    foods={sectionFoods}
+                                />
+                            </div>
+                        );
+                    })
+                }
 
                 {/* PLATOS PRINCIPALES */}
                 <div className="flex flex-col gap-2">
@@ -83,7 +116,7 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                     <div className="flex justify-between h-9 max-h-9 items-end mb-1">
                         <Categories
                             template={template}
-                            foods={allFoods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category))}
+                            foods={user?.enable_bebidas && user?.enable_postres ? allFoods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)) : allFoods}
                             selectCategory={(sub: string) => setSelectedSubCategory(sub)}
                         />
                         <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
@@ -112,33 +145,63 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                 </div>
 
                 {/* POSTRES / SECCIONES INFERIORES */}
-                {activeBottomSections.map((sectionName: string) => {
-                    const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
-                    if (sectionFoods.length === 0) return null;
-                    const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
-                    return (
-                        <div key={sectionName} className="flex flex-col gap-1">
-                            <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
-                                <h2 className="text-xl font-normal">{sectionName}</h2>
-                                <FoodCategoryIcon
-                                    iconName={sectionIcon}
-                                    categoryName={sectionName}
-                                    fallbackIcon="Dessert"
-                                    className="w-5 h-5"
-                                    size={20}
+                {!example ?
+                    isPremium && user?.enable_postres && activeBottomSections.map((sectionName: string) => {
+                        const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
+                        if (sectionFoods.length === 0) return null;
+                        const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
+                        return (
+                            <div key={sectionName} className="flex flex-col gap-1">
+                                <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                    <h2 className="text-xl font-normal">{sectionName}</h2>
+                                    <FoodCategoryIcon
+                                        iconName={sectionIcon}
+                                        categoryName={sectionName}
+                                        fallbackIcon="Dessert"
+                                        className="w-5 h-5"
+                                        size={20}
+                                    />
+                                </div>
+                                <RenderCardsOptions
+                                    user={user}
+                                    example={example}
+                                    whatsapp={user?.whatsAppCart}
+                                    template={template}
+                                    context={true}
+                                    foods={sectionFoods}
                                 />
                             </div>
-                            <RenderCardsOptions
-                                user={user}
-                                example={example}
-                                whatsapp={user?.whatsAppCart}
-                                template={template}
-                                context={true}
-                                foods={sectionFoods}
-                            />
-                        </div>
-                    );
-                })}
+                        );
+                    })
+                    :
+                    activeBottomSections.map((sectionName: string) => {
+                        const sectionFoods = processedFoods.filter((f: any) => f.sub_category === sectionName);
+                        if (sectionFoods.length === 0) return null;
+                        const sectionIcon = getCategoryIconFromFoods(sectionFoods, sectionName);
+                        return (
+                            <div key={sectionName} className="flex flex-col gap-1">
+                                <div className={`flex ml-2 items-center gap-1 ${template?.textColorOpacity || "text-gray-700/50"}`}>
+                                    <h2 className="text-xl font-normal">{sectionName}</h2>
+                                    <FoodCategoryIcon
+                                        iconName={sectionIcon}
+                                        categoryName={sectionName}
+                                        fallbackIcon="Dessert"
+                                        className="w-5 h-5"
+                                        size={20}
+                                    />
+                                </div>
+                                <RenderCardsOptions
+                                    user={user}
+                                    example={example}
+                                    whatsapp={user?.whatsAppCart}
+                                    template={template}
+                                    context={true}
+                                    foods={sectionFoods}
+                                />
+                            </div>
+                        );
+                    })
+                }
             </div>
         </section>
     );

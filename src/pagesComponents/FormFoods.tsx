@@ -5,6 +5,7 @@ import { URI } from "@/src/lib/const";
 import Categories from "@/src/components/newfood_comps/Categories";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
+import { useFoodStore } from "@/src/lib/useFoodStore";
 import Steps from "@/src/components/newfood_comps/Steps";
 import { Store } from "lucide-react";
 import { FoodCategoryIcon } from "@/src/components/icons/foods";
@@ -54,9 +55,20 @@ export default function FormFoods({ initialCategories, user }: any) {
   const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
 
   // --- ESTADOS Y EFECTO PARA LOS MENÚS DEL USUARIO ---
-  const [userMenus, setUserMenus] = useState<any[]>([]);
+  const {
+    menus: storeMenus,
+    isInitialized,
+    setMenus: setStoreMenus,
+    markNeedsRefresh,
+    refreshPanelData,
+  } = useFoodStore();
+  const [userMenus, setUserMenus] = useState<any[]>(storeMenus);
 
   useEffect(() => {
+    if (storeMenus.length > 0 || isInitialized) {
+      setUserMenus(storeMenus);
+      return;
+    }
     const userId = user?.id || user?._id;
     if (userId) {
       fetch(`${URI}/menu/get-menus/${userId}`)
@@ -64,11 +76,12 @@ export default function FormFoods({ initialCategories, user }: any) {
         .then(data => {
           if (data && data.menus) {
             setUserMenus(data.menus);
+            setStoreMenus(data.menus);
           }
         })
         .catch(err => console.error("Error fetching menus:", err));
     }
-  }, [user]);
+  }, [user, storeMenus, isInitialized, setStoreMenus]);
 
   useEffect(() => {
     return () => { if (preview !== imgPlaceholder) URL.revokeObjectURL(preview); };
@@ -170,6 +183,10 @@ export default function FormFoods({ initialCategories, user }: any) {
 
       await Promise.all(uploadPromises);
 
+      markNeedsRefresh();
+      if (isInitialized) {
+        await refreshPanelData();
+      }
       refreshPage();
 
       setUploadedFoods(foodsToUpload);

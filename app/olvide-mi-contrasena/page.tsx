@@ -72,7 +72,7 @@ export default function OlvideMiContrasenaPage() {
 
             <div className="relative h-full px-4 w-full md:w-[60%] lg:w-[50%] xl:w-[30%] md:mx-auto flex flex-col items-center">
                 <div className="w-full py-3 z-10">
-                    <BttnBack />
+                    <BttnBack href="/login" />
                 </div>
                 <main className="flex-1 w-full flex flex-col items-end justify-start mt-18">
                     <div className="w-full py-8 pt-14 relative mt-2">

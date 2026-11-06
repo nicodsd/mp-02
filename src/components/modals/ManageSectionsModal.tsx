@@ -13,11 +13,13 @@ import {
   ListboxOption,
 } from "@headlessui/react";
 import { updateMenuCookie } from "@/app/actions";
+import { useFoodStore } from "@/src/lib/useFoodStore";
 import { Plus, X, ChevronDown, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function ManageSectionsModal({ isOpen, onClose, user, foods, template, onUpdateSections, top = true }: any) {
   const router = useRouter();
+  const { updateUserLocal, markNeedsRefresh } = useFoodStore();
   const [sections, setSections] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [availableCategories, setAvailableCategories] = useState<string[]>([]);
@@ -65,6 +67,8 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
           }
         } catch (_) { }
 
+        updateUserLocal({ [sectionKey]: updatedSections });
+        markNeedsRefresh();
         await updateMenuCookie({ [sectionKey]: updatedSections });
         if (onUpdateSections) {
           onUpdateSections(updatedSections);
@@ -111,6 +115,8 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
           }
         } catch (_) { }
 
+        updateUserLocal({ [sectionKey]: updatedSections });
+        markNeedsRefresh();
         await updateMenuCookie({ [sectionKey]: updatedSections });
         if (onUpdateSections) {
           onUpdateSections(updatedSections);

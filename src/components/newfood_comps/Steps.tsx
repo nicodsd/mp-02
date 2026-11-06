@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { MdChevronLeft } from "react-icons/md";
+import Link from "next/link";
 import { ListChecks, ShoppingBag, Rocket, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence, useDragControls, PanInfo } from "framer-motion";
 
@@ -41,13 +42,13 @@ export default function DisenoStepperLlamativo() {
                 {/* Header */}
                 <header className="flex flex-col gap-5 items-start w-full">
                     <div className="flex items-center gap-3">
-                        <a
-                            href="/"
+                        <Link
+                            href="/mi-menu"
                             className="flex items-center text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
                         >
                             <MdChevronLeft className="text-lg transition-transform group-hover:-translate-x-0.5" />
                             Volver
-                        </a>
+                        </Link>
 
                         <button
                             type="button"
