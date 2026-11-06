@@ -46,7 +46,7 @@ export default async function Page({
       <div className={`
         ${user?.data?.plan !== "free" && user?.data?.navBar === "recortado"
           ?
-          `absolute top-34 rounded-t-full h-60 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
+          `absolute top-36 w-full rounded-t-full h-54 z-0 inset-0 ${template?.backgroundColor} transition-colors duration-300`
           :
           "hidden"
         }`

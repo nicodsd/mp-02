@@ -155,7 +155,7 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
               <div className="px-6 py-5 flex flex-col gap-6">
                 <div className="flex justify-between items-center">
                   <DialogTitle className={`text-xl font-bold ${template?.textColor || "text-gray-900"}`}>
-                    {top ? "Agregar sección superior" : "Agregar sección inferior"}
+                    {top ? "Elige una categoría" : "Elige una categoría"}
                   </DialogTitle>
                   <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 transition-colors">
                     <X size={20} className="text-gray-500" />

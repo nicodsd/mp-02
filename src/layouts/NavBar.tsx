@@ -315,7 +315,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
 
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
   return (
-    <div className={`flex flex-col h-full pt-8 items-center justify-center 
+    <div className={`flex flex-col h-full items-center justify-center 
     ${template?.template_id === "default"
         ||
         template?.template_id === "gold"
@@ -357,7 +357,7 @@ function RecortadoNavUser({ user, photo, cookie, template }: any) {
         )}
       </div>
 
-      <div className={`w-full `}>
+      <div className={`w-full pt-3`}>
         <h2 className="text-2xl leading-none font-bold mt-2 uppercase text-center px-4">
           {displayData.name}
         </h2>

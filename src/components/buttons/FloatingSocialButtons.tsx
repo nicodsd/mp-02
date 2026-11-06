@@ -72,7 +72,7 @@ export default function FloatingSocialButtons({
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/30 shadow-md active:scale-95 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1.5 rounded-full border border-white/40 shadow-lg active:scale-95 transition-all cursor-pointer"
         >
           <span>Redes</span>
           <FaChevronDown
