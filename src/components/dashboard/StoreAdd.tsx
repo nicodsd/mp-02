@@ -8,8 +8,20 @@ import { SelectionToolbar } from "@/src/components/dashboard/components/storeCom
 import { SucursalCard } from "@/src/components/dashboard/components/storeComponents/SucursalCard";
 import { refreshPage } from "@/app/actions";
 import SelectStoreModal from "./components/storeComponents/SelectStoreModal";
+import { useFoodStore } from "@/src/lib/useFoodStore";
 
-export default function Sucursales({ menus, user_id, user }: { menus: any[], user_id: string, user: any }) {
+export default function Sucursales({ menus: initialMenus, user_id, user: initialUser }: { menus: any[], user_id: string, user: any }) {
+    const {
+        menus: storeMenus,
+        user: storeUser,
+        isInitialized,
+        setMenus,
+        refreshPanelData,
+    } = useFoodStore();
+
+    const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+    const menus = isInitialized ? storeMenus : (storeMenus.length > 0 ? storeMenus : initialMenus);
+
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [openSelectStore, setOpenSelectStore] = useState(false);
@@ -60,7 +72,9 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                 if (!res.ok) throw new Error('Error al eliminar');
                 const data = await res.json();
                 if (data.success) {
+                    setMenus(menus.filter((m: any) => !selectedIds.includes(m._id)));
                     alert("Menús eliminados correctamente");
+                    await refreshPanelData();
                     await refreshPage();
                 }
             } catch (error) {
@@ -97,8 +111,10 @@ export default function Sucursales({ menus, user_id, user }: { menus: any[], use
                 if (!res.ok) throw new Error('Error al eliminar');
                 const data = await res.json();
                 if (data.success) {
+                    setMenus(menus.filter((m: any) => m._id !== storeId));
                     alert("Menú eliminado correctamente");
                     setOpenSelectStore(false);
+                    await refreshPanelData();
                     await refreshPage();
                 }
             } catch (error) {

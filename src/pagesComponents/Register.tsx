@@ -873,7 +873,7 @@ export default function Register() {
                           <Field
                             name="instagram"
                             type="text"
-                            maxLength={25}
+                            maxLength={30}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -883,7 +883,7 @@ export default function Register() {
                           <Field
                             name="facebook"
                             type="text"
-                            maxLength={25}
+                            maxLength={30}
                             placeholder="Nombre de usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />
@@ -893,7 +893,7 @@ export default function Register() {
                           <Field
                             name="tiktok"
                             type="text"
-                            maxLength={25}
+                            maxLength={30}
                             placeholder="@tu_usuario"
                             className="block flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
                           />

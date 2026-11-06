@@ -10,8 +10,16 @@ import ImgPorDefecto from "@/public/images/dashboard/por-defecto.png";
 import ImgHorizontal from "@/public/images/dashboard/horizontal.png";
 import ImgRecortado from "@/public/images/dashboard/recortado.png";
 import { updateMenuCookie } from '@/app/actions';
+import { useFoodStore } from '@/src/lib/useFoodStore';
 
-export default function ConfigureMenu({ user }: { user: any }) {
+export default function ConfigureMenu({ user: initialUser }: { user: any }) {
+    const {
+        user: storeUser,
+        updateUserLocal,
+        refreshPanelData,
+    } = useFoodStore();
+    const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+
     const [loadingNavbar, setLoadingNavbar] = useState(false);
     const [loadingPresentation, setLoadingPresentation] = useState(false);
     const [navBar, setNavBar] = useState(user?.navBar || "default");
@@ -28,7 +36,13 @@ export default function ConfigureMenu({ user }: { user: any }) {
             setEnablePostres(user.enable_postres || false);
             setWhatsappOrders(user.whatsAppCart ?? true);
         }
-    }, [user]);
+    }, [
+        user?.navBar,
+        user?.presentation,
+        user?.enable_bebidas,
+        user?.enable_postres,
+        user?.whatsAppCart,
+    ]);
 
     const navBarOptions = [
         { id: "default", label: "Por defecto", format: "vertical", selected: navBar === "default", image: ImgPorDefecto, alt: "D", width: 200, height: 200 },
@@ -85,7 +99,9 @@ export default function ConfigureMenu({ user }: { user: any }) {
                     body: JSON.stringify(payload),
                 });
                 if (response.ok) {
-                    await updateMenuCookie(payload)
+                    updateUserLocal(payload);
+                    await updateMenuCookie(payload);
+                    await refreshPanelData();
                 } else {
                     console.error("Error al guardar en el servidor");
                 }

@@ -1,15 +1,29 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { URI } from '@/src/lib/const';
 import templates from '@/src/data/templates.json';
 import { updateTemplate } from "@/app/actions";
+import { useFoodStore } from '@/src/lib/useFoodStore';
 
-export default function TemplateSelector({ user }: { user: any }) {
+export default function TemplateSelector({ user: initialUser }: { user: any }) {
+    const {
+        user: storeUser,
+        updateUserLocal,
+        refreshPanelData,
+    } = useFoodStore();
+    const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+
     const [selected, setSelected] = useState<string>(user?.template_id || 'default');
     const [loading, setLoading] = useState(false);
     const currentTemplate = templates.find(t => t.template_id === selected) || templates[0];
-    const userTemplate = templates.find(t => t.template_id === user.template_id) || templates[0];
+    const userTemplate = templates.find(t => t.template_id === user?.template_id) || templates[0];
+
+    useEffect(() => {
+        if (user?.template_id) {
+            setSelected(user.template_id);
+        }
+    }, [user?.template_id]);
 
     const handleSelect = (templateId: string) => {
         setSelected(templateId);
@@ -27,7 +41,9 @@ export default function TemplateSelector({ user }: { user: any }) {
             if (!response.ok) throw new Error('Error al actualizar');
             const data = await response.json();
             if (data.success) {
+                updateUserLocal({ template_id: selected });
                 await updateTemplate(selected);
+                await refreshPanelData();
             }
         } catch (error) {
             console.error(error);

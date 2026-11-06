@@ -2,6 +2,7 @@ import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/re
 import React, { Fragment, useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { refreshPage } from '@/app/actions';
+import { useFoodStore } from '@/src/lib/useFoodStore';
 import { Field, Formik, Form, ErrorMessage, FormikProps } from 'formik';
 import { URI } from '@/src/lib/const';
 import * as Yup from 'yup';
@@ -20,7 +21,7 @@ const StoreSchema = Yup.object().shape({
     location: Yup.string().optional(),
     description: Yup.string()
         .test("len", "Mínimo 5 caracteres", (val) => !val || val.length >= 5)
-        .test("len", `Máximo 30 caracteres`, (val) => !val || val.length <= 30)
+        .test("len", `Máximo 40 caracteres`, (val) => !val || val.length <= 40)
         .optional(),
     schedule: Yup.string().optional(),
     instagram: Yup.string().optional(),
@@ -35,6 +36,7 @@ const StoreSchema = Yup.object().shape({
 });
 
 export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }: { user_id: string, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, menusCount: number }) {
+    const refreshPanelData = useFoodStore((state) => state.refreshPanelData);
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const [coverPreview, setCoverPreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +89,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
             if (response.ok) {
                 alert(`Tienda agregada exitosamente`);
                 setIsOpen(false);
+                await refreshPanelData();
                 refreshPage();
             } else {
                 console.log("Error al agregar la tienda");
@@ -277,7 +280,7 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
                                                     name="description"
                                                     as="textarea"
                                                     rows={2}
-                                                    maxLength={30}
+                                                    maxLength={40}
                                                     placeholder="Cuenta en pocas líneas qué ofreces y tu propuesta de valor."
                                                     className="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all resize-none"
                                                 />

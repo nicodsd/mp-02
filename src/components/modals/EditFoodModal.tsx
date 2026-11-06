@@ -31,11 +31,15 @@ export default function EditFoodModal({
 }: EditFoodModalProps) {
 
   const [loading, setLoading] = useState(false);
-  const updateFoodInStore = useFoodStore((state) => state.updateFood); // HOOK AFUERA
+  const updateFoodInStore = useFoodStore((state) => state.updateFood);
+  const storeMenus = useFoodStore((state) => state.menus);
+  const setStoreMenus = useFoodStore((state) => state.setMenus);
+  const isInitialized = useFoodStore((state) => state.isInitialized);
+  const refreshPanelData = useFoodStore((state) => state.refreshPanelData);
 
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [userPlan, setUserPlan] = useState(user.plan || "free");
+  const [userPlan, setUserPlan] = useState(user?.plan || "free");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -45,29 +49,38 @@ export default function EditFoodModal({
     menus: [] as string[],
   });
 
-  const [userMenus, setUserMenus] = useState<any[]>([]);
+  const [userMenus, setUserMenus] = useState<any[]>(storeMenus);
 
   useEffect(() => {
-    const foodUserId = food?.user_id || food?.user;
-    if (foodUserId) {
-      fetch(`${URI}/menu/get-menus/${foodUserId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.menus) {
-            setUserMenus(data.menus);
-          }
-        })
-        .catch(err => console.error("Error fetching menus:", err));
+    if (storeMenus.length > 0 || isInitialized) {
+      setUserMenus(storeMenus);
+    } else {
+      const foodUserId = food?.user_id || food?.user;
+      if (foodUserId) {
+        fetch(`${URI}/menu/get-menus/${foodUserId}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data && data.menus) {
+              setUserMenus(data.menus);
+              setStoreMenus(data.menus);
+            }
+          })
+          .catch(err => console.error("Error fetching menus:", err));
+      }
     }
 
-    const cookieUser = document.cookie.split('; ').find(row => row.startsWith('user='));
-    if (cookieUser) {
-      try {
-        const u = JSON.parse(decodeURIComponent(cookieUser.split('=')[1]));
-        if (u && u.plan) setUserPlan(u.plan);
-      } catch (e) { }
+    if (user?.plan) {
+      setUserPlan(user.plan);
+    } else {
+      const cookieUser = document.cookie.split('; ').find(row => row.startsWith('user='));
+      if (cookieUser) {
+        try {
+          const u = JSON.parse(decodeURIComponent(cookieUser.split('=')[1]));
+          if (u && u.plan) setUserPlan(u.plan);
+        } catch (e) { }
+      }
     }
-  }, [food]);
+  }, [food, storeMenus, isInitialized, setStoreMenus, user?.plan]);
 
   useEffect(() => {
     if (food) {
@@ -121,7 +134,7 @@ export default function EditFoodModal({
           photo: preview,
         };
         updateFoodInStore(updatedObj);
-
+        await refreshPanelData();
         await refreshPage();
         onClose();
       }

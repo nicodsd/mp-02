@@ -15,8 +15,14 @@ const priceFormatter = new Intl.NumberFormat("es-AR", {
   minimumFractionDigits: 0,
 });
 
-export default function PromoPanel({ foods }: { foods: any[] }) {
-  const { updatePromo } = useFoodStore();
+export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
+  const {
+    foods: storeFoods,
+    isInitialized,
+    updatePromo,
+    refreshPanelData,
+  } = useFoodStore();
+  const foods = isInitialized ? storeFoods : (storeFoods.length > 0 ? storeFoods : initialFoods);
   const [selectedFood, setSelectedFood] = useState<any | null>(null);
   const [promoPrice, setPromoPrice] = useState<string>("");
   const [currentPrice, setCurrentPrice] = useState<string>("");
@@ -72,6 +78,7 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
 
       if (res.ok) {
         updatePromo(selectedFood._id, true, pPrice);
+        await refreshPanelData();
         await refreshPage();
         setSelectedFood(null);
       }
@@ -93,6 +100,7 @@ export default function PromoPanel({ foods }: { foods: any[] }) {
 
       if (res.ok) {
         updatePromo(id, false, 0);
+        await refreshPanelData();
         await refreshPage();
       }
     } catch (error) {
