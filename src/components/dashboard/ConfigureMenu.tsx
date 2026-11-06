@@ -165,13 +165,13 @@ export default function ConfigureMenu({ user: initialUser }: { user: any }) {
                 <section className="w-full">
                     <div className='flex flex-col gap-1 mb-2'>
                         <h2 className="font-bold text-gray-800">Secciones horizontales</h2>
-                        <span className='text-xs text-gray-600'>Activa secciones adicionales para tu menú, como bebidas o postres</span>
+                        <span className='text-xs text-gray-600'>Activa secciones adicionales para tu menú, segmentadas por categorías como bebidas, postres entre otros que quieras elegir</span>
                     </div>
                     <div className="flex flex-col bg-gray-50/50 rounded-2xl px-4 py-1 border shadow-md border-gray-100">
-                        <ConfigSwitch label="Habilitar menú superior Bebidas" enabled={enableBebidas}
+                        <ConfigSwitch label="Habilitar sección superior" enabled={enableBebidas}
                             onChange={(v: boolean) => updateConfig('enable_bebidas', v)} />
                         <div className="h-px bg-gray-100 w-full" />
-                        <ConfigSwitch label="Habilitar menú inferior Postres" enabled={enablePostres}
+                        <ConfigSwitch label="Habilitar sección Inferior" enabled={enablePostres}
                             onChange={(v: boolean) => updateConfig('enable_postres', v)} />
                     </div>
                 </section>
