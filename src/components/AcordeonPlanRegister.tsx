@@ -1,7 +1,11 @@
 import { useState } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Flame } from 'lucide-react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { URI } from '@/src/lib/const';
+import { usePromoCountdown } from '@/src/utils/usePromoCountdown';
+import PromoCountdownDisplay from '@/src/components/common/PromoCountdownDisplay';
+import { OFFICIAL_PLAN_PRICES, isValidPaidPlanId } from '@/src/utils/planPricing';
+import { getVerifiedSubscriptionPayload } from '@/src/utils/promoServerAction';
 
 const plans = [
     {
@@ -22,7 +26,9 @@ const plans = [
         id: "plus",
         name: "Plus+",
         btn: true,
-        price: 24000,
+        price: 12000,
+        beforePrice: 24000,
+        promoBadge: "50% OFF",
         color: "bg-primary",
         textColor: "text-white",
         features: [
@@ -77,6 +83,24 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
     // aunque por defecto se abrirá el que esté seleccionado en Formik.
     const [openAccordion, setOpenAccordion] = useState(values.plan || 'plus');
     const [loading, setLoading] = useState(false);
+    const { hours, minutes, seconds, isExpired } = usePromoCountdown();
+
+    const activePlans = plans.map((plan) => {
+        if (plan.id === 'plus') {
+            return {
+                ...plan,
+                price: isExpired ? OFFICIAL_PLAN_PRICES.plus.regular : OFFICIAL_PLAN_PRICES.plus.promo,
+                beforePrice: isExpired ? OFFICIAL_PLAN_PRICES.plus.beforeRegular : OFFICIAL_PLAN_PRICES.plus.beforePromo,
+            };
+        }
+        if (plan.id === 'premium') {
+            return {
+                ...plan,
+                price: OFFICIAL_PLAN_PRICES.premium.regular,
+            };
+        }
+        return plan;
+    });
     const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
@@ -100,20 +124,24 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
         setFieldValue('plan', planId); // Actualiza Formik
         setOpenAccordion(openAccordion === planId ? null : planId); // Toggle del acordeón
     };
-    const handleSubscribe = async (plan: any) => {
-        setLoading(true);
-        if (plan.id === 'free') {
+    const handleSubscribe = async (planId: string) => {
+        if (!isValidPaidPlanId(planId)) {
             return;
         }
+        setLoading(true);
         try {
-            // Llamamos a tu API
+            // Resolvemos el precio de forma inalterable en el servidor verificando la cookie HttpOnly
+            const verified = await getVerifiedSubscriptionPayload(planId);
+            const planInfo = OFFICIAL_PLAN_PRICES[verified.plan];
+
+            // Llamamos a tu API con el monto validado en el servidor
             const response = await fetch(`${URI}/auth/subscribe`,
                 {
                     method: 'POST',
                     body: JSON.stringify({
-                        reason: `Plan ${plan.name} para QMenú`,
-                        transaction_amount: plan.price,
-                        plan: plan.id,
+                        reason: `Plan ${planInfo.name} para QMenú`,
+                        transaction_amount: verified.transaction_amount,
+                        plan: verified.plan,
                         email: values.email,
                         password: values.password,
                         name: values.name
@@ -146,7 +174,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                 className="space-y-1"
             >
                 <AnimatePresence>
-                    {plans.map((plan) => {
+                    {activePlans.map((plan) => {
                         const isSelected = values.plan === plan.id;
                         const isOpen = openAccordion === plan.id;
 
@@ -162,33 +190,58 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                             >
                                 {/* Card Header */}
                                 <div onClick={() => handlePlanClick(plan.id)}
-                                    className={`w-full flex items-center justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2' : 'py-5 px-3'} ${plan.textColor}`}
+                                    className={`w-full flex items-center justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2.5' : 'py-5 px-3'} ${plan.textColor}`}
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-start">
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <div className="text-start flex items-center gap-2">
                                             <span className={`text-lg ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
                                                 {plan.name}
                                             </span>
+                                            {plan.id === 'plus' && !isExpired && (
+                                                <span className="inline-flex items-center gap-1 border text-white text-md font-extrabold px-2 py-0.5 rounded-full shadow-2xs">
+                                                    <Flame className="w-4 h-4 fill-white text-white" />
+                                                    50% OFF
+                                                </span>
+                                            )}
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-1">
+                                    <div className="flex items-center gap-1.5">
                                         {plan.id === 'lifetime' ? (
                                             <span className="font-black text-xl tracking-">Cotizar</span>
                                         ) : (
-                                            <span className="font-black text-xl tracking-"> $
-                                                {new Intl.NumberFormat("en-IN", { maximumSignificantDigits: 3 }).format(plan.price as number)}<span className="text-[10px] opacity-70">/mes</span>
-                                            </span>
+                                            <div className="flex items-baseline gap-1.5">
+                                                {'beforePrice' in plan && plan.beforePrice && (
+                                                    <span className="text-xs line-through opacity-80 font-semibold">
+                                                        ${new Intl.NumberFormat("es-AR").format(plan.beforePrice as number)}
+                                                    </span>
+                                                )}
+                                                <span className="font-black text-xl tracking-">
+                                                    ${new Intl.NumberFormat("es-AR").format(plan.price as number)}
+                                                    <span className="text-[10px] opacity-70">/mes</span>
+                                                </span>
+                                            </div>
                                         )}
-                                        <ChevronDown onClick={() => handlePlanClick(plan.id)} className={`w-7 h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                        <ChevronDown onClick={(e) => { e.stopPropagation(); handlePlanClick(plan.id); }} className={`w-7 h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
                                     </div>
                                 </div>
 
                                 {/* Cuerpo Desplegable */}
                                 <div
-                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-150 px-4 pb-4 border-t border-stone-100' : 'max-h-0'
+                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-150 px-4 pb-4' : 'max-h-0'
                                         } overflow-hidden`}
                                 >
+                                    {plan.id === 'plus' && !isExpired && (
+                                        <div className="mt-2 mb-1 px-1">
+                                            <PromoCountdownDisplay
+                                                hours={hours}
+                                                minutes={minutes}
+                                                seconds={seconds}
+                                                variant="accordion"
+                                                badgeText="Promoción 50% OFF por 12hs"
+                                            />
+                                        </div>
+                                    )}
                                     <div className={`p-3 md:p-6 grid grid-cols-1 gap-x-4 gap-y-1`}>
                                         {plan.features.map((feature, idx) => (
                                             <div key={idx} className='flex flex-col'>
@@ -199,7 +252,8 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                                     transition={{ delay: idx * 0.05 }}
                                                     className={`flex items-center gap-2 ${plan.id === 'lifetime' ? 'text-sm' : 'text-xs'} leading-3 text-stone-600 ${plan.id === 'lifetime' ? 'col-span-1 mt-2 leading-relaxed' : ''}`}
                                                 >
-                                                    {plan.id !== 'lifetime' && <div className={`h-1.5 ${plan.id === 'premium' ? 'bg-black' : 'bg-stone-400'} w-1.5 rounded-full shrink-0`} />}
+                                                    {plan.id !== 'lifetime' && <div className={`h-1.5 
+                                                      ${plan.id === "free" ? "bg-gray-400" : plan.id === "plus" ? "bg-primary" : "bg-black"} w-1.5 rounded-full shrink-0`} />}
                                                     {feature}
                                                 </motion.div>
                                             </div>
@@ -221,8 +275,8 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                             )}
                                         </div>
                                     )}
-                                    {plan.btn && <button type='button' className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2 rounded-lg`} onClick={() => handleSubscribe(plan)}>
-                                        Proceder al pago
+                                    {plan.btn && <button type='button' disabled={loading} className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2 rounded-lg disabled:opacity-50`} onClick={() => handleSubscribe(plan.id)}>
+                                        {loading ? 'Procesando...' : 'Proceder al pago'}
                                     </button>}
                                 </div>
                             </motion.div>

@@ -35,6 +35,7 @@ export async function setAuthCookie(token: string) {
     });
 }
 
+
 export async function setUserCookie(user: object) {
     (await cookies()).set({
         name: "user",
