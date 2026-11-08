@@ -121,6 +121,7 @@ export default function Register() {
   const searchParams = useSearchParams();
   const preapprovalId = searchParams.get("preapproval_id");
   const email = searchParams.get("email");
+  const initialPlanParam = searchParams.get("plan") || "";
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [sessionPlan, setSessionPlan] = useState<string>("");
@@ -407,7 +408,7 @@ export default function Register() {
             description: "",
             phonePrefix: "",
             phone: "",
-            plan: "",
+            plan: initialPlanParam,
             location: "",
             is_active: true,
             is_online: true,

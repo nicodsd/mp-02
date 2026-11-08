@@ -11,7 +11,13 @@ export const metadata = {
     description: "Gestiona los platos y categorías de tu menú digital de forma sencilla.",
 };
 
-export default async function Page() {
+export default async function Page({
+    searchParams,
+}: {
+    searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+    const resolvedSearchParams = searchParams ? await searchParams : {};
+    const justLoggedIn = resolvedSearchParams?.login === "1";
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value || '{}';
     const userCookie = cookieStore.get("user")?.value || '{}';
@@ -53,6 +59,7 @@ export default async function Page() {
                 user={user}
                 template={template}
                 token={token || ""}
+                initialAnimateLogin={justLoggedIn}
             />
             <BottomNavigation
                 user={user}

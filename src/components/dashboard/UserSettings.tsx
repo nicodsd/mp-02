@@ -36,6 +36,7 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
   const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
 
   const [loading, setLoading] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [name, setName] = useState(user?.name);
   const [previewPhoto, setPreviewPhoto] = useState<string>(user?.photo || placeholder);
   const [previewBackground, setPreviewBackground] = useState<string>(user?.cover || placeholder);
@@ -139,6 +140,7 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
   };
 
   const hadleLogoutUserAction = async (userId: string) => {
+    setIsLoggingOut(true);
     try {
       const response = await fetch(`${URI}/auth/signout`, {
         method: "POST",
@@ -992,6 +994,13 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
           </button>
         </div>
       </div>
+
+      {isLoggingOut && (
+        <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white/85 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-primary animate-spin mb-4" />
+          <p className="text-base font-bold text-gray-800">Cerrando sesión...</p>
+        </div>
+      )}
     </div>
   );
 };

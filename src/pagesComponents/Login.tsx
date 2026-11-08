@@ -61,8 +61,13 @@ export default function LoginPage() {
 
           setIsLoading(false);
           setIsSuccess(true);
+          try {
+            sessionStorage.setItem("justLoggedIn", "true");
+          } catch (e) {
+            console.error(e);
+          }
           setTimeout(() => {
-            router.push("/mi-menu");
+            router.push("/mi-menu?login=1");
           }, 1500);
         } else {
           setIsLoading(false);
@@ -256,7 +261,7 @@ export default function LoginPage() {
         </div>
       </footer>
 
-      {(isLoading || isSuccess) && <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm">
+      {(isLoading || isSuccess) && <div className={`fixed inset-0 z-50 flex flex-col items-center justify-center ${isSuccess ? "bg-background" : "bg-white/80 backdrop-blur-sm"} transition-colors duration-300`}>
         {/* Overlay de Carga */}
         {isLoading && (
           <PanLoader />

@@ -1,10 +1,14 @@
 "use client";
 import React, { useState } from "react";
-import { Check, Loader2, CreditCard, Sparkles, ShieldCheck } from "lucide-react";
+import { Check, Loader2, CreditCard, Sparkles, ShieldCheck, Flame } from "lucide-react";
 import { motion } from "framer-motion";
 import { URI } from "@/src/lib/const";
 import Link from "next/link";
 import { useFoodStore } from "@/src/lib/useFoodStore";
+import { usePromoCountdown } from "@/src/utils/usePromoCountdown";
+import PromoCountdownDisplay from "@/src/components/common/PromoCountdownDisplay";
+import { PaidPlanId, isValidPaidPlanId } from "@/src/utils/planPricing";
+import { getVerifiedSubscriptionPayload } from "@/src/utils/promoServerAction";
 
 interface PlanFeature {
   text: string;
@@ -26,13 +30,14 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
   const { user: storeUser } = useFoodStore();
   const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const { hours, minutes, seconds, isExpired } = usePromoCountdown();
 
   const plans: Plan[] = [
     {
       id: "plus",
       name: "Plus+",
-      price: "$24.000",
-      before: "$29.900",
+      price: isExpired ? "$24.000" : "$12.000",
+      before: isExpired ? "$29.900" : "$24.000",
       description: "Para restaurantes que quieren destacar su marca.",
       features: [
         "Platos ilimitados, permanente",
@@ -44,8 +49,8 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
         "Gestión de promociones"
       ],
       color: "text-primary",
-      bgClass: "bg-white border-primary shadow-lg ring-1 ring-primary/20",
-      buttonClass: "bg-primary hover:bg-primary/90 text-white",
+      bgClass: "bg-white border-2 border-primary shadow-xl ring-2 ring-primary/20",
+      buttonClass: "bg-primary hover:bg-primary/90 text-white shadow-md shadow-primary/30",
     },
     {
       id: "premium",
@@ -88,16 +93,20 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
     },
   ];
 
-  const handleSubscribe = async (planId: "plus" | "premium", amount: number) => {
+  const handleSubscribe = async (planId: PaidPlanId) => {
+    if (!isValidPaidPlanId(planId)) return;
     setLoadingPlan(planId);
     localStorage.setItem("plan", planId);
     try {
+      // Validamos en el servidor el precio real según el plan y la vigencia de la cookie HttpOnly
+      const verified = await getVerifiedSubscriptionPayload(planId);
+
       const response = await fetch(`${URI}/auth/subscribe`, {
         method: "POST",
         body: JSON.stringify({
-          reason: `Plan ${planId.toUpperCase()} - QMENU`,
-          transaction_amount: amount,
-          plan: planId,
+          reason: `Plan ${verified.plan.toUpperCase()} - QMENU`,
+          transaction_amount: verified.transaction_amount,
+          plan: verified.plan,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -117,10 +126,6 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
     } finally {
       setLoadingPlan(null);
     }
-  };
-
-  const getAmountFromPrice = (priceStr: string) => {
-    return parseInt(priceStr.replace("$", "").replace(".", ""), 10);
   };
 
   return (
@@ -180,8 +185,15 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
               className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115`}
             >
               {plan.id === "plus" && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[10px] md:text-xs font-extrabold uppercase px-3.5 py-1 rounded-full tracking-wider whitespace-nowrap shadow-sm">
-                  Recomendado
+                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[11px] md:text-xs font-black uppercase px-4 py-1 rounded-full tracking-wider whitespace-nowrap shadow-md flex items-center gap-1 border border-white">
+                  {isExpired ? (
+                    "Recomendado"
+                  ) : (
+                    <>
+                      <Flame className="w-3.5 h-3.5 fill-white" />
+                      Recomendado • 50% OFF
+                    </>
+                  )}
                 </div>
               )}
 
@@ -191,24 +203,44 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
                 </div>
               )}
 
-              <div className="mb-4">
-                <h3 className={`text-xl font-bold ${plan.color} flex items-center flex-wrap gap-2`}>
-                  {plan.name}
-                </h3>
+              <div className="mb-3 mt-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className={`text-2xl font-black ${plan.color} flex items-center gap-2`}>
+                    {plan.name}
+                  </h3>
+                  {plan.id === "plus" && !isExpired && (
+                    <span className="inline-flex items-center gap-1 bg-red-100 text-primary text-[11px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      <Flame className="w-3 h-3 fill-primary" />
+                      50% OFF
+                    </span>
+                  )}
+                </div>
                 <p className="text-gray-500 text-xs mt-1.5 min-h-8.75 leading-relaxed">
                   {plan.description}
                 </p>
               </div>
 
-              <div className="mb-5 flex items-baseline gap-1.5">
-                <span className="text-3xl font-extrabold text-black">{plan.price}</span>
+              <div className="mb-4 flex items-baseline gap-2 flex-wrap">
+                <span className="text-3xl md:text-4xl font-black text-black tracking-tight">{plan.price}</span>
                 {plan.before && (
-                  <span className="text-gray-400 text-sm line-through decoration-red-400">
+                  <span className="text-gray-400 text-base line-through decoration-red-500 font-bold">
                     {plan.before}
                   </span>
                 )}
-                {plan.id !== "lifetime" && <span className="text-gray-500 text-xs">/mes</span>}
+                {plan.id !== "lifetime" && <span className="text-gray-500 text-xs font-semibold">/mes</span>}
               </div>
+
+              {plan.id === "plus" && !isExpired && (
+                <div className="mb-4">
+                  <PromoCountdownDisplay
+                    hours={hours}
+                    minutes={minutes}
+                    seconds={seconds}
+                    variant="card"
+                    badgeText="Promoción 50% OFF por 12hs"
+                  />
+                </div>
+              )}
 
               <div className="mb-6 grow">
                 <ul className="space-y-1">
@@ -251,7 +283,7 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
                 </Link>
               ) : (
                 <button
-                  onClick={() => handleSubscribe(plan.id as "plus" | "premium", getAmountFromPrice(plan.price))}
+                  onClick={() => handleSubscribe(plan.id as PaidPlanId)}
                   disabled={loadingPlan !== null}
                   className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
                 >

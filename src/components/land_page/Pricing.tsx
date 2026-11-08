@@ -1,8 +1,9 @@
 "use client"
 import React from 'react';
-import { Check, Link } from 'lucide-react';
+import { Check, Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
+import { usePromoCountdown } from '@/src/utils/usePromoCountdown';
+import PromoCountdownDisplay from '@/src/components/common/PromoCountdownDisplay';
 
 interface PricingPlan {
   name: string;
@@ -34,8 +35,8 @@ const plans: PricingPlan[] = [
   },
   {
     name: "Plus",
-    price: "$24.000", //24000
-    before: "$29.900", //29.900
+    price: "$12.000", //12000
+    before: "$24.000", //24.000
     period: "/mes",
     description: "Para restaurantes que quieren destacar su marca.",
     features: [
@@ -93,6 +94,27 @@ const plans: PricingPlan[] = [
 ];
 
 export default function Pricing() {
+  const { hours, minutes, seconds, isExpired } = usePromoCountdown();
+
+  const activePlans: PricingPlan[] = plans.map((plan) => {
+    if (plan.name === "Plus") {
+      if (isExpired) {
+        return {
+          ...plan,
+          price: "$24.000",
+          before: "$29.900",
+        };
+      } else {
+        return {
+          ...plan,
+          price: "$12.000",
+          before: "$24.000",
+        };
+      }
+    }
+    return plan;
+  });
+
   return (
     <section id="planes" className="py-20 md:py-0 md:pb-30 w-full">
       <div className="w-full">
@@ -111,37 +133,62 @@ export default function Pricing() {
 
         {/* Grid: 1 col móvil, 4 cols desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 space-y-4 xl:space-y-0 gap-2 items-start px-2">
-          {plans.map((plan, index) => (
+          {activePlans.map((plan, index) => (
             <div
               key={index}
-              className={`relative flex flex-col p-6 md:p-3 md:h-130 rounded-xl border
+              className={`relative flex flex-col p-6 md:p-3 md:min-h-134 rounded-xl border
                 ${!plan.premium && !plan.recommended && 'border-gray-200'}
                 ${plan.name === "Pago Único" && 'bg-linear-to-br from-white to-blue-200/40 border-blue-800 border-2 shadow-xl'}
                 ${plan.premium && 'bg-gray-100 hover:from-white transition-all duration-500 hover:via-gray-200 hover:to-gray-600/30 border-2 border-black'}
-                ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-102 z-10'}`}
+                ${plan.recommended && 'bg-white border-primary shadow-2xl shadow-primary-900/10 md:scale-103 z-10'}`}
             >
               {plan.recommended && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border border-primary text-white px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-wide uppercase whitespace-nowrap">
-                  Recomendado
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-primary border-2 border-white text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase whitespace-nowrap shadow-md flex items-center gap-1">
+                  {isExpired ? (
+                    "Recomendado"
+                  ) : (
+                    <>
+                      <Flame className="w-3.5 h-3.5 fill-white" />
+                      Recomendado • 50% OFF
+                    </>
+                  )}
                 </div>
               )}
 
               {plan.name === "Pago Único" && <span className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-[10px] md:text-xs bg-purple-100 text-blue-800 px-2 py-1 rounded-full font-bold tracking-wide uppercase whitespace-nowrap">Negocios internacionales</span>}
 
-              <div className="mb-1 p-3">
-                <h3 className={`text-xl font-bold ${plan.recommended ? 'text-primary' : 'text-gray-900'} flex items-center flex-wrap gap-2`}>
+              <div className="mb-2 p-3">
+                <h3 className={`text-2xl font-black ${plan.recommended ? 'text-primary' : 'text-gray-900'} flex items-center flex-wrap gap-2`}>
                   {plan.name === "Plus" ? plan.name + "+" : plan.name}
+                  {plan.recommended && !isExpired && (
+                    <span className="inline-flex items-center gap-1 bg-red-100 text-primary text-xs font-black px-2.5 py-0.5 rounded-full uppercase tracking-wide">
+                      <Flame className="w-3.5 h-3.5 fill-primary text-primary" />
+                      50% OFF
+                    </span>
+                  )}
                 </h3>
-                <p className="text-gray-500 text-xs mt-2 min-h-auto md:min-h-10">{plan.description}</p>
+                <p className="text-gray-500 text-xs mt-2 min-h-auto md:min-h-10 leading-relaxed">{plan.description}</p>
               </div>
 
-              <div className="mb-4 flex items-baseline">
-                <span className="text-3xl font-extrabold pl-3 text-black">{plan.price}</span>
+              <div className="mb-4 flex items-baseline gap-2 flex-wrap px-3">
+                <span className="text-3xl font-black text-black tracking-tight">{plan.price}</span>
                 {plan.before && (
-                  <span className="text-gray-500 ml-2 text-md line-through decoration-red-500">{plan.before}</span>
+                  <span className="text-gray-400 text-lg md:text-xl font-bold line-through decoration-red-500">{plan.before}</span>
                 )}
-                <span className="text-gray-500 ml-2 text-xs">{plan.period}</span>
+                <span className="text-gray-500 text-xs font-semibold">{plan.period}</span>
               </div>
+
+              {plan.recommended && !isExpired && (
+                <div className="mx-2 mb-4">
+                  <PromoCountdownDisplay
+                    hours={hours}
+                    minutes={minutes}
+                    seconds={seconds}
+                    variant="card"
+                    badgeText="Promoción 50% OFF por 12hs"
+                  />
+                </div>
+              )}
 
               {
                 !plan.premium ?
