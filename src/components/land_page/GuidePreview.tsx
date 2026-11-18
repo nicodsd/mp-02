@@ -32,19 +32,34 @@ const topGuides = [
 ];
 
 export default function GuidePreview() {
+  // Antes se renderizaban 2 <video autoPlay> del mismo archivo (uno oculto por CSS según breakpoint).
+  // Ambos descargaban en paralelo con range requests sobre la misma entrada de caché del navegador,
+  // lo que provocaba "net::ERR_CACHE_OPERATION_NOT_SUPPORTED". Ahora solo se monta el visible.
+  const [isDesktop, setIsDesktop] = React.useState<boolean | null>(null);
+  React.useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   return (
     <section className="py-20 md:py-0 md:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:px-8 items-start">
           <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-12 w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
+            {isDesktop === true && (
             <video
               className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
               autoPlay
               loop
               muted
+              playsInline
             >
               <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
             </video>
+            )}
           </motion.div>
           <div className="flex items-end flex-col gap-2 md:col-span-2 justify-end h-full w-full">
             <div className="text-center w-full md:text-start mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-end gap-4">
@@ -64,14 +79,17 @@ export default function GuidePreview() {
               </div>
             </div>
             <div className="w-full md:hidden md:invisible mb-4 md:mb-0 flex justify-center md:items-center">
+              {isDesktop === false && (
               <video
                 className="w-50 h-auto border-3 border-white rounded-3xl shadow-xl object-cover"
                 autoPlay
                 loop
                 muted
+                playsInline
               >
                 <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
               </video>
+              )}
             </div>
             {topGuides.map((guide, idx) => (
               <motion.div

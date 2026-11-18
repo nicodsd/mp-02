@@ -2,11 +2,12 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Asap, Geist } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next";
 import EmotionProvider from "@/src/components/EmotionProvider";
 import { cn } from "@/lib/utils";
 import { headers } from "next/headers";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import CookieConsentManager, {
+  ConsentAwareAnalytics,
+} from "@/src/components/common/CookieConsentManager";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const asap = Asap({
@@ -77,13 +78,54 @@ export default async function RootLayout({
   return (
     <html lang="es" className={cn(asap.className, "font-sans", geist.variable)}>
       <head>
-        {/* Bloque HEAD de GTM */}
+        {/* Bloque HEAD de GTM con Google Consent Mode v2 */}
         <Script
           nonce={nonce}
           id="gtm-head"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
+              window.gtag = window.gtag || gtag;
+              var defaultConsent = {
+                security_storage: 'granted',
+                functionality_storage: 'denied',
+                personalization_storage: 'denied',
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                ad_user_data: 'denied',
+                ad_personalization: 'denied',
+                wait_for_update: 500
+              };
+              try {
+                var rawConsent = localStorage.getItem('qmenu_cookie_consent');
+                if (rawConsent === 'accepted') {
+                  defaultConsent.functionality_storage = 'granted';
+                  defaultConsent.personalization_storage = 'granted';
+                  defaultConsent.analytics_storage = 'granted';
+                  defaultConsent.ad_storage = 'granted';
+                  defaultConsent.ad_user_data = 'granted';
+                  defaultConsent.ad_personalization = 'granted';
+                } else if (rawConsent && rawConsent !== 'declined') {
+                  var parsedConsent = JSON.parse(rawConsent);
+                  if (parsedConsent && typeof parsedConsent === 'object') {
+                    if (parsedConsent.preferences) {
+                      defaultConsent.functionality_storage = 'granted';
+                      defaultConsent.personalization_storage = 'granted';
+                    }
+                    if (parsedConsent.analytics) {
+                      defaultConsent.analytics_storage = 'granted';
+                    }
+                    if (parsedConsent.marketing) {
+                      defaultConsent.ad_storage = 'granted';
+                      defaultConsent.ad_user_data = 'granted';
+                      defaultConsent.ad_personalization = 'granted';
+                    }
+                  }
+                }
+              } catch (e) {}
+              gtag('consent', 'default', defaultConsent);
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -105,8 +147,8 @@ export default async function RootLayout({
         </noscript>
         <EmotionProvider>
           <main>{children}</main>
-          <SpeedInsights />
-          <Analytics />
+          <CookieConsentManager />
+          <ConsentAwareAnalytics />
         </EmotionProvider>
       </body>
     </html>

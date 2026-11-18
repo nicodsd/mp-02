@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Environment, EventName } from "@paddle/paddle-node-sdk";
 import { getPaddleClient, getPaddleEnvironment } from "@/src/lib/paddle";
 import { activatePaddleSubscription } from "@/app/actions";
+import { PADDLE_ENABLED } from "@/src/lib/featureFlags";
 
 let cachedCidrs: { cidrs: string[]; expiresAt: number } | null = null;
 const IP_CACHE_TTL_MS = 60 * 60 * 1000;
@@ -50,6 +51,10 @@ async function getPaddleIpv4Cidrs(): Promise<string[] | null> {
 }
 
 export async function POST(request: Request) {
+  // Paddle muteado (ver src/lib/featureFlags.ts)
+  if (!PADDLE_ENABLED) {
+    return NextResponse.json({ error: "Paddle deshabilitado" }, { status: 503 });
+  }
   if (getPaddleEnvironment() === Environment.production) {
     const forwardedFor = request.headers.get("x-forwarded-for");
     const clientIp = (forwardedFor?.split(",")[0] || request.headers.get("x-real-ip") || "").trim();

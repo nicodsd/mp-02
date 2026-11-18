@@ -6,8 +6,17 @@ import {
 } from "@/src/lib/paddle";
 import { isValidPaidPlanId } from "@/src/utils/planPricing";
 import { getVerifiedSubscriptionPayload } from "@/src/utils/promoServerAction";
+import { PADDLE_ENABLED } from "@/src/lib/featureFlags";
+
+// Paddle muteado (ver src/lib/featureFlags.ts)
+const paddleDisabledResponse = () =>
+  NextResponse.json(
+    { error: "Los pagos internacionales no están disponibles por el momento.", code: "PADDLE_DISABLED" },
+    { status: 503 }
+  );
 
 export async function GET() {
+  if (!PADDLE_ENABLED) return paddleDisabledResponse();
   const apiKey = process.env.PADDLE_API_KEY;
   if (isPlaceholderPaddleValue(apiKey)) {
     return NextResponse.json(
@@ -40,6 +49,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (!PADDLE_ENABLED) return paddleDisabledResponse();
   try {
     const body = await request.json();
     const { plan, email, name, password, source } = body ?? {};

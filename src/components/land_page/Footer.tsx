@@ -1,6 +1,7 @@
 "use client"
 import { MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { openCookiePreferences } from '@/src/lib/cookieConsent';
 
 export default function Footer() {
   const navLinks = [
@@ -48,6 +49,15 @@ export default function Footer() {
               <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/contacto" className="hover:text-primary-400 transition-colors">Contacto</a></motion.li>
               <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/politicas" className="hover:text-primary-400 transition-colors">Política de Privacidad</a></motion.li>
               <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/terminos-y-condiciones" className="hover:text-primary-400 transition-colors">Política de Términos y Condiciones</a></motion.li>
+              <motion.li transition={{ delay: 0.45 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                <button
+                  type="button"
+                  onClick={openCookiePreferences}
+                  className="hover:text-primary-400 transition-colors cursor-pointer text-left"
+                >
+                  Preferencias de cookies
+                </button>
+              </motion.li>
             </motion.ul>
           </div>
         </div>
