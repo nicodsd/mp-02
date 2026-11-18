@@ -15,7 +15,7 @@ interface PlanFeature {
 }
 
 interface Plan {
-  id: "free" | "plus" | "premium" | "lifetime";
+  id: "free" | "plus" | "premium" | "presupuesto";
   name: string;
   price: string;
   before?: string;
@@ -40,13 +40,17 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
       before: isExpired ? "$29.900" : "$24.000",
       description: "Para restaurantes que quieren destacar su marca.",
       features: [
-        "Platos ilimitados, permanente",
+        "Platos ilimitados",
         "Códigos QR personalizables con tu logo",
         "Fotos de alta calidad",
-        "Analíticas de visitas",
-        "Menú personalizable según estética",
-        "Compras por WhatsApp",
-        "Gestión de promociones"
+        "Analiticas y consulta de visitas a tu menú",
+        "Menú altamente personalizable, colores, categorias, estructura, etc",
+        "Pedidos por WhatsApp con envio",
+        "Gestión de comandas",
+        "Seccion para gestión de pedidos",
+        "Botón de 'Descanso' para vacaciones",
+        "Agrega promociones a tus productos",
+        "Soporte prioritario"
       ],
       color: "text-primary",
       bgClass: "bg-white border-2 border-primary shadow-xl ring-2 ring-primary/20",
@@ -55,21 +59,13 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
     {
       id: "premium",
       name: "Premium",
-      price: "$34.900",
-      before: "$39.900",
+      price: "$49.000",
+      before: "$59.900",
       description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
       features: [
+        "Todas las características del plan Plus+",
         "Platos ilimitados, permanente",
-        "Códigos QR personalizables con tu logo",
-        "Fotos de alta calidad",
-        "Analíticas de visitas",
-        "Menú altamente personalizable, diferenciate de la competencia",
-        "Compras por WhatsApp",
-        "Seccion para gestión de pedidos",
-        "Multi sucursal",
-        "Botón de 'Descanso' para vacaciones",
-        "Agrega promociones a tus productos",
-        "Menús diferenciados por zona",
+        "Multi sucursal, gestiona tus locales desde un solo lugar",
         "Soporte prioritario"
       ],
       color: "text-black",
@@ -77,14 +73,13 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
       buttonClass: "bg-black hover:bg-gray-800 text-white shadow-md",
     },
     {
-      id: "lifetime",
-      name: "Pago Único",
+      id: "presupuesto",
+      name: "Quiero un presupuesto",
       price: "A cotizar",
       description: "Un plan de pago único con todas las funcionalidades premium incluidas. Ideal para menús fuera de Argentina que buscan destacar con las funcionalidades más completas.",
       features: [
         "Todas las funcionalidades Premium",
         "Ideal para negocios fuera de Argentina",
-        "Te armamos tu menú (Opcional)",
         "Soporte prioritario"
       ],
       color: "text-blue-800",
@@ -170,7 +165,7 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
       </div>
 
       {/* Cards list */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 px-3 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 px-3 max-w-5xl mx-auto">
         {plans.map((plan) => {
           const isActive = user?.plan === plan.id;
           const isDowngrade =
@@ -197,7 +192,7 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
                 </div>
               )}
 
-              {plan.id === "lifetime" && (
+              {plan.id === "presupuesto" && (
                 <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-purple-100 text-blue-800 text-[10px] md:text-xs font-extrabold uppercase px-3.5 py-1 rounded-full tracking-wider whitespace-nowrap shadow-sm">
                   Negocios internacionales
                 </div>
@@ -227,7 +222,7 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
                     {plan.before}
                   </span>
                 )}
-                {plan.id !== "lifetime" && <span className="text-gray-500 text-xs font-semibold">/mes</span>}
+                {plan.id !== "presupuesto" && <span className="text-gray-500 text-xs font-semibold">/mes</span>}
               </div>
 
               {plan.id === "plus" && !isExpired && (
@@ -274,7 +269,7 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
                 >
                   Plan Gratuito
                 </button>
-              ) : plan.id === "lifetime" ? (
+              ) : plan.id === "presupuesto" ? (
                 <Link
                   href="/cotizar-menu"
                   className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
@@ -317,3 +312,370 @@ export default function SubscriptionPanel({ user: initialUser }: { user: any }) 
     </div>
   );
 }
+/*"use client";
+import React, { useState } from "react";
+import { Check, Loader2, CreditCard, Sparkles, ShieldCheck, Flame } from "lucide-react";
+import { motion } from "framer-motion";
+import { URI } from "@/src/lib/const";
+import Link from "next/link";
+import { useFoodStore } from "@/src/lib/useFoodStore";
+import { usePromoCountdown } from "@/src/utils/usePromoCountdown";
+import PromoCountdownDisplay from "@/src/components/common/PromoCountdownDisplay";
+import { OFFICIAL_INTERNATIONAL_PLAN_PRICES, PaidPlanId, isValidPaidPlanId } from "@/src/utils/planPricing";
+import { getVerifiedSubscriptionPayload } from "@/src/utils/promoServerAction";
+import CheckoutPaymentModal from "@/src/components/modals/CheckoutPaymentModal";
+
+interface Plan {
+  id: "free" | "plus" | "premium" | "presupuesto";
+  name: string;
+  price: string;
+  before?: string;
+  description: string;
+  features: string[];
+  color: string;
+  bgClass: string;
+  buttonClass: string;
+}
+
+export default function SubscriptionPanel({ user: initialUser }: { user: any }) {
+  const { user: storeUser, refreshPanelData } = useFoodStore();
+  const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [checkoutPlan, setCheckoutPlan] = useState<PaidPlanId | null>(null);
+  const [paddleNotice, setPaddleNotice] = useState<string | null>(null);
+  const { hours, minutes, seconds, isExpired } = usePromoCountdown();
+
+  const plans: Plan[] = [
+    {
+      id: "free",
+      name: "Gratuito",
+      price: "$0",
+      description: "Para pequeños locales o food trucks que inician.",
+      features: [
+        "Hasta 10 platos",
+        "Código QR con tu logo",
+        "Fotos básicas",
+        "Pedidos por WhatsApp con envio",
+      ],
+      color: "text-gray-800",
+      bgClass: "bg-white border-gray-200 border shadow-sm",
+      buttonClass: "bg-gray-100 text-gray-500",
+    },
+    {
+      id: "plus",
+      name: "Plus+",
+      price: isExpired ? "$24.000" : "$12.000",
+      before: isExpired ? "$29.900" : "$24.000",
+      description: "Para restaurantes que quieren destacar su marca.",
+      features: [
+        "Platos ilimitados",
+        "Códigos QR personalizables con tu logo",
+        "Fotos de alta calidad",
+        "Analiticas y consulta de visitas a tu menú",
+        "Menú altamente personalizable, colores, categorias, estructura, etc",
+        "Pedidos por WhatsApp con envio",
+        "Gestión de comandas",
+        "Seccion para gestión de pedidos",
+        "Botón de 'Descanso' para vacaciones",
+        "Agrega promociones a tus productos",
+        "Soporte prioritario"
+      ],
+      color: "text-primary",
+      bgClass: "bg-white border-2 border-primary shadow-xl ring-2 ring-primary/20",
+      buttonClass: "bg-primary hover:bg-primary/90 text-white shadow-md shadow-primary/30",
+    },
+    {
+      id: "premium",
+      name: "Premium",
+      price: "$49.000",
+      before: "$59.900",
+      description: "El plan más completo para locales con gran variedad de platos y que quieren diferenciarse del resto.",
+      features: [
+        "Todas las características del plan Plus+",
+        "Te armamos tu menú con tus platos",
+        "Platos ilimitados, permanente",
+        "Multi sucursal, gestiona tus locales desde un solo lugar",
+        "Soporte prioritario"
+      ],
+      color: "text-black",
+      bgClass: "bg-linear-to-br from-white via-gray-50 to-gray-100/50 border-black border-2 shadow-xl",
+      buttonClass: "bg-black hover:bg-gray-800 text-white shadow-md",
+    },
+    {
+      id: "presupuesto",
+      name: "Quiero un presupuesto",
+      price: "A cotizar",
+      description: "Un plan de pago único con todas las funcionalidades premium incluidas.",
+      features: [
+        "Todas las funcionalidades Premium",
+        "Ideal para negocios fuera de Argentina",
+        "Soporte prioritario"
+      ],
+      color: "text-black",
+      bgClass: "bg-linear-to-br from-white via-gray-50 to-gray-100/50 border-black border-2 shadow-xl",
+      buttonClass: "bg-black hover:bg-gray-800 text-white shadow-md",
+      cta: "Cotizar Plan",
+      href: "/cotizar-menu",
+      premium: true
+    }
+  ];
+
+  const handleSubscribe = async (planId: PaidPlanId) => {
+    if (!isValidPaidPlanId(planId)) return;
+    setLoadingPlan(planId);
+    localStorage.setItem("plan", planId);
+    try {
+      // Validamos en el servidor el precio real según el plan y la vigencia de la cookie HttpOnly
+      const verified = await getVerifiedSubscriptionPayload(planId);
+
+      const response = await fetch(`${URI}/auth/subscribe`, {
+        method: "POST",
+        body: JSON.stringify({
+          reason: `Plan ${verified.plan.toUpperCase()} - QMENU`,
+          transaction_amount: verified.transaction_amount,
+          plan: verified.plan,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      } else {
+        alert("No se pudo iniciar el proceso de pago.");
+      }
+    } catch (error) {
+      console.error("Error al procesar el pago:", error);
+      alert("Hubo un error al procesar el pago");
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
+  return (
+    <div className="w-full pb-10">
+      <header className="p-3 w-full flex flex-col mb-6 gap-1">
+        <div className="flex items-center gap-2 text-gray-800">
+          <h1 className="text-2xl font-bold">Suscripciones</h1>
+        </div>
+        <p className="text-gray-500 text-sm">
+          Administra tu plan de facturación y descubre características prémium para potenciar tu menú digital.
+        </p>
+      </header>
+
+
+      <div className={`mx-3 mb-8 p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 
+        ${user?.plan === "premium" && "bg-black"}
+        ${user?.plan === "plus" && "bg-linear-to-r from-white via-gray-50 to-gray-100/50 border-primary border"}
+        ${user?.plan === "free" && "bg-linear-to-r from-gray-50 to-gray-100"}
+      `}>
+        <div>
+          <span className={`text-xs uppercase font-bold tracking-wider ${user?.plan === "premium" ? "text-gray-200" : "text-gray-400"}`}>Plan Activo</span>
+          <div className="flex items-center gap-2 mt-1">
+            <h2 className={`text-xl font-bold capitalize 
+              ${user?.plan === "premium" && "text-white"}
+              ${user?.plan === "plus" && "text-primary"}`}>
+              {user?.plan === "free" ? "Gratuito" : user?.plan}
+            </h2>
+            {user?.plan !== "free" && (
+              <span className={`text-xs px-2 py-0.5 rounded-full font-medium flex items-center gap-1 
+                ${user?.plan === "premium" ? "bg-white text-black" : "bg-green-100 text-green-700"}`
+              }>
+                <ShieldCheck className="w-3.5 h-3.5" /> Activo
+              </span>
+            )}
+          </div>
+          <p className={`text-xs mt-1 ${user?.plan === "premium" ? "text-gray-300" : "text-gray-500"}`}>
+            {user?.plan === "free"
+              ? "Tienes acceso a las herramientas básicas para iniciar tu menú digital."
+              : "Disfrutá de las ventajas de tu plan. Los pagos se administran en Mercado Pago (Argentina) o Paddle (Internacional)."}
+          </p>
+        </div>
+      </div>
+
+      {paddleNotice && (
+        <div className="mx-3 mb-6 p-4 rounded-xl bg-green-50 border border-green-200 text-green-800 text-sm font-medium">
+          {paddleNotice}
+        </div>
+      )}
+      
+      <div className="relative isolate grid grid-cols-1 lg:grid-cols-4 gap-3 px-3 max-w mx-auto">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute bottom-10 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-primary blur-3xl" />
+          <div className="absolute bottom-0 left-0 h-100 w-100 rounded-full bg-gray-400/70 blur-3xl" />
+          <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-amber-300 blur-3xl" />
+        </div>
+        {plans.map((plan) => {
+          const isActive = user?.plan === plan.id;
+          const isDowngrade =
+            (user?.plan === "premium" && (plan.id === "free" || plan.id === "plus")) ||
+            (user?.plan === "plus" && plan.id === "free");
+
+          return (
+            <motion.div
+              key={plan.id}
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115`}
+            >
+              {plan.id === "plus" && (
+                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[11px] md:text-xs font-black uppercase px-4 py-1 rounded-full tracking-wider whitespace-nowrap shadow-md flex items-center gap-1 border border-white">
+                  {isExpired ? (
+                    "Recomendado"
+                  ) : (
+                    <>
+                      <Flame className="w-3.5 h-3.5 fill-white" />
+                      Recomendado • 50% OFF
+                    </>
+                  )}
+                </div>
+              )}
+
+              <div className="mb-3 mt-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className={`text-2xl font-black ${plan.color} flex items-center gap-2`}>
+                    {plan.name}
+                  </h3>
+                  {plan.id === "plus" && !isExpired && (
+                    <span className="inline-flex items-center gap-1 bg-red-100 text-primary text-[11px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      <Flame className="w-3 h-3 fill-primary" />
+                      50% OFF
+                    </span>
+                  )}
+                </div>
+                <p className="text-gray-500 text-xs mt-1.5 min-h-8.75 leading-relaxed">
+                  {plan.description}
+                </p>
+              </div>
+
+              <div className="mb-2 flex items-baseline gap-2 flex-wrap">
+                {plan.id !== "free" && (
+                  <span className="text-[11px] font-extrabold uppercase text-gray-900">
+                    ARS
+                  </span>
+                )}
+                <span className="text-3xl md:text-4xl font-black text-black tracking-tight">{plan.price}</span>
+                {plan.before && (
+                  <span className="text-gray-400 text-base line-through decoration-red-500 font-bold">
+                    {plan.before}
+                  </span>
+                )}
+                <span className="text-gray-500 text-xs font-semibold">/mes</span>
+              </div>
+              {plan.id !== "free" && (
+                <p className="text-[11px] bg-black rounded-full w-fit font-semibold text-stone-200 px-2 py-0.5 mb-4">
+                  Fuera de Argentina con tarjeta:{" "}
+                  <span className="font-black text-stone-100">
+                    USD $
+                    {plan.id === "plus"
+                      ? isExpired
+                        ? OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.regularUsd
+                        : OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.promoUsd
+                      : OFFICIAL_INTERNATIONAL_PLAN_PRICES.premium.regularUsd}{" "}
+                    /mes
+                  </span>
+                </p>
+              )}
+
+              {plan.id === "plus" && !isExpired && (
+                <div className="mb-4">
+                  <PromoCountdownDisplay
+                    hours={hours}
+                    minutes={minutes}
+                    seconds={seconds}
+                    variant="card"
+                    badgeText="Promoción 50% OFF por 12hs"
+                  />
+                </div>
+              )}
+
+              <div className="mb-6 grow">
+                <ul className="space-y-1">
+                  {plan.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <Check className={`w-4 h-4 mt-0.5 shrink-0 ${plan.id === "free" ? "text-gray-400" : plan.id === "plus" ? "text-primary" : "text-black"}`} />
+                      <span className="text-gray-600 text-xs leading-normal">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {isActive ? (
+                <button
+                  disabled
+                  className="w-full py-3 rounded-xl font-bold text-sm bg-gray-100 text-gray-400 border border-gray-200 cursor-default flex items-center justify-center gap-1.5"
+                >
+                  <ShieldCheck className="w-4 h-4 text-green-500" /> Plan Activo
+                </button>
+              ) : isDowngrade ? (
+                <button
+                  disabled
+                  className="w-full py-3 rounded-xl font-bold text-xs bg-gray-50 text-gray-400 border border-gray-200 cursor-not-allowed"
+                >
+                  Ya tienes un plan superior
+                </button>
+              ) : plan.id === "free" ? (
+                <button
+                  disabled
+                  className="w-full py-3 rounded-xl font-bold text-xs bg-gray-50 text-gray-400 border border-gray-200 cursor-not-allowed"
+                >
+                  Plan Gratuito
+                </button>
+              ) : (
+                <button
+                  onClick={() => setCheckoutPlan(plan.id as PaidPlanId)}
+                  disabled={loadingPlan !== null}
+                  className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
+                >
+                  {loadingPlan === plan.id ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Conectando...
+                    </>
+                  ) : (
+                    `Actualizar a ${plan.name}`
+                  )}
+                </button>
+              )}
+            </motion.div>
+          );
+        })}
+      </div> 
+
+      <footer className="mt-8 px-3 text-center flex flex-col gap-1 max-w-2xl mx-auto">
+        <p className="text-gray-400 text-[10px]">
+          Pagos en Argentina a través de Mercado Pago • Suscripciones internacionales con tarjeta a través de Paddle.
+        </p>
+        <p className="text-gray-400 text-[10px]">
+          En caso de dudas o para realizar la anulación de suscripción en Argentina, puedes ingresar desde aquí al panel de{" "}
+          <a href="https://www.mercadopago.com.ar/subscriptions#from-section=menu" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">
+            Mercado Pago
+          </a>
+          . <br />
+          Si quieres solicitar un reembolso o gestionar una suscripción internacional de Paddle, <Link href="/contacto" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">contactate</Link> con nosotros.
+        </p>
+      </footer>
+
+      <CheckoutPaymentModal
+        isOpen={checkoutPlan !== null}
+        onClose={() => setCheckoutPlan(null)}
+        selectedPlan={checkoutPlan}
+        isPromoExpired={isExpired}
+        onSelectMercadoPago={handleSubscribe}
+        loadingMP={loadingPlan !== null}
+        userEmail={user?.email}
+        userName={user?.name}
+        source="panel"
+        onPaddleSuccess={({ plan }) => {
+          setPaddleNotice(
+            `Pago confirmado con Paddle para el Plan ${plan.toUpperCase()}. Tu suscripción internacional se activará en instantes.`
+          );
+          void refreshPanelData();
+        }}
+      />
+    </div>
+  );
+}
+*/

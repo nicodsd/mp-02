@@ -4,6 +4,7 @@ import Image from "next/image";
 import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import { URI } from '@/src/lib/const';
+import { safeParseJson } from '@/src/lib/safeJson';
 import {
   Dialog,
   DialogPanel,
@@ -58,7 +59,7 @@ export default function EditFoodModal({
       const foodUserId = food?.user_id || food?.user;
       if (foodUserId) {
         fetch(`${URI}/menu/get-menus/${foodUserId}`)
-          .then(res => res.json())
+          .then(res => (res.ok ? safeParseJson(res) : null))
           .then(data => {
             if (data && data.menus) {
               setUserMenus(data.menus);
@@ -105,7 +106,7 @@ export default function EditFoodModal({
     dataToSend.append("description", formData.description);
     dataToSend.append("price", formData.price);
 
-    const finalIsArchived = userPlan === "free" ? Boolean(food.is_archived) : formData.is_archived;
+    const finalIsArchived = userPlan === "free" ? false : formData.is_archived;
     const finalMenus = (userPlan === "free" || userPlan === "plus") ? (food.menus || []) : formData.menus;
 
     dataToSend.append("is_archived", String(finalIsArchived));
@@ -124,9 +125,9 @@ export default function EditFoodModal({
       );
 
       if (res.ok) {
-        const data = await res.json();
+        const data = await safeParseJson(res);
 
-        const updatedObj = data.food || {
+        const updatedObj = data?.food || {
           ...food,
           ...formData,
           is_archived: finalIsArchived,

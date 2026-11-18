@@ -40,7 +40,7 @@ export function SortableFoodCard({ food, context, template, user }: { food: any,
                             </h2>
                             {/* Etiquetas en escritorio (md:) al lado del título como en la imagen de referencia */}
                             {food.is_promo && (
-                                <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-teal-50 text-teal-600 border border-teal-200/80 leading-none shrink-0">
+                                <span className="hidden md:inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[11px] font-semibold bg-teal-600 text-white leading-none shrink-0">
                                     En promoción
                                 </span>
                             )}

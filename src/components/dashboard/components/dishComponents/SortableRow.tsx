@@ -6,7 +6,7 @@ import { FaEdit, FaCheckSquare, FaRegSquare, FaArchive } from "react-icons/fa";
 import { GripVertical, Pencil } from "lucide-react";
 import { SortableFoodCard } from "@/src/components/user_index/user_foods_cards/SortableFoodCard";
 
-export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSelected, onToggleSelect, template, isLast }: any) {
+export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSelected, onToggleSelect, template, isLast, isReorderMode = false }: any) {
     const {
         attributes,
         listeners,
@@ -14,8 +14,7 @@ export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSe
         transform,
         transition,
         isDragging,
-    } = useSortable({ id: food._id });
-
+    } = useSortable({ id: food._id, disabled: !isReorderMode || Boolean(food.is_archived) });
     const style = {
         transform: isDragging
             ? CSS.Transform.toString(transform)
@@ -37,7 +36,7 @@ export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSe
             >
                 <div className="w-full min-w-0 h-full relative flex items-center px-1.5 md:px-3 py-0">
                     <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
-                        {!food.is_archived && (
+                        {isReorderMode && !food.is_archived && (
                             <button
                                 type="button"
                                 aria-label="Reordenar plato"
@@ -104,14 +103,14 @@ export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSe
                                     <FaArchive />
                                     <span className="text-lg leading-none">Este plato no será visible</span>
                                 </div>
-                            ) : (
+                            ) : isReorderMode ? (
                                 <GripVertical
                                     size={24}
                                     className={`mx-1 touch-none ${template?.textColor} cursor-grab active:cursor-grabbing`}
                                     {...attributes}
                                     {...listeners}
                                 />
-                            )
+                            ) : null
                         }
                     </>
                 )}

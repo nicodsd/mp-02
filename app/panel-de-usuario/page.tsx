@@ -5,6 +5,8 @@ import PanelUser from "@/src/pagesComponents/PanelUser";
 import templates from "@/src/data/templates.json";
 import ConfigureMenu from "@/src/components/dashboard/ConfigureMenu";
 import MenuItems from "@/src/components/dashboard/MenuItems";
+import ComandasPanel from "@/src/components/dashboard/ComandasPanel";
+import AnalyticsPanel from "@/src/components/dashboard/AnalyticsPanel";
 import Sucursales from "@/src/components/dashboard/StoreAdd";
 import PromoPanel from "@/src/components/dashboard/PromoPanel";
 import TemplateSelector from "@/src/components/dashboard/Templates";
@@ -52,6 +54,12 @@ export default async function DashboardPage() {
       </TabPanel>
       <TabPanel unmount={false} className="focus:outline-none w-full data-closed:hidden">
         <MenuItems dataFoods={[]} template={template} user={user} token={token} />
+      </TabPanel>
+      <TabPanel unmount={false} className="focus:outline-none w-full data-closed:hidden">
+        <ComandasPanel user={user} />
+      </TabPanel>
+      <TabPanel unmount={false} className="focus:outline-none w-full data-closed:hidden">
+        <AnalyticsPanel user={user} />
       </TabPanel>
       <TabPanel unmount={false} className="focus:outline-none w-full data-closed:hidden">
         <PromoPanel foods={[]} />

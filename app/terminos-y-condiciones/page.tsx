@@ -40,15 +40,15 @@ export default function TerminosPage() {
                         </section>
 
                         <section>
-                            <h2 className="text-2xl font-bold text-stone-800 mb-4">4. Pagos, Suscripciones y Mercado Pago</h2>
+                            <h2 className="text-2xl font-bold text-stone-800 mb-4">4. Pagos, Suscripciones, Mercado Pago y Paddle</h2>
                             <p>
-                                Algunos de nuestros planes y funciones adicionales requieren el pago de una suscripción periódica. En relación a los pagos, aceptas lo siguiente:
+                                Algunos de nuestros planes y funciones adicionales requieren el pago de una suscripción mensual periódica. En relación a los pagos, aceptas lo siguiente:
                             </p>
                             <ul className="list-disc pl-6 mt-2 space-y-2">
-                                <li><strong>Procesamiento por terceros:</strong> Todos los pagos, cobros y suscripciones son gestionados exclusivamente por <strong>Mercado Pago</strong>. QMenú no retiene, procesa ni almacena datos de tus tarjetas de crédito, débito o cuentas bancarias.</li>
-                                <li><strong>Identificación de Suscripción:</strong> Al suscribirte, almacenamos únicamente un identificador único (ID de suscripción) proveído por Mercado Pago para vincular tu cuenta al plan correspondiente y activar las funciones premium.</li>
-                                <li><strong>Cancelación:</strong> Puedes cancelar o modificar tu suscripción en cualquier momento desde tu panel de usuario o directamente desde tu cuenta de Mercado Pago. Los cambios aplicarán al siguiente ciclo de facturación.</li>
-                                <li><strong>Reembolsos:</strong> Las políticas de reembolso se analizan caso por caso. Si tienes algún inconveniente, puedes usar nuestra sección de <a href="/contacto" className="text-primary underline font-medium">Contacto</a>.</li>
+                                <li><strong>Procesamiento por terceros:</strong> Los pagos dentro de Argentina (en ARS) son gestionados por <strong>Mercado Pago</strong>. Los pagos internacionales con tarjeta (en USD) son procesados por <strong>Paddle</strong> (Paddle.com), quien actúa como nuestro <em>Merchant of Record</em> (revendedor autorizado y procesador de pagos e impuestos internacionales). QMenú no retiene, procesa ni almacena datos de tus tarjetas de crédito, débito o cuentas bancarias.</li>
+                                <li><strong>Identificación de Suscripción:</strong> Al suscribirte, almacenamos únicamente los identificadores únicos proveídos por Mercado Pago o Paddle para vincular tu cuenta al plan correspondiente y activar las funciones premium.</li>
+                                <li><strong>Cancelación:</strong> Puedes cancelar o modificar tu suscripción en cualquier momento desde tu panel de usuario, directamente desde tu cuenta de Mercado Pago o a través del portal/enlace de gestión de suscripción de Paddle. La cancelación detiene las renovaciones futuras y tu acceso permanece activo hasta el final del período ya abonado.</li>
+                                <li><strong>Reembolsos (Política de Reembolso):</strong> Para suscripciones procesadas mediante <strong>Paddle</strong>, puedes solicitar un reembolso completo dentro de los <strong>14 días posteriores a la compra inicial</strong> si el servicio no cumple con lo esperado o tuviste algún inconveniente técnico, comunicándote mediante nuestra sección de <a href="/contacto" className="text-primary underline font-medium">Contacto</a> o a través del soporte de Paddle. Para pagos locales vía Mercado Pago, las solicitudes se evalúan dentro de los 14 días posteriores al cobro mediante <a href="/contacto" className="text-primary underline font-medium">Contacto</a>.</li>
                             </ul>
                         </section>
 
@@ -71,7 +71,7 @@ export default function TerminosPage() {
                             <ul className="list-disc pl-6 mt-2 space-y-2">
                                 <li>La calidad de los productos o servicios ofrecidos por tu negocio.</li>
                                 <li>Las transacciones comerciales o acuerdos entre tu negocio y tus clientes (los pedidos se manejan exclusivamente por tu WhatsApp).</li>
-                                <li>Interrupciones temporales del servicio debido a mantenimiento o fallos en proveedores externos (como caídas en Mercado Pago o en nuestros servicios de alojamiento).</li>
+                                <li>Interrupciones temporales del servicio debido a mantenimiento o fallos en proveedores externos (como caídas en Mercado Pago, Paddle o en nuestros servicios de alojamiento).</li>
                             </ul>
                         </section>
 

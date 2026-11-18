@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import SearchInput from '@/src/components/Index/filters/Search'
 import RenderCards from '@/src/components/Index/foods_cards/FoodCardSearch'
+import FoodsCards from '@/src/components/modals/cards/FoodCard'
 import FoodsCardsOptions from '@/src/components/Index/foods_cards/FoodsCardsOptions'
 import { Utensils } from 'lucide-react'
 

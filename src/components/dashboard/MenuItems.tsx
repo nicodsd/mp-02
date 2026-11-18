@@ -3,9 +3,13 @@ import React, { useMemo, useState, useEffect } from "react";
 import SearchInput from "@/src/components/Index/filters/Search";
 import AddFoodBttn from "@/src/components/buttons/AddFoodBttn";
 import RenderSortCards, { SortOption } from "../user_index/user_sections/RenderSortCards";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Check, Lock } from "lucide-react";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import templates from "@/src/data/templates.json";
+import {
+  normalizeFoodsForPlan,
+  unarchiveFoodsForFreeUser,
+} from "@/src/lib/unarchiveFreeFoods";
 
 const SORT_LABELS: Record<SortOption, string> = {
   category: "por categoría",
@@ -40,7 +44,17 @@ export function MenuItems({
     () => templates.find((t) => t.template_id === user?.template_id) || initialTemplate,
     [user?.template_id, initialTemplate]
   );
-  const dataFoods = isInitialized ? storeFoods : (storeFoods.length > 0 ? storeFoods : initialDataFoods);
+  const rawDataFoods = isInitialized ? storeFoods : (storeFoods.length > 0 ? storeFoods : initialDataFoods);
+  const dataFoods = useMemo(
+    () => normalizeFoodsForPlan(rawDataFoods, user?.plan),
+    [rawDataFoods, user?.plan]
+  );
+
+  useEffect(() => {
+    if (Array.isArray(rawDataFoods) && rawDataFoods.some((f) => f?.is_archived)) {
+      void unarchiveFoodsForFreeUser(rawDataFoods, user?.plan);
+    }
+  }, [rawDataFoods, user?.plan]);
 
   const activeDataFoods = useMemo(() => dataFoods.filter((f) => !f.is_archived), [dataFoods]);
   const archivedDataFoods = useMemo(() => dataFoods.filter((f) => f.is_archived), [dataFoods]);
@@ -49,6 +63,9 @@ export function MenuItems({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortOption>("category");
+  const [isReorderMode, setIsReorderMode] = useState(false);
+
+  const canReorder = Boolean(user?.plan && user.plan !== "free");
 
   const currentSourceFoods = view === "active" ? activeDataFoods : archivedDataFoods;
 
@@ -119,7 +136,7 @@ export function MenuItems({
         <p className="text-gray-500 text-sm">Gestiona tus platos, crea, edita entre otras cosas.</p>
       </header>
 
-      <div className="grid grid-cols-3 lg:grid-cols-3 gap-1 md:gap-2 my-4">
+      <div className="grid grid-cols-3 lg:grid-cols-3 gap-1 my-">
         <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-orange-400 justify-between">
           <div className="flex flex-col items-start">
             <span className="text-lg text-white mb-1 font-semibold leading-tight">Platos</span>
@@ -128,7 +145,7 @@ export function MenuItems({
           <span className="text-xs font-medium text-white/80">Platos activos</span>
         </div>
         {user.plan !== "free" ? (
-          <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-teal-600 justify-between">
+          <div className="flex flex-col items-start p-2 md:p-3 rounded-xl bg-green-600 justify-between">
             <div className="flex flex-col items-start">
               <span className="text-lg text-white mb-1 font-semibold leading-tight truncate">Promociones</span>
               <span className="text-[3rem] font-bold text-white">{activePromos.length}</span>
@@ -204,7 +221,10 @@ export function MenuItems({
             <div className="relative group flex items-center">
               <button
                 disabled={user.plan === "free"}
-                onClick={() => setView("archived")}
+                onClick={() => {
+                  setView("archived");
+                  setIsReorderMode(false);
+                }}
                 className={`px-4 py-2 disabled:opacity-50 cursor-pointer disabled:pointer-events-none font-semibold text-sm rounded-lg transition-colors 
                   ${view === "archived"
                     ? "bg-slate-500 text-white"
@@ -307,27 +327,65 @@ export function MenuItems({
             {displayedCategoriesCount === 1 ? "categoría" : "categorías"}
           </span>
 
-          <div className="flex items-center gap-1.5">
-            <label htmlFor="sort-dishes-select" className="text-gray-500 font-medium">
-              Orden:
-            </label>
-            <div className="relative inline-flex items-center">
-              <select
-                id="sort-dishes-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="appearance-none bg-background border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold text-xs rounded-lg pl-2.5 pr-7 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-400/40 transition-colors"
-              >
-                {Object.entries(SORT_LABELS).map(([key, label]) => (
-                  <option key={key} value={key}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-              <ArrowUpDown
-                size={13}
-                className="absolute right-2 text-gray-400 pointer-events-none"
-              />
+          <div className="flex items-center gap-2 flex-wrap">
+            {view === "active" && (
+              <div className="relative group flex items-center">
+                <button
+                  type="button"
+                  disabled={!canReorder}
+                  onClick={() => {
+                    if (!canReorder) return;
+                    if (!isReorderMode && (sortBy.startsWith("price") || sortBy.startsWith("name"))) {
+                      setSortBy("category");
+                    }
+                    setIsReorderMode((prev) => !prev);
+                  }}
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${!canReorder
+                    ? "bg-gray-100 border-gray-200 text-gray-400 opacity-75 cursor-not-allowed"
+                    : isReorderMode
+                      ? "bg-orange-400 border-orange-400 text-white cursor-pointer"
+                      : "bg-background border-gray-200 hover:border-gray-300 text-gray-700 cursor-pointer"
+                    }`}
+                >
+                  {!canReorder ? (
+                    <Lock size={13} />
+                  ) : isReorderMode ? (
+                    <Check size={13} />
+                  ) : (
+                    <ArrowUpDown size={13} />
+                  )}
+                  <span>{isReorderMode ? "Listo" : "Cambiar orden"}</span>
+                </button>
+                {!canReorder && (
+                  <div className="absolute bottom-full mb-1.5 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-max bg-gray-800 text-white text-xs py-1.5 px-3 rounded-md shadow-lg z-20 pointer-events-none">
+                    Disponible en planes Plus o Premium
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div className="flex items-center gap-1.5">
+              <label htmlFor="sort-dishes-select" className="text-gray-500 font-medium">
+                Orden:
+              </label>
+              <div className="relative inline-flex items-center">
+                <select
+                  id="sort-dishes-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="appearance-none bg-background border border-gray-200 hover:border-gray-300 text-gray-700 font-semibold text-xs rounded-lg pl-2.5 pr-7 py-1.5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-400/40 transition-colors"
+                >
+                  {Object.entries(SORT_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+                <ArrowUpDown
+                  size={13}
+                  className="absolute right-2 text-gray-400 pointer-events-none"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -342,6 +400,7 @@ export function MenuItems({
             context={true}
             sortBy={sortBy}
             onResetSort={() => setSortBy("category")}
+            isReorderMode={canReorder && view === "active" && isReorderMode}
           />
         </div>
       </div>

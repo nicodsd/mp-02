@@ -1,0 +1,15 @@
+{
+  "counter": 106,
+  "orders": [],
+  "analyticsByBusiness": {
+    "mid:anonimo": {
+      "totalPedidos": 1,
+      "totalIngresos": 20202002,
+      "pedidosCompletados": 0,
+      "pedidosExpirados24h": 1,
+      "userId": "anonimo",
+      "menuId": "anonimo",
+      "updatedAt": "2026-11-17T00:08:42.912Z"
+    }
+  }
+}

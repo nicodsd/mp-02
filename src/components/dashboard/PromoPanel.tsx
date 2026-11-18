@@ -30,6 +30,7 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [removingAll, setRemovingAll] = useState(false);
 
   const categories = useMemo(() => Array.from(new Set(foods.map((f) => f.sub_category))), [foods]);
 
@@ -108,6 +109,33 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
     }
   };
 
+  const removeAllPromos = async () => {
+    if (!window.confirm("¿Quitar todas las promociones activas?")) return;
+    setRemovingAll(true);
+    try {
+      const results = await Promise.all(
+        activePromos.map(async (p) => {
+          const res = await fetch(`${URI}/foods/promo/${p._id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ is_promo: false, promo_price: 0 }),
+          });
+          if (res.ok) updatePromo(p._id, false, 0);
+          return res.ok;
+        })
+      );
+      if (results.some(Boolean)) {
+        await refreshPanelData();
+        await refreshPage();
+      }
+    } catch (error) {
+      console.error("Error al quitar promos:", error);
+    } finally {
+      setRemovingAll(false);
+    }
+  };
+
   return (
     <div className="p-3 flex h-full w-full flex-col gap-6">
       <header className="flex flex-col gap-1">
@@ -116,30 +144,40 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
       </header>
 
       {activePromos.length > 0 ? (
-        <section className="flex flex-col w-full gap-3 max-h-120 bg-slate-100 border border-red-500 rounded-xl p-1 overflow-y-auto">
+        <section className="flex flex-col w-full gap-3 max-h-120 bg-slate-100 border-3 border-green-700 rounded-xl p-1 overflow-y-auto">
           <div className="p-2">
-            <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
-            </h3>
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                Activas <span className="bg-green-200 text-green-700 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+              </h3>
+              <button
+                onClick={removeAllPromos}
+                disabled={removingAll}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-green-600 cursor-pointer transition-all active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              >
+                <FaTrashAlt size={12} />
+                {removingAll ? "Quitando..." : "Quitar todas"}
+              </button>
+            </div>
             <p className="text-xs text-gray-400">No puedes poner una promoción a un producto que ya tiene una promoción.</p>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-1">
             {activePromos.map((promo) => (
-              <div key={promo._id} className="flex items-center h-fit bg-background border border-red-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
+              <div key={promo._id} className="flex items-center h-fit bg-background border border-green-200 p-1 px-2 rounded-xl justify-between animate-fade-in">
                 <div className="flex items-center gap-2">
                   <Image priority loading="eager" src={promo.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={promo.name} />
                   <div>
-                    <h4 className="font-bold text-xl text-gray-800 line-clamp-1">{promo.name}</h4>
+                    <h4 className="text-lg text-gray-800 line-clamp-1">{promo.name}</h4>
                     <div className="flex flex-col items-start">
                       <p className="text-gray-400 leading-none text-sm font-semibold">
                         Antes: $ {foods.find((f) => f._id === promo._id)?.price}
                       </p>
-                      <p className="text-red-600 font-bold text-lg">Ahora: {
+                      <p className="text-green-700 font-bold text-lg">Ahora: {
                         promo.promo_price === 0 ? "GRATIS" : priceFormatter.format(promo.promo_price || 0)}</p>
                     </div>
                   </div>
                 </div>
-                <button onClick={() => removePromo(promo._id)} className="p-1 flex items-center gap-1 flex-col text-gray-400 cursor-pointer hover:text-red-500 transition-colors">
+                <button onClick={() => removePromo(promo._id)} className="p-1 flex items-center gap-1 flex-col text-gray-400 cursor-pointer hover:text-green-700 transition-colors">
                   <FaTrashAlt size={18} />
                   <span className="text-xs">Quitar</span>
                 </button>
@@ -150,7 +188,7 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
       ) : (
         <div className="h-20 flex items-start justify-start ">
           <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            Activas <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
+            Activas <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">{activePromos.length}</span>
           </h3>
         </div>
       )}
@@ -199,14 +237,14 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
                 key={food._id}
                 onClick={() => !inPromo && handleSelectFood(food)}
                 className={`flex items-center gap-2 p-1 rounded-lg transition-all ${inPromo ? "opacity-40 grayscale cursor-not-allowed border-transparent bg-gray-50" :
-                  selectedFood?._id === food._id ? "border-red-500 bg-red-50/30 border" : "border bg-background border-gray-300 cursor-pointer "
+                  selectedFood?._id === food._id ? "border-green-600 bg-green-50/30 border" : "border bg-background border-gray-300 cursor-pointer "
                   }`}
               >
                 <Image priority loading="eager" src={food.photo} width={64} height={64} className="w-16 h-16 object-cover rounded-lg" alt={food.name} />
                 <div className="flex-1">
                   <h5 className="font-semibold text-gray-800 line-clamp-1">{food.name}</h5>
                   <p className="text-gray-800 font-bold text-xl">{priceFormatter.format(food.price)}</p>
-                  {inPromo && <span className="text-[10px] font-black uppercase text-red-500">En promoción</span>}
+                  {inPromo && <span className="text-[10px] font-black uppercase text-green-600">En promoción</span>}
                 </div>
               </div>
             );
@@ -227,7 +265,7 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
             className="bg-white w-full sm:w-125 rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <span className="text-xs font-bold text-red-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
+                <span className="text-xs font-bold text-green-600 uppercase tracking-widest">{selectedFood.sub_category}</span>
                 <h2 className="text-2xl font-bold text-gray-900">{selectedFood.name}</h2>
               </div>
               <img src={selectedFood.photo} className="w-20 h-20 object-cover rounded-xl" alt="" />
@@ -247,7 +285,7 @@ export default function PromoPanel({ foods: initialFoods }: { foods: any[] }) {
               <button
                 onClick={handlePublishPromo}
                 disabled={loading || promoPrice == selectedFood.price}
-                className="flex-2 bg-red-600 text-white py-4 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 ease-in-out rounded-lg font-bold active:scale-95 disabled:bg-gray-300"
+                className="flex-2 bg-green-600 text-white py-4 disabled:cursor-not-allowed cursor-pointer transition-all duration-200 ease-in-out rounded-lg font-bold active:scale-95 disabled:bg-gray-300"
               >
                 {loading ? "Publicando..." : "Publicar Promo"}
               </button>

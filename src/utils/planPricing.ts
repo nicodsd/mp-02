@@ -13,10 +13,30 @@ export const OFFICIAL_PLAN_PRICES = Object.freeze({
     name: "Plus+",
   }),
   premium: Object.freeze({
-    regular: 34900,
-    promo: 34900,
-    beforeRegular: 39900,
-    beforePromo: 39900,
+    regular: 49000,
+    promo: 49000,
+    beforeRegular: 59900,
+    beforePromo: 59900,
+    name: "Premium",
+  }),
+} as const);
+
+/**
+ * Precios internacionales de referencia (USD) para suscripciones con tarjeta gestionadas por Paddle.
+ */
+export const OFFICIAL_INTERNATIONAL_PLAN_PRICES = Object.freeze({
+  plus: Object.freeze({
+    regularUsd: 25,
+    promoUsd: 12,
+    beforeRegularUsd: 30,
+    beforePromoUsd: 25,
+    name: "Plus+",
+  }),
+  premium: Object.freeze({
+    regularUsd: 45,
+    promoUsd: 45,
+    beforeRegularUsd: 55,
+    beforePromoUsd: 55,
     name: "Premium",
   }),
 } as const);

@@ -7,9 +7,18 @@ import ShareDishModal from "@/src/components/modals/ShareDishModal";
 import AdminOffers from "@/src/components/user_index/AdminOffers";
 import AdminFoodCatalog from "@/src/components/user_index/AdminFoodCatalog";
 import AddDishButton from "@/src/components/user_index/AddDishButton";
+import { refreshPage } from "@/app/actions";
+import {
+  normalizeFoodsForPlan,
+  unarchiveFoodsForFreeUser,
+} from "@/src/lib/unarchiveFreeFoods";
 
 export default function UserIndex({ foods, user, template, initialAnimateLogin }: any) {
-  const [filteredFoods, setFilteredFoods] = useState(foods);
+  const normalizedFoods = React.useMemo(
+    () => normalizeFoodsForPlan(foods, user?.plan),
+    [foods, user?.plan]
+  );
+  const [filteredFoods, setFilteredFoods] = useState(normalizedFoods);
   const [showModal, setShowModal] = useState(false);
   const [sharingFood, setSharingFood] = useState<any>(null);
   const [revealPhase, setRevealPhase] = useState<"spinner" | "expand" | "done">(() => {
@@ -35,6 +44,21 @@ export default function UserIndex({ foods, user, template, initialAnimateLogin }
     }
   }, []);
 
+  useEffect(() => {
+    setFilteredFoods(normalizedFoods);
+  }, [normalizedFoods]);
+
+  useEffect(() => {
+    if (!Array.isArray(foods)) return;
+    if (foods.some((f: any) => f?.is_archived)) {
+      unarchiveFoodsForFreeUser(foods, user?.plan).then((updated) => {
+        if (updated) {
+          refreshPage();
+        }
+      });
+    }
+  }, [foods, user?.plan]);
+
   // Listen to the 'share-dish' and 'open-search-modal' events
   useEffect(() => {
     const handleShareEvent = (e: Event) => {
@@ -54,12 +78,12 @@ export default function UserIndex({ foods, user, template, initialAnimateLogin }
 
   const handleSearch = (query: string) => {
     if (query.length > 1) {
-      const result = foods.filter((f: any) =>
+      const result = normalizedFoods.filter((f: any) =>
         f.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredFoods(result);
     } else {
-      setFilteredFoods(foods);
+      setFilteredFoods(normalizedFoods);
     }
   };
 
@@ -71,7 +95,7 @@ export default function UserIndex({ foods, user, template, initialAnimateLogin }
           className="fixed inset-0 z-200 pointer-events-none overflow-hidden"
         >
           {revealPhase === "spinner" && (
-            <div className="absolute inset-0 bg-[#fffbf8] flex items-center justify-center">
+            <div className="absolute inset-0 bg-background flex items-center justify-center">
               <motion.div
                 initial={{ rotate: 0, scale: 0.8, opacity: 0 }}
                 animate={{

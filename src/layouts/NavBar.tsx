@@ -271,7 +271,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
       </div>
 
       <div className={`w-full`}>
-        <h2 className="text-2xl leading-none font-bold mt-2 uppercase text-center px-4">
+        <h2 className="text-2xl leading-none font-bold mt-4 uppercase text-center px-4">
           {displayData.name}
         </h2>
         <p className="my-1 text-center px-6 text-sm">

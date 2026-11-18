@@ -26,6 +26,12 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
   const [selectedCategory, setSelectedCategory] = useState("");
   const sectionKey = top ? "top_sections" : "bottom_sections";
 
+  // Clases del template con fallbacks
+  const bg = template?.backgroundColor || "bg-background";
+  const bg2 = template?.backgroundColor2 || "bg-gray-50/80";
+  const textColor = template?.textColor || "text-gray-900";
+  const border = template?.border || "border-gray-200";
+
   useEffect(() => {
     if (foods) {
       const categories = Array.from(new Set(foods.map((f: any) => f.sub_category).filter(Boolean))) as string[];
@@ -151,14 +157,17 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
             enterTo="opacity-100 scale-100"
             leave="ease-in duration-200"
           >
-            <DialogPanel className={`w-full bg-background max-w-lg rounded-2xl shadow-xl`}>
+            <DialogPanel className={`w-full ${bg} ${textColor} max-w-lg rounded-2xl shadow-xl border ${border}`}>
               <div className="px-6 py-5 flex flex-col gap-6">
                 <div className="flex justify-between items-center">
-                  <DialogTitle className={`text-xl font-bold ${template?.textColor || "text-gray-900"}`}>
-                    {top ? "Elige una categoría" : "Elige una categoría"}
+                  <DialogTitle className={`text-xl font-bold ${textColor}`}>
+                    Elige una categoría
                   </DialogTitle>
-                  <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-100 transition-colors">
-                    <X size={20} className="text-gray-500" />
+                  <button
+                    onClick={onClose}
+                    className={`p-1 rounded-full cursor-pointer hover:bg-gray-500/15 transition-colors ${textColor}`}
+                  >
+                    <X size={20} className="opacity-70" />
                   </button>
                 </div>
 
@@ -170,13 +179,15 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                         <Listbox value={selectedCategory} onChange={setSelectedCategory}>
                           {({ open }) => (
                             <>
-                              <ListboxButton className="w-full relative flex items-center justify-between bg-gray-50/80 border border-gray-200 hover:border-gray-300 rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-all duration-200 outline-none focus:bg-white focus:border-black focus:ring-4 focus:ring-black/5 cursor-pointer shadow-sm">
-                                <span className={`block truncate ${!selectedCategory ? "text-gray-400 font-normal" : "text-gray-900"}`}>
+                              <ListboxButton
+                                className={`w-full relative flex items-center justify-between ${bg2} border ${border} rounded-xl px-4 py-2.5 text-left text-sm font-medium transition-all duration-200 outline-none focus:ring-4 focus:ring-gray-500/15 cursor-pointer shadow-sm`}
+                              >
+                                <span className={`block truncate ${!selectedCategory ? "opacity-50 font-normal" : ""} ${textColor}`}>
                                   {selectedCategory || "Selecciona una categoría..."}
                                 </span>
                                 <ChevronDown
                                   size={18}
-                                  className={`text-gray-400 transition-transform duration-200 ml-2 shrink-0 ${open ? "rotate-180 text-black" : ""}`}
+                                  className={`${textColor} opacity-60 transition-transform duration-200 ml-2 shrink-0 ${open ? "rotate-180 opacity-100" : ""}`}
                                 />
                               </ListboxButton>
 
@@ -186,9 +197,11 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                               >
-                                <ListboxOptions className="absolute z-50 mt-1.5 max-h-56 w-full overflow-auto rounded-xl bg-white p-1.5 text-sm shadow-xl ring-1 ring-black/10 focus:outline-none">
+                                <ListboxOptions
+                                  className={`absolute z-50 mt-1.5 max-h-56 w-full overflow-auto rounded-xl ${bg} border ${border} p-1.5 text-sm shadow-xl focus:outline-none`}
+                                >
                                   {availableCategories.length === 0 ? (
-                                    <div className="py-2.5 px-3 text-center text-xs text-gray-400">
+                                    <div className={`py-2.5 px-3 text-center text-xs opacity-60 ${textColor}`}>
                                       No hay categorías disponibles
                                     </div>
                                   ) : (
@@ -197,15 +210,14 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                                         key={cat}
                                         value={cat}
                                         className={({ active, selected }) =>
-                                          `relative flex cursor-pointer select-none items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${active ? "bg-gray-100 text-black" : "text-gray-700"
-                                          } ${selected ? "font-semibold text-black bg-gray-50" : ""}`
+                                          `relative flex cursor-pointer select-none items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${textColor} ${active ? "bg-gray-500/15" : ""} ${selected ? "font-semibold bg-gray-500/10" : ""}`
                                         }
                                       >
                                         {({ selected }) => (
                                           <>
                                             <span className="block truncate">{cat}</span>
                                             {selected && (
-                                              <Check size={16} className="text-black ml-2 shrink-0" />
+                                              <Check size={16} className="ml-2 shrink-0" />
                                             )}
                                           </>
                                         )}
@@ -222,7 +234,7 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                         type="button"
                         onClick={addSection}
                         disabled={!selectedCategory}
-                        className="flex items-center justify-center p-2.5 bg-black text-white rounded-xl shadow-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-800 active:scale-95 transition-all duration-150"
+                        className="flex items-center justify-center p-2.5 bg-primary text-white rounded-xl shadow-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed hover:brightness-90 active:scale-95 transition-all duration-150"
                         title="Agregar sección"
                       >
                         <Plus size={20} />
@@ -230,14 +242,20 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                     </div>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {sections.length === 0 && (
-                        <span className="text-xs text-gray-400">
+                        <span className={`text-xs opacity-60 ${textColor}`}>
                           {top ? "Sin secciones superiores" : "Sin secciones inferiores"}
                         </span>
                       )}
                       {sections.map(cat => (
-                        <div key={cat} className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full text-sm border border-gray-200">
+                        <div
+                          key={cat}
+                          className={`flex items-center gap-1 ${bg2} ${textColor} px-3 py-1 rounded-full text-sm border ${border}`}
+                        >
                           {cat}
-                          <button onClick={() => removeSection(cat)} className="hover:text-red-500 ml-1">
+                          <button
+                            onClick={() => removeSection(cat)}
+                            className="ml-1 cursor-pointer opacity-70 hover:opacity-100 hover:text-red-500 transition-colors"
+                          >
                             <X size={14} />
                           </button>
                         </div>
@@ -250,14 +268,14 @@ export default function ManageSectionsModal({ isOpen, onClose, user, foods, temp
                 <div className="flex justify-end gap-3 mt-4">
                   <button
                     onClick={onClose}
-                    className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors font-medium"
+                    className={`px-4 py-2 rounded-lg cursor-pointer ${textColor} opacity-80 hover:opacity-100 hover:bg-gray-500/15 transition-all font-medium`}
                   >
                     Cancelar
                   </button>
                   <button
                     onClick={handleUpdateConfig}
                     disabled={loading}
-                    className="px-6 py-3 rounded-lg bg-primary text-white font-bold hover:bg-red-800 transition-colors disabled:bg-gray-400"
+                    className="px-6 py-3 rounded-lg bg-primary text-white font-bold cursor-pointer hover:brightness-90 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
                   >
                     {loading ? "Guardando..." : "Guardar Cambios"}
                   </button>

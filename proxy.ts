@@ -10,7 +10,7 @@ export function proxy(req: NextRequest) {
 
     const isDev = process.env.NODE_ENV === "development";
 
-    // Dominios permitidos para fetch/axios/WebSocket/Analytics
+    // Dominios permitidos para fetch/axios/WebSocket/Analytics/Paddle
     const connectSrc = [
         "'self'",
         "https://api.qmenu.digital",
@@ -19,17 +19,22 @@ export function proxy(req: NextRequest) {
         "https://www.google-analytics.com",
         "https://analytics.google.com",
         "https://stats.g.doubleclick.net",
+        "https://*.paddle.com",
+        "https://*.profitwell.com",
         "http://localhost:4000",
         ...(isDev ? ["ws://localhost:*", "ws://127.0.0.1:*"] : [])
     ].join(" ");
 
-    // Dominios permitidos para cargar scripts externos (GTM, GA)
+    // Dominios permitidos para cargar scripts externos (GTM, GA, Paddle)
     const scriptSrc = [
         "'self'",
         `'nonce-${nonce}'`,
         "'unsafe-inline'",
         "https://www.googletagmanager.com",
         "https://www.google-analytics.com",
+        "https://cdn.paddle.com",
+        "https://*.paddle.com",
+        "https://public.profitwell.com",
         ...(isDev ? ["'unsafe-eval'"] : [])
     ].join(" ");
 
@@ -37,10 +42,11 @@ export function proxy(req: NextRequest) {
     const cspHeader = `
         default-src 'self';
         script-src ${scriptSrc};
-        style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`};
-        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com;
+        style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`} https://cdn.paddle.com https://*.paddle.com;
+        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://unpkg.com https://*.paddle.com;
         font-src 'self' data:;
-        connect-src ${connectSrc};
+        connect-src ${connectSrc} https://nominatim.openstreetmap.org;
+        frame-src 'self' https://*.paddle.com https://buy.paddle.com https://sandbox-buy.paddle.com https://www.googletagmanager.com;
         object-src 'none';
         base-uri 'self';
         form-action 'self';

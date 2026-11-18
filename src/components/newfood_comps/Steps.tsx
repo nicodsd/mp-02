@@ -5,9 +5,15 @@ import Link from "next/link";
 import { ListChecks, ShoppingBag, Rocket, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence, useDragControls, PanInfo } from "framer-motion";
 
-export default function DisenoStepperLlamativo() {
-    const [isOpen, setIsOpen] = useState(true);
+export default function DisenoStepperLlamativo({ defaultOpen = true }: { defaultOpen?: boolean }) {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
     const dragControls = useDragControls();
+
+    React.useEffect(() => {
+        if (!defaultOpen) {
+            setIsOpen(false);
+        }
+    }, [defaultOpen]);
 
     const steps = [
         {

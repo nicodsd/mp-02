@@ -54,7 +54,9 @@ export default function FoodsCardsExample({
         <div className="w-full flex items-center">
             <div
                 id={`dish-${_id}`}
-                className={`flex w-full relative overflow-hidden ${template?.backgroundColor || "bg-background"} border min-h-12 h-12 max-h-12 ${template?.border || "border-gray-200"} rounded-lg items-center`}
+                className={`flex w-full overflow-hidden ${template?.backgroundColor || "bg-background"
+                    } border ${template?.border || "border-gray-200"
+                    } h-16 shadow-sm rounded-lg p-1 items-center`}
             >
                 {is_gluten_free && (
                     <div className="absolute w-full z-10 top-0 left-0 flex justify-between">
@@ -67,51 +69,41 @@ export default function FoodsCardsExample({
                     </div>
                 )}
 
-                <div className="relative shrink-0 md:max-w-25 md:max-h-30 md:h-full md:w-full h-full min-w-15 max-w-14 rounded-[7px] overflow-hidden">
+                <div className="h-full aspect-square shrink-0 relative rounded-[7px] overflow-hidden">
                     <Image
-                        quality={40}
+                        quality={50}
                         loading="lazy"
                         src={photo}
                         alt={name}
                         fill
-                        sizes="(max-width: 100px) 30px, 30px"
+                        sizes="70px"
                         className="object-cover"
                     />
                 </div>
 
-                <div className="flex flex-col relative py-1 justify-between pl-2 w-full h-full">
-                    <div className="flex text-left items-center justify-between gap-2 h-full">
-                        <h2 className={`${template?.textColor || "text-gray-700"} text-[14px] leading-4`}>
-                            {name}
-                        </h2>
-                        <div className="flex flex-col relative h-full items-end pr-1.5 justify-end">
-                            {is_promo && (
-                                <div className={`flex flex-col ${template?.textColor || "text-gray-700"} items-end`}>
-                                    <span className="font-bold oldstyle-nums text-xs md:text-sm line-through decoration-red-600 decoration leading-0">
-                                        {formatearPrecio(price)}
-                                    </span>
+                <div className="flex justify-between items-center pl-2 w-full h-full overflow-hidden">
+                    <h2 className={`text-sm ${template?.textColor} leading-tight truncate pr-2`}>
+                        {name}
+                    </h2>
 
-                                    <div className="flex items-center">
-                                        <span
-                                            style={{ color: template?.accentColors?.[1] || "inherit" }}
-                                            className={`font-bold oldstyle-nums text-md md:text-2xl ${!template?.accentColors?.[1] ? "text-primary" : ""}`}
-                                        >
-                                            {formatearPrecio(promo_price)}
-                                        </span>
-                                    </div>
-                                </div>
-                            )}
-                            {!is_promo && (
-                                <div className="flex items-center">
-                                    <span className={`font-semibold ${template?.textColor || "text-gray-700"} oldstyle-nums text-md md:text-2xl`}>
-                                        {formatearPrecio(price)}
-                                    </span>
-                                </div>
-                            )}
-                        </div>
+                    <div className="flex flex-col items-end shrink-0 justify-center">
+                        {is_promo && promo_price !== undefined ? (
+                            <>
+                                <span className={`font-bold ${template?.textColor} oldstyle-nums text-xs line-through decoration-red-600 leading-none`}>
+                                    {formatearPrecio(price)}
+                                </span>
+                                <span className={`font-black ${template?.textColor} oldstyle-nums text-lg md:text-xl leading-tight`}>
+                                    {formatearPrecio(promo_price)}
+                                </span>
+                            </>
+                        ) : (
+                            <span className={`font-bold ${template?.textColor} oldstyle-nums text-lg md:text-xl leading-tight`}>
+                                {formatearPrecio(price)}
+                            </span>
+                        )}
                     </div>
-
                 </div>
+
             </div>
             {whatsapp !== false ? (
                 example ? (
