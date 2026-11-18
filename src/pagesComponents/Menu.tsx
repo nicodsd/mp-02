@@ -6,6 +6,7 @@ import FloatingSocialButtons from "@/src/components/buttons/FloatingSocialButton
 import OffersSection from "@/src/components/Index/sections/OffersSection";
 import FoodCatalog from "@/src/components/Index/sections/FoodCatalog";
 import ShareDishModal from "@/src/components/modals/ShareDishModal";
+import { isFreePlan } from "@/src/lib/unarchiveFreeFoods";
 import { URI } from "@/src/lib/const";
 
 type Food = {
@@ -41,7 +42,11 @@ type MenuProps = {
 };
 
 export default function Menu({ data, template, example }: { data: MenuProps, template: any, example: boolean }) {
-  const [activeFoods, setActiveFoods] = useState(data.foods.filter((f: any) => f.is_archived !== true));
+  const [activeFoods, setActiveFoods] = useState(
+    isFreePlan(data?.plan)
+      ? data.foods
+      : data.foods.filter((f: any) => f.is_archived !== true)
+  );
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(activeFoods);
   const [sharingFood, setSharingFood] = useState<any>(null);

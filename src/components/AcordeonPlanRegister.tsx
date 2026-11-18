@@ -32,14 +32,16 @@ const plans = [
         color: "bg-primary",
         textColor: "text-white",
         features: [
-            "Platos ilimitados, permanente",
+            "Platos ilimitados",
             "Códigos QR personalizables con tu logo",
             "Fotos de alta calidad",
-            "Analíticas de visitas",
-            "Paleta de colores que mejor se adapte a tu marca",
-            "Pedidos por WhatsApp",
-            "Gestión de promociones",
+            "Analiticas y consulta de visitas a tu menú",
+            "Menú altamente personalizable, colores, categorias, estructura, etc",
+            "Pedidos por WhatsApp con envio",
+            "Gestión de comandas",
+            "Seccion para gestión de pedidos",
             "Botón de 'Descanso' para vacaciones",
+            "Agrega promociones a tus productos",
             "Soporte prioritario"
         ],
     },
@@ -51,23 +53,16 @@ const plans = [
         color: "bg-black",
         textColor: "text-white",
         features: [
+            "Todas las características del plan Plus+",
+            "Armamos tu menú con tus platos",
             "Platos ilimitados, permanente",
-            "Códigos QR personalizables con tu logo",
-            "Fotos de alta calidad",
-            "Analíticas de visitas",
-            "Menú altamente personalizable, diferenciate de la competencia",
-            "Compras por WhatsApp",
-            "Seccion para gestión de pedidos",
-            "Multi sucursal",
-            "Botón de 'Descanso' para vacaciones",
-            "Agrega promociones a tus productos",
-            "Menús diferenciados por zona",
+            "Multi sucursal, gestiona tus locales desde un solo lugar",
             "Soporte prioritario"
         ],
     },
     {
         id: "lifetime",
-        name: "Pago Único",
+        name: "Quiero un presupuesto",
         btn: false,
         price: 0,
         color: "bg-blue-800",
@@ -275,7 +270,7 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
                                             )}
                                         </div>
                                     )}
-                                    {plan.btn && <button type='button' disabled={loading} className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2 rounded-lg disabled:opacity-50`} onClick={() => handleSubscribe(plan.id)}>
+                                    {plan.btn && <button type='button' disabled={loading} className={`w-full cursor-pointer mt-3 font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'}  ${plan.color} py-2.5 rounded-lg disabled:opacity-50`} onClick={() => handleSubscribe(plan.id)}>
                                         {loading ? 'Procesando...' : 'Proceder al pago'}
                                     </button>}
                                 </div>
@@ -289,3 +284,326 @@ const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: a
 };
 
 export default PlanSelector;
+/* import { useState } from 'react';
+import { ChevronDown, Flame, Globe, MapPin } from 'lucide-react';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { URI } from '@/src/lib/const';
+import { usePromoCountdown } from '@/src/utils/usePromoCountdown';
+import PromoCountdownDisplay from '@/src/components/common/PromoCountdownDisplay';
+import { OFFICIAL_INTERNATIONAL_PLAN_PRICES, OFFICIAL_PLAN_PRICES, PaidPlanId, isValidPaidPlanId } from '@/src/utils/planPricing';
+import { getVerifiedSubscriptionPayload } from '@/src/utils/promoServerAction';
+import CheckoutPaymentModal from '@/src/components/modals/CheckoutPaymentModal';
+
+const plans = [
+    {
+        id: "free",
+        name: "Gratuito",
+        price: 0,
+        btn: false,
+        color: "bg-white",
+        textColor: "text-stone-800",
+        features: [
+            "Hasta 10 platos",
+            "Código QR para compartir",
+            "Fotos básicas",
+            "Los pedidos te llegan al WhatsApp"
+        ],
+    },
+    {
+        id: "plus",
+        name: "Plus+",
+        btn: true,
+        price: 12000,
+        beforePrice: 24000,
+        promoBadge: "50% OFF",
+        color: "bg-primary",
+        textColor: "text-white",
+        features: [
+            "Platos ilimitados, permanente",
+            "Códigos QR personalizables con tu logo",
+            "Fotos de alta calidad",
+            "Analíticas de visitas",
+            "Paleta de colores que mejor se adapte a tu marca",
+            "Pedidos por WhatsApp",
+            "Gestión de promociones",
+            "Botón de 'Descanso' para vacaciones",
+            "Soporte prioritario"
+        ],
+    },
+    {
+        id: "premium",
+        name: "Premium",
+        btn: true,
+        price: 49000,
+        color: "bg-black",
+        textColor: "text-white",
+        features: [
+            "Platos ilimitados, permanente",
+            "Códigos QR personalizables con tu logo",
+            "Fotos de alta calidad",
+            "Analíticas de visitas",
+            "Menú altamente personalizable, diferenciate de la competencia",
+            "Compras por WhatsApp",
+            "Seccion para gestión de pedidos",
+            "Multi sucursal",
+            "Botón de 'Descanso' para vacaciones",
+            "Agrega promociones a tus productos",
+            "Menús diferenciados por zona",
+            "Soporte prioritario"
+        ],
+    }
+];
+
+const PlanSelector = ({ values, setFieldValue }: { values: any, setFieldValue: any }) => {
+    // Estado para controlar qué acordeón está abierto manualmente, 
+    // aunque por defecto se abrirá el que esté seleccionado en Formik.
+    const [openAccordion, setOpenAccordion] = useState(values.plan || 'plus');
+    const [loading, setLoading] = useState(false);
+    const [checkoutPlan, setCheckoutPlan] = useState<PaidPlanId | null>(null);
+    const [paddleNotice, setPaddleNotice] = useState<string | null>(null);
+    const { hours, minutes, seconds, isExpired } = usePromoCountdown();
+
+    const activePlans = plans.map((plan) => {
+        if (plan.id === 'plus') {
+            return {
+                ...plan,
+                price: isExpired ? OFFICIAL_PLAN_PRICES.plus.regular : OFFICIAL_PLAN_PRICES.plus.promo,
+                beforePrice: isExpired ? OFFICIAL_PLAN_PRICES.plus.beforeRegular : OFFICIAL_PLAN_PRICES.plus.beforePromo,
+            };
+        }
+        if (plan.id === 'premium') {
+            return {
+                ...plan,
+                price: OFFICIAL_PLAN_PRICES.premium.regular,
+            };
+        }
+        return plan;
+    });
+    const containerVariants: Variants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.20, // Tiempo entre la aparición de cada plan
+            },
+        },
+    };
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 1, ease: "easeOut" }
+        },
+        exit: { opacity: 0, y: -20 }
+    };
+
+    const handlePlanClick = (planId: string) => {
+        setFieldValue('plan', planId); // Actualiza Formik
+        setOpenAccordion(openAccordion === planId ? null : planId); // Toggle del acordeón
+    };
+    const handleSubscribe = async (planId: string) => {
+        if (!isValidPaidPlanId(planId)) {
+            return;
+        }
+        setLoading(true);
+        try {
+            // Resolvemos el precio de forma inalterable en el servidor verificando la cookie HttpOnly
+            const verified = await getVerifiedSubscriptionPayload(planId);
+            const planInfo = OFFICIAL_PLAN_PRICES[verified.plan];
+
+            // Llamamos a tu API con el monto validado en el servidor
+            const response = await fetch(`${URI}/auth/subscribe`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        reason: `Plan ${planInfo.name} para QMenú`,
+                        transaction_amount: verified.transaction_amount,
+                        plan: verified.plan,
+                        email: values.email,
+                        password: values.password,
+                        name: values.name
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                });
+            const data = await response.json();
+            if (data.init_point) {
+                // Redirigimos al usuario al Checkout de Mercado Pago
+                window.location.href = data.init_point;
+            }
+        } catch (error) {
+            alert("Hubo un error al procesar el pago");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex flex-col w-full">
+            <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                role="group"
+                aria-labelledby="checkbox-group"
+                className="space-y-1"
+            >
+                <AnimatePresence>
+                    {activePlans.map((plan) => {
+                        const isSelected = values.plan === plan.id;
+                        const isOpen = openAccordion === plan.id;
+
+                        return (
+                            <motion.div
+                                variants={itemVariants}
+                                key={plan.id}
+                                layout // Añade fluidez cuando uno se abre y los otros se desplazan
+                                className={`border rounded-lg overflow-hidden transition-all duration-300 ${isSelected
+                                    ? 'ring-2 ring-offset-1 ring-blue-400 border-transparent shadow-sm'
+                                    : 'border-stone-200'
+                                    }`}
+                            >
+                        
+                                <div onClick={() => handlePlanClick(plan.id)}
+                                    className={`w-full flex items-center justify-between cursor-pointer transition-all duration-300 ease-in-out outline-none ${plan.color} ${isOpen ? 'px-3 py-2.5' : 'py-5 px-3'} ${plan.textColor}`}
+                                >
+                                    <div className="flex items-center gap-2 flex-wrap">
+                                        <div className="text-start flex items-center gap-2">
+                                            <span className={`text-lg ${plan.id !== 'free' ? 'font-bold' : 'font-regular text-gray-600'} block leading-none`}>
+                                                {plan.name}
+                                            </span>
+                                            {plan.id === 'plus' && !isExpired && (
+                                                <span className="inline-flex items-center gap-1 border text-white text-md font-extrabold px-2 py-0.5 rounded-full shadow-2xs">
+                                                    <Flame className="w-4 h-4 fill-white text-white" />
+                                                    50% OFF
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5">
+                                        <div className="flex items-baseline gap-1.5">
+                                            {'beforePrice' in plan && plan.beforePrice && (
+                                                <span className="text-xs line-through opacity-80 font-semibold">
+                                                    ${new Intl.NumberFormat("es-AR").format(plan.beforePrice as number)}
+                                                </span>
+                                            )}
+                                            <span className="font-black text-xl tracking-">
+                                                {plan.id !== "free" ? "ARS " : ""}${new Intl.NumberFormat("es-AR").format(plan.price as number)}
+                                                <span className="text-[10px] opacity-70">/mes</span>
+                                            </span>
+                                        </div>
+                                        <ChevronDown onClick={(e) => { e.stopPropagation(); handlePlanClick(plan.id); }} className={`w-7 h-7 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                                    </div>
+                                </div>
+
+                        
+                                <div
+                                    className={`transition-all duration-500 ease-in-out bg-white ${isOpen ? 'max-h-150 px-4 pb-4' : 'max-h-0'
+                                        } overflow-hidden`}
+                                >
+                                    {plan.id === 'plus' && !isExpired && (
+                                        <div className="mt-2 mb-1 px-1">
+                                            <PromoCountdownDisplay
+                                                hours={hours}
+                                                minutes={minutes}
+                                                seconds={seconds}
+                                                variant="accordion"
+                                                badgeText="Promoción 50% OFF por 12hs"
+                                            />
+                                        </div>
+                                    )}
+                                    <div className={`p-3 md:p-6 grid grid-cols-1 gap-x-4 gap-y-1`}>
+                                        {plan.features.map((feature, idx) => (
+                                            <div key={idx} className='flex flex-col'>
+                                                <motion.div
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={isOpen ? { opacity: 1, x: 0 } : {}}
+                                                    transition={{ delay: idx * 0.05 }}
+                                                    className={`flex items-center gap-2 text-xs leading-3 text-stone-600`}
+                                                >
+                                                    <div className={`h-1.5 
+                                                      ${plan.id === "free" ? "bg-gray-400" : plan.id === "plus" ? "bg-primary" : "bg-black"} w-1.5 rounded-full shrink-0`} />
+                                                    {feature}
+                                                </motion.div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {plan.btn && (
+                                        <div className="mt-2 space-y-2">
+                                            <div className="flex flex-wrap items-center justify-center gap-1 text-[11px] text-blue-500">
+
+                                                <span className="inline-flex items-center gap-1 text-blue-500 font-semibold">
+                                                    <MapPin className="w-3 h-3" /> Argentina:
+                                                    <span className='font-black px-2 py-0.5 gap-1 flex items-center rounded-full bg-blue-500 text-white'>
+                                                        ${new Intl.NumberFormat("es-AR").format(plan.price as number)}
+                                                        /mes
+                                                    </span>
+                                                </span>
+
+                                                <span className="inline-flex items-center gap-1 text-gray-800 font-semibold">
+                                                    <Globe className="w-3 h-3" /> Pago internacional tarjeta:
+                                                    <span className='font-black px-2 py-0.5 gap-1 flex items-center rounded-full bg-gray-800 text-white'>
+                                                        USD $
+                                                        {plan.id === "plus"
+                                                            ? isExpired
+                                                                ? OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.regularUsd
+                                                                : OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.promoUsd
+                                                            : OFFICIAL_INTERNATIONAL_PLAN_PRICES.premium.regularUsd}
+                                                        /mes
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <button
+                                                type='button'
+                                                disabled={loading}
+                                                className={`w-full cursor-pointer font-bold ${plan.id !== 'free' ? 'text-white' : 'text-gray-600'} ${plan.color} py-2.5 rounded-lg disabled:opacity-50`}
+                                                onClick={() => setCheckoutPlan(plan.id as PaidPlanId)}
+                                            >
+                                                {loading ? 'Procesando...' : 'Elegir método de pago'}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
+            </motion.div>
+
+            {paddleNotice && (
+                <div className="mt-3 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-xs font-medium">
+                    {paddleNotice}
+                </div>
+            )}
+
+            <CheckoutPaymentModal
+                isOpen={checkoutPlan !== null}
+                onClose={() => setCheckoutPlan(null)}
+                selectedPlan={checkoutPlan}
+                isPromoExpired={isExpired}
+                onSelectMercadoPago={handleSubscribe}
+                loadingMP={loading}
+                userEmail={values?.email}
+                userName={values?.name}
+                userPassword={values?.password}
+                source="register"
+                onPaddleSuccess={({ plan }) => {
+                    setFieldValue('plan', plan);
+                    if (typeof window !== 'undefined') {
+                        localStorage.setItem('registerPlan', plan);
+                    }
+                    setPaddleNotice(
+                        `Pago con Paddle confirmado para el Plan ${plan.toUpperCase()}. Podés continuar con "Siguiente" para finalizar tu menú.`
+                    );
+                }}
+            />
+        </div>
+    );
+};
+
+export default PlanSelector;
+ */

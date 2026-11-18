@@ -1,5 +1,9 @@
 import { create } from 'zustand';
 import { URI } from '@/src/lib/const';
+import {
+    normalizeFoodsForPlan,
+    unarchiveFoodsForFreeUser,
+} from '@/src/lib/unarchiveFreeFoods';
 
 export interface AnalyticsData {
     visits: number;
@@ -134,8 +138,15 @@ export const useFoodStore = create<FoodStore>((set, get) => ({
                 }
             }
 
+            const effectivePlan =
+                centralMenuData?.plan || currentUser?.plan || user?.plan;
+            if (fetchedFoods.some((f: any) => f?.is_archived)) {
+                void unarchiveFoodsForFreeUser(fetchedFoods, effectivePlan);
+            }
+            const normalizedFoods = normalizeFoodsForPlan(fetchedFoods, effectivePlan);
+
             set((prev) => ({
-                foods: fetchedFoods,
+                foods: normalizedFoods,
                 menus: fetchedMenus,
                 analytics: fetchedAnalytics,
                 user: centralMenuData

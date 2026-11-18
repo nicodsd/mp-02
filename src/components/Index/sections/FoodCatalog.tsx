@@ -112,16 +112,16 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             size={20}
                         />
                     </div>
-
-                    <div className="flex justify-between h-9 max-h-9 items-end mb-1">
-                        <Categories
-                            template={template}
-                            foods={user?.enable_bebidas && user?.enable_postres ? allFoods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)) : allFoods}
-                            selectCategory={(sub: string) => setSelectedSubCategory(sub)}
-                        />
-                        <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
-                    </div>
-
+                    {allFoods.length > 0 && isPremium && (
+                        <div className="flex justify-between h-9 max-h-9 items-end mb-1">
+                            <Categories
+                                template={template}
+                                foods={user?.enable_bebidas && user?.enable_postres ? allFoods.filter((f: any) => !activeTopSections.includes(f.sub_category) && !activeBottomSections.includes(f.sub_category)) : allFoods}
+                                selectCategory={(sub: string) => setSelectedSubCategory(sub)}
+                            />
+                            <SortPriceButton onSortChange={(order) => setSortOrder(order)} template={template} />
+                        </div>
+                    )}
                     {example || user?.presentation === "default" ? (<CardsFoodsByCategories
                         user={user}
                         arrayFoods={mainFoods.filter((f: any) =>
@@ -141,7 +141,6 @@ export default function FoodCatalog({ allFoods, template, example, user }: any) 
                             template={template}
                             whatsapp={user?.whatsAppCart}
                         />)}
-
                 </div>
 
                 {/* POSTRES / SECCIONES INFERIORES */}

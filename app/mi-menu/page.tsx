@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { URI } from "@/src/lib/const";
 import { getFoodsByUser } from "@/src/lib/getFoodsByUser";
+import { normalizeFoodsForPlan } from "@/src/lib/unarchiveFreeFoods";
 import BottomNavigation from "@/src/components/navigation/BottomNavigation";
 import UserIndex from "@/src/pagesComponents/UserIndex";
 import NavBar from "@/src/layouts/NavBar";
@@ -27,13 +28,13 @@ export default async function Page({
         user = JSON.parse(userCookie);
         menu = JSON.parse(menuCookie || "");
         user = { ...user, ...menu };
-        foods = await getFoodsByUser(URI, user.id);
+        foods = normalizeFoodsForPlan(await getFoodsByUser(URI, user.id), user?.plan);
     }
     if (user?.plan !== "free") {
         template = templates.find((t) => t.template_id === user?.template_id);
     } else {
         template = templates.find((t) => t.template_id === "default");
-        user.presentation = "default"
+        user.presentation = "list"
         user.navBar = "default"
     }
     return (
@@ -63,7 +64,6 @@ export default async function Page({
             />
             <BottomNavigation
                 user={user}
-                foods={foods}
                 logoUrl={user?.photo}
                 template={template}
             />

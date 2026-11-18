@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion"
 import { FaEdit } from "react-icons/fa";
 import EditFoodModal from "@/src/components/modals/EditFoodModal";
+import { FoodCategoryIcon, getCategoryIconFromFoods } from "@/src/components/icons/foods";
 import { refreshPage } from "@/app/actions";
 
 export default function ListCardsByCategory({ arrayFoods, whatsapp, user, example, template, Ath }: { arrayFoods: any, user: any, example: boolean, template: any, whatsapp: boolean, Ath: boolean }) {
@@ -25,18 +26,30 @@ export default function ListCardsByCategory({ arrayFoods, whatsapp, user, exampl
         setSelectedFood(food);
         setIsEditOpen(true);
     };
+
     return (
         <section className="flex min-h-full flex-col gap-8 md:pb-8 md:pt-3">
             <div className="flex flex-col gap-1">
                 <div className="flex flex-col">
-                    {Object.entries(groupedFoods).map(([category, foods]: [string, any], index: number) => (
+                    {Object.entries(groupedFoods).map(([category, foods]: [string, any], index: number) => {
+                        const categoryIcon = getCategoryIconFromFoods(foods, category);
+                        return (
                         <motion.details
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: index * 0.2, duration: 0.3 }}
                             key={category} className={`group flex rounded-lg text-gray-600 flex-col border ${template?.border || "border-gray-200"} mb-1 ${template?.backgroundColor2 || "bg-white"}`}>
                             <summary className={`text-lg font-semibold p-4 uppercase cursor-pointer list-none flex justify-between items-center ${template?.textColor || "text-gray-700"}`}>
-                                {category}
+                                <span className="flex items-center gap-2">
+                                    <FoodCategoryIcon
+                                        iconName={categoryIcon}
+                                        categoryName={category}
+                                        fallbackIcon="Utensils"
+                                        className="w-5 h-5 shrink-0"
+                                        size={20}
+                                    />
+                                    <span>{category}</span>
+                                </span>
                                 <span className="transition duration-300 group-open:-rotate-180">
                                     <ChevronDown
                                         className={`${template?.icons || "text-gray-700"}`}
@@ -64,7 +77,8 @@ export default function ListCardsByCategory({ arrayFoods, whatsapp, user, exampl
                                 ))}
                             </div>
                         </motion.details>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
             {selectedFood && (

@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import {
+  OFFICIAL_INTERNATIONAL_PLAN_PRICES,
   OFFICIAL_PLAN_PRICES,
   PaidPlanId,
   isValidPaidPlanId,
@@ -85,6 +86,7 @@ export async function syncPromoSession(): Promise<ServerPromoSyncResult> {
 export interface VerifiedSubscriptionPayload {
   plan: PaidPlanId;
   transaction_amount: number;
+  transaction_amount_usd: number;
   isPromoActive: boolean;
 }
 
@@ -105,6 +107,7 @@ export async function getVerifiedSubscriptionPayload(
     return {
       plan: "premium",
       transaction_amount: OFFICIAL_PLAN_PRICES.premium.regular,
+      transaction_amount_usd: OFFICIAL_INTERNATIONAL_PLAN_PRICES.premium.regularUsd,
       isPromoActive: false,
     };
   }
@@ -113,10 +116,14 @@ export async function getVerifiedSubscriptionPayload(
   const amount = isExpired
     ? OFFICIAL_PLAN_PRICES.plus.regular
     : OFFICIAL_PLAN_PRICES.plus.promo;
+  const amountUsd = isExpired
+    ? OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.regularUsd
+    : OFFICIAL_INTERNATIONAL_PLAN_PRICES.plus.promoUsd;
 
   return {
     plan: "plus",
     transaction_amount: amount,
+    transaction_amount_usd: amountUsd,
     isPromoActive: !isExpired,
   };
 }

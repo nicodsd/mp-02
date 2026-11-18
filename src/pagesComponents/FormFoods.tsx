@@ -2,18 +2,22 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { URI } from "@/src/lib/const";
+import { safeParseJson } from "@/src/lib/safeJson";
 import Categories from "@/src/components/newfood_comps/Categories";
 import { ImageUpload } from "@/src/components/newfood_comps/ImageUpload";
 import { refreshPage } from "@/app/actions";
 import { useFoodStore } from "@/src/lib/useFoodStore";
 import Steps from "@/src/components/newfood_comps/Steps";
-import { Store } from "lucide-react";
+import FreeDishLimitModal from "@/src/components/modals/FreeDishLimitModal";
+import Link from "next/link";
+import { Store, AlertTriangle, Crown } from "lucide-react";
 import { FoodCategoryIcon } from "@/src/components/icons/foods";
 import { FaSpinner, FaTrash, FaTimes, FaList, FaCheckCircle } from "react-icons/fa";
 // 1. IMPORTAR FRAMER MOTION
 import { motion, AnimatePresence } from "framer-motion";
 
 const imgPlaceholder = "/images/placeholders/image_placeholder.png";
+const MAX_FREE_DISHES = 10;
 
 interface LocalFood {
   id: string;
@@ -28,11 +32,12 @@ interface LocalFood {
   menus: string[];
 }
 
-export default function FormFoods({ initialCategories, user }: any) {
+export default function FormFoods({ initialCategories, user, initialFoods = [] }: any) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
 
   // --- ESTADO PARA LA LISTA ACUMULADORA ---
   const [foodList, setFoodList] = useState<LocalFood[]>([]);
@@ -54,15 +59,70 @@ export default function FormFoods({ initialCategories, user }: any) {
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [selectedMenus, setSelectedMenus] = useState<string[]>([]);
 
-  // --- ESTADOS Y EFECTO PARA LOS MENÚS DEL USUARIO ---
+  // --- ESTADOS Y EFECTO PARA LOS MENÚS Y PLATOS DEL USUARIO ---
   const {
+    foods: storeFoods,
     menus: storeMenus,
+    user: storeUser,
+    loadedUserId,
     isInitialized,
     setMenus: setStoreMenus,
     markNeedsRefresh,
     refreshPanelData,
   } = useFoodStore();
   const [userMenus, setUserMenus] = useState<any[]>(storeMenus);
+
+  const userId = user?.id || user?._id;
+  const effectiveUser =
+    storeUser &&
+      (String(storeUser.id) === String(userId) || String(storeUser._id) === String(userId))
+      ? { ...user, ...storeUser }
+      : user;
+  const isFreeUser = !effectiveUser?.plan || effectiveUser.plan === "free";
+
+  const [existingFoodsCount, setExistingFoodsCount] = useState<number>(() => {
+    if (isInitialized && loadedUserId === String(userId)) {
+      return storeFoods.length;
+    }
+    return Array.isArray(initialFoods) ? initialFoods.length : 0;
+  });
+
+  useEffect(() => {
+    if (isInitialized && loadedUserId === String(userId)) {
+      setExistingFoodsCount(storeFoods.length);
+      return;
+    }
+    if (!userId) return;
+    let cancelled = false;
+    fetch(`${URI}/foods?user_id=${userId}`, { credentials: "include" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return;
+        if (Array.isArray(data.foods)) {
+          const belongsToUser = data.foods
+            .map((f: any) => String(f?.user_id))
+            .includes(String(userId));
+          setExistingFoodsCount(belongsToUser ? data.foods.length : 0);
+        }
+      })
+      .catch(() => { });
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, isInitialized, loadedUserId, storeFoods]);
+
+  const isLimitReached = isFreeUser && existingFoodsCount >= MAX_FREE_DISHES;
+  const remainingFreeSlots = isFreeUser ? Math.max(0, MAX_FREE_DISHES - existingFoodsCount) : Infinity;
+  const maxListAllowed = isFreeUser ? remainingFreeSlots : 10;
+  const isAddToListLimitReached = isFreeUser
+    ? foodList.length >= remainingFreeSlots
+    : foodList.length >= 10;
+
+  useEffect(() => {
+    if (isLimitReached) {
+      setIsLimitModalOpen(true);
+    }
+  }, [isLimitReached]);
 
   useEffect(() => {
     if (storeMenus.length > 0 || isInitialized) {
@@ -72,7 +132,7 @@ export default function FormFoods({ initialCategories, user }: any) {
     const userId = user?.id || user?._id;
     if (userId) {
       fetch(`${URI}/menu/get-menus/${userId}`)
-        .then(res => res.json())
+        .then(res => (res.ok ? safeParseJson(res) : null))
         .then(data => {
           if (data && data.menus) {
             setUserMenus(data.menus);
@@ -108,6 +168,17 @@ export default function FormFoods({ initialCategories, user }: any) {
   const handleAddFoodToList = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isLimitReached) {
+      setIsLimitModalOpen(true);
+      return;
+    }
+
+    if (isFreeUser && foodList.length >= remainingFreeSlots) {
+      setIsLimitModalOpen(true);
+      setError(`Tu plan Free permite hasta ${MAX_FREE_DISHES} platos como máximo.`);
+      return;
+    }
+
     if (foodList.length >= 10) {
       setError("No puedes cargar más de 10 platos a la vez.");
       return;
@@ -141,6 +212,12 @@ export default function FormFoods({ initialCategories, user }: any) {
 
   const handlePostAllFoods = async () => {
     if (foodList.length === 0) return;
+
+    if (isLimitReached || (isFreeUser && existingFoodsCount + foodList.length > MAX_FREE_DISHES)) {
+      setIsLimitModalOpen(true);
+      return;
+    }
+
     setLoading(true);
     setError("");
     setSuccessMessage("");
@@ -175,14 +252,19 @@ export default function FormFoods({ initialCategories, user }: any) {
         });
 
         if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.message || `Error al subir el plato: ${food.name}`);
+          const data = await safeParseJson(res);
+          const fallbackMsg =
+            res.status === 401
+              ? "Tu sesión expiró o no estás autorizado. Vuelve a iniciar sesión."
+              : `Error al subir el plato: ${food.name}`;
+          throw new Error(data?.message || fallbackMsg);
         }
-        return res.json();
+        return safeParseJson(res);
       });
 
       await Promise.all(uploadPromises);
 
+      setExistingFoodsCount((prev) => prev + foodsToUpload.length);
       markNeedsRefresh();
       if (isInitialized) {
         await refreshPanelData();
@@ -293,123 +375,158 @@ export default function FormFoods({ initialCategories, user }: any) {
         </div>
       </button>
 
-      <Steps />
+      <FreeDishLimitModal
+        isOpen={isLimitModalOpen}
+        onClose={() => setIsLimitModalOpen(false)}
+        currentCount={existingFoodsCount}
+        maxCount={MAX_FREE_DISHES}
+      />
+
+      <Steps defaultOpen={!isLimitReached} />
 
       <div className="flex flex-col lg:flex-row gap-4 md:pb-10 w-full max-w-6xl flex-1 items-start">
 
         {/* COLUMNA 1: Formulario Inmóvil de Carga */}
-        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-8 md:rounded-2xl md:border md:border-gray-100 space-y-12 md:shadow-sm">
-          <div className="flex flex-col gap-1 w-full shadow-lg rounded-xl">
-            <ImageUpload
-              preview={preview}
-              file={file}
-              imgPlaceholder={imgPlaceholder}
-              onImageChange={handleImage}
-              onDelete={() => { setFile(null); setPreview(imgPlaceholder); }}
-              onError={setError}
-            />
-          </div>
-
-          <div className="space-y-12">
-            <div className="flex flex-col gap-5 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
-              <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
-              <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
-              <div className="flex flex-col gap-1 w-full">
-                <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
-                <div className="relative">
-                  <input
-                    className="w-full border bg-background border-gray-300 rounded-lg pl-10 pr-2 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                    id="price"
-                    name="price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value.slice(0, 10))}
-                    maxLength={10}
-                    placeholder="0.00"
-                    type="number"
-                    required
-                  />
-                  <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
+        <form onSubmit={handleAddFoodToList} className="w-full lg:w-2/3 md:bg-background p-3 py-8 md:rounded-2xl md:border md:border-gray-100 space-y-8 md:shadow-sm">
+          {isLimitReached && (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-bold">Límite de {MAX_FREE_DISHES} platos alcanzado ({existingFoodsCount}/{MAX_FREE_DISHES})</p>
+                  <p className="text-xs text-amber-800">El formulario está deshabilitado porque ya alcanzaste el máximo del plan Gratuito.</p>
                 </div>
               </div>
+              <Link
+                href="/pagos"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold bg-black text-white hover:bg-gray-800 transition-colors shrink-0"
+              >
+                <Crown size={14} className="text-amber-400" />
+                Mejorar plan
+              </Link>
+            </div>
+          )}
+
+          <fieldset
+            disabled={isLimitReached}
+            className={`space-y-12 border-none p-0 m-0 ${isLimitReached ? "opacity-50 pointer-events-none select-none cursor-not-allowed" : ""}`}
+          >
+            <div className="flex flex-col gap-1 w-full shadow-lg rounded-xl">
+              <ImageUpload
+                preview={preview}
+                file={file}
+                imgPlaceholder={imgPlaceholder}
+                onImageChange={handleImage}
+                onDelete={() => { setFile(null); setPreview(imgPlaceholder); }}
+                onError={setError}
+              />
             </div>
 
-            <div className="flex flex-col gap-2 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
-              <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Categorías</label>
-              <div className="p-1 rounded-xl">
-                <Categories
-                  categoriesList={initialCategories}
-                  value={subCategories}
-                  onChange={(selected, icon) => {
-                    setSubCategories(selected);
-                    setCategoryIcon(icon || "");
-                  }}
-                  user={user}
-                />
+            <div className="space-y-12">
+              <div className="flex flex-col gap-5 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
+                <InputGroup label="Nombre" id="name" maxLength={25} value={name} onChange={setName} placeholder="Ej: Hamburguesa Especial" required />
+                <InputGroup label="Descripción" id="description" maxLength={30} value={description} onChange={setDescription} placeholder="Detalla ingredientes o preparación..." isTextArea />
+                <div className="flex flex-col gap-1 w-full">
+                  <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Precio</label>
+                  <div className="relative">
+                    <input
+                      className="w-full border bg-background border-gray-300 rounded-lg pl-10 pr-2 text-[2.5rem] font-semibold outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                      id="price"
+                      name="price"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value.slice(0, 10))}
+                      maxLength={10}
+                      placeholder="0.00"
+                      type="number"
+                      required
+                    />
+                    <span className="absolute top-0 text-2xl left-0 flex items-center h-full px-3 text-gray-500">$</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            {/* INTERFAZ DEL SWITCH: APTOS LIBRE DE TACC */}
-            <div className="flex items-center justify-between p-3 bg-background border border-gray-300 rounded-xl shadow">
-              <div className="flex flex-col">
-                <span className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Libre de TACC / Sin Gluten</span>
-                <span className="text-xs text-gray-500">Activa esta casilla si el plato es apto para celíacos</span>
+
+              <div className="flex flex-col gap-2 border p-2 py-4 border-gray-300 shadow-lg rounded-xl w-full">
+                <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider ml-1">Categorías</label>
+                <div className="p-1 rounded-xl">
+                  <Categories
+                    categoriesList={initialCategories}
+                    value={subCategories}
+                    onChange={(selected, icon) => {
+                      setSubCategories(selected);
+                      setCategoryIcon(icon || "");
+                    }}
+                    user={user}
+                  />
+                </div>
               </div>
+              {/* INTERFAZ DEL SWITCH: APTOS LIBRE DE TACC */}
+              <div className="flex items-center justify-between p-3 bg-background border border-gray-300 rounded-xl shadow">
+                <div className="flex flex-col">
+                  <span className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Libre de TACC / Sin Gluten</span>
+                  <span className="text-xs text-gray-500">Activa esta casilla si el plato es apto para celíacos</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsGlutenFree(!isGlutenFree)}
+                  className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 focus:outline-none ${isGlutenFree ? "bg-amber-500" : "bg-gray-300"
+                    }`}
+                >
+                  <motion.div
+                    layout
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className="bg-white w-4 h-4 rounded-full shadow-md"
+                    animate={{ x: isGlutenFree ? 24 : 0 }}
+                  />
+                </button>
+              </div>
+              <div className="flex flex-col gap-2 p-3 bg-background border border-gray-300 rounded-xl shadow">
+                <div>
+                  <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Mostrar en los Menús</label>
+                  <p className="text-[12px] text-gray-500">Selecciona los menús donde quieres que aparezca este plato. Si no seleccionas ninguno, se mostrará en todos por defecto.</p>
+                </div>
+                <div className="flex flex-wrap gap-2 p-1">
+                  {userMenus.length === 0 ? (
+                    <p className="text-xs text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
+                  ) : (
+                    userMenus.map(m => {
+                      const isSelected = selectedMenus.includes(m._id);
+                      return (
+                        <button
+                          type="button"
+                          key={m._id}
+                          onClick={() => {
+                            if (isSelected) {
+                              setSelectedMenus(prev => prev.filter(id => id !== m._id));
+                            } else {
+                              setSelectedMenus(prev => [...prev, m._id]);
+                            }
+                          }}
+                          className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border flex gap-2 items-center ${isSelected
+                            ? "bg-black text-white border-black shadow-md"
+                            : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
+                            }`}
+                        >
+                          <Store size={14} /> {m.location || 'Menú Principal'}
+                        </button>
+                      )
+                    })
+                  )}
+                </div>
+              </div>
+
               <button
-                type="button"
-                onClick={() => setIsGlutenFree(!isGlutenFree)}
-                className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 focus:outline-none ${isGlutenFree ? "bg-amber-500" : "bg-gray-300"
-                  }`}
+                type="submit"
+                disabled={isLimitReached || isAddToListLimitReached || !name || !price || !description || !subCategories.length}
+                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                <motion.div
-                  layout
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="bg-white w-4 h-4 rounded-full shadow-md"
-                  animate={{ x: isGlutenFree ? 24 : 0 }}
-                />
+                {isLimitReached
+                  ? `Límite alcanzado (${existingFoodsCount}/${MAX_FREE_DISHES})`
+                  : isFreeUser
+                    ? `+ Agregar a la lista (${foodList.length}/${maxListAllowed})`
+                    : `+ Agregar a la lista (${foodList.length}/10)`}
               </button>
             </div>
-            <div className="flex flex-col gap-2 p-3 bg-background border border-gray-300 rounded-xl shadow">
-              <div>
-                <label className="text-[12px] font-bold uppercase text-gray-500 tracking-wider">Mostrar en los Menús</label>
-                <p className="text-[12px] text-gray-500">Selecciona los menús donde quieres que aparezca este plato. Si no seleccionas ninguno, se mostrará en todos por defecto.</p>
-              </div>
-              <div className="flex flex-wrap gap-2 p-1">
-                {userMenus.length === 0 ? (
-                  <p className="text-xs text-gray-400">No se encontraron menús. Se mostrará en todos por defecto.</p>
-                ) : (
-                  userMenus.map(m => {
-                    const isSelected = selectedMenus.includes(m._id);
-                    return (
-                      <button
-                        type="button"
-                        key={m._id}
-                        onClick={() => {
-                          if (isSelected) {
-                            setSelectedMenus(prev => prev.filter(id => id !== m._id));
-                          } else {
-                            setSelectedMenus(prev => [...prev, m._id]);
-                          }
-                        }}
-                        className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border flex gap-2 items-center ${isSelected
-                          ? "bg-black text-white border-black shadow-md"
-                          : "bg-background border-gray-300 text-gray-600 hover:bg-gray-50 hover:border-gray-400"
-                          }`}
-                      >
-                        <Store size={14} /> {m.location || 'Menú Principal'}
-                      </button>
-                    )
-                  })
-                )}
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={!name || !price || !description || !subCategories.length}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              + Agregar a la lista ({foodList.length}/10)
-            </button>
-          </div>
+          </fieldset>
         </form>
 
         {/* --- CONTENEDOR 2: DUAL (Sidebar en Móvil / Panel fijo en Escritorio) --- */}

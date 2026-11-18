@@ -2,6 +2,7 @@
 import { useState, Fragment, useEffect } from "react";
 import Image from "next/image";
 import { logotipo, URI } from "@/src/lib/const";
+import { safeParseJson } from "@/src/lib/safeJson";
 import { updateUserCookie } from "@/app/actions";
 import { MdChevronLeft } from "react-icons/md";
 import {
@@ -27,13 +28,16 @@ import {
   HiOutlineClipboardList,
   HiOutlineCreditCard,
   HiOutlineExternalLink,
+  HiOutlineShoppingBag,
+  HiOutlineChartBar,
 } from "react-icons/hi";
 import UserPlan from "@/src/components/user-plan/UserPlan";
 import { useRouter, useSearchParams } from "next/navigation";
-import { logout } from "@/app/actions";
+import { logoutUser } from "@/src/utils/logout";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useFoodStore } from "@/src/lib/useFoodStore";
+import { getLocalOrders, fetchOrdersForBusiness, subscribeToOrders } from "@/src/utils/orders";
 
 export default function PanelUser({
   user: initialUser,
@@ -51,7 +55,6 @@ export default function PanelUser({
     fetchPanelData,
     refreshPanelData,
     updateUserLocal,
-    clearPanelStore,
   } = useFoodStore();
 
   const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
@@ -60,6 +63,7 @@ export default function PanelUser({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
   const router = useRouter();
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
@@ -71,12 +75,37 @@ export default function PanelUser({
   const menuItems = [
     { key: "negocio", name: "Tu local", icon: <HiPencil size={20} /> },
     { key: "platos", name: "Platos", icon: <HiOutlineClipboardList size={20} /> },
+    { key: "comandas", name: "Comandas", icon: <HiOutlineShoppingBag size={20} /> },
+    { key: "analiticas", name: "Analíticas", icon: <HiOutlineChartBar size={20} /> },
     { key: "promociones", name: "Promociones", icon: <HiOutlineTicket size={20} /> },
     { key: "configuraciones", name: "Configura tu menú", icon: <HiOutlineAdjustments size={20} /> },
     { key: "paletas", name: "Paletas de colores", icon: <HiOutlineColorSwatch size={20} /> },
     { key: "sucursales", name: "Sucursales", icon: <MdStorefront size={20} /> },
     { key: "plan", name: "Suscripciones", icon: <HiOutlineCreditCard size={20} /> },
   ];
+
+  const canUseComandas = user?.plan === "plus" || user?.plan === "premium";
+
+  useEffect(() => {
+    if (!canUseComandas) {
+      setPendingOrdersCount(0);
+      return;
+    }
+    const identifiers = {
+      userId: String(user?.id || user?.user_id || ""),
+      menuId: user?._id ? String(user._id) : undefined,
+      businessName: user?.name ? String(user.name) : undefined,
+    };
+    const computePending = () => {
+      const orders = getLocalOrders(identifiers);
+      setPendingOrdersCount(orders.filter((o) => o.estado === "pendiente").length);
+    };
+    computePending();
+    void fetchOrdersForBusiness(identifiers).then((synced) => {
+      setPendingOrdersCount(synced.filter((o) => o.estado === "pendiente").length);
+    });
+    return subscribeToOrders(computePending);
+  }, [canUseComandas, user?.id, user?.user_id, user?._id, user?.name]);
 
   // Cargar todos los datos del panel en una sola petición la primera vez que se entra (o si hubo cambios)
   useEffect(() => {
@@ -106,12 +135,12 @@ export default function PanelUser({
             credentials: 'include'
           });
 
-          const dataUpdate = await responseUpdate.json();
+          const dataUpdate = await safeParseJson(responseUpdate);
           if (!responseUpdate.ok) {
-            setServerMessage("Error BD: " + (dataUpdate.message || "No se pudo actualizar el plan"));
+            setServerMessage("Error BD: " + (dataUpdate?.message || "No se pudo actualizar el plan"));
           } else {
-            await updateUserCookie(dataUpdate.user);
-            if (dataUpdate.user) {
+            await updateUserCookie(dataUpdate?.user);
+            if (dataUpdate?.user) {
               updateUserLocal(dataUpdate.user);
             }
             await refreshPanelData();
@@ -153,23 +182,11 @@ export default function PanelUser({
   const hadleLogoutUserAction = async (userId: string) => {
     setIsLoggingOut(true);
     try {
-      const response = await fetch(`${URI}/auth/signout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId }),
-      });
-      if (!response.ok) {
-        throw new Error("Error al cerrar sesión");
-      }
-      if (response.status === 200) {
-        await logout();
-      }
+      await logoutUser(userId);
     } catch (err) {
       console.error("Error en logout:", err);
     } finally {
-      clearPanelStore();
-      router.push("/");
-      router.refresh();
+      window.location.replace("/");
     }
   };
 
@@ -184,9 +201,9 @@ export default function PanelUser({
     const key = menuItems[selectedIndex]?.key;
     switch (user?.plan) {
       case "free":
-        return ["promociones", "configuraciones", "paletas", "sucursales"].includes(key);
+        return ["comandas", "analiticas", "promociones", "configuraciones", "paletas", "sucursales"].includes(key);
       case "plus":
-        return ["sucursales", "configuraciones"].includes(key);
+        return ["sucursales"].includes(key);
       default:
         return false;
     }
@@ -233,7 +250,7 @@ export default function PanelUser({
                 leaveTo="-translate-x-full"
               >
                 <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
-                  <div className="flex items-start justify-between px-6 py-8">
+                  <div className="flex items-start justify-between px-3 py-4">
                     <div className="flex flex-col">
                       <Link
                         href="/mi-menu"
@@ -243,7 +260,7 @@ export default function PanelUser({
                         Volver
                       </Link>
                       <div className="flex ml-2 flex-col gap-2 mt-10">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-5 relative">
                           <Image
                             src={logotipo}
                             alt="Logo"
@@ -251,7 +268,20 @@ export default function PanelUser({
                             height={40}
                             priority
                           />
-                          <span className="text-xs text-gray-500">/ Panel de usuario</span>
+                          <div className="flex items-center justify-end">
+                            <Link
+                              href={menuUrl}
+                              target={menuSlug ? "_blank" : undefined}
+                              rel="noopener noreferrer"
+                              onClick={(e) => {
+                                if (!menuSlug) e.preventDefault();
+                              }}
+                              className={`flex gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1 px-4 w-fit justify-center items-center rounded-lg transition-all active:scale-95 shrink-0 ${!menuSlug ? "opacity-50 pointer-events-none" : ""}`}
+                            >
+                              <span>Visitar Menú</span>
+                              <HiOutlineExternalLink size={15} />
+                            </Link>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <h3 className="text-lg text-gray-800 uppercase">
@@ -281,14 +311,20 @@ export default function PanelUser({
                           }}
                           className={tabClass(selectedIndex === index)}
                         >
-                          {item?.icon} {item?.name}
+                          {item?.icon}
+                          <span className="flex-1 text-left">{item?.name}</span>
+                          {item.key === "comandas" && pendingOrdersCount > 0 && (
+                            <span className="bg-amber-500 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full">
+                              {pendingOrdersCount}
+                            </span>
+                          )}
                         </button>
                       ))}
                     </div>
                     <div className="w-full pl-5">
                       <button
                         onClick={() => { hadleLogoutUserAction(user.id) }}
-                        className="mt-20 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
+                        className="flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
                       >
                         <HiOutlineLogout size={20} /> Cerrar Sesión
                       </button>
@@ -312,7 +348,7 @@ export default function PanelUser({
                   Volver
                 </Link>
                 <div className="flex ml-2 flex-col gap-2 mt-8">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-10 relative">
                     <Image
                       src={logotipo}
                       alt="Logo"
@@ -320,7 +356,20 @@ export default function PanelUser({
                       height={40}
                       priority
                     />
-                    <span className="text-xs text-gray-500">/ Panel de usuario</span>
+                    <div className="flex items-center justify-end">
+                      <Link
+                        href={menuUrl}
+                        target={menuSlug ? "_blank" : undefined}
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!menuSlug) e.preventDefault();
+                        }}
+                        className={`flex gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-1 px-4 w-fit justify-center items-center rounded-lg transition-all active:scale-95 shrink-0 ${!menuSlug ? "opacity-50 pointer-events-none" : ""}`}
+                      >
+                        <span>Visitar Menú</span>
+                        <HiOutlineExternalLink size={15} />
+                      </Link>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg text-gray-800 uppercase">
@@ -338,7 +387,13 @@ export default function PanelUser({
                         tabClass(selected)
                       }
                     >
-                      {item.icon} {item.name}
+                      {item.icon}
+                      <span className="flex-1 text-left">{item.name}</span>
+                      {item.key === "comandas" && pendingOrdersCount > 0 && (
+                        <span className="bg-amber-500 text-white text-[11px] font-extrabold px-2 py-0.5 rounded-full">
+                          {pendingOrdersCount}
+                        </span>
+                      )}
                     </Tab>
                   ))}
                 </TabList>
@@ -364,7 +419,9 @@ export default function PanelUser({
                     Volver
                   </Link>
                 </div>
-                <div className="ml-auto fixed z-30 md:absolute right-3 top-21 md:top-2 md:mr-0 min-h-10 flex items-center justify-end">
+              </div>
+              <div className={isFeatureBlocked() ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
+                <div className="z-30 invisible md:flex md:min-h-10 md:p-3 rounded-lg items-center justify-end">
                   <Link
                     href={menuUrl}
                     target={menuSlug ? "_blank" : undefined}
@@ -372,15 +429,13 @@ export default function PanelUser({
                     onClick={(e) => {
                       if (!menuSlug) e.preventDefault();
                     }}
-                    className={`flex flex-col md:flex-row-reverse md:gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold md:h-fit h-15.5 justify-center items-center aspect-square md:aspect-auto md:px-3.5 md:py-2 rounded-full md:rounded-md transition-all active:scale-95 shrink-0 md:shadow-sm ${!menuSlug ? "opacity-50 pointer-events-none" : ""}`}
+                    className={`flex gap-1.5 bg-red-600 invisible md:flex hover:bg-red-700 text-white text-xs sm:text-sm font-semibold md:h-fit md:p-2 w-fit justify-center items-center md:aspect-auto md:px-3.5 md:py-2 rounded-lg md:rounded-md transition-all active:scale-95 shrink-0 md:shadow-sm ${!menuSlug ? "opacity-50 pointer-events-none" : ""}`}
                   >
+                    <span>Visitar Menú</span>
                     <HiOutlineExternalLink size={20} />
-                    <span>Menú</span>
                   </Link>
                 </div>
-              </div>
-              <div className={isFeatureBlocked() ? "pointer-events-none opacity-30 transition-all" : "transition-all"}>
-                <TabPanels className="min-h-full w-full pt-4 md:pt-2 overflow-hidden">
+                <TabPanels className="min-h-full w-full overflow-hidden">
                   {children}
                 </TabPanels>
               </div>

@@ -51,12 +51,12 @@ export default function ConfigureMenu({ user: initialUser }: { user: any }) {
     ];
 
     const presentationOptions = [
-        { id: "default", label: "Por defecto", format: "horizontal", selected: presentation === "default", image: ImgDefaultTemplate, alt: "Def", width: 150, height: 150 },
+        { id: "default", label: "Expandido", format: "horizontal", selected: presentation === "default", image: ImgDefaultTemplate, alt: "Def", width: 150, height: 150 },
         { id: "list", label: "Lista desplegable", format: "horizontal", selected: presentation === "list", image: ImgListaDesplegable, alt: "List", width: 150, height: 150 }
     ];
 
     const updateConfig = async (key: string, value: any) => {
-        if (user?.plan !== 'premium') {
+        if (user?.plan === 'free') {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -124,7 +124,7 @@ export default function ConfigureMenu({ user: initialUser }: { user: any }) {
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
                 </div>
             )}
-            <header className="py-3 flex flex-col gap-1 mb-6">
+            <header className="py-3 flex flex-col mb-6 gap-1">
                 <h1 className="text-2xl font-bold text-gray-800">Configuración del menú</h1>
                 <p className="text-gray-500 text-sm">Tus cambios se aplican al instante.</p>
             </header>

@@ -9,7 +9,6 @@ import Link from "next/link";
 import { URI } from "@/src/lib/const";
 import BttnBack from "@/src/components/buttons/BttnBack";
 import PlanSelector from "@/src/components/AcordeonPlanRegister";
-import emailjs from '@emailjs/browser';
 import { OctagonX, Mail, KeyRound, Store } from "lucide-react";
 import {
   FaInstagram,
@@ -39,7 +38,6 @@ type FormValues = {
   tiktok: string;
   verificationCode: string;
   schedule: string;
-  lifetime_accepted: boolean;
 };
 
 const validationSchemas = [
@@ -62,11 +60,6 @@ const validationSchemas = [
   Yup.object({
     plan: Yup.string().optional(),
     mp_preapproval_id: Yup.string().optional(),
-    lifetime_accepted: Yup.boolean().when('plan', {
-      is: (val: string) => val === 'lifetime',
-      then: (schema) => schema.oneOf([true], "Debes aceptar para continuar"),
-      otherwise: (schema) => schema.optional()
-    })
   }),
   Yup.object({
     logo: Yup.mixed().nullable().optional(),
@@ -239,26 +232,7 @@ export default function Register() {
     };
   }, [coverPhotoPreview]);
 
-  const handleSkip = async (values: FormValues) => {
-    const finalEmail = sessionEmail || email || values.email || localStorage.getItem("registerEmail") || "";
-    const currentPlan = values.plan || localStorage.getItem("registerPlan") || sessionPlan;
-
-    if (currentPlan === 'lifetime') {
-      try {
-        await emailjs.send(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-          {
-            name: "Sistema QMenú",
-            email: "qmenuofi@gmail.com",
-            message: `Cuenta creada con exito: ${finalEmail} requiere de atención para cotizar precio de menú.`
-          },
-          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-        );
-      } catch (e) {
-        console.error("Error sending email:", e);
-      }
-    }
+  const handleSkip = async (_values: FormValues) => {
     router.push('/login');
   };
 
@@ -298,22 +272,6 @@ export default function Register() {
         return;
       }
       if (data.success) {
-        if (values.plan === 'lifetime') {
-          try {
-            await emailjs.send(
-              process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-              process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-              {
-                name: "Sistema QMenú",
-                email: "qmenuofi@gmail.com",
-                message: `Cuenta creada con exito: ${finalEmail} requiere de atención para cotizar precio de menú`
-              },
-              process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-            );
-          } catch (e) {
-            console.error("Error sending email:", e);
-          }
-        }
         router.push("/login");
       }
     } catch (err) {
@@ -417,7 +375,6 @@ export default function Register() {
             tiktok: "",
             schedule: "",
             verificationCode: "",
-            lifetime_accepted: false,
           }}
           validationSchema={validationSchemas[step]}
           onSubmit={async (values, { setSubmitting }) => {
@@ -670,7 +627,7 @@ export default function Register() {
                       Si deseas realizar un reembolso, <Link className="cursor-pointer underline font-medium" href="/contacto">comunicate por aquí</Link>
                     </p>
                     <p>
-                      Tambien puedes cambiar de plan o darte de baja cuando quieras, los pagos se realizan por medio de <Link className="cursor-pointer underline font-semibold text-blue-500" href="https://www.mercadopago.com.ar/subscriptions#from-section=menu">Mercado Pago</Link> y se aceptan todas las tarjetas.
+                      También puedes cambiar de plan o darte de baja cuando quieras. Los pagos dentro de Argentina se realizan por medio de <Link className="cursor-pointer underline font-semibold text-blue-500" href="https://www.mercadopago.com.ar/subscriptions#from-section=menu">Mercado Pago</Link> y los pagos internacionales con tarjeta mediante <span className="font-semibold text-stone-700">Paddle</span>.
                     </p>
                   </span>
                 </div>
@@ -906,7 +863,7 @@ export default function Register() {
                 </div>
               )}
 
-              <div className="h-fit z-100 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
+              <div className="h-fit z-70 w-full md:w-[60%] lg:w-[50%] xl:w-[40%] md:mx-auto fixed bottom-0 left-0 right-0 py-2 bg-background flex flex-col items-center justify-between mt-10">
                 <div className="flex items-center mb-2 w-full px-4 justify-end gap-3">
 
                   {step === 3 ? (

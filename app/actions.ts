@@ -192,3 +192,33 @@ export async function activateRestaurantSubscription(data: {
         console.error("❌ Error de comunicación con la API del Backend:", error);
     }
 }
+
+export async function activatePaddleSubscription(data: {
+    paddle_subscription_state: string;
+    paddle_subscription_id?: string;
+    paddle_transaction_id?: string;
+    paddle_customer_id?: string;
+    plan?: string;
+    email?: string;
+}) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+    try {
+        const response = await fetch(`${apiUrl}/auth/subscription/webhook-paddle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-webhook-secret': process.env.PADDLE_WEBHOOK_SECRET || '',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            console.warn(`⚠️ Backend Paddle webhook endpoint devolvió status ${response.status} (pendiente de conectar en Render)`);
+        } else {
+            console.log('✅ Suscripción Paddle sincronizada con el Backend.');
+        }
+    } catch (error) {
+        console.error("❌ Error de comunicación con el Backend para Paddle:", error);
+    }
+}

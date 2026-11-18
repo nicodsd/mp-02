@@ -28,6 +28,7 @@ export default function Footer() {
             <motion.p initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-stone-600 max-w-sm text-sm">
               La plataforma ideal para digitalizar tu menú. <br />Sin aplicaciones, sin fricción y para todos.
             </motion.p>
+            <p>© {new Date().getFullYear()} QMenú.</p>
           </div>
 
           <div>
@@ -35,7 +36,7 @@ export default function Footer() {
             <motion.ul className="space-y-2 text-stone-600 text-sm" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
               {/* <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/crea-tu-propio-qr-para-tu-menu" className="hover:text-primary-400 transition-colors">Generador QR</a></motion.li> */}
               {/* <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/personaliza-tu-menu-digital-qr" className="hover:text-primary-400 transition-colors">Plantillas</a></motion.li> */}
-              <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/cuanto-sale-crear-un-menu-digital" className="hover:text-primary-400 transition-colors">Precios</a></motion.li>
+              <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/guias/cuanto-sale-crear-un-menu-digital" className="hover:text-primary-400 transition-colors">Precios</a></motion.li>
               <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/guias" className="hover:text-primary-400 transition-colors">Guías</a></motion.li>
             </motion.ul>
           </div>
@@ -43,26 +44,12 @@ export default function Footer() {
           <div>
             <motion.h4 className="text-stone-600 font-bold mb-4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>Empresa</motion.h4 >
             <motion.ul className="space-y-2 text-stone-600 text-sm" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-              <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/sobre-qmenu" className="hover:text-primary-400 transition-colors">Sobre QMenú</a></motion.li>
+              <motion.li transition={{ delay: 0.1 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/#caracteristicas" className="hover:text-primary-400 transition-colors">Sobre QMenú</a></motion.li>
               <motion.li transition={{ delay: 0.2 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/contacto" className="hover:text-primary-400 transition-colors">Contacto</a></motion.li>
               <motion.li transition={{ delay: 0.3 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/politicas" className="hover:text-primary-400 transition-colors">Política de Privacidad</a></motion.li>
               <motion.li transition={{ delay: 0.4 }} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}><a href="/terminos-y-condiciones" className="hover:text-primary-400 transition-colors">Política de Términos y Condiciones</a></motion.li>
             </motion.ul>
           </div>
-        </div>
-
-        <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="text-stone-500 w-full text-sm flex flex-col md:flex-row items-center justify-center text-center gap-2">
-            <p>© {new Date().getFullYear()} QMenú.</p>
-            <div className="flex items-center text-left">
-              <p className="text-stone-500 text-xs">Santiago del Estero, Argentina.</p>
-            </div>
-          </div>
-          {/* <div className="flex space-x-6">
-            <a href="#" className="text-stone-500 hover:text-white transition-colors"><Instagram className="h-5 w-5" /></a>
-            <a href="#" className="text-stone-500 hover:text-white transition-colors"><Twitter className="h-5 w-5" /></a>
-            <a href="#" className="text-stone-500 hover:text-white transition-colors"><Github className="h-5 w-5" /></a>
-          </div> */}
         </div>
       </div>
     </footer>

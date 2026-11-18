@@ -22,7 +22,7 @@ export default function PromoCountdownDisplay({
   if (variant === "accordion") {
     return (
       <div
-        className={`w-full mt-3 p-3 rounded-xl bg-linear-to-r from-red-50 via-orange-50 to-red-100 border-2 border-red-300 flex flex-col sm:flex-row items-center justify-between gap-3 ${className}`}
+        className={`w-full mt-3 p-2 rounded-xl bg-linear-to-r from-red-50 via-orange-50 to-red-100 border-2 border-red-300 flex flex-col sm:flex-row items-center justify-between gap-3 ${className}`}
       >
         <div className="flex items-center gap-2">
           <span className="p-1.5">
@@ -65,7 +65,7 @@ export default function PromoCountdownDisplay({
   // Variant "card" (por defecto para Pricing, SubscriptionPanel, Pagos)
   return (
     <div
-      className={`w-full p-3 md:p-3.5 rounded-xl bg-linear-to-b from-red-50 to-orange-50/70 border border-red-300 flex flex-col items-center justify-center gap-2 ${className}`}
+      className={`w-full p-2 rounded-xl bg-linear-to-b from-red-50 to-orange-50/70 border border-red-300 flex flex-col items-center justify-center gap-2 ${className}`}
     >
       <div className="flex items-center gap-1.5 text-xs font-black text-primary uppercase tracking-wider">
         <Clock className="w-4 h-4 animate-spin-slow shrink-0" />

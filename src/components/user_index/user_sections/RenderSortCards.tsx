@@ -44,6 +44,7 @@ export default function RenderSortCards({
     template,
     sortBy = "category",
     onResetSort,
+    isReorderMode = false,
 }: {
     foods: any[];
     count?: number;
@@ -52,7 +53,9 @@ export default function RenderSortCards({
     template?: any;
     sortBy?: SortOption;
     onResetSort?: () => void;
+    isReorderMode?: boolean;
 }) {
+    const canReorder = Boolean(user?.plan && user.plan !== "free") && Boolean(isReorderMode);
     const dndContextId = useId();
     const { foods: storeFoods, setFoods, removeFoodLocal, refreshPanelData } = useFoodStore();
     const [foods, setLocalFoods] = useState<any[]>(initialFoods || []);
@@ -106,6 +109,7 @@ export default function RenderSortCards({
     };
 
     const handleDragEnd = async (event: DragEndEvent) => {
+        if (!canReorder) return;
         const { active, over } = event;
         if (over && active.id !== over.id) {
             const oldIndex = foods.findIndex((f) => f._id === active.id);
@@ -258,6 +262,7 @@ export default function RenderSortCards({
                                                             setIsEditOpen(true);
                                                         }}
                                                         isLast={itemIdx === items.length - 1}
+                                                        isReorderMode={canReorder}
                                                     />
                                                 ))}
                                             </div>
@@ -306,6 +311,7 @@ export default function RenderSortCards({
                                         setSelectedFood(f);
                                         setIsEditOpen(true);
                                     }}
+                                    isReorderMode={canReorder}
                                 />
                             ))}
                         </SortableContext>
