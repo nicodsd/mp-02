@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import crypto from "crypto";
+import { PADDLE_ENABLED } from "@/src/lib/featureFlags";
 
 export function proxy(req: NextRequest) {
     const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
@@ -10,43 +11,74 @@ export function proxy(req: NextRequest) {
 
     const isDev = process.env.NODE_ENV === "development";
 
+    // Paddle está muteado salvo NEXT_PUBLIC_PADDLE_ENABLED="true" (ver src/lib/featureFlags.ts)
+    const paddle = (...sources: string[]) => (PADDLE_ENABLED ? sources : []);
+
     // Dominios permitidos para fetch/axios/WebSocket/Analytics/Paddle
     const connectSrc = [
         "'self'",
         "https://api.qmenu.digital",
         "https://qmenu.digital",
         "https://api.emailjs.com",
-        "https://www.google-analytics.com",
-        "https://analytics.google.com",
+        // Google Analytics 4 / GTM (GA4 usa endpoints regionales: region1.google-analytics.com, etc.)
+        "https://*.google-analytics.com",
+        "https://*.analytics.google.com",
+        "https://*.googletagmanager.com",
         "https://stats.g.doubleclick.net",
-        "https://*.paddle.com",
-        "https://*.profitwell.com",
+        ...paddle("https://*.paddle.com", "https://*.profitwell.com"),
         "http://localhost:4000",
+        "https://nominatim.openstreetmap.org",
         ...(isDev ? ["ws://localhost:*", "ws://127.0.0.1:*"] : [])
     ].join(" ");
 
     // Dominios permitidos para cargar scripts externos (GTM, GA, Paddle)
+    // Nota: al haber nonce, los navegadores ignoran 'unsafe-inline' (queda solo como fallback para navegadores viejos).
     const scriptSrc = [
         "'self'",
         `'nonce-${nonce}'`,
         "'unsafe-inline'",
         "https://www.googletagmanager.com",
+        "https://*.googletagmanager.com",
         "https://www.google-analytics.com",
-        "https://cdn.paddle.com",
-        "https://*.paddle.com",
-        "https://public.profitwell.com",
+        ...paddle("https://cdn.paddle.com", "https://*.paddle.com", "https://public.profitwell.com"),
         ...(isDev ? ["'unsafe-eval'"] : [])
+    ].join(" ");
+
+    // Estilos: React (style={{...}} renderizado en el HTML del servidor), Emotion/MUI,
+    // framer-motion, next/image, Leaflet, etc. generan estilos inline. Los atributos style=""
+    // NO pueden llevar nonce, y si hay nonce/hash en la directiva el navegador ignora
+    // 'unsafe-inline'. Por eso los estilos usan 'unsafe-inline' sin nonce (riesgo bajo:
+    // el CSS inline no ejecuta código; la protección contra XSS la da script-src).
+    const styleSrc = [
+        "'self'",
+        "'unsafe-inline'",
+        ...paddle("https://cdn.paddle.com", "https://*.paddle.com"),
+    ].join(" ");
+
+    const imgSrc = [
+        "'self'", "blob:", "data:",
+        "https://res.cloudinary.com", "https://cdn.pixabay.com", "https://asset.cloudinary.com",
+        "https://*.google-analytics.com", "https://*.googletagmanager.com",
+        "https://*.basemaps.cartocdn.com", "https://*.tile.openstreetmap.org", "https://unpkg.com",
+        ...paddle("https://*.paddle.com"),
+    ].join(" ");
+
+    const frameSrc = [
+        "'self'",
+        "https://www.googletagmanager.com",
+        ...paddle("https://*.paddle.com", "https://buy.paddle.com", "https://sandbox-buy.paddle.com"),
     ].join(" ");
 
     // Construcción de la política CSP
     const cspHeader = `
         default-src 'self';
         script-src ${scriptSrc};
-        style-src 'self' ${isDev ? "'unsafe-inline'" : `'nonce-${nonce}' 'unsafe-hashes'`} https://cdn.paddle.com https://*.paddle.com;
-        img-src 'self' blob: data: https://res.cloudinary.com https://cdn.pixabay.com https://asset.cloudinary.com https://www.google-analytics.com https://www.googletagmanager.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://unpkg.com https://*.paddle.com;
+        style-src ${styleSrc};
+        img-src ${imgSrc};
         font-src 'self' data:;
-        connect-src ${connectSrc} https://nominatim.openstreetmap.org;
-        frame-src 'self' https://*.paddle.com https://buy.paddle.com https://sandbox-buy.paddle.com https://www.googletagmanager.com;
+        media-src 'self' blob:;
+        connect-src ${connectSrc};
+        frame-src ${frameSrc};
         object-src 'none';
         base-uri 'self';
         form-action 'self';

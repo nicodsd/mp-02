@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
+import CookiePreferencesButton from "@/src/components/common/CookiePreferencesButton";
 
 
 export const metadata = {
@@ -75,13 +76,17 @@ export default function PoliticasPage() {
                         <section>
                             <h2 className="text-2xl font-bold text-stone-800 mb-4">6. Política de Cookies y Almacenamiento Local</h2>
                             <p>
-                                En <strong>QMenú</strong> utilizamos cookies técnicas y almacenamiento local (LocalStorage) para garantizar el funcionamiento de la plataforma:
+                                En <strong>QMenú</strong> utilizamos cookies propias y de terceros, así como almacenamiento local (LocalStorage), clasificados en las siguientes categorías:
                             </p>
                             <ul className="list-disc pl-6 mt-2 space-y-2">
-                                <li><strong>Cookies técnicas esenciales:</strong> Mantienen tu sesión activa, gestionan la autenticación y aplican configuraciones de seguridad.</li>
+                                <li><strong>Cookies técnicas esenciales (siempre activas):</strong> Mantienen tu sesión activa, gestionan la autenticación, aplican configuraciones de seguridad y recuerdan el estado de tu carrito de pedidos y consentimiento.</li>
+                                <li><strong>Cookies de preferencias y funcionalidad:</strong> Permiten recordar configuraciones de interfaz y personalización para ofrecerte una experiencia adaptada.</li>
+                                <li><strong>Cookies analíticas y de rendimiento:</strong> Mediante Google Tag Manager, Google Analytics y herramientas de medición (Vercel Analytics y Speed Insights), recopilamos métricas agregadas de uso y rendimiento para mejorar la plataforma. Solo se activan si otorgas tu consentimiento.</li>
+                                <li><strong>Cookies de marketing y publicidad:</strong> Gestionadas a través de Google Tag Manager para medir campañas y atribución publicitaria únicamente cuando las habilitas en tus preferencias.</li>
                                 <li><strong>Menús con pedidos por WhatsApp:</strong> Para los menús que tienen habilitada la recepción de pedidos, utilizamos el almacenamiento local para recordar los ítems en el carrito y, únicamente al momento de confirmar un pedido a domicilio, solicitar tu <strong>nombre y ubicación geográfica</strong> con el fin de remitir la comanda al comercio vía WhatsApp.</li>
-                                <li><strong>Consentimiento:</strong> Puedes aceptar o rechazar el uso de cookies y preferencias a través de los modales y avisos dispuestos en la web.</li>
+                                <li><strong>Gestión del consentimiento:</strong> Puedes aceptar todas, rechazar las opcionales o elegir qué categorías habilitar en cualquier momento.</li>
                             </ul>
+                            <CookiePreferencesButton />
                         </section>
 
                         <section>

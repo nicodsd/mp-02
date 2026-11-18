@@ -21,6 +21,7 @@ import {
   OFFICIAL_PLAN_PRICES,
   type PaidPlanId,
 } from "@/src/utils/planPricing";
+import { PADDLE_ENABLED } from "@/src/lib/featureFlags";
 
 interface CheckoutPaymentModalProps {
   isOpen: boolean;
@@ -57,6 +58,8 @@ export default function CheckoutPaymentModal({
   const [paddleSuccessMsg, setPaddleSuccessMsg] = useState<string | null>(null);
 
   useEffect(() => {
+    // Paddle muteado: no se carga Paddle.js (ver src/lib/featureFlags.ts)
+    if (!PADDLE_ENABLED) return;
     if (!isOpen || paddle) return;
 
     const token = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
@@ -275,7 +278,8 @@ export default function CheckoutPaymentModal({
             </button>
           </div>
 
-          {/* Card 2: Tarjeta Visa o Mastercard (Pagos fuera de Argentina / Paddle) */}
+          {/* Card 2: Tarjeta Visa o Mastercard (Pagos fuera de Argentina / Paddle) — oculto mientras Paddle esté muteado */}
+          {PADDLE_ENABLED && (
           <button
             type="button"
             disabled={loadingMP || loadingPaddle}
@@ -307,14 +311,16 @@ export default function CheckoutPaymentModal({
               )}
             </div>
           </button>
+          )}
         </div>
 
         {/* Footer */}
         <div className="px-6 sm:px-8 pb-6 pt-1 text-center text-[11px] sm:text-xs text-stone-500 flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-4 h-4 text-green-600 shrink-0" />
           <span>
-            Pagos en Argentina vía Mercado Pago • Pagos internacionales con
-            tarjeta procesados por Paddle.
+            {PADDLE_ENABLED
+              ? "Pagos en Argentina vía Mercado Pago • Pagos internacionales con tarjeta procesados por Paddle."
+              : "Pagos procesados de forma segura por Mercado Pago."}
           </span>
         </div>
       </div>

@@ -14,7 +14,6 @@ import SliderBanner from "@/src/components/land_page/SliderBanner";
 import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 import MPRedirect from '@/src/components/navigation/MPRedirect';
-import CookieConsentBanner from "@/src/components/common/CookieConsentBanner";
 import { cookies } from "next/headers";
 import EntrepreneurCommitment from "@/src/components/land_page/EntrepreneurCommitment";
 //import Testimonials from "@/src/components/land_page/Testimonials";
@@ -93,7 +92,6 @@ export default async function Page() {
         </main>
       </div>
       <Footer />
-      <CookieConsentBanner />
     </div>
   );
 } 
