@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import AddFood from "@/src/components/buttons/AddFood";
 import IconFood from "@/public/images/icons-index/IconFood";
@@ -32,6 +32,7 @@ interface FoodCardProps {
   promo_price: number | string;
   template?: {
     backgroundColor?: string;
+    backgroundColor2?: string;
     border?: string;
     textColor?: string;
     textColorOpacity?: string;
@@ -59,6 +60,7 @@ export default function FoodsCardsExample({
   edit,
   list
 }: FoodCardProps) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <div
@@ -102,6 +104,12 @@ export default function FoodsCardsExample({
             <Share2 size={15} className="text-white" />
           </button>
         )}
+        {!isImageLoaded && (
+          <div
+            aria-hidden="true"
+            className={`absolute inset-0 skeleton-shimmer ${template?.backgroundColor2 || "bg-gray-200"}`}
+          />
+        )}
         <Image
           quality={75}
           loading="lazy"
@@ -109,7 +117,9 @@ export default function FoodsCardsExample({
           alt={name}
           fill
           sizes="(max-width: 768px) 80px, 100px"
-          className="object-cover"
+          onLoad={() => setIsImageLoaded(true)}
+          onError={() => setIsImageLoaded(true)}
+          className={`object-cover transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
         />
       </div>
 

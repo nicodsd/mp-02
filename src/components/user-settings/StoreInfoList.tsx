@@ -113,7 +113,7 @@ const StoreInfoList: React.FC<StoreInfoListProps> = ({
   ];
 
   return (
-    <div className="w-full flex flex-col gap-y-8 md:p-6 md:rounded-4xl md:border md:border-gray-200">
+    <div className="w-full bg-background/70 md:bg-background/60 z-20 flex flex-col gap-y-8 p-3 md:p-6 rounded-xl md:rounded-4xl border border-gray-200">
       {rows.map((row) => (
         <div key={row.field} className="w-full">
           <div className="flex justify-between items-center text-gray-500">
@@ -137,13 +137,12 @@ const StoreInfoList: React.FC<StoreInfoListProps> = ({
             <button
               type="button"
               onClick={() => onEditField(row.field)}
-              className={`text-xs font-bold cursor-pointer ${
-                row.alwaysEditable
-                  ? "active:text-gray-900 transition-all text-gray-500"
-                  : !row.hasSavedValue
+              className={`text-xs font-bold cursor-pointer ${row.alwaysEditable
+                ? "active:text-gray-900 transition-all text-gray-500"
+                : !row.hasSavedValue
                   ? "text-blue-500"
                   : "text-gray-500"
-              }`}
+                }`}
             >
               {row.alwaysEditable || row.hasSavedValue ? "Editar" : "Agregar"}
             </button>

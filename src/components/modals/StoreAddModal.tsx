@@ -35,8 +35,10 @@ const StoreSchema = Yup.object().shape({
     phone: Yup.number().optional().min(7, "Mínimo 7 dígitos")
 });
 
-export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }: { user_id: string, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, menusCount: number }) {
+export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount, userPlan }: { user_id: string, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, menusCount: number, userPlan?: string }) {
     const refreshPanelData = useFoodStore((state) => state.refreshPanelData);
+    const storePlan = useFoodStore((state) => state.user?.plan);
+    const isPremium = String(userPlan ?? storePlan ?? "").toLowerCase() === "premium";
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const [coverPreview, setCoverPreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +65,11 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
     }, [photoPreview, coverPreview]);
 
     const handleAddStore = async (values: any) => {
+        if (!isPremium) {
+            alert("Las sucursales están disponibles únicamente para el plan Premium.");
+            setIsOpen(false);
+            return;
+        }
         setIsLoading(true);
         const formData = new FormData();
         if (values.photo) {
@@ -117,6 +124,8 @@ export default function StoreAddModal({ user_id, isOpen, setIsOpen, menusCount }
         facebook: '',
         tiktok: '',
     };
+
+    if (!isPremium) return null;
 
     return (
         <Transition show={isOpen} as={Fragment}>

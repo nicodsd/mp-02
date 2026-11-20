@@ -35,27 +35,31 @@ export function SortableRow({ food, user, context, onEdit, isSelectionMode, isSe
                     ${isDragging ? "shadow-xl opacity-90 scale-[1.01] z-50 rounded-xl ring-2 ring-orange-400/50 bg-white" : ""}`}
             >
                 <div className="w-full min-w-0 h-full relative flex items-center px-1.5 md:px-3 py-0">
-                    <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
-                        {isReorderMode && !food.is_archived && (
-                            <button
-                                type="button"
-                                aria-label="Reordenar plato"
-                                className={`${isSelectionMode ? "hidden md:inline-flex" : "inline-flex"} p-1 touch-none text-gray-400 hover:text-gray-700 cursor-grab active:cursor-grabbing transition-colors`}
-                                {...attributes}
-                                {...listeners}
-                            >
-                                <GripVertical size={18} />
-                            </button>
-                        )}
-                        <button
-                            type="button"
-                            onClick={() => onToggleSelect(food._id)}
-                            aria-label="Seleccionar plato"
-                            className={`${isSelectionMode ? "inline-flex" : "hidden md:inline-flex"} p-1 cursor-pointer transition-transform active:scale-90 ${isSelected ? "text-orange-500" : "text-gray-300 hover:text-gray-500"}`}
-                        >
-                            {isSelected ? <FaCheckSquare size={16} /> : <FaRegSquare size={16} />}
-                        </button>
-                    </div>
+                    {((isReorderMode && !food.is_archived) || isSelectionMode) && (
+                        <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
+                            {isReorderMode && !food.is_archived && (
+                                <button
+                                    type="button"
+                                    aria-label="Reordenar plato"
+                                    className={`${isSelectionMode ? "hidden md:inline-flex" : "inline-flex"} p-1 touch-none text-gray-400 hover:text-gray-700 cursor-grab active:cursor-grabbing transition-colors`}
+                                    {...attributes}
+                                    {...listeners}
+                                >
+                                    <GripVertical size={18} />
+                                </button>
+                            )}
+                            {isSelectionMode && (
+                                <button
+                                    type="button"
+                                    onClick={() => onToggleSelect(food._id)}
+                                    aria-label="Seleccionar plato"
+                                    className={`inline-flex p-1 cursor-pointer transition-transform active:scale-90 ${isSelected ? "text-orange-500" : "text-gray-300 hover:text-gray-500"}`}
+                                >
+                                    {isSelected ? <FaCheckSquare size={16} /> : <FaRegSquare size={16} />}
+                                </button>
+                            )}
+                        </div>
+                    )}
 
                     <SortableFoodCard
                         user={user}

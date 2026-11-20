@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import AddFood from "@/src/components/buttons/AddFood";
 import IconFood from "@/public/images/icons-index/IconFood";
@@ -28,6 +29,7 @@ interface FoodCardProps {
     promo_price: number | string;
     template?: {
         backgroundColor?: string;
+        backgroundColor2?: string;
         border?: string;
         textColor?: string;
         textColorOpacity?: string;
@@ -49,6 +51,7 @@ export default function FoodsCardsExample({
     template,
     whatsapp,
 }: FoodCardProps) {
+    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
     return (
         <div className="w-full flex items-center">
@@ -70,6 +73,12 @@ export default function FoodsCardsExample({
                 )}
 
                 <div className="h-full aspect-square shrink-0 relative rounded-[7px] overflow-hidden">
+                    {!isImageLoaded && (
+                        <div
+                            aria-hidden="true"
+                            className={`absolute inset-0 skeleton-shimmer ${template?.backgroundColor2 || "bg-gray-200"}`}
+                        />
+                    )}
                     <Image
                         quality={50}
                         loading="lazy"
@@ -77,7 +86,9 @@ export default function FoodsCardsExample({
                         alt={name}
                         fill
                         sizes="70px"
-                        className="object-cover"
+                        onLoad={() => setIsImageLoaded(true)}
+                        onError={() => setIsImageLoaded(true)}
+                        className={`object-cover transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
                     />
                 </div>
 

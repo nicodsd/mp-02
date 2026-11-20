@@ -55,8 +55,10 @@ const StoreSchema = Yup.object({
         ).optional()
 });
 
-export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { user_id: string, menu: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void }) {
+export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen, userPlan }: { user_id: string, menu: any, isOpen: boolean, setIsOpen: (isOpen: boolean) => void, userPlan?: string }) {
     const refreshPanelData = useFoodStore((state) => state.refreshPanelData);
+    const storePlan = useFoodStore((state) => state.user?.plan);
+    const isPremium = String(userPlan ?? storePlan ?? "").toLowerCase() === "premium";
     const [photoPreview, setPhotoPreview] = useState<string | null>(menu?.photo || null);
     const [coverPreview, setCoverPreview] = useState<string | null>(menu?.cover || null);
     const [isLoading, setIsLoading] = useState(false);
@@ -83,6 +85,11 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
     }, [menu]);
 
     const handleEditStore = async (values: any) => {
+        if (!isPremium) {
+            alert("Las sucursales están disponibles únicamente para el plan Premium.");
+            setIsOpen(false);
+            return;
+        }
         setIsLoading(true);
         const formData = new FormData();
         if (values.photo instanceof File) {
@@ -154,6 +161,8 @@ export default function StoreEditModal({ user_id, menu, isOpen, setIsOpen }: { u
         facebook: menu?.facebook || '',
         tiktok: menu?.tiktok || '',
     };
+
+    if (!isPremium) return null;
 
     return (
         <Transition show={isOpen} as={Fragment}>

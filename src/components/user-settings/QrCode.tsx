@@ -123,7 +123,7 @@ export default function QrModalsGenerator({ user, logoUrl }: QrButtonProps) {
 
   return (
     <div className="flex relative items-center w-full justify-center md:justify-start">
-      <div className="rounded-2xl border-[0.1px] flex flex-col bg-background w-full border-gray-200 p-4 text-center animate-in fade-in zoom-in duration-200">
+      <div className="rounded-2xl border-[0.1px] flex flex-col bg-background/70 md:bg-background/60 w-full border-gray-200 shadow-lg p-4 text-center animate-in fade-in zoom-in duration-200">
         <div
           className="relative flex justify-center mb-8 p-5 rounded-2xl border border-gray-300 transition-colors duration-300"
           style={{ backgroundColor: selectedTemplate.bg }}

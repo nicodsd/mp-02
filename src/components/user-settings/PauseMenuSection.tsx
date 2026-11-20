@@ -70,7 +70,7 @@ const PauseMenuSection: React.FC<PauseMenuSectionProps> = ({
       {/* Modo descanso */}
       {user?.plan !== "free" ? (
         <div
-          className={`w-full mt-4 md:mt-0 p-4 md:p-6 rounded-3xl border flex items-center justify-between gap-4 transition-colors ${isPaused ? "bg-amber-50 border-amber-300" : "border-gray-200 bg-white"
+          className={`w-full mt-4 md:mt-0 p-4 md:p-6 rounded-3xl shadow-lg border flex items-center justify-between gap-4 transition-colors ${isPaused ? "bg-amber-50 border-amber-300" : "border-gray-200 bg-background/70 md:bg-background/60"
             }`}
         >
           <div className="flex items-center gap-4">

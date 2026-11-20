@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import AddFood from "@/src/components/buttons/AddFood";
 import AddFoodExample from "@/src/components/buttons/AddFoodExample";
@@ -38,6 +38,7 @@ type FoodsCardsOptionsProps = {
   user: any;
   template?: {
     backgroundColor?: string;
+    backgroundColor2?: string;
     border?: string;
     textColor?: string;
     textColorOpacity?: string;
@@ -66,6 +67,7 @@ export default function Cards({
     is_promo,
     promo_price
   } = food;
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   return (
     <div
@@ -106,6 +108,12 @@ export default function Cards({
 
       <div className="flex flex-col w-full h-64 overflow-hidden rounded-lg p-2 items-center">
         <div className="relative min-w-full h-31.25 md:max-w-25 md:max-h-36 shrink-0 rounded-[7px] overflow-hidden">
+          {!isImageLoaded && (
+            <div
+              aria-hidden="true"
+              className={`absolute inset-0 skeleton-shimmer ${template?.backgroundColor2 || "bg-gray-200"}`}
+            />
+          )}
           <Image
             quality={75}
             loading="lazy"
@@ -113,7 +121,9 @@ export default function Cards({
             alt={name}
             fill
             sizes="(max-width: 768px) 160px, 130px"
-            className="object-cover"
+            onLoad={() => setIsImageLoaded(true)}
+            onError={() => setIsImageLoaded(true)}
+            className={`object-cover transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
           />
         </div>
 

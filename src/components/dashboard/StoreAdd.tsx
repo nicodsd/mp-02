@@ -20,6 +20,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
     } = useFoodStore();
 
     const user = storeUser && storeUser.id === initialUser?.id ? { ...initialUser, ...storeUser } : initialUser;
+    const isPremium = String(user?.plan || "").toLowerCase() === "premium";
     const menus = isInitialized ? storeMenus : (storeMenus.length > 0 ? storeMenus : initialMenus);
 
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -33,8 +34,24 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
 
     let menusCount = (menus?.length || 0) + 1;
 
+    const handleOpenCreateModal = () => {
+        if (!isPremium) {
+            alert("Las sucursales están disponibles únicamente para el plan Premium.");
+            return;
+        }
+        setIsOpenModal(true);
+    };
+
+    const handleSetSelectionMode = (mode: boolean) => {
+        if (mode && !isPremium) {
+            alert("Las sucursales están disponibles únicamente para el plan Premium.");
+            return;
+        }
+        setIsSelectionMode(mode);
+    };
+
     const toggleSelection = (id: string) => {
-        if (user?.plan !== 'premium') {
+        if (!isPremium) {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -49,7 +66,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
     };
 
     const handleEditStore = async () => {
-        if (user?.plan !== 'premium') {
+        if (!isPremium) {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -58,7 +75,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
     };
 
     const handleBulkDelete = async () => {
-        if (user?.plan !== 'premium') {
+        if (!isPremium) {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -87,7 +104,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
     }
 
     const handleSelectStore = (storeId: string) => {
-        if (user?.plan !== 'premium') {
+        if (!isPremium) {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -97,7 +114,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
     }
 
     const handleDeleteSingleStore = async () => {
-        if (user?.plan !== 'premium') {
+        if (!isPremium) {
             alert("No tienes permiso para realizar esta accion");
             return;
         }
@@ -132,16 +149,17 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
                 </div>
             )}
-            {user?.plan === "premium" && (
+            {isPremium && (
                 <StoreAddModal
                     isOpen={isOpenModal}
                     menusCount={menusCount}
                     user_id={user_id}
                     setIsOpen={setIsOpenModal}
+                    userPlan={user?.plan}
                 />
             )}
 
-            {openSelectStore && user?.plan === "premium" && (
+            {openSelectStore && isPremium && (
                 <SelectStoreModal
                     isOpen={openSelectStore}
                     storeId={storeId}
@@ -160,19 +178,26 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
                 </header>
 
                 <div>
-                    <SelectionToolbar
-                        isSelectionMode={isSelectionMode}
-                        selectedCount={selectedIds.length}
-                        setIsSelectionMode={setIsSelectionMode}
-                        onCancelSelection={handleCancel}
-                        onBulkDelete={handleBulkDelete}
-                    />
+                    {isPremium && (
+                        <SelectionToolbar
+                            isSelectionMode={isSelectionMode}
+                            selectedCount={selectedIds.length}
+                            setIsSelectionMode={handleSetSelectionMode}
+                            onCancelSelection={handleCancel}
+                            onBulkDelete={handleBulkDelete}
+                        />
+                    )}
 
                     <div className="gap-4 grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 py-2">
 
                         {menus?.map((m) => (
                             !isSelectionMode ? (
-                                <div key={m._id} onClick={() => handleSelectStore(m._id)}>
+                                <div
+                                    key={m._id}
+                                    onClick={isPremium ? () => handleSelectStore(m._id) : undefined}
+                                    className={!isPremium ? "pointer-events-none select-none opacity-60" : undefined}
+                                    aria-disabled={!isPremium}
+                                >
                                     <SucursalCard
                                         m={m}
                                         isSelected={selectedIds.includes(m._id)}
@@ -183,6 +208,7 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
                                 :
                                 (
                                     <SucursalCard
+                                        key={m._id}
                                         m={m}
                                         isSelected={selectedIds.includes(m._id)}
                                         isSelectionMode={isSelectionMode}
@@ -191,9 +217,9 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
                                 )
                         ))}
 
-                        {!isSelectionMode && (
+                        {!isSelectionMode && isPremium && (
                             <button
-                                onClick={() => setIsOpenModal(true)}
+                                onClick={handleOpenCreateModal}
                                 className="flex flex-col h-50 items-center justify-center gap-2 border-2 border-dashed bg-red-50 border-primary rounded-xl hover:bg-gray-50 transition-colors text-gray-400"
                             >
                                 <div className="bg-primary p-2 rounded-full text-white shadow-lg">
@@ -205,12 +231,13 @@ export default function Sucursales({ menus: initialMenus, user_id, user: initial
                     </div>
                 </div>
             </div>
-            {isEditModalOpen && user?.plan === "premium" && (
+            {isEditModalOpen && isPremium && (
                 <StoreEditModal
                     user_id={user_id}
                     menu={menu}
                     isOpen={isEditModalOpen}
                     setIsOpen={setIsEditModalOpen}
+                    userPlan={user?.plan}
                 />
             )}
         </div>
