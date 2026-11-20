@@ -226,7 +226,7 @@ export default function PanelUser({
         <Transition show={isSidebarOpen} as={Fragment}>
           <Dialog
             as="div"
-            className="relative z-50 md:hidden"
+            className="relative z-[120] md:hidden"
             onClose={setIsSidebarOpen}
           >
             <TransitionChild
@@ -239,7 +239,7 @@ export default function PanelUser({
               <div className="fixed inset-0 bg-gray-400/40 backdrop-blur-sm" />
             </TransitionChild>
 
-            <div className="fixed inset-0 flex">
+            <div className="fixed inset-0 flex z-10 overflow-hidden">
               <TransitionChild
                 as={Fragment}
                 enter="transition ease-in-out duration-300 transform"
@@ -249,8 +249,8 @@ export default function PanelUser({
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <DialogPanel className="relative flex w-full max-w-xs flex-col bg-background pb-12 shadow-xl">
-                  <div className="flex items-start justify-between px-3 py-4">
+                <DialogPanel className="relative flex w-full h-full min-h-screen flex-col bg-background pb-10 shadow-xl overflow-y-auto overscroll-contain">
+                  <div className="flex shrink-0 items-start justify-between px-3 py-6">
                     <div className="flex flex-col">
                       <Link
                         href="/mi-menu"
@@ -300,7 +300,7 @@ export default function PanelUser({
                     </button>
                   </div>
 
-                  <nav className="px-4 space-y-2 flex flex-col justify-between h-full">
+                  <nav className="px-4 flex flex-col justify-between gap-6 flex-1">
                     <div className="flex flex-col gap-2">
                       {menuItems?.map((item, index) => (
                         <button
@@ -321,7 +321,7 @@ export default function PanelUser({
                         </button>
                       ))}
                     </div>
-                    <div className="w-full pl-5">
+                    <div className="w-full pl-5 pt-2 shrink-0">
                       <button
                         onClick={() => { hadleLogoutUserAction(user.id) }}
                         className="flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"

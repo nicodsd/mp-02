@@ -31,9 +31,10 @@ export default async function Page({
     return <PageNotFound />;
   }
 
+  const isPremium = String(user?.data?.plan || "").toLowerCase() === "premium";
   const userId = user.data.user_id || user.data._id || user.data.id;
-  const menusData = userId ? await getMenus(userId) : { menus: [] };
-  const menus = menusData?.menus || [];
+  const menusData = isPremium && userId ? await getMenus(userId) : { menus: [] };
+  const menus = isPremium ? (menusData?.menus || []) : [];
   const activePromos = (user?.data?.foods || [])
     .filter((f: any) => f.is_promo && f.is_archived !== true)
     .map((f: any) => ({

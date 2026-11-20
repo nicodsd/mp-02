@@ -17,17 +17,17 @@ export default async function Page({
 }) {
   const { name, location } = await params;
   const user = await userGetSatellite(name, location);
-  let template = templates.find((t) => t.template_id === user?.data?.template_id);
-  if (user?.data.plan !== "free") {
-    template = templates.find((t) => t.template_id === user?.data?.template_id);
-  } else {
-    template = templates.find((t) => t.template_id === "default");
-    user.data.presentation = "list"
-    user.data.navBar = "default"
-  }
-  if (!user?.data) {
+  const plan = String(user?.data?.plan || "").toLowerCase();
+
+  // Las sucursales solo están habilitadas para cuentas con plan Premium.
+  // Cuentas Plus o Free no pueden acceder a sucursales ya creadas.
+  if (!user?.data || plan !== "premium") {
     return <PageNotFound />;
   }
+
+  const template =
+    templates.find((t) => t.template_id === user?.data?.template_id) ||
+    templates.find((t) => t.template_id === "default");
   const activePromos = (user?.data?.foods || [])
     .filter((f: any) => f.is_promo && f.is_archived !== true)
     .map((f: any) => ({

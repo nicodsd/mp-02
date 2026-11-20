@@ -1,7 +1,10 @@
+"use client";
 import 'animate.css';
+import { useState } from "react";
 import Image from "next/image";
 
 export default function PromoDayCard({ foods, template }: { foods: any, template: any }) {
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const priceFormatter = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
@@ -12,7 +15,24 @@ export default function PromoDayCard({ foods, template }: { foods: any, template
     <div className={`relative border-2 ${template?.icons || "border-gray-200"} flex min-h-30 w-full overflow-hidden rounded-2xl p-2 md:h-52 md:p-3`}>
       <div className={`absolute inset-0 z-20 bg-linear-to-r from-black/20 via-[#000000] to-[#000000]`}></div>
 
-      <Image loading="eager" priority fetchPriority="high" src={foods.photo} alt={foods.name} width={300} height={300} className="absolute -left-5 w-50 md:w-100 top-0 my-auto inset-0 z-10 object-contain" />
+      {!isImageLoaded && (
+        <div
+          aria-hidden="true"
+          className={`absolute inset-0 z-10 skeleton-shimmer ${template?.backgroundColor2 || "bg-gray-800"}`}
+        />
+      )}
+      <Image
+        loading="eager"
+        priority
+        fetchPriority="high"
+        src={foods.photo}
+        alt={foods.name}
+        width={300}
+        height={300}
+        onLoad={() => setIsImageLoaded(true)}
+        onError={() => setIsImageLoaded(true)}
+        className={`absolute -left-5 w-50 md:w-100 top-0 my-auto inset-0 z-10 object-contain transition-opacity duration-300 ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+      />
 
       <div className="z-20 relative w-full flex flex-1 flex-col justify-between text-white">
 
@@ -32,7 +52,6 @@ export default function PromoDayCard({ foods, template }: { foods: any, template
           </span>
 
           <span className={`text-2xl font-extrabold drop-shadow-md px-2 md:p-3 py-1 rounded-md ${template?.accentColors?.[1] || "text-yellow-300 bg-primary"} leading-none md:text-3xl`}>
-            <span className={`text-sm font-black text-white italic mr-1`}>%OFF</span>
             ¡Hoy {priceFormatter.format(foods.promo_price)}!
           </span>
 

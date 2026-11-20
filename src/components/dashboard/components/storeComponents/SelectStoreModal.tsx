@@ -21,9 +21,12 @@ export default function SelectStoreModal({
     handleEditStore
 }: SelectStoreModalProps) {
 
-    if (!isOpen) return null;
+    const isPremium = String(user?.plan || "").toLowerCase() === "premium";
+
+    if (!isOpen || !isPremium) return null;
 
     const handleShare = () => {
+        if (!isPremium) return;
         const isCentral = menu?.menuEnlisted === 0;
         const identifier = menu?.menuEnlisted ?? (menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id);
         const link = isCentral
@@ -34,6 +37,7 @@ export default function SelectStoreModal({
     };
 
     const handleEnter = () => {
+        if (!isPremium) return;
         const isCentral = menu?.menuEnlisted === 0;
         const identifier = menu?.menuEnlisted ?? (menu?.location ? menu.location.replace(/\s+/g, '-') : menu._id);
         const link = isCentral

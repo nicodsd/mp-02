@@ -101,11 +101,9 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
       aria-label="Promociones activas"
     >
       <div
-        className={`${template?.backgroundColor || "bg-white"} ${
-          template?.textColor || "text-gray-800"
-        } relative w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden border ${
-          template?.border || "border-gray-200"
-        }`}
+        className={`${template?.backgroundColor || "bg-white"} ${template?.textColor || "text-gray-800"
+          } relative w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden border ${template?.border || "border-gray-200"
+          }`}
         onClick={(e) => e.stopPropagation()}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -113,9 +111,8 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
       >
         {/* Header */}
         <div
-          className={`flex items-center justify-between px-4 py-2.5 border-b ${
-            template?.border || "border-gray-200"
-          }`}
+          className={`flex items-center justify-between px-4 py-2.5 border-b ${template?.border || "border-gray-200"
+            }`}
         >
           <div className="flex items-center gap-1.5">
             <FaFire className={template?.icons || "text-primary"} size={16} />
@@ -156,9 +153,8 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
 
           {/* Discount badge */}
           <div
-            className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-extrabold uppercase shadow-md ${
-              template?.accentColors?.[1] || "bg-primary"
-            } text-white`}
+            className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-extrabold uppercase shadow-xs ${template?.accentColors?.[1] || "bg-primary"
+              } text-white`}
           >
             {discountPercent && discountPercent > 0 ? `${discountPercent}% OFF` : "PROMO"}
           </div>
@@ -207,9 +203,8 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
                 </span>
               )}
               <span
-                className={`inline-block text-xl font-extrabold px-2.5 py-0.5 rounded-lg shadow-sm ${
-                  template?.accentColors?.[1] || "bg-primary"
-                } text-white`}
+                className={`inline-block text-xl font-extrabold px-2.5 py-0.5 rounded-lg shadow-sm ${template?.accentColors?.[1] || "bg-primary"
+                  } text-white`}
               >
                 {priceFormatter.format(finalPrice)}
               </span>
@@ -225,11 +220,10 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
                 <button
                   key={promo._id || idx}
                   onClick={() => setCurrent(idx)}
-                  className={`h-2 rounded-full transition-all ${
-                    idx === current
-                      ? `${template?.accentColors?.[0] || "bg-primary"} w-6`
-                      : `${template?.backgroundColor2 || "bg-gray-300"} w-2`
-                  }`}
+                  className={`h-2 rounded-full transition-all ${idx === current
+                    ? `${template?.accentColors?.[0] || "bg-primary"} w-6`
+                    : `${template?.backgroundColor2 || "bg-gray-300"} w-2`
+                    }`}
                   aria-label={`Ir a promo ${idx + 1}`}
                 />
               ))}
@@ -237,15 +231,6 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
           ) : (
             <span className="text-xs opacity-70">¡Aprovechá hoy!</span>
           )}
-
-          <button
-            onClick={() => handleSelectPromo(activePromo._id)}
-            className={`text-xs font-bold px-3 py-1.5 rounded-lg ${
-              template?.accentColors?.[1] || "bg-primary"
-            } text-white hover:opacity-90 transition-opacity ml-auto`}
-          >
-            Ver en el menú
-          </button>
         </div>
       </div>
     </div>

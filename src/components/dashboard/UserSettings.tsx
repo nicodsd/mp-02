@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { HiOutlineLogout } from "react-icons/hi";
 import { updateUserCookie, updateMenuCookie } from "@/app/actions";
 import { placeholder, URI } from "@/src/lib/const";
 import { useFoodStore } from "@/src/lib/useFoodStore";
@@ -9,6 +11,7 @@ import FieldEditModal from "@/src/components/user-settings/FieldEditModal";
 import SaveChangesBar from "@/src/components/user-settings/SaveChangesBar";
 import PauseMenuSection from "@/src/components/user-settings/PauseMenuSection";
 import QrAndShareSection from "@/src/components/user-settings/QrAndShareSection";
+import { logoutUser } from "@/src/utils/logout";
 import {
   EditableFieldKey,
   EditStates,
@@ -21,6 +24,19 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
     updateUserLocal,
     refreshPanelData,
   } = useFoodStore();
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogoutUserAction = async (userId: string) => {
+    setIsLoggingOut(true);
+    try {
+      await logoutUser(userId);
+    } catch (err) {
+      console.error("Error en logout:", err);
+    } finally {
+      window.location.replace("/");
+    }
+  };
 
   const user =
     storeUser && storeUser.id === initialUser?.id
@@ -252,14 +268,13 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
       )}
 
       {/* COLUMNA IZQUIERDA: Formulario y edición */}
-      <div className="w-full flex px-4 flex-col">
-        <header className="p-3 w-full flex flex-col gap-1">
+      <div className="w-full z-20 flex px-3 flex-col">
+        <header className="py-3 flex flex-col gap-1">
           <h1 className="text-2xl font-bold text-gray-800">Tu local</h1>
           <p className="text-gray-500 text-sm">
             Edita la información de tu negocio.
           </p>
         </header>
-
         <form
           onSubmit={userUpdate}
           className="flex w-full mt-3 relative flex-col items-center justify-center border-b md:border-b-0 border-gray-200 pb-6"
@@ -323,14 +338,36 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
       </div>
 
       {/* COLUMNA DERECHA (Escritorio) / ABAJO (Móvil): Sección QR y Compartir */}
-      <QrAndShareSection user={user} previewPhoto={previewPhoto} />
-      <div className="px-4 md:hidden">
+      <div className="hidden md:block z-10">
+        <QrAndShareSection user={user} previewPhoto={previewPhoto} />
+      </div>
+      <div className="p-3 md:p-0 md:hidden z-10">
+        <QrAndShareSection user={user} previewPhoto={previewPhoto} />
         <PauseMenuSection
           user={user}
           updateUserLocal={updateUserLocal}
           refreshPanelData={refreshPanelData}
         />
       </div>
+      <div className="w-full px-10 md:px-0 md:hidden">
+        <button
+          type="button"
+          onClick={() => handleLogoutUserAction(String(user?.id))}
+          className="mt-10 md:mt-30 flex items-center active:scale-90 gap-3 text-red-500 active:text-red-900 transition-colors md:hidden font-bold cursor-pointer"
+        >
+          <HiOutlineLogout size={20} /> Cerrar Sesión
+        </button>
+      </div>
+
+      {isLoggingOut && (
+        <div className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-white/85 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-primary animate-spin mb-4" />
+          <p className="text-base font-bold text-gray-800">
+            Cerrando sesión...
+          </p>
+        </div>
+      )}
+      <Image className="absolute z-0 top-10 bottom-0 md:left-30 blur-2xl rounded-[20rem] opacity-10 md:opacity-30 h-screen md:h-[90vh] w-auto" src={previewBackground} alt={""} width={100} height={100} />
     </div>
   );
 };
