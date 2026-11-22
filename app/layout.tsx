@@ -4,7 +4,6 @@ import Script from "next/script";
 import { Asap, Geist } from "next/font/google";
 import EmotionProvider from "@/src/components/EmotionProvider";
 import { cn } from "@/lib/utils";
-import { headers } from "next/headers";
 import CookieConsentManager, {
   ConsentAwareAnalytics,
 } from "@/src/components/common/CookieConsentManager";
@@ -17,10 +16,17 @@ const asap = Asap({
 });
 
 export const metadata: Metadata = {
-  title: "QMenú | Tu Menú Digital Rápido y Gratis",
+  metadataBase: new URL("https://qmenu.digital"),
+  title: {
+    default: "QMenú | Tu Menú Digital Rápido y Gratis",
+    template: "%s | QMenú",
+  },
   description: "Crea el menú digital QR para tu restaurante o bar en minutos. Sube tus platos, actualiza precios en tiempo real y recibe pedidos directo en WhatsApp sin comisiones.",
-  keywords: ["menú digital", "carta qr", "menu qr gratis", "restaurantes", "pedidos whatsapp", "qmenu", "digitalizar bar", "carta digital online", "menú digital para restaurantes"],
+  keywords: ["menú digital", "carta qr", "menu qr gratis", "restaurantes", "pedidos whatsapp", "qmenu", "qmenú", "digitalizar bar", "carta digital online", "menú digital para restaurantes"],
   authors: [{ name: "QMenú Team" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "QMenú | Tu Menú Digital Rápido y Gratis",
     description: "Moderniza la experiencia de tu restaurante. Actualizaciones en tiempo real y pedidos por WhatsApp.",
@@ -28,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "QMenú",
     images: [
       {
-        url: "https://qmenu.digital/og-image.jpg",
+        url: "https://qmenu.digital/og-image.png",
         width: 1200,
         height: 630,
         alt: "QMenú - Plataforma de Menús Digitales",
@@ -41,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "QMenú | Tu Menú Digital Rápido y Gratis",
     description: "Moderniza la experiencia de tu restaurante con códigos QR.",
-    images: ["https://qmenu.digital/og-image.jpg"],
+    images: ["https://qmenu.digital/og-image.png"],
   },
   robots: {
     index: true,
@@ -68,21 +74,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headerList = await headers();
-  const nonce = headerList.get("x-nonce") || "";
   return (
     <html lang="es" className={cn(asap.className, "font-sans", geist.variable)}>
       <head>
         {/* Bloque HEAD de GTM con Google Consent Mode v2 */}
         <Script
-          nonce={nonce}
           id="gtm-head"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -134,7 +137,6 @@ export default async function RootLayout({
             `,
           }}
         />
-        <meta property="csp-nonce" content={nonce} />
       </head>
       <body className="antialiased">
         <noscript>
@@ -146,7 +148,7 @@ export default async function RootLayout({
           ></iframe>
         </noscript>
         <EmotionProvider>
-          <main>{children}</main>
+          {children}
           <CookieConsentManager />
           <ConsentAwareAnalytics />
         </EmotionProvider>

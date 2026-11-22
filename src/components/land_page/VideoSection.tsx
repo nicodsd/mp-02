@@ -1,8 +1,28 @@
 "use client";
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { MousePointerClick, Zap, Smartphone } from 'lucide-react';
 
 export default function VideoSection() {
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+
+  useEffect(() => {
+    const el = videoContainerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="como-funciona" className="pt-30 lg:pb-10 relative overflow-hidden w-full">
       <div className="w-full flex flex-col md:flex-row items-center justify-center gap-6 mx-auto md:mb-10">
@@ -17,7 +37,7 @@ export default function VideoSection() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-base text-zinc-500"
+              className="text-base text-zinc-600"
             >
               Tu cliente puede entrar a tú menú desde tú red social favorita o también escaneando el código QR, elegir sus platos favoritos, personalizar su pedido y enviar su orden directamente por WhatsApp.
             </motion.p>
@@ -70,23 +90,26 @@ export default function VideoSection() {
         </div>
         {/* Video */}
         <motion.div
+          ref={videoContainerRef}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.1, delay: 0.4 }}
-          className="w-full rounded-3xl relative overflow-hidden border border-gray-200/50"
+          className="w-full rounded-3xl relative overflow-hidden border border-gray-200/50 aspect-square bg-stone-100"
         >
-          <video
-            className="w-full h-full object-cover aspect-square"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-          >
-            <source src="/videos/man_walking.webm" type="video/mp4" />
-            Tu navegador no soporta el elemento de video.
-          </video>
+          {shouldLoadVideo && (
+            <video
+              className="w-full h-full object-cover aspect-square"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+            >
+              <source src="/videos/man_walking.webm" type="video/webm" />
+              Tu navegador no soporta el elemento de video.
+            </video>
+          )}
 
           <div
             className="absolute md:hidden bottom-4 left-3 right-4 sm:top-6 sm:left-6 flex flex-col gap-2.5 items-start pointer-events-none"

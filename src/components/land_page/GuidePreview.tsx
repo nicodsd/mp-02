@@ -36,6 +36,9 @@ export default function GuidePreview() {
   // Ambos descargaban en paralelo con range requests sobre la misma entrada de caché del navegador,
   // lo que provocaba "net::ERR_CACHE_OPERATION_NOT_SUPPORTED". Ahora solo se monta el visible.
   const [isDesktop, setIsDesktop] = React.useState<boolean | null>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
+  const sectionRef = React.useRef<HTMLElement>(null);
+
   React.useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
     const update = () => setIsDesktop(mq.matches);
@@ -44,18 +47,35 @@ export default function GuidePreview() {
     return () => mq.removeEventListener("change", update);
   }, []);
 
+  React.useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-20 md:py-0 md:pb-40 relative overflow-hidden w-full">
+    <section ref={sectionRef} className="py-20 md:py-0 md:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:px-8 items-start">
           <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-12 w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
-            {isDesktop === true && (
+            {isDesktop === true && shouldLoadVideo && (
             <video
               className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
               autoPlay
               loop
               muted
               playsInline
+              preload="none"
             >
               <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
             </video>
@@ -79,13 +99,14 @@ export default function GuidePreview() {
               </div>
             </div>
             <div className="w-full md:hidden md:invisible mb-4 md:mb-0 flex justify-center md:items-center">
-              {isDesktop === false && (
+              {isDesktop === false && shouldLoadVideo && (
               <video
                 className="w-50 h-auto border-3 border-white rounded-3xl shadow-xl object-cover"
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="none"
               >
                 <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
               </video>

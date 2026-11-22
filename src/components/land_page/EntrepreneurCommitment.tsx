@@ -24,7 +24,7 @@ export default function EntrepreneurCommitment() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="tracking-tight text-lg md:text-3xl text-stone-500 mb-3 pt-10"
+          className="tracking-tight text-lg md:text-3xl text-stone-700 mb-3 pt-10"
         >
           De la mano con los <span className="text-primary">emprendedores</span>
         </motion.h2>
@@ -34,7 +34,7 @@ export default function EntrepreneurCommitment() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-sm md:text-md text-stone-400 max-w-4xl mx-auto text-balance"
+          className="text-sm md:text-md text-stone-600 max-w-4xl mx-auto text-balance"
         >
           Sabemos lo desafiante que puede ser empezar desde cero. Por eso, creamos QMenú con un propósito claro: darte las herramientas necesarias para que puedas crecer, destacarte y llevar tu negocio a las redes y <strong>facilitar la toma de pedidos</strong> sin barreras iniciales.
         </motion.p>
@@ -48,10 +48,10 @@ export default function EntrepreneurCommitment() {
             className="flex flex-col items-center md:p-6"
           >
             <div className="flex items-center justify-center mb-1 text-primary">
-              <Rocket className="md:w-10 md:h-10 w-6 h-6" />
+              <Rocket className="md:w-10 md:h-10 w-6 h-6" aria-hidden="true" />
             </div>
-            <h3 className="text-sm font-semibold text-stone-400 mb-1">Empieza sin costos</h3>
-            <p className="text-stone-400 text-center text-xs">Creemos que el presupuesto no debe ser un freno. Digitaliza tu menú totalmente gratis.</p>
+            <h3 className="text-sm font-semibold text-stone-700 mb-1">Empieza sin costos</h3>
+            <p className="text-stone-600 text-center text-xs">Creemos que el presupuesto no debe ser un freno. Digitaliza tu menú totalmente gratis.</p>
           </motion.div>
 
           <motion.div
@@ -62,10 +62,10 @@ export default function EntrepreneurCommitment() {
             className="flex flex-col items-center md:p-6"
           >
             <div className="flex items-center justify-center mb-1 text-primary">
-              <TrendingUp className="md:w-10 md:h-10 w-6 h-6" />
+              <TrendingUp className="md:w-10 md:h-10 w-6 h-6" aria-hidden="true" />
             </div>
-            <h3 className="text-sm font-semibold text-stone-400 mb-1">Crece sin límites</h3>
-            <p className="text-stone-400 text-center text-xs">Te acompañamos en cada paso con herramientas que escalan a medida que tu negocio crece.</p>
+            <h3 className="text-sm font-semibold text-stone-700 mb-1">Crece sin límites</h3>
+            <p className="text-stone-600 text-center text-xs">Te acompañamos en cada paso con herramientas que escalan a medida que tu negocio crece.</p>
           </motion.div>
 
           <motion.div
@@ -76,10 +76,10 @@ export default function EntrepreneurCommitment() {
             className="flex flex-col items-center md:p-6"
           >
             <div className="flex items-center justify-center mb-1 text-primary">
-              <Star className="md:w-10 md:h-10 w-6 h-6" />
+              <Star className="md:w-10 md:h-10 w-6 h-6" aria-hidden="true" />
             </div>
-            <h3 className="text-sm font-semibold text-stone-400 mb-1">Destácate del resto</h3>
-            <p className="text-stone-400 text-center text-xs">Ofrece una experiencia moderna y profesional que enamorará a tus clientes desde el primer escaneo.</p>
+            <h3 className="text-sm font-semibold text-stone-700 mb-1">Destácate del resto</h3>
+            <p className="text-stone-600 text-center text-xs">Ofrece una experiencia moderna y profesional que enamorará a tus clientes desde el primer escaneo.</p>
           </motion.div>
         </div>
       </div>

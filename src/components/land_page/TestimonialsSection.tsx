@@ -104,7 +104,7 @@ export default function TestimonialsSlider() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-base text-zinc-500"
+                        className="text-base text-zinc-600"
                     >
                         Los dueños de restaurantes eliminaron la fricción en la promoción de sus platos y la gestión de sus pedidos diarios.
                     </motion.p>
@@ -147,8 +147,8 @@ export default function TestimonialsSlider() {
                                         <div className="flex items-center gap-3 pt-4 border-t border-zinc-50">
                                             <span className="text-2xl" role="img" aria-label="avatar">{item.avatar}</span>
                                             <div>
-                                                <h4 className="font-semibold text-sm text-stone-900">{item.name}</h4>
-                                                <p className="text-xs text-zinc-400">{item.role}</p>
+                                                <h3 className="font-semibold text-sm text-stone-900">{item.name}</h3>
+                                                <p className="text-xs text-zinc-600">{item.role}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -176,8 +176,8 @@ export default function TestimonialsSlider() {
                                         <div className="flex items-center gap-3 pt-4 border-t border-zinc-50">
                                             <span className="text-2xl" role="img" aria-label="avatar">{item.avatar}</span>
                                             <div>
-                                                <h4 className="font-semibold text-sm text-stone-900">{item.name}</h4>
-                                                <p className="text-xs text-zinc-400">{item.role}</p>
+                                                <h3 className="font-semibold text-sm text-stone-900">{item.name}</h3>
+                                                <p className="text-xs text-zinc-600">{item.role}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -190,18 +190,20 @@ export default function TestimonialsSlider() {
             {/* Botones de Navegación */}
             <div className="flex gap-2 mt-3 w-full justify-end">
                 <button
+                    type="button"
                     onClick={() => paginate(-1)}
                     className="p-3 rounded-full border border-gray-300 bg-white hover:bg-zinc-50 active:scale-95 transition text-zinc-700"
-                    aria-label="Anterior"
+                    aria-label="Testimonio anterior"
                 >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <button
+                    type="button"
                     onClick={() => paginate(1)}
                     className="p-3 rounded-full border border-gray-300 bg-white hover:bg-zinc-50 active:scale-95 transition text-zinc-700"
-                    aria-label="Siguiente"
+                    aria-label="Testimonio siguiente"
                 >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-5 h-5" aria-hidden="true" />
                 </button>
             </div>
         </section>

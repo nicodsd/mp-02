@@ -2,7 +2,10 @@
 import { useState, useEffect, useRef, ReactNode } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
+import foodsImg from "@/public/images/placeholders/image-background-foods.png";
+import womanPhoneImg from "@/public/images/placeholders/woman-phone.webp";
+import burgerImg from "@/public/images/placeholders/burger.webp";
 
 interface Slide {
     title: ReactNode;
@@ -11,7 +14,7 @@ interface Slide {
     ctaText: string;
     ctaLink: string;
     ctaBg?: string;
-    image?: string;
+    image?: StaticImageData;
     imageAlt?: string;
 }
 
@@ -34,9 +37,9 @@ const slidesData: Slide[] = [
         ctaText: "Empieza ahora",
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
-        image: "/images/placeholders/image-background-foods.png",
+        image: foodsImg,
 
-        imageAlt: "hamburguesa-deliciosa"
+        imageAlt: "Menú digital QMenú con hamburguesa y platos para restaurantes"
     },
     {
         title: "Pedidos directos al WhatsApp",
@@ -45,8 +48,8 @@ const slidesData: Slide[] = [
         ctaText: "Empieza ahora",
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
-        image: "/images/placeholders/woman-phone.webp",
-        imageAlt: "mujer-usando-celular"
+        image: womanPhoneImg,
+        imageAlt: "Clienta realizando un pedido desde su celular con QMenú"
     },
     {
         title: "Actualiza en tiempo real",
@@ -55,8 +58,8 @@ const slidesData: Slide[] = [
         ctaText: "Empieza ahora",
         ctaLink: "/registro-de-usuario",
         ctaBg: "bg-lime-300 hover:bg-lime-400 text-green-900",
-        image: "/images/placeholders/burger.webp",
-        imageAlt: "hamburguesa"
+        image: burgerImg,
+        imageAlt: "Plato destacado en menú digital QR de QMenú"
     }
 ];
 
@@ -105,9 +108,9 @@ export default function SliderBanner() {
                     >
                         <Image
                             src={slidesData[current].image}
-                            alt={slidesData[current].imageAlt || "banner-image"}
-                            width={600}
-                            height={600}
+                            alt={slidesData[current].imageAlt || "Menú digital QMenú"}
+                            sizes="(max-width: 768px) 100vw, 1px"
+                            loading="lazy"
                             className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
                         />
                     </motion.div>
@@ -136,9 +139,9 @@ export default function SliderBanner() {
                                         >
                                             <Image
                                                 src={slide.image}
-                                                alt={slide.imageAlt || "banner-image"}
-                                                width={500}
-                                                height={500}
+                                                alt={slide.imageAlt || "Menú digital QMenú"}
+                                                sizes="(min-width: 768px) 560px, 1px"
+                                                loading="lazy"
                                                 className="w-full translate-y-6 h-auto object-cover"
                                             />
                                         </motion.div>
@@ -179,15 +182,20 @@ export default function SliderBanner() {
 
             </div>
             {/* Controles del Slider */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-30">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 z-30">
                 {slidesData.map((_, index) => (
                     <button
+                        type="button"
                         key={index}
                         onClick={() => setCurrent(index)}
-                        className={`h-2.5 rounded-full transition-all duration-300 ${index === current ? "bg-white w-7" : "bg-white/50 w-2.5 hover:bg-white/80"
-                            }`}
+                        className="p-2 flex items-center justify-center cursor-pointer"
                         aria-label={`Ir al slide ${index + 1}`}
-                    />
+                    >
+                        <span
+                            className={`h-2.5 rounded-full transition-all duration-300 ${index === current ? "bg-white w-7" : "bg-white/60 w-2.5 hover:bg-white/90"
+                                }`}
+                        />
+                    </button>
                 ))}
             </div>
         </section>

@@ -155,12 +155,12 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
               className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115`}
             >
               {plan.id === "plus" && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-primary text-white text-[11px] md:text-xs font-black uppercase px-4 py-1 rounded-full tracking-wider whitespace-nowrap shadow-md flex items-center gap-1 border border-white">
+                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-red-700 text-white text-[11px] md:text-xs font-black uppercase px-4 py-1 rounded-full tracking-wider whitespace-nowrap shadow-md flex items-center gap-1 border border-white">
                   {isExpired ? (
                     "Recomendado"
                   ) : (
                     <>
-                      <Flame className="w-3.5 h-3.5 fill-white" />
+                      <Flame className="w-3.5 h-3.5 fill-white" aria-hidden="true" />
                       Recomendado • 50% OFF
                     </>
                   )}
@@ -179,13 +179,13 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
                     {plan.name}
                   </h3>
                   {plan.id === "plus" && !isExpired && (
-                    <span className="inline-flex items-center gap-1 bg-red-100 text-primary text-[11px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide">
-                      <Flame className="w-3 h-3 fill-primary" />
+                    <span className="inline-flex items-center gap-1 bg-red-100 text-red-700 text-[11px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide">
+                      <Flame className="w-3 h-3 fill-red-700" aria-hidden="true" />
                       50% OFF
                     </span>
                   )}
                 </div>
-                <p className="text-gray-500 text-xs mt-1.5 min-h-8.75 leading-relaxed">
+                <p className="text-gray-600 text-xs mt-1.5 min-h-8.75 leading-relaxed">
                   {plan.description}
                 </p>
               </div>
@@ -193,11 +193,11 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
               <div className="mb-4 flex items-baseline gap-2 flex-wrap">
                 <span className="text-3xl md:text-4xl font-black text-black tracking-tight">{plan.price}</span>
                 {plan.before && (
-                  <span className="text-gray-400 text-base line-through decoration-red-500 font-bold">
+                  <span className="text-gray-600 text-base line-through decoration-red-600 font-bold">
                     {plan.before}
                   </span>
                 )}
-                {plan.period && <span className="text-gray-500 text-xs font-semibold">{plan.period}</span>}
+                {plan.period && <span className="text-gray-600 text-xs font-semibold">{plan.period}</span>}
               </div>
 
               {plan.id === "plus" && !isExpired && (
@@ -236,19 +236,19 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
       </div>
 
       <div className="mt-8 px-3 text-center flex flex-col gap-1 max-w-2xl mx-auto">
-        <p className="text-gray-400 text-[10px]">
+        <p className="text-gray-600 text-xs">
           Manejo seguro de suscripciones a través de Mercado Pago.
         </p>
-        <p className="text-gray-400 text-[10px]">
+        <p className="text-gray-600 text-xs">
           En caso de dudas o para realizar la anulación de suscripción, puedes ingresar desde aquí al panel de{" "}
-          <a href="https://www.mercadopago.com.ar/subscriptions#from-section=menu" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">
+          <a href="https://www.mercadopago.com.ar/subscriptions#from-section=menu" target="_blank" rel="noopener noreferrer" className="text-gray-800 underline hover:text-black">
             Mercado Pago
           </a>
           . <br />
-          Si quieres solicitar un reembolso, <Link href="/contacto" target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline">contactate</Link> con nosotros.
+          Si quieres solicitar un reembolso, <Link href="/contacto" target="_blank" rel="noopener noreferrer" className="text-gray-800 underline hover:text-black">contactate</Link> con nosotros.
         </p>
-        <p className="text-gray-400 text-[10px]">
-          Leé nuestros <Link href="/terminos-y-condiciones" className="text-gray-800 hover:underline">Términos y Condiciones</Link>.
+        <p className="text-gray-600 text-xs">
+          Leé nuestros <Link href="/terminos-y-condiciones" className="text-gray-800 underline hover:text-black">Términos y Condiciones</Link>.
         </p>
       </div>
     </section>

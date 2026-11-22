@@ -51,7 +51,7 @@ export default function FAQ() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-base text-zinc-500"
+            className="text-base text-zinc-600"
           >
             Resolvemos tus dudas más comunes de forma rápida y sencilla para que empieces a digitalizar tu menú de inmediato.
           </motion.p>
@@ -68,6 +68,8 @@ export default function FAQ() {
               className={`border rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform' : 'bg-background border-gray-300 hover:bg-background-2 hover:border-gray-300'}`}
             >
               <button
+                type="button"
+                aria-expanded={activeIndex === index}
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center p-5 md:px-12 text-left focus:outline-none"
               >

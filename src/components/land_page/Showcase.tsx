@@ -8,7 +8,7 @@ export default function Showcase() {
         naranja: {
             name: 'Clasico',
             primary: "bg-[#00ccff]",
-            primaryText: "text-[#00ccff]",
+            primaryText: "text-cyan-700",
             border: "border-stone-200",
             appBg: "bg-background/40",
             cardBg: "bg-white",
@@ -17,7 +17,7 @@ export default function Showcase() {
         azul: {
             name: 'Cielo',
             primary: "bg-[#fa3e83]",
-            primaryText: "text-[#fa3e83]",
+            primaryText: "text-pink-700",
             border: "border-stone-200",
             appBg: "bg-[#ffffff]/50",
             cardBg: "bg-[#fff5f9]",
