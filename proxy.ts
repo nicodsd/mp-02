@@ -20,18 +20,21 @@ export function proxy(req: NextRequest) {
         "https://api.qmenu.digital",
         "https://qmenu.digital",
         "https://api.emailjs.com",
-        // Google Analytics 4 / GTM (GA4 usa endpoints regionales: region1.google-analytics.com, etc.)
+        // Google Analytics 4 / GTM / Hotjar
         "https://*.google-analytics.com",
         "https://*.analytics.google.com",
         "https://*.googletagmanager.com",
         "https://stats.g.doubleclick.net",
+        "https://*.hotjar.com",
+        "https://*.hotjar.io",
+        "wss://*.hotjar.com",
         ...paddle("https://*.paddle.com", "https://*.profitwell.com"),
         "http://localhost:4000",
         "https://nominatim.openstreetmap.org",
         ...(isDev ? ["ws://localhost:*", "ws://127.0.0.1:*"] : [])
     ].join(" ");
 
-    // Dominios permitidos para cargar scripts externos (GTM, GA, Paddle)
+    // Dominios permitidos para cargar scripts externos (GTM, GA, Hotjar, Paddle)
     // Se usa 'unsafe-inline' sin nonce para permitir generación estática (SSG) y caché en Edge CDN.
     const scriptSrc = [
         "'self'",
@@ -39,6 +42,8 @@ export function proxy(req: NextRequest) {
         "https://www.googletagmanager.com",
         "https://*.googletagmanager.com",
         "https://www.google-analytics.com",
+        "https://static.hotjar.com",
+        "https://*.hotjar.com",
         ...paddle("https://cdn.paddle.com", "https://*.paddle.com", "https://public.profitwell.com"),
         ...(isDev ? ["'unsafe-eval'"] : [])
     ].join(" ");
@@ -58,6 +63,7 @@ export function proxy(req: NextRequest) {
         "'self'", "blob:", "data:",
         "https://res.cloudinary.com", "https://cdn.pixabay.com", "https://asset.cloudinary.com",
         "https://*.google-analytics.com", "https://*.googletagmanager.com",
+        "https://*.hotjar.com",
         "https://*.basemaps.cartocdn.com", "https://*.tile.openstreetmap.org", "https://unpkg.com",
         ...paddle("https://*.paddle.com"),
     ].join(" ");
@@ -65,6 +71,7 @@ export function proxy(req: NextRequest) {
     const frameSrc = [
         "'self'",
         "https://www.googletagmanager.com",
+        "https://*.hotjar.com",
         ...paddle("https://*.paddle.com", "https://buy.paddle.com", "https://sandbox-buy.paddle.com"),
     ].join(" ");
 

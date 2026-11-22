@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { syncPromoSession } from "@/src/utils/promoServerAction";
+import type { ServerPromoSyncResult } from "@/src/utils/promoServerAction";
 
 const PROMO_DURATION_MS = 12 * 60 * 60 * 1000; // 12 horas
 const STORAGE_KEY = "qmenu_plus_promo_end_time";
@@ -85,26 +85,37 @@ export function usePromoCountdown(): PromoCountdownState {
       }, 1000);
     };
 
-    // Sincronización autoritativa con la cookie HttpOnly firmada en el servidor
-    syncPromoSession()
-      .then((serverData) => {
-        if (isCancelled) return;
-        endTime = serverData.endTime;
-        clockOffset = serverData.serverNow - Date.now();
-        try {
-          localStorage.setItem(STORAGE_KEY, String(endTime));
-        } catch {
-          // Ignorar errores de almacenamiento
-        }
-        startCountdownLoop();
+    // Inicia inmediatamente con el valor local para no bloquear ni retrasar el render inicial
+    startCountdownLoop();
+
+    // Sincronización diferida con la cookie HttpOnly firmada vía GET (evita revalidar el árbol RSC en la carga inicial)
+    const syncTimer = setTimeout(() => {
+      if (isCancelled) return;
+      fetch("/api/promo-session", {
+        method: "GET",
+        credentials: "same-origin",
+        cache: "no-store",
       })
-      .catch(() => {
-        if (isCancelled) return;
-        startCountdownLoop();
-      });
+        .then((res) => (res.ok ? (res.json() as Promise<ServerPromoSyncResult>) : Promise.reject()))
+        .then((serverData) => {
+          if (isCancelled || !serverData?.endTime) return;
+          endTime = serverData.endTime;
+          clockOffset = serverData.serverNow - Date.now();
+          try {
+            localStorage.setItem(STORAGE_KEY, String(endTime));
+          } catch {
+            // Ignorar errores de almacenamiento
+          }
+          startCountdownLoop();
+        })
+        .catch(() => {
+          // Mantener temporizador local si falla la red
+        });
+    }, 3500);
 
     return () => {
       isCancelled = true;
+      clearTimeout(syncTimer);
       if (interval) clearInterval(interval);
     };
   }, []);

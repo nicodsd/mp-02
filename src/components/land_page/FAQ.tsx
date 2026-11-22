@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { HiChevronDown } from "react-icons/hi";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
@@ -77,7 +77,7 @@ export default function FAQ() {
                 <span
                   className={`shrink-0 flex border border-gray-300 items-center justify-center w-10 h-10 rounded-full transition-transform duration-300 ${activeIndex === index ? 'bg-black text-white rotate-180' : 'border-gray-500 text-gray-600'}`}
                 >
-                  <HiChevronDown size={22} />
+                  <ChevronDown size={22} aria-hidden="true" />
                 </span>
               </button>
 
