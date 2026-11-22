@@ -32,10 +32,9 @@ export function proxy(req: NextRequest) {
     ].join(" ");
 
     // Dominios permitidos para cargar scripts externos (GTM, GA, Paddle)
-    // Nota: al haber nonce, los navegadores ignoran 'unsafe-inline' (queda solo como fallback para navegadores viejos).
+    // Se usa 'unsafe-inline' sin nonce para permitir generación estática (SSG) y caché en Edge CDN.
     const scriptSrc = [
         "'self'",
-        `'nonce-${nonce}'`,
         "'unsafe-inline'",
         "https://www.googletagmanager.com",
         "https://*.googletagmanager.com",

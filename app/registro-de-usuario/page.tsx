@@ -1,4 +1,4 @@
-// app/register/page.tsx
+import { Suspense } from "react";
 import Register from "@/src/pagesComponents/Register";
 
 export const metadata = {
@@ -7,5 +7,9 @@ export const metadata = {
 };
 
 export default function RegisterWizard() {
-  return <Register />;
+  return (
+    <Suspense fallback={null}>
+      <Register />
+    </Suspense>
+  );
 }

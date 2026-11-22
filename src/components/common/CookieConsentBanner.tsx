@@ -63,17 +63,17 @@ export default function CookieConsentBanner({
   return (
     <aside
       aria-label="Consentimiento de cookies"
-      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-lg z-9999 animate-in fade-in slide-in-from-bottom-5 duration-300"
+      className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-lg z-9999"
     >
-      <div className="bg-white/95 backdrop-blur-md border border-stone-200 text-stone-800 p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col gap-3">
+      <div className="bg-white border border-stone-200 text-stone-800 p-4 sm:p-5 rounded-2xl shadow-2xl flex flex-col gap-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-2.5 text-primary">
             <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
               <FaCookieBite size={20} className="text-primary" />
             </div>
-            <h3 className="font-bold text-stone-900 text-sm sm:text-base">
+            <p className="font-bold text-stone-900 text-sm sm:text-base">
               Valoramos tu privacidad
-            </h3>
+            </p>
           </div>
           <button
             type="button"

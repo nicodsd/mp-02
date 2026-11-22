@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import BttnBack from '@/src/components/buttons/BttnBack'
 import logo from "@/public/images/logo/logo-rojo.png";
@@ -11,7 +11,7 @@ import * as Yup from "yup";
 import { URI } from '@/src/lib/const';
 
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
     const searchParams = useSearchParams();
     const email = searchParams.get('email');
@@ -178,5 +178,13 @@ export default function ResetPasswordPage() {
                 </div>
             </footer>
         </div>
+    );
+}
+
+export default function ResetPasswordPage() {
+    return (
+        <Suspense fallback={null}>
+            <ResetPasswordContent />
+        </Suspense>
     );
 }
