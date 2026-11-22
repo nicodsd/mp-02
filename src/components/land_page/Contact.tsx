@@ -1,8 +1,6 @@
 "use client";
 import React, { useState } from 'react';
 import { Send, Loader2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-import { motion } from "framer-motion";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -26,7 +24,8 @@ export default function Contact() {
         throw new Error("Faltan variables de entorno");
       }
 
-      // 2. Enviar usando async/await en lugar de setTimeout (más limpio)
+      // 2. Importar EmailJS bajo demanda al enviar el formulario
+      const emailjs = (await import('@emailjs/browser')).default;
       await emailjs.send(
         serviceId,
         templateId,
@@ -58,10 +57,10 @@ export default function Contact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 md:p-6 shadow items-start bg-stone-900 rounded-2xl p-6 md:px-12">
 
           <div className="text-center md:text-start md:mt-10">
-            <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl text-pretty leading-none md:text-5xl font-bold text-white mb-4">¿Quieres que armemos tu menú?</motion.h2>
-            <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-white text-base md:text-md mb-8 lg:mx-0 text-pretty">
+            <h2 className="text-4xl text-pretty leading-none md:text-5xl font-bold text-white mb-4">¿Quieres que armemos tu menú?</h2>
+            <p className="text-white text-base md:text-md mb-8 lg:mx-0 text-pretty">
               Si quieres que te carguemos tu menú, tienes dudas o necesitas un plan personalizado, escríbenos.
-            </motion.p>
+            </p>
           </div>
 
           {/* Form Card */}

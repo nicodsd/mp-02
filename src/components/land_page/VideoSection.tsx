@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { MousePointerClick, Zap, Smartphone } from 'lucide-react';
 
 export default function VideoSection() {
@@ -29,72 +28,45 @@ export default function VideoSection() {
 
         <div className="w-full relative z-10">
           <div className="text-center md:text-start md:pl-3 md:pr-20">
-            <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-balance">
+            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 text-balance">
               Una experiencia simple e intuitiva
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-base text-zinc-600"
-            >
+            </h2>
+            <p className="text-base text-zinc-600">
               Tu cliente puede entrar a tú menú desde tú red social favorita o también escaneando el código QR, elegir sus platos favoritos, personalizar su pedido y enviar su orden directamente por WhatsApp.
-            </motion.p>
+            </p>
           </div>
           <div className='mt-10 hidden md:flex justify-end'>
             {/* Pastillas informativas */}
-            <div
-              className="flex flex-col gap-2 w-full px-6 md:w-3/4"
-            >
+            <div className="flex flex-col gap-2 w-full px-6 md:w-3/4">
               {/* Pill 1 */}
-              <motion.div
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
+              <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
                 <div className="bg-red-600 rounded-full p-4 flex items-center justify-center min-w-14 min-h-14 shadow-lg shadow-red-200">
-                  <MousePointerClick className="text-white w-6 h-6" />
+                  <MousePointerClick className="text-white w-6 h-6" aria-hidden="true" />
                 </div>
                 <span className="text-xl font-bold text-gray-900 tracking-tight">Accesible</span>
-              </motion.div>
+              </div>
 
               {/* Pill 2 */}
-              <motion.div
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
+              <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
                 <div className="bg-red-600 rounded-full p-4 flex items-center justify-center min-w-14 min-h-14 shadow-lg shadow-red-200">
-                  <Zap className="text-white w-6 h-6" />
+                  <Zap className="text-white w-6 h-6" aria-hidden="true" />
                 </div>
                 <span className="text-xl font-bold text-gray-900 tracking-tight">Fácil y rápido</span>
-              </motion.div>
+              </div>
 
               {/* Pill 3 */}
-              <motion.div
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
+              <div className="flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-4xl shadow-lg border border-red-100 hover:scale-105 transition-transform cursor-default">
                 <div className="bg-red-600 rounded-full p-4 flex items-center justify-center min-w-14 min-h-14 shadow-lg shadow-red-200">
-                  <Smartphone className="text-white w-6 h-6" />
+                  <Smartphone className="text-white w-6 h-6" aria-hidden="true" />
                 </div>
                 <span className="text-xl font-bold text-gray-900 tracking-tight leading-tight">Desde cualquier dispositivo</span>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
         {/* Video */}
-        <motion.div
+        <div
           ref={videoContainerRef}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.1, delay: 0.4 }}
           className="w-full rounded-3xl relative overflow-hidden border border-gray-200/50 aspect-square bg-stone-100"
         >
           {shouldLoadVideo && (
@@ -147,7 +119,7 @@ export default function VideoSection() {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
     </section>

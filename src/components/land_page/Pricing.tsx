@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Check, Flame } from 'lucide-react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { usePromoCountdown } from '@/src/utils/usePromoCountdown';
 import PromoCountdownDisplay from '@/src/components/common/PromoCountdownDisplay';
@@ -124,35 +123,21 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
       <div className="w-full relative mt-10 z-10">
         {showHeader && (
           <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">
-            <motion.h2
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl text-balance md:text-5xl font-bold text-stone-900 mb-4"
-            >
+            <h2 className="text-4xl text-balance md:text-5xl font-bold text-stone-900 mb-4">
               Tener tu Menú digital nunca fue taaan fácil
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-base text-zinc-500 text-balance"
-            >
+            </h2>
+            <p className="text-base text-zinc-600 text-balance">
               Elegí el plan que desees, registrate y empezá a publicar lo que vendés.
-            </motion.p>
+            </p>
           </div>
         )}
 
         {/* Grid: 1 col móvil, 2 cols tablet, 4 cols desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 xl:gap-3 px-3">
           {plans.map((plan) => (
-            <motion.div
+            <div
               key={plan.id}
-              whileHover={{ y: -5 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115`}
+              className={`relative flex flex-col p-5 rounded-2xl border ${plan.bgClass} min-h-115 transition-transform duration-300 hover:-translate-y-1`}
             >
               {plan.id === "plus" && (
                 <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-red-700 text-white text-[11px] md:text-xs font-black uppercase px-4 py-1 rounded-full tracking-wider whitespace-nowrap shadow-md flex items-center gap-1 border border-white">
@@ -228,10 +213,10 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
                 prefetch={false}
                 className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
               >
-                {plan.id === "plus" && !isExpired && <Flame className="w-4 h-4 fill-white" />}
+                {plan.id === "plus" && !isExpired && <Flame className="w-4 h-4 fill-white" aria-hidden="true" />}
                 {plan.cta}
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

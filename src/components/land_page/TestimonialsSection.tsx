@@ -1,6 +1,5 @@
 "use client"
 import React, { useState } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 interface Testimonial {
@@ -56,29 +55,10 @@ const testimonials: Testimonial[] = [
     },
 ];
 
-const slideVariants: Variants = {
-    enter: (direction: number) => ({
-        x: direction > 0 ? 300 : -300,
-        opacity: 0
-    }),
-    center: {
-        x: 0,
-        opacity: 1,
-        transition: { duration: 0.4, ease: "easeInOut" }
-    },
-    exit: (direction: number) => ({
-        x: direction < 0 ? 300 : -300,
-        opacity: 0,
-        transition: { duration: 0.3, ease: "easeInOut" }
-    })
-};
-
 export default function TestimonialsSlider() {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
 
     const paginate = (newDirection: number) => {
-        setDirection(newDirection);
         if (newDirection > 0) {
             setCurrentIndex((prev) => (prev + 1) % testimonials.length);
         } else {
@@ -91,39 +71,19 @@ export default function TestimonialsSlider() {
             {/* Cabecera de sección - Estilo QMenú */}
             <div className="text-center w-full md:text-start mb-8 md:mb-10 flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
-                    <motion.h2
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-bold text-stone-900 mb-4"
-                    >
+                    <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                         Opiniones de nuestros usuarios
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-base text-zinc-600"
-                    >
+                    </h2>
+                    <p className="text-base text-zinc-600">
                         Los dueños de restaurantes eliminaron la fricción en la promoción de sus platos y la gestión de sus pedidos diarios.
-                    </motion.p>
+                    </p>
                 </div>
             </div>
 
-            {/* Contenedor del Carrusel Animado */}
+            {/* Contenedor del Carrusel */}
             <div className="overflow-hidden relative">
-                <AnimatePresence initial={false} custom={direction} mode="wait">
-                    <motion.div
-                        key={currentIndex}
-                        custom={direction}
-                        variants={slideVariants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        className="w-full"
-                    >
-                        {/* VISTA DESKTOP: Muestra 3 tarjetas continuas */}
+                <div className="w-full transition-opacity duration-300">
+                    {/* VISTA DESKTOP: Muestra 3 tarjetas continuas */}
                         <div className="hidden md:grid grid-cols-3 gap-2 w-full">
                             {[0, 1, 2].map((offset) => {
                                 const itemIndex = (currentIndex + offset) % testimonials.length;
@@ -184,8 +144,7 @@ export default function TestimonialsSlider() {
                                 );
                             })()}
                         </div>
-                    </motion.div>
-                </AnimatePresence>
+                </div>
             </div>
             {/* Botones de Navegación */}
             <div className="flex gap-2 mt-3 w-full justify-end">

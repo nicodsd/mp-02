@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect, useRef, ReactNode } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 import foodsImg from "@/public/images/placeholders/image-background-foods.png";
 import womanPhoneImg from "@/public/images/placeholders/woman-phone.webp";
@@ -99,21 +97,17 @@ export default function SliderBanner() {
                 <div className={`absolute inset-0 w-full rounded-2xl h-full bg-linear-to-br ${slidesData[current].bgClass} z-0 pointer-events-none`} />
                 {/* Imagen Mobile absoluta en el fondo inferior */}
                 {slidesData[current].image && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.25 }}
+                    <div
                         className="md:hidden absolute inset-x-0 -bottom-14 w-full flex items-end justify-center z-0 pointer-events-none overflow-hidden rounded-b-2xl"
                     >
                         <Image
                             src={slidesData[current].image}
                             alt={slidesData[current].imageAlt || "Menú digital QMenú"}
-                            sizes="(max-width: 767px) 340px, 1px"
+                            sizes="(max-width: 767px) 320px, 1px"
                             loading="lazy"
                             className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
                         />
-                    </motion.div>
+                    </div>
                 )}
                 <div
                     className="flex w-full h-full cursor-grab active:cursor-grabbing transition-transform duration-500 ease-in-out"
@@ -130,21 +124,15 @@ export default function SliderBanner() {
                                 {/* Lado Derecho: Imagen Desktop */}
                                 {slide.image && (
                                     <div className="hidden md:flex flex-1 rounded-2xl justify-start relative z-20">
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.4 }}
-                                            className="w-112.5 lg:w-140"
-                                        >
+                                        <div className="w-112.5 lg:w-140">
                                             <Image
                                                 src={slide.image}
                                                 alt={slide.imageAlt || "Menú digital QMenú"}
-                                                sizes="(min-width: 768px) 450px, 1px"
+                                                sizes="(min-width: 768px) 384px, 1px"
                                                 loading="lazy"
                                                 className="w-full translate-y-6 h-auto object-cover"
                                             />
-                                        </motion.div>
+                                        </div>
                                     </div>
                                 )}
                                 {/* Columna Izquierda: Textos y Botón en la parte inferior */}
@@ -152,25 +140,13 @@ export default function SliderBanner() {
 
                                     {/* Contenedor agrupado de Título y Subtítulo */}
                                     <div className="flex flex-col items-center md:items-start">
-                                        <motion.h2
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.1 }}
-                                            className="text-4xl md:text-5xl leading-none text-balance font-bold text-white mb-3 md:mb-4"
-                                        >
+                                        <h2 className="text-4xl md:text-5xl leading-none text-balance font-bold text-white mb-3 md:mb-4">
                                             {slide.title}
-                                        </motion.h2>
+                                        </h2>
 
-                                        <motion.p
-                                            initial={{ opacity: 0, x: 20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: 0.2 }}
-                                            className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6"
-                                        >
+                                        <p className="text-white/95 text-base md:text-lg max-w-lg mx-auto md:mx-0 leading-6">
                                             {slide.subtitle}
-                                        </motion.p>
+                                        </p>
                                     </div>
 
                                 </div>

@@ -2,7 +2,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Settings, Utensils, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const topGuides = [
   {
@@ -67,7 +66,7 @@ export default function GuidePreview() {
     <section ref={sectionRef} className="py-20 md:py-0 md:pb-40 relative overflow-hidden w-full">
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:px-8 items-start">
-          <motion.div initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }} className="p-12 w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
+          <div className="p-12 w-fit rounded-4xl invisible md:visible hidden md:flex h-150 justify-center md:items-center">
             {isDesktop === true && shouldLoadVideo && (
             <video
               className="w-30 border-4 border-blue-700 md:w-65 rounded-3xl shadow-xl object-cover"
@@ -80,22 +79,16 @@ export default function GuidePreview() {
               <source src="/videos/recording-screen-qmenu-app.webm" type="video/webm" />
             </video>
             )}
-          </motion.div>
+          </div>
           <div className="flex items-end flex-col gap-2 md:col-span-2 justify-end h-full w-full">
             <div className="text-center w-full md:text-start mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-end gap-4">
               <div>
-                <motion.h2 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
+                <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
                   Nuestras <span className="text-blue-700">guías</span>
-                </motion.h2>
-                <motion.p
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="text-base text-zinc-600 text-balance"
-                >
+                </h2>
+                <p className="text-base text-zinc-600 text-balance">
                   Recursos útiles para sacar el máximo provecho de tu menú digital.
-                </motion.p>
+                </p>
               </div>
             </div>
             <div className="w-full md:hidden md:invisible mb-4 md:mb-0 flex justify-center md:items-center">
@@ -113,11 +106,7 @@ export default function GuidePreview() {
               )}
             </div>
             {topGuides.map((guide, idx) => (
-              <motion.div
-                initial={{ opacity: 0, x: 100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+              <div
                 key={idx}
                 className="w-full"
               >
@@ -148,14 +137,14 @@ export default function GuidePreview() {
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" aria-hidden="true" />
                   </div>
                 </Link>
-              </motion.div>
+              </div>
             ))}
-            <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex md:my-8 mt-2 justify-center">
+            <div className="flex md:my-8 mt-2 justify-center">
               <Link href="/guias" prefetch={false} className="w-full cursor-pointer bg-blue-700 px-6 py-3 hover:bg-blue-900 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
                 <span className="text-md font-bold text-white">Ver todas las guías</span>
                 <ArrowRight className="text-white w-5 h-5" aria-hidden="true" />
               </Link>
-            </motion.div>
+            </div>
           </div>
 
         </div>
