@@ -92,7 +92,7 @@ export default function GuidePreview() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
-                  className="text-base text-zinc-500 text-balance"
+                  className="text-base text-zinc-600 text-balance"
                 >
                   Recursos útiles para sacar el máximo provecho de tu menú digital.
                 </motion.p>
@@ -123,6 +123,7 @@ export default function GuidePreview() {
               >
                 <Link
                   href={guide.href}
+                  prefetch={false}
                   className="group relative hover:bg-background-2 rounded-xl py-2 px-4 hover:shadow-xl gap-2 transition-all duration-300 border border-gray-300 hover:border-blue-600 flex flex-col md:flex-row h-full transform hover:-translate-y-1"
                 >
                   <div className='flex w-full md:w-40 justify-between'>
@@ -131,12 +132,12 @@ export default function GuidePreview() {
                       {guide.icon}
                     </div>
                     <div className="w-8 h-8 md:hidden aspect-square rounded-full bg-stone-50 group-hover:bg-primary group-hover:text-white text-blue-700 flex items-center transition-colors md:text-stone-400">
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" />
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" aria-hidden="true" />
                     </div>
                   </div>
 
                   <div className='w-full'>
-                    <h3 className="text-xl md:text-2xl font-bold text-pretty text-gray-500 mb-1 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl md:text-2xl font-bold text-pretty text-gray-700 mb-1 group-hover:text-blue-600 transition-colors">
                       {guide.title}
                     </h3>
                     <p className="text-stone-600 grow text-sm leading-relaxed">
@@ -144,15 +145,15 @@ export default function GuidePreview() {
                     </p>
                   </div>
                   <div className="w-8 h-8 hidden aspect-square rounded-full bg-stone-50 group-hover:bg-primary group-hover:text-white text-blue-700 md:flex items-center transition-colors md:text-stone-400">
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" />
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" aria-hidden="true" />
                   </div>
                 </Link>
               </motion.div>
             ))}
             <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.4 }} className="flex md:my-8 mt-2 justify-center">
-              <Link href="/guias" className="w-full cursor-pointer bg-blue-700 px-6 py-3 hover:bg-blue-900 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
+              <Link href="/guias" prefetch={false} className="w-full cursor-pointer bg-blue-700 px-6 py-3 hover:bg-blue-900 transition-all rounded-lg flex items-center justify-center gap-2 text-white hover:shadow-sm">
                 <span className="text-md font-bold text-white">Ver todas las guías</span>
-                <ArrowRight className="text-white w-5 h-5" />
+                <ArrowRight className="text-white w-5 h-5" aria-hidden="true" />
               </Link>
             </motion.div>
           </div>

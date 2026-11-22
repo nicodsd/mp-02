@@ -74,10 +74,10 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
       ],
       cta: isExpired ? "Elegir Plan Plus+" : "Aprovechar 50% OFF",
       href: "/registro-de-usuario?plan=plus",
-      color: "text-primary",
+      color: "text-red-700",
       bgClass: "bg-white border-2 border-primary shadow-xl ring-2 ring-primary/20",
-      buttonClass: "bg-primary hover:bg-primary/90 text-white shadow-md shadow-primary/30",
-      checkClass: "text-primary",
+      buttonClass: "bg-red-700 hover:bg-red-800 text-white shadow-md shadow-red-700/30",
+      checkClass: "text-red-700",
     },
     {
       id: "premium",
@@ -225,6 +225,7 @@ export default function Pricing({ showHeader = true, className = "py-20 md:py-0 
 
               <Link
                 href={plan.href}
+                prefetch={false}
                 className={`w-full py-3 rounded-xl font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${plan.buttonClass}`}
               >
                 {plan.id === "plus" && !isExpired && <Flame className="w-4 h-4 fill-white" />}

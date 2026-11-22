@@ -1,9 +1,11 @@
 import Link from "next/link";
 
 export default function BotonAccion({ color, textColor }: { color: any, textColor: any }) {
+  const bgClass = color === "primary" ? "bg-red-700 hover:bg-red-800" : `bg-${color}`;
   return (
     <Link
       href="/registro-de-usuario"
+      prefetch={false}
       className={`
         active:scale-90
         active:opacity-80
@@ -11,7 +13,7 @@ export default function BotonAccion({ color, textColor }: { color: any, textColo
         group
         btn-god-rays
         px-4 py-3
-        bg-${color}
+        ${bgClass}
         text-${textColor}
         font-black
         rounded-lg

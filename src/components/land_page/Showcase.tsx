@@ -106,7 +106,7 @@ export default function Showcase() {
                                         >
                                             <div className="w-16 h-16 bg-stone-200 rounded-md shrink-0"></div>
                                             <div className="flex flex-col w-full">
-                                                <h4 className={`font-bold text-sm ${activeTheme.text}`}>Plato de ejemplo</h4>
+                                                <h3 className={`font-bold text-sm ${activeTheme.text}`}>Plato de ejemplo</h3>
                                                 <p className={`text-[10px] opacity-60 ${activeTheme.text}`}>Descripción del plato...</p>
                                                 <div className={`font-bold text-xs mt-1 ${activeTheme.text}`}>$12.50</div>
                                             </div>

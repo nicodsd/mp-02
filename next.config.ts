@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ['image/avif', 'image/webp'],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 560],
     remotePatterns: [
       new URL('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'),
       new URL('https://asset.cloudinary.com/dsruux0wb/e2cb1caf10f0e6623883207017842db5'),

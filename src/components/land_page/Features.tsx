@@ -62,12 +62,12 @@ export default function Features() {
               </div>
             </motion.div>
           ))}
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="gap-3 flex md:flex-col md:items-center justify-center h-36 md:h-full rounded-xl bg-primary">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="gap-3 flex md:flex-col md:items-center justify-center h-36 md:h-full rounded-xl bg-red-700">
             <div className="flex flex-col justify-center">
               <h3 className="text-xl text-center font-bold text-white mb-4">¿Quieres ver mas?</h3>
-              <Link href="/caracteristicas-menu-digital" className="w-full md:w-fit group cursor-pointer text-center bg-white px-6 py-3 hover:bg-gray-100 transition-all rounded-lg flex items-center justify-center gap-2 hover:shadow-sm">
-                <span className="text-md font-bold text-primary ">Ver Todas las Caracteristicas</span>
-                <ArrowRight className="text-primary group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              <Link href="/caracteristicas-menu-digital" prefetch={false} className="w-full md:w-fit group cursor-pointer text-center bg-white px-6 py-3 hover:bg-gray-100 transition-all rounded-lg flex items-center justify-center gap-2 hover:shadow-sm">
+                <span className="text-md font-bold text-red-700">Ver Todas las Caracteristicas</span>
+                <ArrowRight className="text-red-700 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
             </div>
           </motion.div>

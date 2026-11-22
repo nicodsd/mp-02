@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import CookieConsentManager, {
   ConsentAwareAnalytics,
 } from "@/src/components/common/CookieConsentManager";
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans", preload: false });
 
 const asap = Asap({
   style: "normal",
@@ -129,6 +129,26 @@ export default function RootLayout({
                 }
               } catch (e) {}
               gtag('consent', 'default', defaultConsent);
+              (function(){
+                function isInvalidHotjar(node) {
+                  try {
+                    if (node && node.tagName === 'SCRIPT' && typeof node.src === 'string' && node.src.indexOf('static.hotjar.com/c/hotjar-http') !== -1) {
+                      return true;
+                    }
+                  } catch (e) {}
+                  return false;
+                }
+                var origAppend = Element.prototype.appendChild;
+                Element.prototype.appendChild = function(node) {
+                  if (isInvalidHotjar(node)) return node;
+                  return origAppend.call(this, node);
+                };
+                var origInsert = Element.prototype.insertBefore;
+                Element.prototype.insertBefore = function(node, ref) {
+                  if (isInvalidHotjar(node)) return node;
+                  return origInsert.call(this, node, ref);
+                };
+              })();
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=

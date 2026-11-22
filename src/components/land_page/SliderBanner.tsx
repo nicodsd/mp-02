@@ -109,7 +109,7 @@ export default function SliderBanner() {
                         <Image
                             src={slidesData[current].image}
                             alt={slidesData[current].imageAlt || "Menú digital QMenú"}
-                            sizes="(max-width: 768px) 100vw, 1px"
+                            sizes="(max-width: 767px) 340px, 1px"
                             loading="lazy"
                             className="w-full h-auto object-cover object-bottom drop-shadow-2xl"
                         />
@@ -140,7 +140,7 @@ export default function SliderBanner() {
                                             <Image
                                                 src={slide.image}
                                                 alt={slide.imageAlt || "Menú digital QMenú"}
-                                                sizes="(min-width: 768px) 560px, 1px"
+                                                sizes="(min-width: 768px) 450px, 1px"
                                                 loading="lazy"
                                                 className="w-full translate-y-6 h-auto object-cover"
                                             />

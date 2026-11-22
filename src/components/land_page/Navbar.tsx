@@ -52,6 +52,7 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
         <div className="flex items-center justify-between">
           <Link
             href="/"
+            prefetch={false}
             aria-label="QMenú - Inicio"
             className="shrink-0 flex items-center gap-2 cursor-pointer transition-transform active:scale-95"
             onClick={(e) => {
@@ -79,7 +80,7 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
                   {link.name}
                 </a>
               ))}
-              <Link href="/login"
+              <Link href="/login" prefetch={false}
                 className="text-stone-800 hover:text-primary-600 px-1 py-2 text-sm font-semibold transition-colors relative group pl-6 border-l border-gray-300">
                 Iniciar Sesión
               </Link>
@@ -89,8 +90,8 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden">
-            <Link href="/login"
-              className="text-stone-600 hover:text-primary hover:bg-primary-50 block px-4 py-3 rounded-xl text-base font-bold transition-all">
+            <Link href="/login" prefetch={false}
+              className="text-stone-700 hover:text-primary hover:bg-primary-50 block px-4 py-3 rounded-xl text-base font-bold transition-all">
               Iniciar Sesión
             </Link>
             <button
@@ -126,11 +127,12 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
             <div className="pt-4 px-2 w-full">
               <Link
                 href="/registro-de-usuario"
+                prefetch={false}
                 className={`
           group
           w-full
           px-4 py-3 
-        bg-primary
+        bg-red-700
           text-white 
           font-black 
           rounded-lg

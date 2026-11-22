@@ -1,11 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import CookieConsentBanner from "./CookieConsentBanner";
-import CookiePreferencesModal from "./CookiePreferencesModal";
+
+const CookiePreferencesModal = dynamic(() => import("./CookiePreferencesModal"), {
+  ssr: false,
+});
 import {
   COOKIE_CONSENT_UPDATED_EVENT,
   CookiePreferences,
@@ -61,10 +65,12 @@ export default function CookieConsentManager() {
       {!isMenuRoute && (
         <CookieConsentBanner onOpenPreferences={() => setIsPreferencesOpen(true)} />
       )}
-      <CookiePreferencesModal
-        isOpen={isPreferencesOpen}
-        onClose={() => setIsPreferencesOpen(false)}
-      />
+      {isPreferencesOpen && (
+        <CookiePreferencesModal
+          isOpen={isPreferencesOpen}
+          onClose={() => setIsPreferencesOpen(false)}
+        />
+      )}
     </>
   );
 }
