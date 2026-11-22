@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 import { Asap, Geist } from "next/font/google";
-import EmotionProvider from "@/src/components/EmotionProvider";
 import { cn } from "@/lib/utils";
 import CookieConsentManager, {
   ConsentAwareAnalytics,
@@ -167,11 +166,9 @@ export default function RootLayout({
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <EmotionProvider>
-          {children}
-          <CookieConsentManager />
-          <ConsentAwareAnalytics />
-        </EmotionProvider>
+        {children}
+        <CookieConsentManager />
+        <ConsentAwareAnalytics />
       </body>
     </html>
   );

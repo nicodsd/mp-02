@@ -89,7 +89,7 @@ export function proxy(req: NextRequest) {
         base-uri 'self';
         form-action 'self';
         frame-ancestors 'none';
-        upgrade-insecure-requests;
+        ${isDev ? "" : "upgrade-insecure-requests;"}
     `.replace(/\s{2,}/g, " ").trim();
 
     res.headers.set("Content-Security-Policy", cspHeader);

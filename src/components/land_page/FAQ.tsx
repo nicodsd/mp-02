@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
@@ -38,32 +37,17 @@ export default function FAQ() {
 
       <div className="text-start w-full mx-auto relative z-10">
         <div className="text-center md:text-start mb-10 md:mb-12 md:pl-12">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-stone-900 mb-4"
-          >
+          <h2 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4">
             Preguntas Frecuentes
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-base text-zinc-600"
-          >
+          </h2>
+          <p className="text-base text-zinc-600">
             Resolvemos tus dudas más comunes de forma rápida y sencilla para que empieces a digitalizar tu menú de inmediato.
-          </motion.p>
+          </p>
         </div>
 
         <div className="space-y-2 md:px-12">
           {faqs.map((faq, index) => (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+            <div
               key={index}
               className={`border rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform' : 'bg-background border-gray-300 hover:bg-background-2 hover:border-gray-300'}`}
             >
@@ -81,21 +65,12 @@ export default function FAQ() {
                 </span>
               </button>
 
-              <AnimatePresence>
-                {activeIndex === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                  >
-                    <div className="px-6 md:px-12 md:pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base">
-                      {faq.answer}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
+              {activeIndex === index && (
+                <div className="px-6 pb-5 md:px-12 md:pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>
