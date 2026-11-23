@@ -10,7 +10,6 @@ export const getOptimizedImage = (url: string, width = 700, height = 700) => {
 export const getBannerImage = (url: string) => {
     if (!url || !url.includes("cloudinary.com")) return url;
 
-    // Para banners usamos un ancho mayor y recorte horizontal
-    const transformation = `c_fill,w_1400,h_700,g_center,q_auto,f_auto`;
+    const transformation = `c_limit,w_1400,q_auto,f_auto`;
     return url.replace("/upload/", `/upload/${transformation}/`);
 };

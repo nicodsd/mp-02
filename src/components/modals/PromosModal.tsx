@@ -40,7 +40,6 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
   const [current, setCurrent] = useState(0);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
-
   const total = promos.length;
 
   const nextSlide = useCallback(() => {
@@ -94,7 +93,7 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-xs p-4"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/70 backdrop-blur-xs p-4"
       onClick={() => setIsOpen(false)}
       role="dialog"
       aria-modal="true"
@@ -102,7 +101,7 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
     >
       <div
         className={`${template?.backgroundColor || "bg-white"} ${template?.textColor || "text-gray-800"
-          } relative w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden border ${template?.border || "border-gray-200"
+          } relative w-full max-w-sm rounded-2xl shadow-xl shadow-black/60 overflow-hidden border ${template?.border || "border-gray-200"
           }`}
         onClick={(e) => e.stopPropagation()}
         onTouchStart={handleTouchStart}
@@ -191,10 +190,11 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
             onClick={() => handleSelectPromo(activePromo._id)}
             className="absolute inset-x-0 bottom-0 p-4 text-white cursor-pointer flex items-end justify-between gap-2"
           >
-            <div className="min-w-0 flex-1">
-              <h3 className="font-bold text-lg leading-tight line-clamp-2 drop-shadow-xs">
-                {activePromo.name}
+            <div className="min-w-0 flex-1 gap-0.5 flex-col flex">
+              <h3 className="font-semibold text-xl leading-tight line-clamp-2 drop-shadow-xs">
+                {activePromo?.name}
               </h3>
+              <p className="leading-tight text-sm line-clamp-2 drop-shadow-xs">{activePromo?.description}</p>
             </div>
             <div className="text-right shrink-0">
               {hasDiscount && (
@@ -211,27 +211,27 @@ export default function PromosModal({ promos = [], template }: PromosModalProps)
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Footer dots & CTA */}
-        <div className="px-4 py-3 flex items-center justify-between gap-2">
-          {total > 1 ? (
-            <div className="flex items-center gap-1.5 overflow-x-auto max-w-[60%] py-1">
-              {promos.map((promo, idx) => (
-                <button
-                  key={promo._id || idx}
-                  onClick={() => setCurrent(idx)}
-                  className={`h-2 rounded-full transition-all ${idx === current
-                    ? `${template?.accentColors?.[0] || "bg-primary"} w-6`
-                    : `${template?.backgroundColor2 || "bg-gray-300"} w-2`
-                    }`}
-                  aria-label={`Ir a promo ${idx + 1}`}
-                />
-              ))}
-            </div>
-          ) : (
-            <span className="text-xs opacity-70">¡Aprovechá hoy!</span>
-          )}
-        </div>
+      {/* Footer dots & CTA */}
+      <div className="px-4 py-3 flex w-full items-center z-10 justify-center">
+        {total > 1 ? (
+          <div className="flex items-center gap-1.5 overflow-x-auto max-w-[60%] py-1">
+            {promos.map((promo, idx) => (
+              <button
+                key={promo._id || idx}
+                onClick={() => setCurrent(idx)}
+                className={`h-2 rounded-full transition-all ${idx === current
+                  ? `${template?.accentColors?.[0] || "bg-primary"} w-6`
+                  : `${template?.accentColors?.[1] || "bg-gray-300"} w-2`
+                  }`}
+                aria-label={`Ir a promo ${idx + 1}`}
+              />
+            ))}
+          </div>
+        ) : (
+          <span className="text-xs opacity-70">¡Aprovechá hoy!</span>
+        )}
       </div>
     </div>
   );

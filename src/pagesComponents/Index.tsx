@@ -9,7 +9,7 @@ import SearchModal from "@/src/components/modals/SearchModal";
 import template from "@/src/data/templates.json";
 import BellExample from "@/src/components/buttons/BellExample";
 
-export default function Inicio() {
+export default function Inicio({ template }: { template: any }) {
   const [showModal, setShowModal] = useState(false);
   const [filteredFoods, setFilteredFoods] = useState(foodsData);
   const user = {}
