@@ -110,7 +110,6 @@ export default function Navbar({ isIndex }: { isIndex: boolean }) {
                 prefetch={false}
                 className="inline-flex items-center gap-2 active:scale-90 active:opacity-80 hover:-translate-y-0.5 px-4 py-2.5 bg-red-700 hover:bg-red-800 text-white text-sm font-black rounded-lg uppercase transition-all duration-300"
               >
-                <UtensilsCrossed className="h-4 w-4" />
                 Mi menú
               </Link>
             ) : (

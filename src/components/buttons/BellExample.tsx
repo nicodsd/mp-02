@@ -23,13 +23,13 @@ export default function BellExample({ template, foods }: { template: any, foods:
                 <div className="relative flex items-center justify-center">
                     <ConciergeBell size={40} color="white" />
                     {mounted && count > 0 && (
-                        <span className="absolute animate__animated animate__bounce -top-5 font-bold -right-4 bg-red-500 text-white text-[14px] rounded-full min-w-[28px] h-[28px] flex items-center justify-center">
+                        <span className="absolute animate__animated animate__bounce -top-5 font-bold -right-4 bg-red-500 text-white text-[14px] rounded-full min-w-7 h-7 flex items-center justify-center">
                             {count}
                         </span>
                     )}
                 </div>
             </button>
-            <CartModalExample isOpen={isCartOpen} template={template} allFoods={foods} onClose={() => setIsCartOpen(false)} />
+            <CartModalExample isOpen={isCartOpen} template={template} foods={foods} onClose={() => setIsCartOpen(false)} />
         </>
     );
-}
+} 

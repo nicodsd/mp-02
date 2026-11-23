@@ -4,7 +4,6 @@ import FloatingSocialButtons from "@/src/components/buttons/FloatingSocialButton
 import Image from "next/image";
 import {
   FaMapMarkerAlt,
-  FaWhatsapp,
   FaEdit,
   FaClock,
   FaSearch,
@@ -12,6 +11,7 @@ import {
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { useState, useEffect } from "react";
 import logo from "@/public/images/logo/logo.png"
+import images from "../../public/images/b34f8bd13002a251da8c4bd0478e1756.webp"
 import { logotipo, logo_w } from "@/src/lib/const";
 import { getOptimizedImage, getBannerImage } from "@/src/lib/cloudinaryOptimizeImage";
 import UserPlan from "@/src/components/user-plan/UserPlan";
@@ -59,20 +59,15 @@ export default function NavBar({
   } else {
     typeNavbar = 'default';
   }
+
   const isSpecialState = state === 1 || state === 2;
   const canShowCover = user && user.plan !== "free" && user.cover;
   const backgroundImage = canShowCover
     ? user.cover
-    : "/images/placeholders/back-qmenu.webp";
+    : images.src;
   const optimizedBackground = getBannerImage(backgroundImage);
 
-  let inlineStyle = {};
-  if (user?.plan !== "free") {
-    inlineStyle =
-      isMounted && !isSpecialState
-        ? { backgroundImage: `url("${optimizedBackground}")` }
-        : {};
-  }
+  const showBackgroundImage = user?.plan !== "free" && isMounted && !isSpecialState;
 
   const displayData = {
     name: user?.name || (!user ? "QMENÚ" : ""),
@@ -218,11 +213,21 @@ export default function NavBar({
         )}
 
         <div
-          className={`relative w-full transition-all flex items-center bg-center bg-cover bg-no-repeat bg-linear-to-b from-white to-background ${navHeightClass}`}
-          style={inlineStyle}
+          className={`relative w-full overflow-hidden transition-all flex items-center ${showBackgroundImage ? "" : "bg-linear-to-b from-white to-background"} ${navHeightClass}`}
         >
+          {showBackgroundImage && (
+            <Image
+              width={900}
+              height={900}
+              loading="lazy"
+              src={optimizedBackground}
+              alt="banner-del-menu"
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+          )}
           {!isSpecialState && (
-            <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : ""}`} />
+            <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : "bg-black/35"}`} />
           )}
           <nav className="relative z-10 w-full">
             {renderNavContent()}
@@ -248,7 +253,7 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
   const optimizedPhoto = getOptimizedImage(photo, 200, 200);
 
   return (
-    <div className={`flex flex-col pt-8 items-center justify-center ${user?.plan === "free" ? "text-gray-700" : "text-white drop-shadow drop-shadow-gray-900/30"} w-full`}>
+    <div className={`flex flex-col pt-3 items-center justify-center ${user?.plan === "free" ? "text-gray-700" : "text-white drop-shadow-lg"} w-full`}>
       <div className="relative">
         <div className={`rounded-full p-1 ${user?.plan !== "free" ? `bg-white` : "bg-gray-700"}`}>
           <Image
@@ -274,19 +279,19 @@ function DefaultNavUser({ user, photo, cookie, template }: any) {
         <h2 className="text-2xl leading-none font-bold mt-4 uppercase text-center px-4">
           {displayData.name}
         </h2>
-        <p className="my-1 text-center px-6 text-sm">
+        <p className="my-1 text-center px-6 text-md">
           {displayData.description}
         </p>
         <div className="flex flex-col items-center gap-1">
-          <div className="flex items-center gap-x-2">
+          <div className="flex-wrap flex justify-center items-center gap-x-2 truncate w-full">
             {displayData.schedule && (
-              <span className="flex text-[14px] items-center gap-1">
+              <span className="flex text-sm items-center gap-1">
                 <FaClock size={20} className={`${template?.icons}`} />
                 {displayData.schedule}
               </span>
             )}
             {(displayData.address || !user) && (
-              <span className="flex text-[14px] items-center gap-1">
+              <span className="flex text-sm items-center gap-1">
                 <FaMapMarkerAlt size={20} className={`${template?.icons}`} />
                 {displayData.address || "Santiago del Estero, Argentina"}
               </span>
@@ -416,7 +421,7 @@ function HorizontalNavUser({ user, photo, cookie, template }: any) {
       </div>
 
       <div className="absolute top-2 right-2 z-100">
-        <FloatingSocialButtons user={user} isDropdown={true} />
+        <FloatingSocialButtons user={user} isDropdown={true} template={template} />
       </div>
 
       <div className="flex items-center justify-between gap-3 w-full max-w-3xl text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">

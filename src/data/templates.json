@@ -79,21 +79,21 @@
         "backgroundColor2": "bg-[#262626]",
         "accentColors": [
             "bg-[#ff6854]",
-            "bg-[#ff3419]",
-            "bg-[#3B4E3A]",
+            "bg-[#ff1e00]",
+            "bg-[#fff2de]",
             "bg-[#262626]"
         ],
         "accentColors2": [
             "[#ff6854]",
-            "[#ff3419]",
-            "[#3B4E3A]",
-            "[#3d3d3d]"
+            "[#ff1e00]",
+            "[#fff2de]",
+            "[#425424]"
         ],
         "textColor": "text-[#fff2de]",
         "textColorOpacity": "text-[#fff2de]/50",
         "textColor2": "text-[#fff2de]/50",
-        "icons": "text-[#ff3419]",
-        "border": "border-[#3d3d3d]/50"
+        "icons": "text-[#ff1e00]",
+        "border": "border-[#425424]/50"
     },
     {
         "template_id": "ocean",

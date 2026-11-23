@@ -43,6 +43,7 @@ export default async function Page({
       price: f.price,
       promo_price: f.promo_price,
       photo: f.photo,
+      description: f.description
     }));
 
   const isPaused =
