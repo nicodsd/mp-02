@@ -29,7 +29,7 @@ const StoreMediaPickers: React.FC<StoreMediaPickersProps> = ({
           Logo
         </span>
 
-        <div className="group relative w-32 h-32 md:w-40 md:h-40 lg:w-56 lg:h-56 rounded-full p-1 bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md hover:ring-indigo-300 transition-all duration-300">
+        <div className="group relative w-34 h-auto md:w-40 md:h-40 lg:w-56 lg:h-56 rounded-full p-1 bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md hover:ring-indigo-300 transition-all duration-300">
           <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-50">
             <Image
               src={previewPhoto}
@@ -67,7 +67,7 @@ const StoreMediaPickers: React.FC<StoreMediaPickersProps> = ({
             Fondo
           </span>
 
-          <div className="group relative w-48 h-32 md:w-64 md:h-40 lg:w-80 lg:h-56 rounded-2xl p-1 bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md hover:ring-indigo-300 transition-all duration-300">
+          <div className="group relative w-38 h-44 md:w-64 md:h-40 lg:w-80 lg:h-56 rounded-2xl p-1 bg-white ring-1 ring-gray-200 shadow-sm hover:shadow-md hover:ring-indigo-300 transition-all duration-300">
             <div className="relative w-full h-full rounded-xl overflow-hidden bg-gray-50">
               <Image
                 src={previewBackground || placeholder}

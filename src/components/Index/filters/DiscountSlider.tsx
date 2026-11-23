@@ -4,11 +4,19 @@ import React, { useState } from "react";
 
 export default function DiscountSlider({
   onChange,
+  externalValue,
 }: {
   onChange: (percent: number) => void;
+  externalValue?: number;
 }) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(externalValue ?? 0);
   const [showModal, setShowModal] = useState(false);
+
+  React.useEffect(() => {
+    if (typeof externalValue === "number") {
+      setValue(externalValue);
+    }
+  }, [externalValue]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);

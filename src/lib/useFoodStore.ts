@@ -32,7 +32,7 @@ interface FoodStore {
     setFoods: (foods: any[]) => void;
     updateFood: (updatedFood: any) => void;
     removeFoodLocal: (foodId: string) => void; // Para ocultarlo de la lista
-    updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number) => void;
+    updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number, extra?: Record<string, any>) => void;
     updateArchive: (foodId: string | number, is_archived: boolean) => void;
     reorderFoods: (newOrder: any[]) => void;
 }
@@ -203,10 +203,10 @@ export const useFoodStore = create<FoodStore>((set, get) => ({
         set((state) => ({
             foods: state.foods.filter((f) => f._id !== foodId),
         })),
-    updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number) =>
+    updatePromo: (foodId: string | number, is_promo: boolean, promo_price: number, extra?: Record<string, any>) =>
         set((state) => ({
             foods: state.foods.map((f) =>
-                f._id === foodId ? { ...f, is_promo, promo_price } : f
+                f._id === foodId ? { ...f, is_promo, promo_price, ...(extra || {}) } : f
             ),
         })),
     updateArchive: (foodId: string | number, is_archived: boolean) =>
