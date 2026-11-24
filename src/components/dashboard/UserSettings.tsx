@@ -260,7 +260,7 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
   };
 
   return (
-    <div className="w-full flex flex-col md:flex-row overflow-x-hidden pb-16">
+    <div className="w-full flex flex-col md:flex-row overflow-hidden pb-16 md:pb-6">
       {loading && (
         <div className="fixed inset-0 bg-gray-50/50 z-60 flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -367,7 +367,13 @@ const UserSettings = ({ user: initialUser }: { user: any }) => {
           </p>
         </div>
       )}
-      <Image className="absolute z-0 top-10 bottom-0 md:left-30 blur-2xl rounded-[20rem] opacity-10 md:opacity-30 h-screen md:h-[90vh] w-auto" src={previewBackground} alt={""} width={100} height={100} />
+      <Image
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover blur-2xl opacity-10 md:opacity-30"
+        src={previewBackground}
+        alt=""
+        width={60}
+        height={60}
+      />
     </div>
   );
 };
