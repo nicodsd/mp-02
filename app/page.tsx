@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import WelcomeModal from "@/src/components/land_page/WelcomeModal";
 import Navbar from "@/src/components/land_page/Navbar";
 import Hero from "@/src/components/land_page/Hero";
@@ -15,91 +16,40 @@ import MetricsSection from "@/src/components/land_page/MetricsSection";
 import TestimonialsSection from "@/src/components/land_page/TestimonialsSection";
 import MPRedirect from '@/src/components/navigation/MPRedirect';
 import EntrepreneurCommitment from "@/src/components/land_page/EntrepreneurCommitment";
+import JsonLd from "@/src/components/seo/JsonLd";
+import {
+  buildFaqSchema,
+  buildOrganizationSchema,
+  buildSoftwareApplicationSchema,
+  buildWebSiteSchema,
+} from "@/src/lib/seo/jsonLd";
+import { HOME_FAQS } from "@/src/data/faqs";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "QMenú | Menú Digital QR Gratis para Restaurantes y Bares",
+  },
+  description:
+    "Crea tu menú digital QR gratis para restaurantes, bares y cafeterías en minutos. Actualiza precios en tiempo real y recibe pedidos directo en WhatsApp sin comisiones.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Page() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "WebSite",
-        "name": "QMenú",
-        "alternateName": ["QMenu", "qmenu.digital"],
-        "url": "https://qmenu.digital"
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "QMenú",
-        "alternateName": "QMenu",
-        "url": "https://qmenu.digital",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "All",
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "ARS"
-        }
-      },
-      {
-        "@type": "Organization",
-        "name": "QMenú",
-        "alternateName": "QMenu",
-        "url": "https://qmenu.digital",
-        "logo": "https://qmenu.digital/android-chrome-512x512.png"
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "¿Qué es esta plataforma y cómo me ayuda?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Nuestra plataforma te permite crear tu propio menú digital en minutos. Agilizas la toma de pedidos, mejoras la experiencia de tus clientes y le das a tu negocio una imagen mucho más profesional."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Cómo funciona el menú digital para restaurantes?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Te registras gratis, cargas tus platos y generamos tu código QR al instante. Tus clientes lo escanean y ven tu menú en sus celulares sin instalar nada."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Puedo personalizar el diseño de mi menú?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "En tu panel de usuario cuentas con una sección de Personalización donde puedes elegir entre diferentes diseños, opciones y colores para que el menú se adapte a tu marca."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Puedo modificar los precios o agregar promociones en cualquier momento?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Sí, todos los cambios que hagas en el panel se reflejan en tiempo real. Ahorras en costos de impresión y ofreces pedidos directos al WhatsApp."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Necesito descargar alguna aplicación o tienen que hacerlo mis clientes?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "No, la plataforma es 100% web. Tanto tú como tus clientes acceden directamente desde el navegador de cualquier celular, tablet o computadora sin instalar nada."
-            }
-          }
-        ]
-      }
-    ]
+      buildOrganizationSchema(),
+      buildWebSiteSchema(),
+      buildSoftwareApplicationSchema(),
+      buildFaqSchema(HOME_FAQS),
+    ],
   };
 
   return (
     <div className="overflow-x-hidden w-full max-w-[100vw]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative flex-col items-center w-full min-h-screen">
         <Navbar isIndex={true} />
         <MPRedirect />
