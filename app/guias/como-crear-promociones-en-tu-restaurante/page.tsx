@@ -1,17 +1,74 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import Link from 'next/link';
 import { ArrowLeft, Gift, Megaphone, Clock, Star } from 'lucide-react';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata } from "@/src/lib/seo/site";
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildHowToSchema,
+  buildOrganizationSchema,
+} from "@/src/lib/seo/jsonLd";
 
-export const metadata = {
-  title: 'Cómo crear promociones efectivas para tu restaurante | QMenu',
-  description: 'Aprende a diseñar y publicar promociones, combos y ofertas en tu menú digital para impulsar tus ventas en días de baja demanda.',
-};
+const PAGE_PATH = "/guias/como-crear-promociones-en-tu-restaurante";
+const PAGE_TITLE = "Cómo crear promociones efectivas en el menú digital de tu restaurante";
+const PAGE_DESC =
+  "Aprende a diseñar y publicar promociones, combos y ofertas en el menú digital QR de tu restaurante o bar para impulsar tus ventas.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  path: PAGE_PATH,
+  type: "article",
+  publishedTime: "2026-01-15",
+  modifiedTime: "2026-03-01",
+});
 
 export default function CrearPromocionesPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildOrganizationSchema(),
+      buildBreadcrumbSchema([
+        { name: "Inicio", path: "/" },
+        { name: "Guías", path: "/guias" },
+        { name: "Cómo crear promociones en tu restaurante", path: PAGE_PATH },
+      ]),
+      buildArticleSchema({
+        headline: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        datePublished: "2026-01-15",
+        dateModified: "2026-03-01",
+      }),
+      buildHowToSchema({
+        name: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        steps: [
+          {
+            name: "Creación de Combos Irresistibles",
+            text: "Combina platos principales con bebida y postre en combos familiares o ejecutivos para aumentar el valor percibido.",
+          },
+          {
+            name: "Ofertas por Tiempo Limitado (Happy Hour)",
+            text: "Configura promociones disponibles en días o franjas horarias de menor demanda para reactivar ventas.",
+          },
+          {
+            name: "Destacar las promociones en QMenú",
+            text: "Crea una categoría destacada al inicio de tu carta digital y muestra el precio original tachado junto al promocional.",
+          },
+        ],
+      }),
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
 
@@ -27,7 +84,7 @@ export default function CrearPromocionesPage() {
                 Promociones y Ofertas
               </div>
               <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-                Atrae más Clientes con <span className="text-primary">Promociones Estratégicas</span>
+                Cómo Crear <span className="text-primary">Promociones</span> en el Menú Digital de tu Restaurante
               </h1>
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
                 Las promociones bien diseñadas no solo atraen clientes nuevos, sino que ayudan a liquidar inventario y mejorar las ventas en los días más flojos de la semana.
@@ -35,7 +92,7 @@ export default function CrearPromocionesPage() {
             </header>
 
             <div className="prose prose-lg prose-slate max-w-none">
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-1" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <Gift className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
                 1. Creación de Combos Irresistibles
               </h2>
@@ -47,7 +104,7 @@ export default function CrearPromocionesPage() {
                 <li><strong>El Combo Ejecutivo:</strong> Perfecto para los mediodías. Debe ser económico y rápido de preparar.</li>
               </ul>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-2" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <Clock className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
                 2. Ofertas por Tiempo Limitado (Happy Hour)
               </h2>
@@ -60,9 +117,9 @@ export default function CrearPromocionesPage() {
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-3" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <Megaphone className="w-8 h-8 text-primary mr-3 aspect-square bg-orange-50 p-1.5 rounded-lg" />
-                3. Cómo destacar las promociones en QMenu
+                3. Cómo destacar las promociones en QMenú
               </h2>
               <p>
                 Una promoción no sirve si nadie la ve. Te explicamos cómo asegurar que tus clientes noten tus ofertas:

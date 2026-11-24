@@ -1,17 +1,78 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import Link from 'next/link';
-import { ArrowLeft, Rocket, MonitorPlay, QrCode, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Rocket, MonitorPlay, QrCode } from 'lucide-react';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata } from "@/src/lib/seo/site";
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildHowToSchema,
+  buildOrganizationSchema,
+} from "@/src/lib/seo/jsonLd";
 
-export const metadata = {
-  title: 'Cómo crear un menú digital para tu restaurante paso a paso | QMenu',
-  description: 'Guía definitiva para digitalizar el menú de tu restaurante en minutos. Aumenta tus ventas y mejora la experiencia de tus clientes sin conocimientos técnicos.',
-};
+const PAGE_PATH = "/guias/como-crear-un-menu-digital";
+const PAGE_TITLE = "Cómo crear un menú digital QR para tu restaurante paso a paso";
+const PAGE_DESC =
+  "Guía paso a paso para crear el menú digital con código QR de tu restaurante, bar o cafetería en minutos y recibir pedidos por WhatsApp.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  path: PAGE_PATH,
+  type: "article",
+  publishedTime: "2026-01-15",
+  modifiedTime: "2026-03-01",
+});
 
 export default function CrearMenuDigitalPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildOrganizationSchema(),
+      buildBreadcrumbSchema([
+        { name: "Inicio", path: "/" },
+        { name: "Guías", path: "/guias" },
+        { name: "Cómo crear un menú digital", path: PAGE_PATH },
+      ]),
+      buildArticleSchema({
+        headline: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        datePublished: "2026-01-15",
+        dateModified: "2026-03-01",
+      }),
+      buildHowToSchema({
+        name: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        steps: [
+          {
+            name: "Registro y Configuración Básica",
+            text: "Crea tu cuenta en QMenú con el nombre de tu restaurante y correo electrónico, y carga dirección, horarios, WhatsApp, logotipo y portada.",
+          },
+          {
+            name: "Creación de Categorías",
+            text: "Organiza tu carta digital en categorías claras como Entradas, Platos Principales, Bebidas y Postres.",
+          },
+          {
+            name: "Carga de Platos",
+            text: "Sube tus platos con fotos reales, descripciones detalladas, precios claros y variantes.",
+          },
+          {
+            name: "Genera tu Código QR y Empieza a Vender",
+            text: "Descarga el código QR en alta resolución para tus mesas o comparte el enlace de tu carta digital en Instagram y WhatsApp.",
+          },
+        ],
+      }),
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
         <main className="w-full max-w-7xl mx-auto px-4 pt-30 grow">
@@ -25,7 +86,7 @@ export default function CrearMenuDigitalPage() {
                 Guía Paso a Paso
               </div>
               <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-                Cómo Crear un <span className="text-primary">Menú Digital</span> desde Cero
+                Cómo Crear un <span className="text-primary">Menú Digital QR</span> para tu Restaurante desde Cero
               </h1>
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
                 La digitalización gastronómica ya no es el futuro, es el presente. Aprende cómo transformar tu antigua carta de papel en un menú interactivo que vende por ti.
@@ -37,32 +98,32 @@ export default function CrearMenuDigitalPage() {
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex items-start">
                   <MonitorPlay className="w-8 h-8  text-primary mr-4 shrink-0" />
                   <div>
-                    <h4 className="font-bold text-slate-900 m-0">100% Autogestionable</h4>
+                    <p className="font-bold text-slate-900 m-0">100% Autogestionable</p>
                     <p className="text-sm text-slate-600 m-0 mt-1">Sube tus platos y cambia precios cuando quieras.</p>
                   </div>
                 </div>
                 <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 flex items-start">
                   <QrCode className="w-8 h-8 text-primary mr-4 shrink-0" />
                   <div>
-                    <h4 className="font-bold text-slate-900 m-0">Pedidos por WhatsApp</h4>
+                    <p className="font-bold text-slate-900 m-0">Pedidos por WhatsApp</p>
                     <p className="text-sm text-slate-600 m-0 mt-1">Recibe las órdenes directo en tu celular.</p>
                   </div>
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-1" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">1</span>
                 Registro y Configuración Básica
               </h2>
               <p>
-                El primer paso es crear tu cuenta en QMenu. Solo necesitas el nombre de tu restaurante y un correo electrónico. Una vez dentro, configura la información básica:
+                El primer paso es crear tu cuenta en QMenú. Solo necesitas el nombre de tu restaurante y un correo electrónico. Una vez dentro, configura la información básica:
               </p>
               <ul className="list-disc pl-6 mb-8 space-y-2">
                 <li><strong>Datos del Local:</strong> Dirección, horarios de atención y números de WhatsApp para recibir pedidos.</li>
                 <li><strong>Estética:</strong> Sube tu logotipo y una foto de portada atractiva. Selecciona los colores que representan a tu marca.</li>
               </ul>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-2" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">2</span>
                 Creación de Categorías
               </h2>
@@ -76,7 +137,7 @@ export default function CrearMenuDigitalPage() {
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-3" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">3</span>
                 Carga de Platos
               </h2>
@@ -89,7 +150,7 @@ export default function CrearMenuDigitalPage() {
                 <li><strong>Precios claros:</strong> Y si tienes opciones (como tamaños de pizza), configura las variantes.</li>
               </ul>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-4" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <span className="bg-primary aspect-square text-white w-8 h-8 rounded-full flex items-center justify-center mr-3 text-lg">4</span>
                 Genera tu Código QR y Empieza a Vender
               </h2>

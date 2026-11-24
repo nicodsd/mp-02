@@ -1,17 +1,74 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, Image as ImageIcon, Tags, Edit3 } from 'lucide-react';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata } from "@/src/lib/seo/site";
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildHowToSchema,
+  buildOrganizationSchema,
+} from "@/src/lib/seo/jsonLd";
 
-export const metadata = {
-  title: 'Cómo crear platos perfectos para tu menú digital | QMenu',
-  description: 'Guía paso a paso para crear platos irresistibles en tu menú digital. Aprende a subir fotos, escribir descripciones que vendan y configurar variantes.',
-};
+const PAGE_PATH = "/guias/como-crear-platos-para-menu-digital";
+const PAGE_TITLE = "Cómo crear platos perfectos para el menú digital de tu restaurante";
+const PAGE_DESC =
+  "Guía paso a paso para crear platos irresistibles en tu menú digital QR. Aprende a subir fotos, escribir descripciones que vendan y configurar variantes.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  path: PAGE_PATH,
+  type: "article",
+  publishedTime: "2026-01-15",
+  modifiedTime: "2026-03-01",
+});
 
 export default function CrearPlatosPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildOrganizationSchema(),
+      buildBreadcrumbSchema([
+        { name: "Inicio", path: "/" },
+        { name: "Guías", path: "/guias" },
+        { name: "Cómo crear platos para menú digital", path: PAGE_PATH },
+      ]),
+      buildArticleSchema({
+        headline: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        datePublished: "2026-01-15",
+        dateModified: "2026-03-01",
+      }),
+      buildHowToSchema({
+        name: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        steps: [
+          {
+            name: "La Imagen lo es Todo",
+            text: "Toma fotografías de tus platos con iluminación natural, ángulo a 45 grados y fondo limpio.",
+          },
+          {
+            name: "Descripciones que Despiertan Antojos",
+            text: "Escribe descripciones sensoriales detallando ingredientes, texturas y métodos de cocción.",
+          },
+          {
+            name: "Opciones, Variantes y Adicionales (Upselling)",
+            text: "Configura modificadores obligatorios y adicionales pagos para aumentar el ticket promedio.",
+          },
+        ],
+      }),
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
 
@@ -27,7 +84,7 @@ export default function CrearPlatosPage() {
                 Creación de Platos
               </div>
               <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6">
-                El Arte de Crear Platos que <span className="text-primary">Venden Solos</span>
+                Cómo Crear Platos para tu <span className="text-primary">Menú Digital</span> de Restaurante
               </h1>
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
                 Un menú digital no es solo una lista de precios; es tu principal herramienta de ventas. Descubre cómo cargar tus productos de forma atractiva para aumentar el ticket promedio de tu restaurante.
@@ -36,10 +93,10 @@ export default function CrearPlatosPage() {
 
             <div className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-600 prose-a:text-primary">
               <div className="bg-slate-50 rounded-2xl p-6 mb-10 border border-slate-100">
-                <h3 className="text-xl font-bold mb-4 flex items-center">
+                <h2 className="text-xl font-bold mb-4 flex items-center mt-0">
                   <CheckCircle2 className="w-6 h-6 text-green-500 mr-2" />
                   Lo que aprenderás
-                </h3>
+                </h2>
                 <ul className="space-y-2 mb-0">
                   <li className="flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-primary mr-3"></span>La importancia de las fotografías de alta calidad.</li>
                   <li className="flex items-center"><span className="w-1.5 h-1.5 rounded-full bg-primary mr-3"></span>Cómo escribir descripciones que despierten el apetito.</li>
@@ -47,7 +104,7 @@ export default function CrearPlatosPage() {
                 </ul>
               </div>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-1" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <ImageIcon className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
                 1. La Imagen lo es Todo
               </h2>
@@ -60,7 +117,7 @@ export default function CrearPlatosPage() {
                 <li><strong>Fondo limpio:</strong> Evita distracciones. Un fondo blanco, de madera o liso funciona perfecto.</li>
               </ul>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-2" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <Edit3 className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
                 2. Descripciones que Despiertan Antojos
               </h2>
@@ -73,7 +130,7 @@ export default function CrearPlatosPage() {
                 </p>
               </div>
 
-              <h2 className="text-2xl font-bold mt-12 mb-6 flex items-center">
+              <h2 id="paso-3" className="text-2xl font-bold mt-12 mb-6 flex items-center">
                 <Tags className="w-8 h-8 text-primary mr-3 bg-orange-50 p-1.5 rounded-lg" />
                 3. Opciones, Variantes y Adicionales (Upselling)
               </h2>
