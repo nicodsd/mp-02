@@ -1,15 +1,40 @@
+import type { Metadata } from "next";
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata, SITE_URL } from "@/src/lib/seo/site";
+import { buildBreadcrumbSchema, WEBSITE_ID } from "@/src/lib/seo/jsonLd";
 
+const PAGE_PATH = "/terminos-y-condiciones";
 
-export const metadata = {
-    title: "Términos y Condiciones | QMenú",
-    description: "Revisa los términos y condiciones de uso de la plataforma QMenú.",
-};
+export const metadata: Metadata = buildPageMetadata({
+    title: "Términos y Condiciones",
+    description: "Revisa los términos y condiciones de uso de la plataforma de menús digitales QMenú.",
+    path: PAGE_PATH,
+});
 
 export default function TerminosPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                "@id": `${SITE_URL}${PAGE_PATH}#webpage`,
+                url: `${SITE_URL}${PAGE_PATH}`,
+                name: "Términos y Condiciones | QMenú",
+                inLanguage: "es-AR",
+                isPartOf: { "@id": WEBSITE_ID },
+            },
+            buildBreadcrumbSchema([
+                { name: "Inicio", path: "/" },
+                { name: "Términos y Condiciones", path: PAGE_PATH },
+            ]),
+        ],
+    };
+
     return (
         <>
+            <JsonLd data={jsonLd} />
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
                 <main className="grow w-full relative flex flex-col items-start justify-start md:max-w-7xl mx-auto px-4 sm:px-6 md:px-14 pt-40 pb-20">

@@ -1,11 +1,32 @@
-"use client";
+import type { Metadata } from "next";
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
-import { motion } from "framer-motion";
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { HiOutlineColorSwatch, HiOutlineAdjustments } from "react-icons/hi";
 import { Camera, QrCode, Smartphone, CloudLightning, PieChart, Zap } from 'lucide-react';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata } from "@/src/lib/seo/site";
+import {
+    buildArticleSchema,
+    buildBreadcrumbSchema,
+    buildOrganizationSchema,
+    buildSoftwareApplicationSchema,
+} from "@/src/lib/seo/jsonLd";
+
+const PAGE_PATH = "/guias/caracteristicas-menu-digital";
+const PAGE_TITLE = "Características del Menú Digital QR para Restaurantes y Bares";
+const PAGE_DESC =
+    "Descubre todas las características y beneficios de QMenú: carta QR personalizable, fotos HD, actualizaciones en tiempo real, pedidos por WhatsApp y analíticas.";
+
+export const metadata: Metadata = buildPageMetadata({
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    path: PAGE_PATH,
+    type: "article",
+    publishedTime: "2026-01-15",
+    modifiedTime: "2026-03-01",
+});
 
 const featuresList = [
     {
@@ -57,8 +78,32 @@ const featuresList = [
 
 
 export default function CaracteristicasPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": [
+            buildOrganizationSchema(),
+            {
+                ...buildSoftwareApplicationSchema(),
+                featureList: featuresList.map((f) => f.title),
+            },
+            buildBreadcrumbSchema([
+                { name: "Inicio", path: "/" },
+                { name: "Guías", path: "/guias" },
+                { name: "Características del menú digital", path: PAGE_PATH },
+            ]),
+            buildArticleSchema({
+                headline: PAGE_TITLE,
+                description: PAGE_DESC,
+                path: PAGE_PATH,
+                datePublished: "2026-01-15",
+                dateModified: "2026-03-01",
+            }),
+        ],
+    };
+
     return (
         <>
+            <JsonLd data={jsonLd} />
             <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full mb-20 md:mb-0">
                 <Navbar isIndex={false} />
                 <main className="grow pt-30 md:pt-40 pb-4 md:rounded-b-2xl bg-background w-full relative flex flex-col items-center md:max-w-7xl mx-auto px-4">
@@ -69,25 +114,27 @@ export default function CaracteristicasPage() {
                         </Link>
                         <div className="w-full relative mt-10 z-10">
                             <div className="text-center md:text-start mb-12 md:mb-16 px-2 md:pl-12">
-                                <motion.h1 initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">Características del menú digital</motion.h1>
-                                <motion.p initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="text-stone-600 text-base md:text-lg pl-1">
+                                <h1 className="text-4xl md:text-5xl font-bold text-stone-900 mb-4 md:mb-6">
+                                    Características del menú digital QR para restaurantes y bares
+                                </h1>
+                                <p className="text-stone-600 text-base md:text-lg pl-1">
                                     Una herramienta potente y fácil de usar para digitalizar tu local gastronómico ahora mismo.
-                                </motion.p>
+                                </p>
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {featuresList.map((feature, index) => (
-                                    <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 md:h-full flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
+                                    <div key={index} className="py-4 px-4 md:p-6 md:px-6 gap-3 md:h-full flex md:flex-col md:items-start rounded-xl border border-gray-300 items-start group">
                                         <div className="md:w-12 md:h-12 rounded-xl flex items-center justify-center md:mb-4 text-primary group-hover:bg-primary group-hover:text-white transition-all">
                                             {feature.icon}
                                         </div>
                                         <div className="flex flex-col">
-                                            <h4 className="text-md font-semibold text-stone-900">{feature.title}</h4>
+                                            <h2 className="text-md font-semibold text-stone-900">{feature.title}</h2>
                                             <p className="text-stone-600 text-sm leading-5 mt-1">
                                                 {feature.description}
                                             </p>
                                         </div>
-                                    </motion.div>
+                                    </div>
                                 ))}
                             </div>
                         </div>

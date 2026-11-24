@@ -1,17 +1,54 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import Link from 'next/link';
 import { ArrowLeft, Palette, Smartphone, Sparkles, Layout } from 'lucide-react';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata } from "@/src/lib/seo/site";
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildOrganizationSchema,
+} from "@/src/lib/seo/jsonLd";
 
-export const metadata = {
-  title: 'Cómo personalizar el diseño de tu menú digital | QMenu',
-  description: 'Guía sobre cómo adaptar el diseño de tu menú digital a la identidad visual de tu marca: colores, logo, tipografías y portadas.',
-};
+const PAGE_PATH = "/guias/como-personalizar-tu-menu-digital";
+const PAGE_TITLE = "Cómo personalizar el diseño del menú digital QR de tu restaurante";
+const PAGE_DESC =
+  "Guía sobre cómo adaptar el diseño de tu menú digital QR a la identidad visual de tu restaurante, bar o cafetería: colores, logo, tipografías y portadas.";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  path: PAGE_PATH,
+  type: "article",
+  publishedTime: "2026-01-15",
+  modifiedTime: "2026-03-01",
+});
 
 export default function PersonalizarMenuPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      buildOrganizationSchema(),
+      buildBreadcrumbSchema([
+        { name: "Inicio", path: "/" },
+        { name: "Guías", path: "/guias" },
+        { name: "Cómo personalizar tu menú digital", path: PAGE_PATH },
+      ]),
+      buildArticleSchema({
+        headline: PAGE_TITLE,
+        description: PAGE_DESC,
+        path: PAGE_PATH,
+        datePublished: "2026-01-15",
+        dateModified: "2026-03-01",
+      }),
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
 
@@ -26,7 +63,7 @@ export default function PersonalizarMenuPage() {
                 Personalización
               </div>
               <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-6 text-pretty">
-                Haz que el menú <span className="text-primary">Grite el Nombre de tu Marca</span>
+                Cómo Personalizar el <span className="text-primary">Menú Digital QR</span> de tu Restaurante o Bar
               </h1>
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl">
                 La consistencia de marca genera confianza. Tu menú digital no debería verse como una plantilla genérica, sino como una extensión real de tu restaurante.
@@ -37,13 +74,13 @@ export default function PersonalizarMenuPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
                 <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col items-center text-center">
                   <Palette className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-bold text-lg mb-2">Colores de Marca</h3>
-                  <p className="text-slate-600 text-sm">Aplica tus colores principales a botones, títulos y elementos de acento.</p>
+                  <p className="font-bold text-lg mb-2 mt-0 text-slate-900">Colores de Marca</p>
+                  <p className="text-slate-600 text-sm mb-0">Aplica tus colores principales a botones, títulos y elementos de acento.</p>
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex flex-col items-center text-center">
                   <Layout className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-bold text-lg mb-2">Logo y Portada</h3>
-                  <p className="text-slate-600 text-sm">Sube tu logo en alta calidad y una imagen de portada que impacte de inmediato.</p>
+                  <p className="font-bold text-lg mb-2 mt-0 text-slate-900">Logo y Portada</p>
+                  <p className="text-slate-600 text-sm mb-0">Sube tu logo en alta calidad y una imagen de portada que impacte de inmediato.</p>
                 </div>
               </div>
 

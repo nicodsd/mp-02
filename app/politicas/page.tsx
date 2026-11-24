@@ -1,17 +1,42 @@
+import type { Metadata } from 'next';
 import React from 'react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
 import CookiePreferencesButton from "@/src/components/common/CookiePreferencesButton";
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata, SITE_URL } from "@/src/lib/seo/site";
+import { buildBreadcrumbSchema, WEBSITE_ID } from "@/src/lib/seo/jsonLd";
 
+const PAGE_PATH = "/politicas";
 
-export const metadata = {
-    title: "Políticas de Privacidad | QMenú",
-    description: "Lee nuestras políticas de privacidad y cómo protegemos tus datos.",
-};
+export const metadata: Metadata = buildPageMetadata({
+    title: "Política de Privacidad",
+    description: "Lee la política de privacidad de QMenú y cómo protegemos los datos de tu restaurante y tus clientes.",
+    path: PAGE_PATH,
+});
 
 export default function PoliticasPage() {
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                "@id": `${SITE_URL}${PAGE_PATH}#webpage`,
+                url: `${SITE_URL}${PAGE_PATH}`,
+                name: "Política de Privacidad | QMenú",
+                inLanguage: "es-AR",
+                isPartOf: { "@id": WEBSITE_ID },
+            },
+            buildBreadcrumbSchema([
+                { name: "Inicio", path: "/" },
+                { name: "Política de Privacidad", path: PAGE_PATH },
+            ]),
+        ],
+    };
+
     return (
         <>
+            <JsonLd data={jsonLd} />
             <div className="flex selection:bg-primary selection:text-white relative bg-background-2 flex-col items-center w-full min-h-auto">
                 <Navbar isIndex={false} />
                 <main className="grow w-full relative flex flex-col items-start justify-start md:max-w-7xl mx-auto px-4 sm:px-6 md:px-14 pt-40 pb-20">

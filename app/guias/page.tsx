@@ -1,11 +1,20 @@
-"use client";
+import type { Metadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
 import { BookOpen, Settings, Tag, Utensils, Zap, HelpCircle, ArrowRight } from 'lucide-react';
 import Navbar from "@/src/components/land_page/Navbar";
 import Footer from "@/src/components/land_page/Footer";
-import { useRouter } from 'next/navigation';
 import { MdChevronLeft } from 'react-icons/md';
+import JsonLd from "@/src/components/seo/JsonLd";
+import { buildPageMetadata, SITE_URL } from "@/src/lib/seo/site";
+import { buildBreadcrumbSchema, WEBSITE_ID } from "@/src/lib/seo/jsonLd";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Guías para Crear tu Menú Digital QR para Restaurantes",
+  description:
+    "Aprende paso a paso cómo crear, personalizar y potenciar el menú digital QR de tu restaurante, bar o cafetería con nuestras guías prácticas.",
+  path: "/guias",
+});
 
 const guides = [
   {
@@ -58,32 +67,57 @@ const guides = [
   }
 ];
 
-
 export default function GuiasPage() {
-  const router = useRouter();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${SITE_URL}/guias#webpage`,
+        url: `${SITE_URL}/guias`,
+        name: "Guías para Crear tu Menú Digital QR para Restaurantes | QMenú",
+        description:
+          "Recursos y tutoriales prácticos para digitalizar la carta de tu restaurante, bar o cafetería.",
+        inLanguage: "es-AR",
+        isPartOf: { "@id": WEBSITE_ID },
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: guides.map((guide, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: guide.title,
+            url: `${SITE_URL}${guide.href}`,
+          })),
+        },
+      },
+      buildBreadcrumbSchema([
+        { name: "Inicio", path: "/" },
+        { name: "Guías", path: "/guias" },
+      ]),
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       <div className="flex selection:bg-primary selection:text-white relative bg-background flex-col items-center w-full min-h-screen">
         <Navbar isIndex={false} />
         <main className="w-full relative max-w-7xl mx-auto px-4 lg:pt-40 pt-28 grow">
           <div className='relative bg-blue-700 w-full h-150 md:h-80 overflow-hidden bg-radial rounded-3xl p-5 md:p-10 mb-3'>
-            <button
-              type="button"
-              onClick={() => {
-                router.push("/");
-              }}
-              className="flex items-center text-white text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
+            <Link
+              href="/"
+              className="inline-flex items-center text-white text-sm cursor-pointer font-semibold hover:opacity-80 transition-opacity"
             >
               <MdChevronLeft className="text-xl mr-1" />
               Inicio
-            </button>
+            </Link>
             <div className='flex flex-col md:flex-row justify-between'>
               <div className="text-center w-full md:w-[70%] md:text-start md:mb-16 mt-5">
-                <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-                  Guías y Recursos de <span className="text-orange-300">QMenú</span>
+                <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
+                  Guías para tu <span className="text-orange-300">Menú Digital QR</span>
                 </h1>
                 <p className="text-xl text-white/80">
-                  Todo lo que necesitas saber para sacarle el máximo provecho a tu menú digital, aumentar tus ventas y mejorar la experiencia de tus clientes.
+                  Todo lo que necesitas saber para crear la carta digital de tu restaurante, bar o cafetería, aumentar tus ventas y mejorar la experiencia de tus clientes.
                 </p>
               </div>
               <video className='w-30 border-3 md:-translate-y-16 mt-6 border-white md:w-40 rounded-2xl shadow-lg object-cover relative top-0 left-0 right-0 mx-auto' autoPlay loop muted>
@@ -101,9 +135,9 @@ export default function GuiasPage() {
                 <div className={`w-16 h-16 rounded-2xl ${guide.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {guide.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors">
+                <h2 className="text-2xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors">
                   {guide.title}
-                </h3>
+                </h2>
                 <p className="text-slate-600 mb-8 grow leading-relaxed">
                   {guide.description}
                 </p>
