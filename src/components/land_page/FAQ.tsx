@@ -1,29 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
-
-const faqs = [
-  {
-    question: "¿Qué es esta plataforma y cómo me ayuda?",
-    answer: "Nuestra plataforma te permite crear tu propio menú digital en minutos. Agilizas la toma de pedidos, mejoras la experiencia de tus clientes y le das a tu negocio una imagen mucho más profesional."
-  },
-  {
-    question: "¿Puedo personalizar el diseño de mi menú?",
-    answer: "¡Totalmente! En tu panel de usuario cuentas con una sección de 'Personalización' en donde vas a poder elegir entre diferentes diseños, opciones y colores para que el menú visualmente se adapte a tu marca."
-  },
-  {
-    question: "¿Cómo acceden mis clientes al menú?",
-    answer: "Es muy sencillo. Tus clientes solo tienen que escanear un código QR que puedes poner en las mesas, o bien, puedes ingresar un link directo en tus redes sociales (Instagram, WhatsApp, etc.)."
-  },
-  {
-    question: "¿Puedo modificar los precios o agregar promociones en cualquier momento?",
-    answer: "Sí, todos los cambios que hagas en el panel (como actualizar precios, agregar nuevos platos o activar promociones temporales) se reflejan en tiempo real. ¡Olvidate de imprimir menús nuevos cada vez que cambian los precios!"
-  },
-  {
-    question: "¿Necesito descargar alguna aplicación o tienen que hacerlo mis clientes?",
-    answer: "No, la plataforma es 100% web. Tanto tú como tus clientes acceden directamente desde el navegador de cualquier celular, tablet o computadora sin instalar nada."
-  }
-];
+import { HOME_FAQS } from "@/src/data/faqs";
 
 export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -46,32 +24,38 @@ export default function FAQ() {
         </div>
 
         <div className="space-y-2 md:px-12">
-          {faqs.map((faq, index) => (
-            <div
-              key={index}
-              className={`border rounded-2xl overflow-hidden transition-all duration-300 ${activeIndex === index ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform' : 'bg-background border-gray-300 hover:bg-background-2 hover:border-gray-300'}`}
-            >
-              <button
-                type="button"
-                aria-expanded={activeIndex === index}
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-5 md:px-12 text-left focus:outline-none"
+          {HOME_FAQS.map((faq, index) => {
+            const isOpen = activeIndex === index;
+            return (
+              <div
+                key={index}
+                className={`border rounded-2xl overflow-hidden transition-all duration-300 ${isOpen ? 'bg-white shadow-lg shadow-gray-200/80 border-gray-300 transform' : 'bg-background border-gray-300 hover:bg-background-2 hover:border-gray-300'}`}
               >
-                <span className="font-bold text-lg text-stone-700 pr-4">{faq.question}</span>
-                <span
-                  className={`shrink-0 flex border border-gray-300 items-center justify-center w-10 h-10 rounded-full transition-transform duration-300 ${activeIndex === index ? 'bg-black text-white rotate-180' : 'border-gray-500 text-gray-600'}`}
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full flex justify-between items-center p-5 md:px-12 text-left focus:outline-none"
                 >
-                  <ChevronDown size={22} aria-hidden="true" />
-                </span>
-              </button>
+                  <span className="font-bold text-lg text-stone-700 pr-4">{faq.question}</span>
+                  <span
+                    className={`shrink-0 flex border border-gray-300 items-center justify-center w-10 h-10 rounded-full transition-transform duration-300 ${isOpen ? 'bg-black text-white rotate-180' : 'border-gray-500 text-gray-600'}`}
+                  >
+                    <ChevronDown size={22} aria-hidden="true" />
+                  </span>
+                </button>
 
-              {activeIndex === index && (
-                <div className="px-6 pb-5 md:px-12 md:pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base">
+                <div
+                  id={`faq-answer-${index}`}
+                  hidden={!isOpen}
+                  className="px-6 pb-5 md:px-12 md:pb-6 text-gray-600 leading-relaxed text-[15px] sm:text-base"
+                >
                   {faq.answer}
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

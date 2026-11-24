@@ -17,18 +17,29 @@ const asap = Asap({
 export const metadata: Metadata = {
   metadataBase: new URL("https://qmenu.digital"),
   title: {
-    default: "QMenú | Tu Menú Digital Rápido y Gratis",
+    default: "QMenú | Menú Digital QR Gratis para Restaurantes y Bares",
     template: "%s | QMenú",
   },
-  description: "Crea el menú digital QR para tu restaurante o bar en minutos. Sube tus platos, actualiza precios en tiempo real y recibe pedidos directo en WhatsApp sin comisiones.",
-  keywords: ["menú digital", "carta qr", "menu qr gratis", "restaurantes", "pedidos whatsapp", "qmenu", "qmenú", "digitalizar bar", "carta digital online", "menú digital para restaurantes"],
-  authors: [{ name: "QMenú Team" }],
-  alternates: {
-    canonical: "/",
-  },
+  description:
+    "Crea el menú digital QR para tu restaurante, bar o cafetería en minutos. Sube tus platos, actualiza precios en tiempo real y recibe pedidos directo en WhatsApp sin comisiones.",
+  keywords: [
+    "menú digital",
+    "menú QR para restaurantes",
+    "carta qr",
+    "menu qr gratis",
+    "restaurantes",
+    "pedidos whatsapp",
+    "qmenu",
+    "qmenú",
+    "digitalizar bar",
+    "carta digital online",
+    "menú digital para restaurantes",
+  ],
+  authors: [{ name: "QMenú Team", url: "https://qmenu.digital" }],
   openGraph: {
-    title: "QMenú | Tu Menú Digital Rápido y Gratis",
-    description: "Moderniza la experiencia de tu restaurante. Actualizaciones en tiempo real y pedidos por WhatsApp.",
+    title: "QMenú | Menú Digital QR Gratis para Restaurantes y Bares",
+    description:
+      "Moderniza la experiencia de tu restaurante con carta QR. Actualizaciones en tiempo real y pedidos por WhatsApp.",
     url: "https://qmenu.digital",
     siteName: "QMenú",
     images: [
@@ -36,7 +47,7 @@ export const metadata: Metadata = {
         url: "https://qmenu.digital/og-image.png",
         width: 1200,
         height: 630,
-        alt: "QMenú - Plataforma de Menús Digitales",
+        alt: "QMenú - Plataforma de Menús Digitales QR para Restaurantes",
       },
     ],
     locale: "es_AR",
@@ -44,8 +55,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "QMenú | Tu Menú Digital Rápido y Gratis",
-    description: "Moderniza la experiencia de tu restaurante con códigos QR.",
+    title: "QMenú | Menú Digital QR Gratis para Restaurantes y Bares",
+    description:
+      "Crea el menú digital con código QR de tu restaurante o bar gratis y recibe pedidos por WhatsApp.",
     images: ["https://qmenu.digital/og-image.png"],
   },
   robots: {
