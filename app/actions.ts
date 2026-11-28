@@ -157,6 +157,23 @@ export async function updateTemplate(templateId: string) {
 
 export async function logout() {
     const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+    if (token && token !== "{}") {
+        try {
+            const apiUrl = URI || "http://localhost:4000";
+            await fetch(`${apiUrl}/presence/offline`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                cache: "no-store",
+                body: JSON.stringify({ allTabs: true }),
+            });
+        } catch {
+            // Ignore network errors on logout
+        }
+    }
     cookieStore.delete("token");
     cookieStore.delete("user");
     cookieStore.delete("menu");

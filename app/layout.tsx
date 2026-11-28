@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import CookieConsentManager, {
   ConsentAwareAnalytics,
 } from "@/src/components/common/CookieConsentManager";
+import PresenceTracker from "@/src/components/common/PresenceTracker";
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans", preload: false });
 
 const asap = Asap({
@@ -179,6 +180,7 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         {children}
+        <PresenceTracker />
         <CookieConsentManager />
         <ConsentAwareAnalytics />
       </body>

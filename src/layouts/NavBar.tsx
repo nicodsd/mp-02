@@ -226,8 +226,12 @@ export default function NavBar({
               className="absolute inset-0 w-full h-full object-cover object-center"
             />
           )}
+          {bttn && (
+            <div className={`absolute inset-0 ${canShowCover ? "" : "bg-black/35"}`} />
+          )
+          }
           {!isSpecialState && (
-            <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : "bg-black/35"}`} />
+            <div className={`absolute inset-0 ${canShowCover ? "bg-black/35" : ""}`} />
           )}
           <nav className="relative z-10 w-full">
             {renderNavContent()}
